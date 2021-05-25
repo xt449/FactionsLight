@@ -3,7 +3,7 @@ package com.massivecraft.factions.tag;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 
 import java.util.function.Supplier;
@@ -25,7 +25,7 @@ public enum GeneralTag implements Tag {
 		if(FactionsPlugin.getInstance().conf().factions().maxRelations().isEnabled()) {
 			return String.valueOf(relation.getMax());
 		}
-		return TL.GENERIC_INFINITY.toString();
+		return Localization.GENERIC_INFINITY.toString();
 	}
 
 	public static String parse(String text) {

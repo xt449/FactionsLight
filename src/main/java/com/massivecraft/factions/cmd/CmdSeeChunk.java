@@ -2,8 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.SeeChunkUtil;
-import com.massivecraft.factions.util.TL;
 
 public class CmdSeeChunk extends FCommand {
 
@@ -31,15 +31,15 @@ public class CmdSeeChunk extends FCommand {
 				toggle = context.argAsBool(0);
 			}
 			context.fPlayer.setSeeingChunk(toggle);
-			context.msg(TL.COMMAND_SEECHUNK_TOGGLE, toggle ? "enabled" : "disabled");
+			context.msg(Localization.COMMAND_SEECHUNK_TOGGLE, toggle ? "enabled" : "disabled");
 		} else {
 			SeeChunkUtil.showPillars(context.player, context.fPlayer, null, false);
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SEECHUNK_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SEECHUNK_DESCRIPTION;
 	}
 
 }

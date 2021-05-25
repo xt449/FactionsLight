@@ -5,7 +5,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,7 +107,7 @@ public class CmdList extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_LIST_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_LIST_DESCRIPTION;
 	}
 }

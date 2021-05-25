@@ -5,7 +5,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdSethome extends FCommand {
 
@@ -21,7 +21,7 @@ public class CmdSethome extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().homes().isEnabled()) {
-			context.msg(TL.COMMAND_SETHOME_DISABLED);
+			context.msg(Localization.COMMAND_SETHOME_DISABLED);
 			return;
 		}
 
@@ -29,18 +29,18 @@ public class CmdSethome extends FCommand {
 		if(!Permission.BYPASS.has(context.player) &&
 				FactionsPlugin.getInstance().conf().factions().homes().isMustBeInClaimedTerritory() &&
 				IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player)) != context.faction) {
-			context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
+			context.msg(Localization.COMMAND_SETHOME_NOTCLAIMED);
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostSethome(), TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostSethome(), Localization.COMMAND_SETHOME_TOSET, Localization.COMMAND_SETHOME_FORSET)) {
 			return;
 		}
 
 		context.faction.setHome(context.player.getLocation());
 
-		context.faction.msg(TL.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
+		context.faction.msg(Localization.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
 		context.faction.sendMessage(FCmdRoot.getInstance().cmdHome.getUsageTemplate(context));
         /*
         if (faction != context.faction) {
@@ -49,8 +49,8 @@ public class CmdSethome extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SETHOME_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SETHOME_DESCRIPTION;
 	}
 
 }

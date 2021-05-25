@@ -7,7 +7,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 
 
@@ -34,7 +34,7 @@ public class CmdDisband extends FCommand {
 
 		if(isfaction) {
 			if(!faction.hasAccess(context.fPlayer, PermissibleAction.DISBAND)) {
-				context.msg(TL.GENERIC_NOPERMISSION.format(PermissibleAction.DISBAND));
+				context.msg(Localization.GENERIC_NOPERMISSION.format(PermissibleAction.DISBAND));
 				return;
 			}
 		} else {
@@ -44,11 +44,11 @@ public class CmdDisband extends FCommand {
 		}
 
 		if(!faction.isNormal()) {
-			context.msg(TL.COMMAND_DISBAND_IMMUTABLE.toString());
+			context.msg(Localization.COMMAND_DISBAND_IMMUTABLE.toString());
 			return;
 		}
 		if(faction.isPermanent()) {
-			context.msg(TL.COMMAND_DISBAND_MARKEDPERMANENT.toString());
+			context.msg(Localization.COMMAND_DISBAND_MARKEDPERMANENT.toString());
 			return;
 		}
 		if(!FactionsPlugin.getInstance().getLandRaidControl().canDisbandFaction(faction, context)) {
@@ -68,11 +68,11 @@ public class CmdDisband extends FCommand {
 
 		// Inform all players
 		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			String who = context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer);
+			String who = context.player == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer);
 			if(fplayer.getFaction() == faction) {
-				fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);
+				fplayer.msg(Localization.COMMAND_DISBAND_BROADCAST_YOURS, who);
 			} else {
-				fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, faction.getTag(fplayer));
+				fplayer.msg(Localization.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, faction.getTag(fplayer));
 			}
 		}
 		if(FactionsPlugin.getInstance().conf().logging().isFactionDisband()) {
@@ -87,7 +87,7 @@ public class CmdDisband extends FCommand {
 
 			if(amount > 0.0) {
 				String amountString = Econ.moneyString(amount);
-				context.msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
+				context.msg(Localization.COMMAND_DISBAND_HOLDINGS, amountString);
 				//TODO: Format this correctly and translate
 				FactionsPlugin.getInstance().log(context.fPlayer.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
 			}
@@ -98,7 +98,7 @@ public class CmdDisband extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DISBAND_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DISBAND_DESCRIPTION;
 	}
 }

@@ -5,7 +5,7 @@ import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
@@ -30,10 +30,10 @@ public class CmdMod extends FCommand {
 	public void perform(CommandContext context) {
 		IFactionPlayer you = context.argAsBestFPlayerMatch(0);
 		if(you == null) {
-			FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
+			FancyMessage msg = new FancyMessage(Localization.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
 			for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
 				String s = player.getName();
-				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " mod " + s);
+				msg.then(s + " ").color(ChatColor.WHITE).tooltip(Localization.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " mod " + s);
 			}
 
 			context.sendFancyMessage(msg);
@@ -44,41 +44,41 @@ public class CmdMod extends FCommand {
 		IFaction targetFaction = you.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
-			context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
+			context.msg(Localization.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		if(context.fPlayer != null && !context.fPlayer.getRole().isAtLeast(Role.COLEADER) && !permAny) {
-			context.msg(TL.COMMAND_MOD_NOTADMIN);
+			context.msg(Localization.COMMAND_MOD_NOTADMIN);
 			return;
 		}
 
 		if(you == context.fPlayer && !permAny) {
-			context.msg(TL.COMMAND_MOD_SELF);
+			context.msg(Localization.COMMAND_MOD_SELF);
 			return;
 		}
 
 		if(you.getRole() == Role.ADMIN) {
-			context.msg(TL.COMMAND_MOD_TARGETISADMIN);
+			context.msg(Localization.COMMAND_MOD_TARGETISADMIN);
 			return;
 		}
 
 		if(you.getRole() == Role.MODERATOR) {
 			// Revoke
 			you.setRole(Role.NORMAL);
-			targetFaction.msg(TL.COMMAND_MOD_REVOKED, you.describeTo(targetFaction, true));
-			context.msg(TL.COMMAND_MOD_REVOKES, you.describeTo(context.fPlayer, true));
+			targetFaction.msg(Localization.COMMAND_MOD_REVOKED, you.describeTo(targetFaction, true));
+			context.msg(Localization.COMMAND_MOD_REVOKES, you.describeTo(context.fPlayer, true));
 		} else {
 			// Give
 			you.setRole(Role.MODERATOR);
-			targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
-			context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
+			targetFaction.msg(Localization.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
+			context.msg(Localization.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MOD_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_MOD_DESCRIPTION;
 	}
 
 }

@@ -8,7 +8,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
 
@@ -28,24 +28,24 @@ public class CmdTNTSiphon extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		if(!context.faction.equals(IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player.getLocation())))) {
-			context.msg(TL.COMMAND_TNT_TERRITORYONLY);
+			context.msg(Localization.COMMAND_TNT_TERRITORYONLY);
 			return;
 		}
 		final int radius = context.argAsInt(0, -1);
 		final int amount = context.argAsInt(1, -1);
 
 		if(radius <= 0) {
-			context.msg(TL.COMMAND_TNT_SIPHON_FAIL_POSITIVE);
+			context.msg(Localization.COMMAND_TNT_SIPHON_FAIL_POSITIVE);
 			return;
 		}
 
 		if(FactionsPlugin.getInstance().conf().commands().tnt().isAboveMaxStorage(context.faction.getTNTBank() + 1)) {
-			context.msg(TL.COMMAND_TNT_SIPHON_FAIL_FULL);
+			context.msg(Localization.COMMAND_TNT_SIPHON_FAIL_FULL);
 			return;
 		}
 
 		if(radius > FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius()) {
-			context.msg(TL.COMMAND_TNT_SIPHON_FAIL_MAXRADIUS, radius, FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius());
+			context.msg(Localization.COMMAND_TNT_SIPHON_FAIL_MAXRADIUS, radius, FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius());
 			return;
 		}
 
@@ -82,11 +82,11 @@ public class CmdTNTSiphon extends FCommand {
 
 		context.faction.setTNTBank(context.faction.getTNTBank() + acquired);
 
-		context.msg(TL.COMMAND_TNT_SIPHON_MESSAGE, acquired, context.faction.getTNTBank());
+		context.msg(Localization.COMMAND_TNT_SIPHON_MESSAGE, acquired, context.faction.getTNTBank());
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_TNT_SIPHON_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_TNT_SIPHON_DESCRIPTION;
 	}
 }

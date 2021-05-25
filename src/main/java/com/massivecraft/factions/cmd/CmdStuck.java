@@ -7,8 +7,8 @@ import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.SpiralTask;
-import com.massivecraft.factions.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,8 +38,8 @@ public class CmdStuck extends FCommand {
 
 		if(FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
 			long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
-			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-			context.msg(TL.COMMAND_STUCK_EXISTS, time);
+			String time = DurationFormatUtils.formatDuration(wait, Localization.COMMAND_STUCK_TIMEFORMAT.toString(), true);
+			context.msg(Localization.COMMAND_STUCK_EXISTS, time);
 		} else {
 
 			FPlayerTeleportEvent tpEvent = new FPlayerTeleportEvent(context.fPlayer, null, FPlayerTeleportEvent.PlayerTeleportReason.STUCK);
@@ -49,7 +49,7 @@ public class CmdStuck extends FCommand {
 			}
 
 			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostStuck(), TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
+			if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostStuck(), Localization.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), Localization.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
 				return;
 			}
 
@@ -64,7 +64,7 @@ public class CmdStuck extends FCommand {
 					// check for world difference or radius exceeding
 					final World world = chunk.getWorld();
 					if(world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
-						context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
+						context.msg(Localization.COMMAND_STUCK_OUTSIDE.format(radius));
 						FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
 						FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
 						return;
@@ -89,7 +89,7 @@ public class CmdStuck extends FCommand {
 								int cz = FactionClaim.chunkToBlock((int) chunk.getZ());
 								int y = world.getHighestBlockYAt(cx, cz);
 								Location tp = new Location(world, cx, y, cz);
-								context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
+								context.msg(Localization.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
 								FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
 								FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
 								if(!Essentials.handleTeleport(player, tp)) {
@@ -107,14 +107,14 @@ public class CmdStuck extends FCommand {
 
 			FactionsPlugin.getInstance().getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
 			long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
-			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-			context.msg(TL.COMMAND_STUCK_START, time);
+			String time = DurationFormatUtils.formatDuration(wait, Localization.COMMAND_STUCK_TIMEFORMAT.toString(), true);
+			context.msg(Localization.COMMAND_STUCK_START, time);
 			FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), id);
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_STUCK_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_STUCK_DESCRIPTION;
 	}
 }

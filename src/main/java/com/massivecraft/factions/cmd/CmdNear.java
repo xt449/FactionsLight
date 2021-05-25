@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -43,16 +43,16 @@ public class CmdNear extends FCommand {
 		}
 
 		StringBuilder playerMessageBuilder = new StringBuilder();
-		String playerMessage = TL.COMMAND_NEAR_PLAYER.toString();
+		String playerMessage = Localization.COMMAND_NEAR_PLAYER.toString();
 		for(IFactionPlayer member : nearbyMembers) {
 			playerMessageBuilder.append(parsePlaceholders(context.fPlayer, member, playerMessage));
 		}
 		// Append none text if no players where found
 		if(playerMessageBuilder.toString().isEmpty()) {
-			playerMessageBuilder.append(TL.COMMAND_NEAR_NONE);
+			playerMessageBuilder.append(Localization.COMMAND_NEAR_NONE);
 		}
 
-		context.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
+		context.msg(Localization.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
 	}
 
 	private String parsePlaceholders(IFactionPlayer user, IFactionPlayer target, String string) {
@@ -69,8 +69,8 @@ public class CmdNear extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_NEAR_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_NEAR_DESCRIPTION;
 	}
 
 }

@@ -5,7 +5,7 @@ import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -245,7 +245,7 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WILDERNESS, permissibleAction.getShortDescription());
+				me.msg(Localization.PERM_DENIED_WILDERNESS, permissibleAction.getShortDescription());
 			}
 
 			return false;
@@ -259,7 +259,7 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_SAFEZONE, permissibleAction.getShortDescription());
+				me.msg(Localization.PERM_DENIED_SAFEZONE, permissibleAction.getShortDescription());
 			}
 
 			return false;
@@ -273,7 +273,7 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WARZONE, permissibleAction.getShortDescription());
+				me.msg(Localization.PERM_DENIED_WARZONE, permissibleAction.getShortDescription());
 			}
 
 			return false;
@@ -289,10 +289,10 @@ public class FactionsBlockListener implements Listener {
 		if(!otherFaction.hasAccess(me, permissibleAction)) {
 			if(pain && permissibleAction != PermissibleAction.FROSTWALK) {
 				player.damage(conf.factions().other().getActionDeniedPainAmount());
-				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
+				me.msg(Localization.PERM_DENIED_PAINTERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
 				return true;
 			} else if(!justCheck) {
-				me.msg(TL.PERM_DENIED_TERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
+				me.msg(Localization.PERM_DENIED_TERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
 			}
 			return false;
 		}
@@ -303,12 +303,12 @@ public class FactionsBlockListener implements Listener {
 				player.damage(conf.factions().other().getActionDeniedPainAmount());
 
 				if(!conf.factions().ownedArea().isDenyBuild()) {
-					me.msg(TL.PERM_DENIED_PAINOWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
+					me.msg(Localization.PERM_DENIED_PAINOWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
 				}
 			}
 			if(conf.factions().ownedArea().isDenyBuild()) {
 				if(!justCheck) {
-					me.msg(TL.PERM_DENIED_OWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
+					me.msg(Localization.PERM_DENIED_OWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
 				}
 
 				return false;

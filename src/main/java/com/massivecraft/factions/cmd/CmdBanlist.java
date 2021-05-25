@@ -5,7 +5,7 @@ import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,25 +33,25 @@ public class CmdBanlist extends FCommand {
 		}
 
 		if(target == null) {
-			context.msg(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
+			context.msg(Localization.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
 			return;
 		}
 
 		if(!target.isNormal()) {
-			context.msg(TL.COMMAND_BANLIST_NOFACTION);
+			context.msg(Localization.COMMAND_BANLIST_NOFACTION);
 			return;
 		}
 
 		List<String> lines = new ArrayList<>();
-		lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
+		lines.add(Localization.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
 		int i = 1;
 
 		for(BanInfo info : target.getBannedPlayers()) {
 			IFactionPlayer banned = IFactionPlayerManager.getInstance().getById(info.getBanned());
 			IFactionPlayer banner = IFactionPlayerManager.getInstance().getById(info.getBanner());
-			String timestamp = TL.sdf.format(info.getTime());
+			String timestamp = Localization.sdf.format(info.getTime());
 
-			lines.add(TL.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
+			lines.add(Localization.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
 			i++;
 		}
 
@@ -61,7 +61,7 @@ public class CmdBanlist extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_BANLIST_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_BANLIST_DESCRIPTION;
 	}
 }

@@ -1,6 +1,6 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.OfflinePlayer;
 
 public interface IEconomyParticipator extends IRelationParticipator {
@@ -11,5 +11,5 @@ public interface IEconomyParticipator extends IRelationParticipator {
 
 	void msg(String str, Object... args);
 
-	void msg(TL translation, Object... args);
+	void msg(Localization translation, Object... args);
 }

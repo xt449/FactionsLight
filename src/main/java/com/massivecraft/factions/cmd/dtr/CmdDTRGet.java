@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdDTRGet extends FCommand {
 	public CmdDTRGet() {
@@ -30,17 +30,17 @@ public class CmdDTRGet extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDTR(), TL.COMMAND_DTR_TOSHOW, TL.COMMAND_DTR_FORSHOW)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDTR(), Localization.COMMAND_DTR_TOSHOW, Localization.COMMAND_DTR_FORSHOW)) {
 			return;
 		}
 
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
-		context.msg(TL.COMMAND_DTR_DTR, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()), DTRControl.round(dtr.getMaxDTR(target)));
+		context.msg(Localization.COMMAND_DTR_DTR, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()), DTRControl.round(dtr.getMaxDTR(target)));
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DTR_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DTR_DESCRIPTION;
 	}
 
 }

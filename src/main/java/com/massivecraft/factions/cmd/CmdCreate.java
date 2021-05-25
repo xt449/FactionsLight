@@ -6,8 +6,8 @@ import com.massivecraft.factions.event.FactionAttemptCreateEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -31,12 +31,12 @@ public class CmdCreate extends FCommand {
 		String tag = context.argAsString(0);
 
 		if(context.fPlayer.hasFaction()) {
-			context.msg(TL.COMMAND_CREATE_MUSTLEAVE);
+			context.msg(Localization.COMMAND_CREATE_MUSTLEAVE);
 			return;
 		}
 
 		if(Factions.getInstance().isTagTaken(tag)) {
-			context.msg(TL.COMMAND_CREATE_INUSE);
+			context.msg(Localization.COMMAND_CREATE_INUSE);
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class CmdCreate extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE.toString())) {
+		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), Localization.COMMAND_CREATE_TOCREATE.toString())) {
 			return;
 		}
 
@@ -58,7 +58,7 @@ public class CmdCreate extends FCommand {
 		}
 
 		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), Localization.COMMAND_CREATE_TOCREATE, Localization.COMMAND_CREATE_FORCREATE)) {
 			return;
 		}
 
@@ -66,7 +66,7 @@ public class CmdCreate extends FCommand {
 
 		// TODO: Why would this even happen??? Auto increment clash??
 		if(faction == null) {
-			context.msg(TL.COMMAND_CREATE_ERROR);
+			context.msg(Localization.COMMAND_CREATE_ERROR);
 			return;
 		}
 
@@ -87,19 +87,19 @@ public class CmdCreate extends FCommand {
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 
 		for(IFactionPlayer follower : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.describeTo(follower, true), faction.getTag(follower));
+			follower.msg(Localization.COMMAND_CREATE_CREATED, context.fPlayer.describeTo(follower, true), faction.getTag(follower));
 		}
 
-		context.msg(TL.COMMAND_CREATE_YOUSHOULD, FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context));
+		context.msg(Localization.COMMAND_CREATE_YOUSHOULD, FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context));
 
 		if(FactionsPlugin.getInstance().conf().logging().isFactionCreate()) {
-			FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag);
+			FactionsPlugin.getInstance().log(context.fPlayer.getName() + Localization.COMMAND_CREATE_CREATEDLOG + tag);
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_CREATE_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_CREATE_DESCRIPTION;
 	}
 
 }

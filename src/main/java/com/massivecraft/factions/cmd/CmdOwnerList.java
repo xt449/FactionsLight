@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 
 public class CmdOwnerList extends FCommand {
@@ -28,7 +28,7 @@ public class CmdOwnerList extends FCommand {
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled()) {
-			context.msg(TL.COMMAND_OWNERLIST_DISABLED);
+			context.msg(Localization.COMMAND_OWNERLIST_DISABLED);
 			return;
 		}
 
@@ -36,13 +36,13 @@ public class CmdOwnerList extends FCommand {
 
 		if(IFactionClaimManager.getInstance().getFactionAt(flocation) != context.faction) {
 			if(!hasBypass) {
-				context.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
+				context.msg(Localization.COMMAND_OWNERLIST_WRONGFACTION);
 				return;
 			}
 			//TODO: This code won't ever be called.
 			context.faction = IFactionClaimManager.getInstance().getFactionAt(flocation);
 			if(!context.faction.isNormal()) {
-				context.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
+				context.msg(Localization.COMMAND_OWNERLIST_NOTCLAIMED);
 				return;
 			}
 		}
@@ -50,15 +50,15 @@ public class CmdOwnerList extends FCommand {
 		String owners = context.faction.getOwnerListString(flocation);
 
 		if(owners == null || owners.isEmpty()) {
-			context.msg(TL.COMMAND_OWNERLIST_NONE);
+			context.msg(Localization.COMMAND_OWNERLIST_NONE);
 			return;
 		}
 
-		context.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
+		context.msg(Localization.COMMAND_OWNERLIST_OWNERS, owners);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_OWNERLIST_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_OWNERLIST_DESCRIPTION;
 	}
 }

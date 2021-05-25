@@ -4,7 +4,7 @@ import com.massivecraft.factions.cmd.dtr.CmdDTRGet;
 import com.massivecraft.factions.cmd.dtr.CmdDTRModify;
 import com.massivecraft.factions.cmd.dtr.CmdDTRResetAll;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdDTR extends FCommand {
 	private final CmdDTRGet cmdDTRGet;
@@ -28,7 +28,7 @@ public class CmdDTR extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DTR_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DTR_DESCRIPTION;
 	}
 }

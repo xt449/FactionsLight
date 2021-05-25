@@ -6,7 +6,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 
@@ -36,7 +36,7 @@ public class CmdClaimLine extends FCommand {
 		Integer amount = context.argAsInt(0, 1); // Default to 1
 
 		if(amount > FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit()) {
-			context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit());
+			context.msg(Localization.COMMAND_CLAIMLINE_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit());
 			return;
 		}
 
@@ -54,7 +54,7 @@ public class CmdClaimLine extends FCommand {
 		} else if(direction.equalsIgnoreCase("west")) {
 			blockFace = BlockFace.WEST;
 		} else {
-			context.fPlayer.msg(TL.COMMAND_CLAIMLINE_NOTVALID, direction);
+			context.fPlayer.msg(Localization.COMMAND_CLAIMLINE_NOTVALID, direction);
 			return;
 		}
 
@@ -69,7 +69,7 @@ public class CmdClaimLine extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_CLAIMLINE_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_CLAIMLINE_DESCRIPTION;
 	}
 }

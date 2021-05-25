@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdLogins extends FCommand {
 
@@ -20,12 +20,12 @@ public class CmdLogins extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		boolean monitor = context.fPlayer.isMonitoringJoins();
-		context.msg(TL.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
+		context.msg(Localization.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
 		context.fPlayer.setMonitorJoins(!monitor);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_LOGINS_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_LOGINS_DESCRIPTION;
 	}
 }

@@ -4,7 +4,7 @@ import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdPeaceful extends FCommand {
 
@@ -26,28 +26,28 @@ public class CmdPeaceful extends FCommand {
 
 		String change;
 		if(faction.isPeaceful()) {
-			change = TL.COMMAND_PEACEFUL_REVOKE.toString();
+			change = Localization.COMMAND_PEACEFUL_REVOKE.toString();
 			faction.setPeaceful(false);
 		} else {
-			change = TL.COMMAND_PEACEFUL_GRANT.toString();
+			change = Localization.COMMAND_PEACEFUL_GRANT.toString();
 			faction.setPeaceful(true);
 		}
 
 		// Inform all players
 		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
+			String blame = (context.fPlayer == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
 			if(fplayer.getFaction() == faction) {
-				fplayer.msg(TL.COMMAND_PEACEFUL_YOURS, blame, change);
+				fplayer.msg(Localization.COMMAND_PEACEFUL_YOURS, blame, change);
 			} else {
-				fplayer.msg(TL.COMMAND_PEACEFUL_OTHER, blame, change, faction.getTag(fplayer));
+				fplayer.msg(Localization.COMMAND_PEACEFUL_OTHER, blame, change, faction.getTag(fplayer));
 			}
 		}
 
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_PEACEFUL_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_PEACEFUL_DESCRIPTION;
 	}
 
 }

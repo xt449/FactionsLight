@@ -13,7 +13,7 @@ import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.TextUtil;
 import com.massivecraft.factions.util.VisualizeUtil;
 import org.bukkit.Location;
@@ -107,7 +107,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(!myFaction.isWilderness()) {
 			for(IFactionPlayer other : myFaction.getFPlayersWhereOnline(true)) {
 				if(other != me && other.isMonitoringJoins()) {
-					other.msg(TL.FACTION_LOGIN, me.getName());
+					other.msg(Localization.FACTION_LOGIN, me.getName());
 				}
 			}
 		}
@@ -115,9 +115,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		// If they have the permission, don't let them autoleave. Bad inverted setter :\
 		me.setAutoLeave(!me.getPlayer().hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
 		me.setTakeFallDamage(true);
-		if(plugin.conf().commands().fly().isEnable() && me.isFlying()) { // TODO allow flight to continue
-			me.setFlying(false);
-		}
 
 		if(FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
 			FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
@@ -136,7 +133,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		// if player is waiting for fstuck teleport but leaves, remove
 		if(FactionsPlugin.getInstance().getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
-			IFactionPlayerManager.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
+			IFactionPlayerManager.getInstance().getByPlayer(me.getPlayer()).msg(Localization.COMMAND_STUCK_CANCELLED);
 			FactionsPlugin.getInstance().getStuckMap().remove(me.getPlayer().getUniqueId());
 			FactionsPlugin.getInstance().getTimers().remove(me.getPlayer().getUniqueId());
 		}
@@ -149,7 +146,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(!myFaction.isWilderness()) {
 			for(IFactionPlayer player : myFaction.getFPlayersWhereOnline(true)) {
 				if(player != me && player.isMonitoringJoins()) {
-					player.msg(TL.FACTION_LOGOUT, me.getName());
+					player.msg(Localization.FACTION_LOGOUT, me.getName());
 				}
 			}
 		}
@@ -179,7 +176,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			VisualizeUtil.clear(event.getPlayer());
 			if(me.isWarmingUp()) {
 				me.clearWarmup();
-				me.msg(TL.WARMUPS_CANCELLED);
+				me.msg(Localization.WARMUPS_CANCELLED);
 			}
 		}
 
@@ -200,8 +197,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		me.setLastStoodAt(to);
 
-		boolean canFlyPreClaim = me.canFlyAtLocation();
-
 		if(me.getAutoClaimFor() != null) {
 			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
 		} else if(me.isAutoSafeClaimEnabled()) {
@@ -210,7 +205,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			} else {
 				if(!IFactionClaimManager.getInstance().getFactionAt(to).isSafeZone()) {
 					IFactionClaimManager.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-					me.msg(TL.PLAYER_SAFEAUTO);
+					me.msg(Localization.PLAYER_SAFEAUTO);
 				}
 			}
 		} else if(me.isAutoWarClaimEnabled()) {
@@ -219,7 +214,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			} else {
 				if(!IFactionClaimManager.getInstance().getFactionAt(to).isWarZone()) {
 					IFactionClaimManager.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-					me.msg(TL.PLAYER_WARAUTO);
+					me.msg(Localization.PLAYER_WARAUTO);
 				}
 			}
 		}
@@ -228,22 +223,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		IFaction factionFrom = IFactionClaimManager.getInstance().getFactionAt(from);
 		IFaction factionTo = IFactionClaimManager.getInstance().getFactionAt(to);
 		boolean changedFaction = (factionFrom != factionTo);
-
-		free:
-		if(plugin.conf().commands().fly().isEnable() && !me.isAdminBypassing()) {
-			boolean canFly = me.canFlyInFactionTerritory(factionTo);
-			if(!changedFaction) {
-				if(canFly && !canFlyPreClaim && me.isFlying() && plugin.conf().commands().fly().isDisableFlightDuringAutoclaim()) {
-					me.setFlying(false);
-				}
-				break free;
-			}
-			if(me.isFlying() && !canFly) {
-				me.setFlying(false);
-			} else if(me.isAutoFlying() && !me.isFlying() && canFly) {
-				me.setFlying(true);
-			}
-		}
 
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
@@ -257,15 +236,15 @@ public class FactionsPlayerListener extends AbstractListener {
 			if(changedFaction) {
 				me.sendFactionHereMessage(factionFrom);
 				if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageOnBorder() && myFaction == factionTo && !ownersTo.isEmpty()) {
-					me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
+					me.sendMessage(Localization.GENERIC_OWNERS.format(ownersTo));
 				}
 			} else if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageInsideTerritory() && myFaction == factionTo && !myFaction.isWilderness()) {
 				String ownersFrom = myFaction.getOwnerListString(from);
 				if(FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageByChunk() || !ownersFrom.equals(ownersTo)) {
 					if(!ownersTo.isEmpty()) {
-						me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
-					} else if(!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {
-						me.sendMessage(TL.GENERIC_PUBLICLAND.toString());
+						me.sendMessage(Localization.GENERIC_OWNERS.format(ownersTo));
+					} else if(!Localization.GENERIC_PUBLICLAND.toString().isEmpty()) {
+						me.sendMessage(Localization.GENERIC_PUBLICLAND.toString());
 					}
 				}
 			}
@@ -343,7 +322,7 @@ public class FactionsPlayerListener extends AbstractListener {
 				int count = attempt.increment();
 				if(count >= 10) {
 					IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
-					me.msg(TL.PLAYER_OUCH);
+					me.msg(Localization.PLAYER_OUCH);
 					player.damage(NumberConversions.floor((double) count / 10));
 				}
 			}
@@ -436,7 +415,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
+				me.msg(Localization.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
 			}
 
 			return false;
@@ -446,7 +425,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_SAFEZONE, TextUtil.getMaterialName(material));
+				me.msg(Localization.PLAYER_USE_SAFEZONE, TextUtil.getMaterialName(material));
 			}
 
 			return false;
@@ -456,7 +435,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_WARZONE, TextUtil.getMaterialName(material));
+				me.msg(Localization.PLAYER_USE_WARZONE, TextUtil.getMaterialName(material));
 			}
 
 			return false;
@@ -464,7 +443,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(!otherFaction.hasAccess(me, PermissibleAction.ITEM)) {
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_TERRITORY, TextUtil.getMaterialName(material), otherFaction.getTag(me.getFaction()));
+				me.msg(Localization.PLAYER_USE_TERRITORY, TextUtil.getMaterialName(material), otherFaction.getTag(me.getFaction()));
 			}
 			return false;
 		}
@@ -472,7 +451,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		// Also cancel if player doesn't have ownership rights for this claim
 		if(facConf.ownedArea().isEnabled() && facConf.ownedArea().isDenyUsage() && !otherFaction.playerHasOwnershipRights(me, loc)) {
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+				me.msg(Localization.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
 			}
 
 			return false;
@@ -507,9 +486,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		boolean isEnabled = plugin.worldUtil().isEnabled(event.getTo().getWorld());
 		if(!isEnabled) {
 			FScoreboard.remove(me, event.getPlayer());
-			if(me.isFlying()) {
-				me.setFlying(false);
-			}
 			return;
 		}
 		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
@@ -519,17 +495,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		FactionClaim to = new FactionClaim(event.getTo());
 		me.setLastStoodAt(to);
-
-		// Check the location they're teleporting to and check if they can fly there.
-		if(plugin.conf().commands().fly().isEnable() && !me.isAdminBypassing()) {
-			boolean canFly = me.canFlyAtLocation(to);
-			if(me.isFlying() && !canFly) {
-				me.setFlying(false, false);
-			} else if(me.isAutoFlying() && !me.isFlying() && canFly) {
-				me.setFlying(true);
-			}
-		}
-
 	}
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),
@@ -590,34 +555,34 @@ public class FactionsPlayerListener extends AbstractListener {
 				!protection.getPermanentFactionMemberDenyCommands().isEmpty() &&
 				me.getFaction().isPermanent() &&
 				isCommandInSet(fullCmd, shortCmd, protection.getPermanentFactionMemberDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_PERMANENT, fullCmd);
 			return true;
 		}
 
 		IFaction at = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(player.getLocation()));
 		if(at.isWilderness() && !protection.getWildernessDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getWildernessDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_WILDERNESS, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_WILDERNESS, fullCmd);
 			return true;
 		}
 
 		Relation rel = at.getRelationTo(me);
 		if(at.isNormal() && rel.isAlly() && !protection.getTerritoryAllyDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryAllyDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_ALLY, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_ALLY, fullCmd);
 			return true;
 		}
 
 		if(at.isNormal() && rel.isNeutral() && !protection.getTerritoryNeutralDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryNeutralDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_NEUTRAL, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_NEUTRAL, fullCmd);
 			return true;
 		}
 
 		if(at.isNormal() && rel.isEnemy() && !protection.getTerritoryEnemyDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryEnemyDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_ENEMY, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_ENEMY, fullCmd);
 			return true;
 		}
 
 		if(at.isWarZone() && !protection.getWarzoneDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getWarzoneDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_WARZONE, fullCmd);
+			me.msg(Localization.PLAYER_COMMAND_WARZONE, fullCmd);
 			return true;
 		}
 

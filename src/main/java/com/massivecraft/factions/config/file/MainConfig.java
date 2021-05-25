@@ -4,7 +4,7 @@ import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.config.annotation.WipeOnReload;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.material.MaterialDb;
+import com.massivecraft.factions.util.material.MaterialHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -132,104 +132,6 @@ public class MainConfig {
 
 			public boolean isAllowKickInEnemyTerritory() {
 				return allowKickInEnemyTerritory;
-			}
-		}
-
-		public class Fly {
-			public class Particles {
-				@Comment("Speed of the particles, can be decimal value")
-				private double speed = 0.02;
-				@Comment("Amount spawned")
-				private int amount = 20;
-				@Comment("How often should we spawn these particles?\n" +
-						"0 disables this completely")
-				private double spawnRate = 0.2;
-
-				public double getSpeed() {
-					return speed;
-				}
-
-				public int getAmount() {
-					return amount;
-				}
-
-				public double getSpawnRate() {
-					return spawnRate;
-				}
-			}
-
-			@Comment("Warmup seconds before command executes. Set to 0 for no warmup.")
-			private int delay = 0;
-			@Comment("True to enable the fly command, false to disable")
-			private boolean enable = true;
-			@Comment("If a player leaves fly (out of territory or took damage)\n" +
-					"how long (in seconds) should they not take fall damage for?\n" +
-					"Set to 0 to have them always take fall damage.")
-			private int fallDamageCooldown = 3;
-			@Comment("From how far away a player can disable another's flight by being enemy\n" +
-					"Set to 0 if wanted disable\n" +
-					"Note: Will produce lag at higher numbers")
-			private int enemyRadius = 7;
-			@Comment("How frequently to check enemy radius, in seconds. Set to 0 to disable checking.")
-			private int radiusCheck = 1;
-			@Comment("Should we disable flight if the player has suffered generic damage")
-			private boolean disableOnGenericDamage = false;
-			@Comment("Should flight be disabled if the player has hurt mobs?")
-			private boolean disableOnHurtingMobs = true;
-			@Comment("Should flight be disabled if the player has hurt players?")
-			private boolean disableOnHurtingPlayers = true;
-			@Comment("Should players lose flight status while autoclaiming into territory they cannot fly in?")
-			private boolean disableFlightDuringAutoclaim = false;
-			@Comment("Should flight be disabled if the player is hurt by mobs?")
-			private boolean disableOnHurtByMobs = true;
-
-			@Comment("Trails show below the players foot when flying, faction.fly.trails\n" +
-					"Players can enable them with /f trail on/off\n" +
-					"Players can also set which effect to show /f trail effect <particle> only if they have faction.fly.trails.<particle>")
-			private Particles particles = new Particles();
-
-			public int getDelay() {
-				return delay;
-			}
-
-			public boolean isEnable() {
-				return enable;
-			}
-
-			public int getFallDamageCooldown() {
-				return fallDamageCooldown;
-			}
-
-			public int getEnemyRadius() {
-				return enemyRadius;
-			}
-
-			public int getRadiusCheck() {
-				return radiusCheck;
-			}
-
-			public boolean isDisableOnGenericDamage() {
-				return disableOnGenericDamage;
-			}
-
-			public boolean isDisableOnHurtingMobs() {
-				return disableOnHurtingMobs;
-			}
-
-			public boolean isDisableOnHurtingPlayers() {
-				return disableOnHurtingPlayers;
-			}
-
-			public boolean isDisableFlightDuringAutoclaim() {
-				return disableFlightDuringAutoclaim;
-			}
-
-			public boolean isDisableOnHurtByMobs() {
-				return disableOnHurtByMobs;
-			}
-
-			public Particles particles() {
-				return particles;
 			}
 		}
 
@@ -522,7 +424,6 @@ public class MainConfig {
 		}
 
 		private Kick kick = new Kick();
-		private Fly fly = new Fly();
 		private Help help = new Help();
 		private Home home = new Home();
 		private ListCmd list = new ListCmd();
@@ -539,10 +440,6 @@ public class MainConfig {
 
 		public Kick kick() {
 			return kick;
-		}
-
-		public Fly fly() {
-			return fly;
 		}
 
 		public Help help() {
@@ -1092,18 +989,19 @@ public class MainConfig {
 			private boolean peacefulTerritoryDisableBoom = false;
 			private boolean permanentFactionsDisableLeaderPromotion = false;
 			@Comment("Material names of things whose placement is ignored in faction territory")
-			private Set<String> ignoreBuildMaterials = new HashSet<String>() {
-				{
-					this.add("exampleMaterial");
-				}
-			};
+			private Set<String> ignoreBuildMaterials = new HashSet<>();
+
+			{
+				ignoreBuildMaterials.add("AIR");
+			}
+
 			@WipeOnReload
 			private transient Set<Material> ignoreBuildMaterialsMat;
 
 			public Set<Material> getIgnoreBuildMaterials() {
 				if(ignoreBuildMaterialsMat == null) {
 					ignoreBuildMaterialsMat = new HashSet<>();
-					ignoreBuildMaterials.forEach(m -> ignoreBuildMaterialsMat.add(MaterialDb.get(m)));
+					ignoreBuildMaterials.forEach(m -> ignoreBuildMaterialsMat.add(MaterialHelper.get(m)));
 					ignoreBuildMaterialsMat.remove(Material.AIR);
 					ignoreBuildMaterials = Collections.unmodifiableSet(ignoreBuildMaterials);
 				}
@@ -1524,7 +1422,7 @@ public class MainConfig {
 			public Set<Material> getTerritoryDenyUsageMaterials() {
 				if(territoryDenyUsageMaterialsMat == null) {
 					territoryDenyUsageMaterialsMat = new HashSet<>();
-					territoryDenyUsageMaterials.forEach(m -> territoryDenyUsageMaterialsMat.add(MaterialDb.get(m)));
+					territoryDenyUsageMaterials.forEach(m -> territoryDenyUsageMaterialsMat.add(MaterialHelper.get(m)));
 					territoryDenyUsageMaterialsMat.remove(Material.AIR);
 					territoryDenyUsageMaterialsMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsMat);
 				}
@@ -1534,7 +1432,7 @@ public class MainConfig {
 			public Set<Material> getTerritoryDenyUsageMaterialsWhenOffline() {
 				if(territoryDenyUsageMaterialsWhenOfflineMat == null) {
 					territoryDenyUsageMaterialsWhenOfflineMat = new HashSet<>();
-					territoryDenyUsageMaterialsWhenOffline.forEach(m -> territoryDenyUsageMaterialsWhenOfflineMat.add(MaterialDb.get(m)));
+					territoryDenyUsageMaterialsWhenOffline.forEach(m -> territoryDenyUsageMaterialsWhenOfflineMat.add(MaterialHelper.get(m)));
 					territoryDenyUsageMaterialsWhenOfflineMat.remove(Material.AIR);
 					territoryDenyUsageMaterialsWhenOfflineMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsWhenOfflineMat);
 				}
@@ -1544,7 +1442,7 @@ public class MainConfig {
 			public Set<Material> getContainerExceptions() {
 				if(containerExceptionsMat == null) {
 					containerExceptionsMat = new HashSet<>();
-					containerExceptions.forEach(m -> containerExceptionsMat.add(MaterialDb.get(m)));
+					containerExceptions.forEach(m -> containerExceptionsMat.add(MaterialHelper.get(m)));
 					containerExceptionsMat.remove(Material.AIR);
 					containerExceptionsMat = Collections.unmodifiableSet(containerExceptionsMat);
 				}
@@ -1554,7 +1452,7 @@ public class MainConfig {
 			public Set<Material> getBreakExceptions() {
 				if(breakExceptionsMat == null) {
 					breakExceptionsMat = new HashSet<>();
-					breakExceptions.forEach(m -> breakExceptionsMat.add(MaterialDb.get(m)));
+					breakExceptions.forEach(m -> breakExceptionsMat.add(MaterialHelper.get(m)));
 					breakExceptionsMat.remove(Material.AIR);
 					breakExceptionsMat = Collections.unmodifiableSet(breakExceptionsMat);
 				}

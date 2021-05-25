@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdChatSpy extends FCommand {
 
@@ -23,16 +23,16 @@ public class CmdChatSpy extends FCommand {
 		context.fPlayer.setSpyingChat(context.argAsBool(0, !context.fPlayer.isSpyingChat()));
 
 		if(context.fPlayer.isSpyingChat()) {
-			context.fPlayer.msg(TL.COMMAND_CHATSPY_ENABLE);
-			FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_ENABLELOG);
+			context.fPlayer.msg(Localization.COMMAND_CHATSPY_ENABLE);
+			FactionsPlugin.getInstance().log(context.fPlayer.getName() + Localization.COMMAND_CHATSPY_ENABLELOG);
 		} else {
-			context.fPlayer.msg(TL.COMMAND_CHATSPY_DISABLE);
-			FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_DISABLELOG);
+			context.fPlayer.msg(Localization.COMMAND_CHATSPY_DISABLE);
+			FactionsPlugin.getInstance().log(context.fPlayer.getName() + Localization.COMMAND_CHATSPY_DISABLELOG);
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_CHATSPY_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_CHATSPY_DESCRIPTION;
 	}
 }

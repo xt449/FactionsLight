@@ -5,8 +5,8 @@ import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class CmdTag extends FCommand {
 
 		// TODO does not first shouldCancel cover selfcase?
 		if(Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(context.faction.getComparisonTag())) {
-			context.msg(TL.COMMAND_TAG_TAKEN);
+			context.msg(Localization.COMMAND_TAG_TAKEN);
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class CmdTag extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE.toString())) {
+		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), Localization.COMMAND_TAG_TOCHANGE.toString())) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ public class CmdTag extends FCommand {
 		}
 
 		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), Localization.COMMAND_TAG_TOCHANGE, Localization.COMMAND_TAG_FORCHANGE)) {
 			return;
 		}
 
@@ -64,14 +64,14 @@ public class CmdTag extends FCommand {
 		// Inform
 		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			if(fplayer.getFactionId().equals(context.faction.getId())) {
-				fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
+				fplayer.msg(Localization.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
 				continue;
 			}
 
 			// Broadcast the tag change (if applicable)
 			if(FactionsPlugin.getInstance().conf().factions().chat().isBroadcastTagChanges()) {
 				IFaction faction = fplayer.getFaction();
-				fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
+				fplayer.msg(Localization.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
 			}
 		}
 
@@ -79,8 +79,8 @@ public class CmdTag extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_TAG_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_TAG_DESCRIPTION;
 	}
 
 }

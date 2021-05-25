@@ -6,7 +6,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.ChatColor;
 
 
@@ -35,13 +35,13 @@ public class CmdMoneyDeposit extends MoneyCommand {
 		boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
 
 		if(success && FactionsPlugin.getInstance().conf().logging().isMoneyTransactions()) {
-			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(Localization.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MONEYDEPOSIT_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_MONEYDEPOSIT_DESCRIPTION;
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.util.particle.ParticleColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -97,7 +96,7 @@ public class SeeChunkUtil extends BukkitRunnable {
 					FactionsPlugin.getInstance().getParticleProvider().playerSpawn(player, effect, loc, color);
 				}
 			} else {
-				Material mat = blockY % 5 == 0 ? MaterialDb.get("REDSTONE_LAMP") : MaterialDb.get("GLASS_PANE");
+				Material mat = blockY % 5 == 0 ? Material.REDSTONE_LAMP : Material.GLASS_PANE;
 				VisualizeUtil.addLocation(player, loc, mat);
 			}
 		}

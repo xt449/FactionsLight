@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -95,16 +95,9 @@ public class FactionsEntityListener extends AbstractListener {
 
 			if(playerHurt) {
 				cancelFStuckTeleport((Player) damagee);
-				if((damager instanceof Player) || plugin.conf().commands().fly().isDisableOnHurtByMobs()) {
-					cancelFFly((Player) damagee);
-				}
 			}
 			if(damager instanceof Player) {
 				cancelFStuckTeleport((Player) damager);
-				if((playerHurt && plugin.conf().commands().fly().isDisableOnHurtingPlayers()) ||
-						(!playerHurt && plugin.conf().commands().fly().isDisableOnHurtingMobs())) {
-					cancelFFly((Player) damager);
-				}
 			}
 		}
 
@@ -113,26 +106,9 @@ public class FactionsEntityListener extends AbstractListener {
 			Player player = (Player) damagee;
 			IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 			cancelFStuckTeleport(player);
-			if(plugin.conf().commands().fly().isDisableOnGenericDamage()) {
-				cancelFFly(player);
-			}
 			if(me.isWarmingUp()) {
 				me.clearWarmup();
-				me.msg(TL.WARMUPS_CANCELLED);
-			}
-		}
-	}
-
-	private void cancelFFly(Player player) {
-		if(player == null) {
-			return;
-		}
-
-		IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
-		if(fPlayer.isFlying()) {
-			fPlayer.setFlying(false, true);
-			if(fPlayer.isAutoFlying()) {
-				fPlayer.setAutoFlying(false);
+				me.msg(Localization.WARMUPS_CANCELLED);
 			}
 		}
 	}
@@ -143,7 +119,7 @@ public class FactionsEntityListener extends AbstractListener {
 		}
 		UUID uuid = player.getUniqueId();
 		if(FactionsPlugin.getInstance().getStuckMap().containsKey(uuid)) {
-			IFactionPlayerManager.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
+			IFactionPlayerManager.getInstance().getByPlayer(player).msg(Localization.COMMAND_STUCK_CANCELLED);
 			FactionsPlugin.getInstance().getStuckMap().remove(uuid);
 		}
 	}
@@ -268,13 +244,13 @@ public class FactionsEntityListener extends AbstractListener {
 		if(!(damagee instanceof Player)) {
 			if(FactionsPlugin.getInstance().conf().factions().protection().isSafeZoneBlockAllEntityDamage() && defLocFaction.isSafeZone()) {
 				if(damager instanceof Player && notify) {
-					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_SAFEZONE.format(TL.GENERIC_ATTACK.toString()));
+					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(Localization.PERM_DENIED_SAFEZONE.format(Localization.GENERIC_ATTACK.toString()));
 				}
 				return false;
 			}
 			if(FactionsPlugin.getInstance().conf().factions().protection().isPeacefulBlockAllEntityDamage() && defLocFaction.isPeaceful()) {
 				if(damager instanceof Player && notify) {
-					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_TERRITORY.format(TL.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
+					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(Localization.PERM_DENIED_TERRITORY.format(Localization.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
 				}
 				return false;
 			}
@@ -282,7 +258,7 @@ public class FactionsEntityListener extends AbstractListener {
 				IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer((Player) damager);
 				if(!defLocFaction.hasAccess(fPlayer, PermissibleAction.DESTROY)) {
 					if(notify) {
-						fPlayer.msg(TL.PERM_DENIED_TERRITORY.format(TL.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
+						fPlayer.msg(Localization.PERM_DENIED_TERRITORY.format(Localization.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
 					}
 					return false;
 				}
@@ -307,7 +283,7 @@ public class FactionsEntityListener extends AbstractListener {
 			if(damager instanceof Player) {
 				if(notify) {
 					IFactionPlayer attacker = IFactionPlayerManager.getInstance().getByPlayer((Player) damager);
-					attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
+					attacker.msg(Localization.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? Localization.REGION_SAFEZONE.toString() : Localization.REGION_PEACEFUL.toString()));
 				}
 				return false;
 			}
@@ -331,7 +307,7 @@ public class FactionsEntityListener extends AbstractListener {
 
 		if(attacker.hasLoginPvpDisabled()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_PVP_LOGIN, facConf.pvp().getNoPVPDamageToOthersForXSecondsAfterLogin());
+				attacker.msg(Localization.PLAYER_PVP_LOGIN, facConf.pvp().getNoPVPDamageToOthersForXSecondsAfterLogin());
 			}
 			return false;
 		}
@@ -341,7 +317,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if(locFaction.noPvPInTerritory()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_CANTHURT, (locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
+				attacker.msg(Localization.PLAYER_CANTHURT, (locFaction.isSafeZone() ? Localization.REGION_SAFEZONE.toString() : Localization.REGION_PEACEFUL.toString()));
 			}
 			return false;
 		}
@@ -359,7 +335,7 @@ public class FactionsEntityListener extends AbstractListener {
 
 		if(attackFaction.isWilderness() && facConf.pvp().isDisablePVPForFactionlessPlayers()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_PVP_REQUIREFACTION);
+				attacker.msg(Localization.PLAYER_PVP_REQUIREFACTION);
 			}
 			return false;
 		} else if(defendFaction.isWilderness()) {
@@ -368,7 +344,7 @@ public class FactionsEntityListener extends AbstractListener {
 				return true;
 			} else if(facConf.pvp().isDisablePVPForFactionlessPlayers()) {
 				if(notify) {
-					attacker.msg(TL.PLAYER_PVP_FACTIONLESS);
+					attacker.msg(Localization.PLAYER_PVP_FACTIONLESS);
 				}
 				return false;
 			}
@@ -377,12 +353,12 @@ public class FactionsEntityListener extends AbstractListener {
 		if(!defLocFaction.isWarZone() || facConf.pvp().isDisablePeacefulPVPInWarzone()) {
 			if(defendFaction.isPeaceful()) {
 				if(notify) {
-					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
+					attacker.msg(Localization.PLAYER_PVP_PEACEFUL);
 				}
 				return false;
 			} else if(attackFaction.isPeaceful()) {
 				if(notify) {
-					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
+					attacker.msg(Localization.PLAYER_PVP_PEACEFUL);
 				}
 				return false;
 			}
@@ -393,7 +369,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can not hurt neutral factions
 		if(facConf.pvp().isDisablePVPBetweenNeutralFactions() && relation.isNeutral()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_PVP_NEUTRAL);
+				attacker.msg(Localization.PLAYER_PVP_NEUTRAL);
 			}
 			return false;
 		}
@@ -406,7 +382,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can never hurt faction members or allies
 		if(relation.isMember() || relation.isAlly() || relation.isTruce()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
+				attacker.msg(Localization.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
 			}
 			return false;
 		}
@@ -416,8 +392,8 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can not hurt neutrals in their own territory.
 		if(ownTerritory && relation.isNeutral()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
-				defender.msg(TL.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
+				attacker.msg(Localization.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
+				defender.msg(Localization.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
 			}
 			return false;
 		}

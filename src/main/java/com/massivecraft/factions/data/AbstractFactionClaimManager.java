@@ -6,7 +6,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -60,12 +60,9 @@ public abstract class AbstractFactionClaimManager extends IFactionClaimManager {
 			Collection<FactionClaim> factionClaims = factionToLandMap.removeAll(factionId);
 			for(IFactionPlayer fPlayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 				if(factionClaims.contains(fPlayer.getLastStoodAt())) {
-					if(FactionsPlugin.getInstance().conf().commands().fly().isEnable() && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
-						fPlayer.setFlying(false);
-					}
 					if(fPlayer.isWarmingUp()) {
 						fPlayer.clearWarmup();
-						fPlayer.msg(TL.WARMUPS_CANCELLED);
+						fPlayer.msg(Localization.WARMUPS_CANCELLED);
 					}
 				}
 			}
@@ -114,12 +111,9 @@ public abstract class AbstractFactionClaimManager extends IFactionClaimManager {
 		for(Entity entity : flocation.getChunk().getEntities()) {
 			if(entity instanceof Player) {
 				IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer((Player) entity);
-				if(!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
-					fPlayer.setFlying(false);
-				}
 				if(fPlayer.isWarmingUp()) {
 					fPlayer.clearWarmup();
-					fPlayer.msg(TL.WARMUPS_CANCELLED);
+					fPlayer.msg(Localization.WARMUPS_CANCELLED);
 				}
 			}
 		}
@@ -310,7 +304,7 @@ public abstract class AbstractFactionClaimManager extends IFactionClaimManager {
 				if(dx == halfWidth && dz == halfHeight) {
 					row.then("+").color(ChatColor.AQUA);
 					if(false) {
-						row.tooltip(TL.CLAIM_YOUAREHERE.toString());
+						row.tooltip(Localization.CLAIM_YOUAREHERE.toString());
 					}
 				} else {
 					FactionClaim flocationHere = topLeft.getRelative(dx, dz);

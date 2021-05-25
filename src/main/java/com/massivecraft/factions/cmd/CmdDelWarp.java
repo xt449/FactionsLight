@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdDelWarp extends FCommand {
 
@@ -30,18 +30,18 @@ public class CmdDelWarp extends FCommand {
 				return;
 			}
 			context.faction.removeWarp(warp);
-			context.msg(TL.COMMAND_DELFWARP_DELETED, warp);
+			context.msg(Localization.COMMAND_DELFWARP_DELETED, warp);
 		} else {
-			context.msg(TL.COMMAND_DELFWARP_INVALID, warp);
+			context.msg(Localization.COMMAND_DELFWARP_INVALID, warp);
 		}
 	}
 
 	private boolean transact(IFactionPlayer player, CommandContext context) {
-		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDelWarp(), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
+		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDelWarp(), Localization.COMMAND_DELFWARP_TODELETE.toString(), Localization.COMMAND_DELFWARP_FORDELETE.toString());
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DELFWARP_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DELFWARP_DESCRIPTION;
 	}
 }

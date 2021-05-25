@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdModifyPower extends FCommand {
 
@@ -33,11 +33,11 @@ public class CmdModifyPower extends FCommand {
 
 		player.alterPower(number);
 		int newPower = player.getPowerRounded(); // int so we don't have super long doubles.
-		context.msg(TL.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
+		context.msg(Localization.COMMAND_MODIFYPOWER_ADDED, number, player.getName(), newPower);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MODIFYPOWER_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_MODIFYPOWER_DESCRIPTION;
 	}
 }

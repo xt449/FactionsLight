@@ -6,8 +6,8 @@ import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.util.TL;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -93,7 +93,7 @@ public class Econ {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		to.msg(TL.ECON_BALANCE, about.describeTo(to, true), Econ.moneyString(getBalance(about)));
+		to.msg(Localization.ECON_BALANCE, about.describeTo(to, true), Econ.moneyString(getBalance(about)));
 	}
 
 	public static void sendBalanceInfo(CommandSender to, IFaction about) {
@@ -101,7 +101,7 @@ public class Econ {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		to.sendMessage(ChatColor.stripColor(String.format(TL.ECON_BALANCE.toString(), about.getTag(), Econ.moneyString(getBalance(about)))));
+		to.sendMessage(ChatColor.stripColor(String.format(Localization.ECON_BALANCE.toString(), about.getTag(), Econ.moneyString(getBalance(about)))));
 	}
 
 	public static boolean canIControlYou(IEconomyParticipator i, IEconomyParticipator you) {
@@ -141,7 +141,7 @@ public class Econ {
 		}
 
 		// Otherwise you may not! ;,,;
-		i.msg(TL.ECON_NOPERM, i.describeTo(i, true), you.describeTo(i));
+		i.msg(Localization.ECON_NOPERM, i.describeTo(i, true), you.describeTo(i));
 		return false;
 	}
 
@@ -151,7 +151,7 @@ public class Econ {
 
 	public static boolean transferMoney(IEconomyParticipator invoker, IEconomyParticipator from, IEconomyParticipator to, double amount, boolean notify) {
 		if(!shouldBeUsed()) {
-			invoker.msg(TL.ECON_DISABLED);
+			invoker.msg(Localization.ECON_DISABLED);
 			return false;
 		}
 
@@ -176,7 +176,7 @@ public class Econ {
 		if(!has(fromAcc, amount)) {
 			// There was not enough money to pay
 			if(invoker != null && notify) {
-				invoker.msg(TL.ECON_CANTAFFORD_TRANSFER, from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
+				invoker.msg(Localization.ECON_CANTAFFORD_TRANSFER, from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
 			}
 
 			return false;
@@ -184,7 +184,7 @@ public class Econ {
 
 		// Check if the new balance is over Essential's money cap.
 		if(Essentials.isOverBalCap(to, getBalance(toAcc) + amount)) {
-			invoker.msg(TL.ECON_OVER_BAL_CAP, amount);
+			invoker.msg(Localization.ECON_OVER_BAL_CAP, amount);
 			return false;
 		}
 
@@ -204,7 +204,7 @@ public class Econ {
 
 		// if we get here something with the transaction failed
 		if(notify) {
-			invoker.msg(TL.ECON_TRANSFER_UNABLE, moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
+			invoker.msg(Localization.ECON_TRANSFER_UNABLE, moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
 		}
 
 		return false;
@@ -232,19 +232,19 @@ public class Econ {
 
 		if(invoker == null) {
 			for(IFactionPlayer recipient : recipients) {
-				recipient.msg(TL.ECON_TRANSFER_NOINVOKER, moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+				recipient.msg(Localization.ECON_TRANSFER_NOINVOKER, moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		} else if(invoker == from) {
 			for(IFactionPlayer recipient : recipients) {
-				recipient.msg(TL.ECON_TRANSFER_GAVE, from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
+				recipient.msg(Localization.ECON_TRANSFER_GAVE, from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
 			}
 		} else if(invoker == to) {
 			for(IFactionPlayer recipient : recipients) {
-				recipient.msg(TL.ECON_TRANSFER_TOOK, to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
+				recipient.msg(Localization.ECON_TRANSFER_TOOK, to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
 			}
 		} else {
 			for(IFactionPlayer recipient : recipients) {
-				recipient.msg(TL.ECON_TRANSFER_TRANSFER, invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
+				recipient.msg(Localization.ECON_TRANSFER_TRANSFER, invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 	}
@@ -263,7 +263,7 @@ public class Econ {
 
 		if(!affordable) {
 			if(toDoThis != null && !toDoThis.isEmpty()) {
-				ep.msg(TL.ECON_CANTAFFORD_AMOUNT, ep.describeTo(ep, true), moneyString(delta), toDoThis);
+				ep.msg(Localization.ECON_CANTAFFORD_AMOUNT, ep.describeTo(ep, true), moneyString(delta), toDoThis);
 			}
 			return false;
 		}
@@ -291,13 +291,13 @@ public class Econ {
 			if(deposit(acc, delta)) {
 				modifyUniverseMoney(-delta);
 				if(forDoingThis != null && !forDoingThis.isEmpty()) {
-					ep.msg(TL.ECON_GAIN_SUCCESS, You, moneyString(delta), forDoingThis);
+					ep.msg(Localization.ECON_GAIN_SUCCESS, You, moneyString(delta), forDoingThis);
 				}
 				return true;
 			} else {
 				// transfer to account failed
 				if(forDoingThis != null && !forDoingThis.isEmpty()) {
-					ep.msg(TL.ECON_GAIN_FAILURE, You, moneyString(delta), forDoingThis);
+					ep.msg(Localization.ECON_GAIN_FAILURE, You, moneyString(delta), forDoingThis);
 				}
 				return false;
 			}
@@ -309,13 +309,13 @@ public class Econ {
 				// There is enough money to pay
 				modifyUniverseMoney(-delta);
 				if(forDoingThis != null && !forDoingThis.isEmpty()) {
-					ep.msg(TL.ECON_LOST_SUCCESS, You, moneyString(-delta), forDoingThis);
+					ep.msg(Localization.ECON_LOST_SUCCESS, You, moneyString(-delta), forDoingThis);
 				}
 				return true;
 			} else {
 				// There was not enough money to pay
 				if(toDoThis != null && !toDoThis.isEmpty()) {
-					ep.msg(TL.ECON_LOST_FAILURE, You, moneyString(-delta), toDoThis);
+					ep.msg(Localization.ECON_LOST_FAILURE, You, moneyString(-delta), toDoThis);
 				}
 				return false;
 			}
@@ -402,7 +402,7 @@ public class Econ {
 		return econ.has(checkStatus(op), getWorld(op), amount);
 	}
 
-	private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
+	private static final DecimalFormat format = new DecimalFormat(Localization.ECON_FORMAT.toString());
 
 	@Deprecated
 	public static String getFriendlyBalance(UUID uuid) {

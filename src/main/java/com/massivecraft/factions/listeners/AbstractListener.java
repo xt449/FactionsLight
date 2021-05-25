@@ -5,7 +5,7 @@ import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -49,19 +49,19 @@ public abstract class AbstractListener implements Listener {
 			if(!protection.isWildernessDenyUsage() || protection.getWorldsNoWildernessProtection().contains(location.getWorld().getName())) {
 				return true; // This is not faction territory. Use whatever you like here.
 			}
-			me.msg(TL.PLAYER_USE_WILDERNESS, "this");
+			me.msg(Localization.PLAYER_USE_WILDERNESS, "this");
 			return false;
 		} else if(otherFaction.isSafeZone()) {
 			if(!protection.isSafeZoneDenyUsage() || Permission.MANAGE_SAFE_ZONE.has(player)) {
 				return true;
 			}
-			me.msg(TL.PLAYER_USE_SAFEZONE, "this");
+			me.msg(Localization.PLAYER_USE_SAFEZONE, "this");
 			return false;
 		} else if(otherFaction.isWarZone()) {
 			if(!protection.isWarZoneDenyUsage() || Permission.MANAGE_WAR_ZONE.has(player)) {
 				return true;
 			}
-			me.msg(TL.PLAYER_USE_WARZONE, "this");
+			me.msg(Localization.PLAYER_USE_WARZONE, "this");
 
 			return false;
 		}
@@ -70,13 +70,13 @@ public abstract class AbstractListener implements Listener {
 
 		// Cancel if we are not in our own territory
 		if(!access) {
-			me.msg(TL.PLAYER_USE_TERRITORY, "this", otherFaction.getTag(me.getFaction()));
+			me.msg(Localization.PLAYER_USE_TERRITORY, "this", otherFaction.getTag(me.getFaction()));
 			return false;
 		}
 
 		// Also cancel if player doesn't have ownership rights for this claim
 		if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isDenyUsage() && !otherFaction.playerHasOwnershipRights(me, loc)) {
-			me.msg(TL.PLAYER_USE_OWNED, "this", otherFaction.getOwnerListString(loc));
+			me.msg(Localization.PLAYER_USE_OWNED, "this", otherFaction.getOwnerListString(loc));
 			return false;
 		}
 
@@ -302,7 +302,7 @@ public abstract class AbstractListener implements Listener {
 		// F PERM check runs through before other checks.
 		if(!otherFaction.hasAccess(me, action)) {
 			if(action != PermissibleAction.PLATE) {
-				me.msg(TL.GENERIC_NOPERMISSION, action);
+				me.msg(Localization.GENERIC_NOPERMISSION, action);
 			}
 			return false;
 		}
@@ -323,7 +323,7 @@ public abstract class AbstractListener implements Listener {
 		// Also cancel if player doesn't have ownership rights for this claim
 		if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isProtectMaterials() && !otherFaction.playerHasOwnershipRights(me, loc)) {
 			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+				me.msg(Localization.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
 			}
 
 			return false;

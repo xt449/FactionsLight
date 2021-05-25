@@ -11,7 +11,7 @@ import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -46,7 +46,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
-	public CmdFly cmdFly = new CmdFly();
 	public CmdHelp cmdHelp = new CmdHelp();
 	public CmdHome cmdHome = new CmdHome();
 	public CmdInvite cmdInvite = new CmdInvite();
@@ -111,7 +110,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public CmdBanlist cmdbanlist = new CmdBanlist();
 	public CmdColeader cmdColeader = new CmdColeader();
 	public CmdNear cmdNear = new CmdNear();
-	public CmdTrail cmdTrail = new CmdTrail();
 	public CmdDebug cmdDebug = new CmdDebug();
 	public CmdTNT cmdTNT = new CmdTNT();
 	public CmdListClaims cmdListClaims = new CmdListClaims();
@@ -217,14 +215,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 			this.addSubCommand(this.cmdTNT);
 			FactionsPlugin.getInstance().getLogger().info("Enabling TNT bank management");
 		}
-		if(FactionsPlugin.getInstance().conf().commands().fly().isEnable()) {
-			this.addSubCommand(this.cmdFly);
-			this.addSubCommand(this.cmdTrail);
-			FactionsPlugin.getInstance().getLogger().info("Enabling /f fly command");
-		} else {
-			FactionsPlugin.getInstance().getLogger().info("Faction flight set to false in main.conf. Not enabling /f fly command.");
-		}
-
 	}
 
 	public void done() {
@@ -252,7 +242,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!plugin.worldUtil().isEnabled(sender)) {
-			sender.sendMessage(TL.GENERIC_DISABLEDWORLD.toString());
+			sender.sendMessage(Localization.GENERIC_DISABLEDWORLD.toString());
 			return false;
 		}
 
@@ -269,8 +259,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.GENERIC_PLACEHOLDER;
+	public Localization getUsageTranslation() {
+		return Localization.GENERIC_PLACEHOLDER;
 	}
 
 }

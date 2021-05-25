@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -39,16 +39,16 @@ public class CmdSafeunclaimall extends FCommand {
 			IFactionClaimManager.getInstance().unclaimAllInWorld(id, world);
 		}
 
-		context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
+		context.msg(Localization.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
 		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
-			FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
+			FactionsPlugin.getInstance().log(Localization.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SAFEUNCLAIMALL_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SAFEUNCLAIMALL_DESCRIPTION;
 	}
 
 }

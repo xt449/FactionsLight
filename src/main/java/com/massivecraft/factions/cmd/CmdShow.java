@@ -9,8 +9,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -61,12 +61,12 @@ public class CmdShow extends FCommand {
 
 		if(context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
 				&& FactionsPlugin.getInstance().conf().commands().show().getExempt().contains(faction.getTag())) {
-			context.msg(TL.COMMAND_SHOW_EXEMPT);
+			context.msg(Localization.COMMAND_SHOW_EXEMPT);
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostShow(), TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostShow(), Localization.COMMAND_SHOW_TOSHOW, Localization.COMMAND_SHOW_FORSHOW)) {
 			return;
 		}
 
@@ -103,7 +103,7 @@ public class CmdShow extends FCommand {
 			if(!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
 				if(parsed.contains("{ig}")) {
 					// replaces all variables with no home TL
-					parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
+					parsed = parsed.substring(0, parsed.indexOf("{ig}")) + Localization.COMMAND_SHOW_NOHOME;
 				}
 				parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
 				messageList.add(parsed);
@@ -237,8 +237,8 @@ public class CmdShow extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SHOW_COMMANDDESCRIPTION;
 	}
 
 }

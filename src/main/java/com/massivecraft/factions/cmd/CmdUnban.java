@@ -4,7 +4,7 @@ import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdUnban extends FCommand {
 
@@ -29,18 +29,18 @@ public class CmdUnban extends FCommand {
 		}
 
 		if(!context.faction.isBanned(target)) {
-			context.msg(TL.COMMAND_UNBAN_NOTBANNED, target.getName());
+			context.msg(Localization.COMMAND_UNBAN_NOTBANNED, target.getName());
 			return;
 		}
 
 		context.faction.unban(target);
 
-		context.faction.msg(TL.COMMAND_UNBAN_UNBANNED, context.fPlayer.getName(), target.getName());
-		target.msg(TL.COMMAND_UNBAN_TARGET, context.faction.getTag(target));
+		context.faction.msg(Localization.COMMAND_UNBAN_UNBANNED, context.fPlayer.getName(), target.getName());
+		target.msg(Localization.COMMAND_UNBAN_TARGET, context.faction.getTag(target));
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_UNBAN_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_UNBAN_DESCRIPTION;
 	}
 }

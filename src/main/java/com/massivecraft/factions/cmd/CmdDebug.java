@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -108,14 +108,14 @@ public class CmdDebug extends FCommand {
 						public void run() {
 							if(result.getPaste().isPresent()) {
 								String delKey = result.getPaste().get().getDeletionKey().orElse("No deletion key");
-								context.msg(TL.COMMAND_DEBUG_COMPLETE, "https://paste.gg/anonymous/" + result.getPaste().get().getId());
-								context.msg(TL.COMMAND_DEBUG_DELETIONKEY, delKey);
+								context.msg(Localization.COMMAND_DEBUG_COMPLETE, "https://paste.gg/anonymous/" + result.getPaste().get().getId());
+								context.msg(Localization.COMMAND_DEBUG_DELETIONKEY, delKey);
 								if(context.sender instanceof Player) {
-									FactionsPlugin.getInstance().getLogger().info(TL.COMMAND_DEBUG_COMPLETE.format("https://paste.gg/anonymous/" + result.getPaste().get().getId()));
-									FactionsPlugin.getInstance().getLogger().info(TL.COMMAND_DEBUG_DELETIONKEY.format(delKey));
+									FactionsPlugin.getInstance().getLogger().info(Localization.COMMAND_DEBUG_COMPLETE.format("https://paste.gg/anonymous/" + result.getPaste().get().getId()));
+									FactionsPlugin.getInstance().getLogger().info(Localization.COMMAND_DEBUG_DELETIONKEY.format(delKey));
 								}
 							} else {
-								context.msg(TL.COMMAND_DEBUG_FAIL);
+								context.msg(Localization.COMMAND_DEBUG_FAIL);
 								FactionsPlugin.getInstance().getLogger().warning("Received: " + result.getMessage());
 							}
 						}
@@ -125,17 +125,17 @@ public class CmdDebug extends FCommand {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							context.msg(TL.COMMAND_DEBUG_FAIL);
+							context.msg(Localization.COMMAND_DEBUG_FAIL);
 						}
 					}.runTask(FactionsPlugin.getInstance());
 				}
 			}
 		}.runTaskAsynchronously(FactionsPlugin.getInstance());
-		context.msg(TL.COMMAND_DEBUG_RUNNING);
+		context.msg(Localization.COMMAND_DEBUG_RUNNING);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DEBUG_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DEBUG_DESCRIPTION;
 	}
 }

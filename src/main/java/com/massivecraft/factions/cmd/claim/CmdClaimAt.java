@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdClaimAt extends FCommand {
 
@@ -31,7 +31,7 @@ public class CmdClaimAt extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
+	public Localization getUsageTranslation() {
 		return null;
 	}
 }

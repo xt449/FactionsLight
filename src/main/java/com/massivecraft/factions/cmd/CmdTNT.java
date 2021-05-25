@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.cmd.tnt.*;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdTNT extends FCommand {
 	private final CmdTNTInfo infoCmd;
@@ -28,7 +28,7 @@ public class CmdTNT extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_TNT_INFO_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_TNT_INFO_DESCRIPTION;
 	}
 }

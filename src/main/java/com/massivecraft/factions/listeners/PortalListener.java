@@ -2,7 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -54,7 +54,7 @@ public class PortalListener implements Listener {
 			// Don't let people portal into nether bases if server owners don't want that.
 			if(!fPlayer.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
 				event.setCancelled(true);
-				player.sendMessage(TL.PLAYER_PORTAL_NOTALLOWED.toString());
+				player.sendMessage(Localization.PLAYER_PORTAL_NOTALLOWED.toString());
 				return;
 			}
 		}

@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdDTRModify extends FCommand {
 
@@ -34,11 +34,11 @@ public class CmdDTRModify extends FCommand {
 
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
 		target.setDTR(Math.max(Math.min(target.getDTR() + amount, dtr.getMaxDTR(target)), FactionsPlugin.getInstance().conf().factions().landRaidControl().dtr().getMinDTR()));
-		context.msg(TL.COMMAND_DTR_MODIFY_DONE, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()));
+		context.msg(Localization.COMMAND_DTR_MODIFY_DONE, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()));
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_DTR_MODIFY_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_DTR_MODIFY_DESCRIPTION;
 	}
 }

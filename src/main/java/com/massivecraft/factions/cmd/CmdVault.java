@@ -7,7 +7,7 @@ import com.drtshock.playervaults.vaultmanagement.VaultOperations;
 import com.drtshock.playervaults.vaultmanagement.VaultViewInfo;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -44,7 +44,7 @@ public class CmdVault extends FCommand {
 
 		int max = context.faction.getMaxVaults();
 		if(number > max) {
-			player.sendMessage(TL.COMMAND_VAULT_TOOHIGH.format(number, max));
+			player.sendMessage(Localization.COMMAND_VAULT_TOOHIGH.format(number, max));
 			return;
 		}
 
@@ -76,8 +76,8 @@ public class CmdVault extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_VAULT_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_VAULT_DESCRIPTION;
 	}
 
 	protected class VaultBrigadier implements BrigadierProvider {

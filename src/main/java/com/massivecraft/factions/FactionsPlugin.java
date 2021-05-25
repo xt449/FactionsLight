@@ -20,7 +20,6 @@ import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.factions.util.material.MaterialDb;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -247,9 +246,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			dataFolder.mkdir();
 		}
 
-		// Load Material database
-		MaterialDb.load();
-
 		// Create Utility Instances
 		this.permUtil = new PermUtil(this);
 		this.persist = new Persist(this);
@@ -338,11 +334,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		// since some other plugins execute commands directly through this command interface, provide it
 		this.getCommand(refCommand).setExecutor(cmdBase);
 
-		if(conf().commands().fly().isEnable()) {
-			FlightUtil.start();
-		}
-
-		if(ChatColor.stripColor(TL.NOFACTION_PREFIX.toString()).equals("[4-]")) {
+		if(ChatColor.stripColor(Localization.NOFACTION_PREFIX.toString()).equals("[4-]")) {
 			getLogger().warning("Looks like you have an old, mistaken 'nofactions-prefix' in your lang.yml. It currently displays [4-] which is... strange.");
 		}
 
@@ -537,7 +529,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 						out.write(bytes, 0, read);
 					}
 					YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));
-					TL.setFile(defConfig);
+					Localization.setFile(defConfig);
 				}
 			} catch(IOException e) {
 				getLogger().log(Level.SEVERE, "[Factions] Couldn't create language file.", e);
@@ -562,19 +554,19 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-		for(TL item : TL.values()) {
+		for(Localization item : Localization.values()) {
 			if(conf.getString(item.getPath()) == null) {
 				conf.set(item.getPath(), item.getDefault());
 			}
 		}
 
 		// Remove this here because I'm sick of dealing with bug reports due to bad decisions on my part.
-		if(conf.getString(TL.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
-			conf.set(TL.COMMAND_SHOW_POWER.getPath(), TL.COMMAND_SHOW_POWER.getDefault());
+		if(conf.getString(Localization.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
+			conf.set(Localization.COMMAND_SHOW_POWER.getPath(), Localization.COMMAND_SHOW_POWER.getDefault());
 			log(Level.INFO, "Removed errant format specifier from f show power.");
 		}
 
-		TL.setFile(conf);
+		Localization.setFile(conf);
 		try {
 			conf.save(lang);
 		} catch(IOException e) {

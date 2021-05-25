@@ -7,8 +7,8 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.SpiralTask;
-import com.massivecraft.factions.util.TL;
 
 
 public class CmdClaim extends FCommand {
@@ -33,7 +33,7 @@ public class CmdClaim extends FCommand {
 		final IFaction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
 		if(radius < 1) {
-			context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
+			context.msg(Localization.COMMAND_CLAIM_INVALIDRADIUS);
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class CmdClaim extends FCommand {
 		} else {
 			// radius claim
 			if(!Permission.CLAIM_RADIUS.has(context.sender, false)) {
-				context.msg(TL.COMMAND_CLAIM_DENIED);
+				context.msg(Localization.COMMAND_CLAIM_DENIED);
 				return;
 			}
 
@@ -68,8 +68,8 @@ public class CmdClaim extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_CLAIM_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_CLAIM_DESCRIPTION;
 	}
 
 }

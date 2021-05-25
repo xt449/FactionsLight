@@ -1,18 +1,18 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public enum ChatMode {
-	MOD(4, TL.CHAT_MOD),
-	FACTION(3, TL.CHAT_FACTION),
-	ALLIANCE(2, TL.CHAT_ALLIANCE),
-	TRUCE(1, TL.CHAT_TRUCE),
-	PUBLIC(0, TL.CHAT_PUBLIC);
+	MOD(4, Localization.CHAT_MOD),
+	FACTION(3, Localization.CHAT_FACTION),
+	ALLIANCE(2, Localization.CHAT_ALLIANCE),
+	TRUCE(1, Localization.CHAT_TRUCE),
+	PUBLIC(0, Localization.CHAT_PUBLIC);
 
 	public final int value;
-	public final TL nicename;
+	public final Localization nicename;
 
-	ChatMode(final int value, final TL nicename) {
+	ChatMode(final int value, final Localization nicename) {
 		this.value = value;
 		this.nicename = nicename;
 	}

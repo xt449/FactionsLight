@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -33,7 +33,7 @@ public class PowerControl implements LandRaidControl {
 	public boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && player.getPower() < 0) {
 			if(context != null) {
-				context.msg(TL.COMMAND_JOIN_NEGATIVEPOWER, player.describeTo(context.fPlayer, true));
+				context.msg(Localization.COMMAND_JOIN_NEGATIVEPOWER, player.describeTo(context.fPlayer, true));
 			}
 			return false;
 		}
@@ -43,7 +43,7 @@ public class PowerControl implements LandRaidControl {
 	@Override
 	public boolean canLeaveFaction(IFactionPlayer player) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && player.getPower() < 0) {
-			player.msg(TL.LEAVE_NEGATIVEPOWER);
+			player.msg(Localization.LEAVE_NEGATIVEPOWER);
 			return false;
 		}
 		return true;
@@ -57,12 +57,12 @@ public class PowerControl implements LandRaidControl {
 	@Override
 	public boolean canKick(IFactionPlayer toKick, CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && toKick.getPower() < 0) {
-			context.msg(TL.COMMAND_KICK_NEGATIVEPOWER);
+			context.msg(Localization.COMMAND_KICK_NEGATIVEPOWER);
 			return false;
 		}
 		if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
 				IFactionClaimManager.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(toKick.getFaction()) == Relation.ENEMY) {
-			context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
+			context.msg(Localization.COMMAND_KICK_ENEMYTERRITORY);
 			return false;
 		}
 		return true;
@@ -99,23 +99,23 @@ public class PowerControl implements LandRaidControl {
 		if(faction.isWarZone()) {
 			// war zones always override worldsNoPowerLoss either way, thus this layout
 			if(!powerConf.isWarZonePowerLoss()) {
-				powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WARZONE.toString());
+				powerLossEvent.setMessage(Localization.PLAYER_POWER_NOLOSS_WARZONE.toString());
 				powerLossEvent.setCancelled(true);
 			}
 			if(powerConf.getWorldsNoPowerLoss().contains(player.getWorld().getName())) {
-				powerLossEvent.setMessage(TL.PLAYER_POWER_LOSS_WARZONE.toString());
+				powerLossEvent.setMessage(Localization.PLAYER_POWER_LOSS_WARZONE.toString());
 			}
 		} else if(faction.isWilderness() && !powerConf.isWildernessPowerLoss() && !FactionsPlugin.getInstance().conf().factions().protection().getWorldsNoWildernessProtection().contains(player.getWorld().getName())) {
-			powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WILDERNESS.toString());
+			powerLossEvent.setMessage(Localization.PLAYER_POWER_NOLOSS_WILDERNESS.toString());
 			powerLossEvent.setCancelled(true);
 		} else if(powerConf.getWorldsNoPowerLoss().contains(player.getWorld().getName())) {
-			powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WORLD.toString());
+			powerLossEvent.setMessage(Localization.PLAYER_POWER_NOLOSS_WORLD.toString());
 			powerLossEvent.setCancelled(true);
 		} else if(powerConf.isPeacefulMembersDisablePowerLoss() && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
-			powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_PEACEFUL.toString());
+			powerLossEvent.setMessage(Localization.PLAYER_POWER_NOLOSS_PEACEFUL.toString());
 			powerLossEvent.setCancelled(true);
 		} else {
-			powerLossEvent.setMessage(TL.PLAYER_POWER_NOW.toString());
+			powerLossEvent.setMessage(Localization.PLAYER_POWER_NOW.toString());
 		}
 
 		// call Event
@@ -132,7 +132,7 @@ public class PowerControl implements LandRaidControl {
 				double powerChange = vamp * powerDiff;
 				IFactionPlayer fKiller = IFactionPlayerManager.getInstance().getByPlayer(killer);
 				fKiller.alterPower(powerChange);
-				fKiller.msg(TL.PLAYER_POWER_VAMPIRISM_GAIN, powerChange, fplayer.describeTo(fKiller), fKiller.getPowerRounded(), fKiller.getPowerMaxRounded());
+				fKiller.msg(Localization.PLAYER_POWER_VAMPIRISM_GAIN, powerChange, fplayer.describeTo(fKiller), fKiller.getPowerRounded(), fKiller.getPowerMaxRounded());
 			}
 		}
 		// Send the message from the powerLossEvent

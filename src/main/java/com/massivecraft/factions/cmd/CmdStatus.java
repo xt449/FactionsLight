@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 
@@ -26,22 +26,22 @@ public class CmdStatus extends FCommand {
 	public void perform(CommandContext context) {
 		ArrayList<String> ret = new ArrayList<>();
 		for(IFactionPlayer fp : context.faction.getFPlayers()) {
-			String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
-			String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+			String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + Localization.COMMAND_STATUS_AGOSUFFIX;
+			String last = fp.isOnline() ? ChatColor.GREEN + Localization.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
 			String power = "";
 			if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
 				power = ChatColor.YELLOW + String.valueOf(fp.getPowerRounded()) + " / " + fp.getPowerMaxRounded() + ChatColor.RESET;
 			} else {
 				power = "n/a";
 			}
-			ret.add(String.format(TL.COMMAND_STATUS_FORMAT.toString(), ChatColor.GOLD + fp.getRole().getPrefix() + fp.getName() + ChatColor.RESET, power, last).trim());
+			ret.add(String.format(Localization.COMMAND_STATUS_FORMAT.toString(), ChatColor.GOLD + fp.getRole().getPrefix() + fp.getName() + ChatColor.RESET, power, last).trim());
 		}
 		context.fPlayer.sendMessage(ret);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_STATUS_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_STATUS_DESCRIPTION;
 	}
 
 }

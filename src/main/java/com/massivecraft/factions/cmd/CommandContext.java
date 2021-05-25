@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -51,7 +51,7 @@ public class CommandContext {
 		sender.sendMessage(FactionsPlugin.getInstance().txt().parse(str, args));
 	}
 
-	public void msg(TL translation, Object... args) {
+	public void msg(Localization translation, Object... args) {
 		sender.sendMessage(FactionsPlugin.getInstance().txt().parse(translation.toString(), args));
 	}
 
@@ -169,7 +169,7 @@ public class CommandContext {
 		}
 
 		if(msg && ret == null) {
-			sender.sendMessage(TL.GENERIC_NOPLAYERFOUND.format(name));
+			sender.sendMessage(Localization.GENERIC_NOPLAYERFOUND.format(name));
 		}
 
 		return ret;
@@ -199,7 +199,7 @@ public class CommandContext {
 		}
 
 		if(msg && ret == null) {
-			sender.sendMessage(TL.GENERIC_NOPLAYERMATCH.format(name));
+			sender.sendMessage(Localization.GENERIC_NOPLAYERMATCH.format(name));
 		}
 
 		return ret;
@@ -236,7 +236,7 @@ public class CommandContext {
 		}
 
 		if(msg && ret == null) {
-			sender.sendMessage(TL.GENERIC_NOPLAYERFOUND.format(name));
+			sender.sendMessage(Localization.GENERIC_NOPLAYERFOUND.format(name));
 		}
 
 		return ret;
@@ -309,7 +309,7 @@ public class CommandContext {
 		}
 
 		if(msg && ret == null) {
-			sender.sendMessage(TL.GENERIC_NOFACTIONMATCH.format(name));
+			sender.sendMessage(Localization.GENERIC_NOFACTIONMATCH.format(name));
 		}
 
 		return ret;
@@ -386,7 +386,7 @@ public class CommandContext {
 		}
 	}
 
-	public boolean payForCommand(double cost, TL toDoThis, TL forDoingThis) {
+	public boolean payForCommand(double cost, Localization toDoThis, Localization forDoingThis) {
 		return payForCommand(cost, toDoThis.toString(), forDoingThis.toString());
 	}
 
@@ -403,11 +403,11 @@ public class CommandContext {
 		}
 	}
 
-	public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+	public void doWarmUp(WarmUpUtil.Warmup warmup, Localization translationKey, String action, Runnable runnable, long delay) {
 		this.doWarmUp(fPlayer, warmup, translationKey, action, runnable, delay);
 	}
 
-	public void doWarmUp(IFactionPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+	public void doWarmUp(IFactionPlayer player, WarmUpUtil.Warmup warmup, Localization translationKey, String action, Runnable runnable, long delay) {
 		WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
 	}
 

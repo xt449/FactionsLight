@@ -6,7 +6,7 @@ import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdSetWarp extends FCommand {
 
@@ -28,13 +28,13 @@ public class CmdSetWarp extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		if(!(context.fPlayer.getRelationToLocation() == Relation.MEMBER)) {
-			context.fPlayer.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
+			context.fPlayer.msg(Localization.COMMAND_SETFWARP_NOTCLAIMED);
 			return;
 		}
 
 		int maxWarps = FactionsPlugin.getInstance().conf().commands().warp().getMaxWarps();
 		if(maxWarps <= context.faction.getWarps().size()) {
-			context.fPlayer.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
+			context.fPlayer.msg(Localization.COMMAND_SETFWARP_LIMIT, maxWarps);
 			return;
 		}
 
@@ -50,15 +50,15 @@ public class CmdSetWarp extends FCommand {
 		if(password != null) {
 			context.faction.setWarpPassword(warp, password);
 		}
-		context.fPlayer.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
+		context.fPlayer.msg(Localization.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
 	}
 
 	private boolean transact(IFactionPlayer player, CommandContext context) {
-		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostSetWarp(), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
+		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostSetWarp(), Localization.COMMAND_SETFWARP_TOSET.toString(), Localization.COMMAND_SETFWARP_FORSET.toString());
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SETFWARP_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SETFWARP_DESCRIPTION;
 	}
 }

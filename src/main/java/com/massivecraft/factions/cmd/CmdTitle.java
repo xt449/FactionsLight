@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.TextUtil;
 
 public class CmdTitle extends FCommand {
@@ -38,19 +38,19 @@ public class CmdTitle extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostTitle(), TL.COMMAND_TITLE_TOCHANGE, TL.COMMAND_TITLE_FORCHANGE)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostTitle(), Localization.COMMAND_TITLE_TOCHANGE, Localization.COMMAND_TITLE_FORCHANGE)) {
 			return;
 		}
 
 		you.setTitle(context.sender, title);
 
 		// Inform
-		context.faction.msg(TL.COMMAND_TITLE_CHANGED, context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
+		context.faction.msg(Localization.COMMAND_TITLE_CHANGED, context.fPlayer.describeTo(context.faction, true), you.describeTo(context.faction, true));
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_TITLE_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_TITLE_DESCRIPTION;
 	}
 
 }

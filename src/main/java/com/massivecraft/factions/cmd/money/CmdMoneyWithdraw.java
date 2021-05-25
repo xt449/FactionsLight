@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.ChatColor;
 
 
@@ -34,19 +34,19 @@ public class CmdMoneyWithdraw extends MoneyCommand {
 		}
 
 		if(!context.faction.hasAccess(context.fPlayer, PermissibleAction.ECONOMY)) {
-			context.msg(TL.GENERIC_NOPERMISSION, "withdraw");
+			context.msg(Localization.GENERIC_NOPERMISSION, "withdraw");
 			return;
 		}
 
 		boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
 		if(success && FactionsPlugin.getInstance().conf().logging().isMoneyTransactions()) {
-			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(Localization.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MONEYWITHDRAW_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_MONEYWITHDRAW_DESCRIPTION;
 	}
 }

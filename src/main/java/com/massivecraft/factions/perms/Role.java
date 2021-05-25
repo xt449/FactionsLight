@@ -1,7 +1,7 @@
 package com.massivecraft.factions.perms;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.ChatColor;
 
 import java.util.Collections;
@@ -9,19 +9,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum Role implements Permissible {
-	ADMIN(4, TL.ROLE_ADMIN),
-	COLEADER(3, TL.ROLE_COLEADER),
-	MODERATOR(2, TL.ROLE_MODERATOR),
-	NORMAL(1, TL.ROLE_NORMAL),
-	RECRUIT(0, TL.ROLE_RECRUIT);
+	ADMIN(4, Localization.ROLE_ADMIN),
+	COLEADER(3, Localization.ROLE_COLEADER),
+	MODERATOR(2, Localization.ROLE_MODERATOR),
+	NORMAL(1, Localization.ROLE_NORMAL),
+	RECRUIT(0, Localization.ROLE_RECRUIT);
 
 	public final int value;
 	public final String nicename;
-	public final TL translation;
+	public final Localization translation;
 	private Set<String> roleNamesAtOrBelow;
 	private Set<String> roleNamesAtOrAbove;
 
-	Role(final int value, final TL translation) {
+	Role(final int value, final Localization translation) {
 		this.value = value;
 		this.nicename = translation.toString();
 		this.translation = translation;
@@ -82,7 +82,7 @@ public enum Role implements Permissible {
 		return this.nicename;
 	}
 
-	public TL getTranslation() {
+	public Localization getTranslation() {
 		return translation;
 	}
 

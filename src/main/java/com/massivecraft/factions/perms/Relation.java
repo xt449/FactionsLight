@@ -1,18 +1,18 @@
 package com.massivecraft.factions.perms;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.ChatColor;
 
 import java.util.Collections;
 import java.util.Set;
 
 public enum Relation implements Permissible {
-	MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
-	ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
-	TRUCE(2, TL.RELATION_TRUCE_SINGULAR.toString()),
-	NEUTRAL(1, TL.RELATION_NEUTRAL_SINGULAR.toString()),
-	ENEMY(0, TL.RELATION_ENEMY_SINGULAR.toString());
+	MEMBER(4, Localization.RELATION_MEMBER_SINGULAR.toString()),
+	ALLY(3, Localization.RELATION_ALLY_SINGULAR.toString()),
+	TRUCE(2, Localization.RELATION_TRUCE_SINGULAR.toString()),
+	NEUTRAL(1, Localization.RELATION_NEUTRAL_SINGULAR.toString()),
+	ENEMY(0, Localization.RELATION_ENEMY_SINGULAR.toString());
 
 	public final int value;
 	public final String nicename;
@@ -59,14 +59,14 @@ public enum Relation implements Permissible {
 
 	public String getTranslation() {
 		try {
-			return TL.valueOf("RELATION_" + name() + "_SINGULAR").toString();
+			return Localization.valueOf("RELATION_" + name() + "_SINGULAR").toString();
 		} catch(IllegalArgumentException e) {
 			return toString();
 		}
 	}
 
 	public String getPluralTranslation() {
-		for(TL t : TL.values()) {
+		for(Localization t : Localization.values()) {
 			if(t.name().equalsIgnoreCase("RELATION_" + name() + "_PLURAL")) {
 				return t.toString();
 			}

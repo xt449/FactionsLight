@@ -9,7 +9,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Location;
 
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class CmdClaimFill extends FCommand {
 		final int limit = context.argAsInt(0, FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims());
 
 		if(limit > FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims()) {
-			context.msg(TL.COMMAND_CLAIMFILL_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims());
+			context.msg(Localization.COMMAND_CLAIMFILL_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims());
 			return;
 		}
 
@@ -51,17 +51,17 @@ public class CmdClaimFill extends FCommand {
 		IFaction currentFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
 
 		if(currentFaction.equals(forFaction)) {
-			context.msg(TL.CLAIM_ALREADYOWN, forFaction.describeTo(context.fPlayer, true));
+			context.msg(Localization.CLAIM_ALREADYOWN, forFaction.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		if(!currentFaction.isWilderness()) {
-			context.msg(TL.COMMAND_CLAIMFILL_ALREADYCLAIMED);
+			context.msg(Localization.COMMAND_CLAIMFILL_ALREADYCLAIMED);
 			return;
 		}
 
 		if(!context.fPlayer.isAdminBypassing() && !forFaction.hasAccess(context.fPlayer, PermissibleAction.TERRITORY)) {
-			context.msg(TL.CLAIM_CANTCLAIM, forFaction.describeTo(context.fPlayer));
+			context.msg(Localization.CLAIM_CANTCLAIM, forFaction.describeTo(context.fPlayer));
 			return;
 		}
 
@@ -78,7 +78,7 @@ public class CmdClaimFill extends FCommand {
 			currentHead = queue.poll();
 
 			if(Math.abs(currentHead.getX() - startX) > distance || Math.abs(currentHead.getZ() - startZ) > distance) {
-				context.msg(TL.COMMAND_CLAIMFILL_TOOFAR, distance);
+				context.msg(Localization.COMMAND_CLAIMFILL_TOOFAR, distance);
 				return;
 			}
 
@@ -89,12 +89,12 @@ public class CmdClaimFill extends FCommand {
 		}
 
 		if(toClaim.size() > limit) {
-			context.msg(TL.COMMAND_CLAIMFILL_PASTLIMIT);
+			context.msg(Localization.COMMAND_CLAIMFILL_PASTLIMIT);
 			return;
 		}
 
 		if(toClaim.size() > this.plugin.getLandRaidControl().getPossibleClaimCount(forFaction)) {
-			context.msg(TL.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
+			context.msg(Localization.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
 			return;
 		}
 
@@ -105,7 +105,7 @@ public class CmdClaimFill extends FCommand {
 				fails++;
 			}
 			if(fails >= limFail) {
-				context.msg(TL.COMMAND_CLAIMFILL_TOOMUCHFAIL, fails);
+				context.msg(Localization.COMMAND_CLAIMFILL_TOOMUCHFAIL, fails);
 				return;
 			}
 		}
@@ -119,7 +119,7 @@ public class CmdClaimFill extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_CLAIMFILL_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_CLAIMFILL_DESCRIPTION;
 	}
 }

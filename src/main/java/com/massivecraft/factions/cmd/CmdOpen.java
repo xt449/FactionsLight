@@ -5,7 +5,7 @@ import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdOpen extends FCommand {
 
@@ -25,27 +25,27 @@ public class CmdOpen extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostOpen(), TL.COMMAND_OPEN_TOOPEN, TL.COMMAND_OPEN_FOROPEN)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostOpen(), Localization.COMMAND_OPEN_TOOPEN, Localization.COMMAND_OPEN_FOROPEN)) {
 			return;
 		}
 
 		context.faction.setOpen(context.argAsBool(0, !context.faction.getOpen()));
 
-		String open = context.faction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
+		String open = context.faction.getOpen() ? Localization.COMMAND_OPEN_OPEN.toString() : Localization.COMMAND_OPEN_CLOSED.toString();
 
 		// Inform
 		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			if(fplayer.getFactionId().equals(context.faction.getId())) {
-				fplayer.msg(TL.COMMAND_OPEN_CHANGES, context.fPlayer.getName(), open);
+				fplayer.msg(Localization.COMMAND_OPEN_CHANGES, context.fPlayer.getName(), open);
 				continue;
 			}
-			fplayer.msg(TL.COMMAND_OPEN_CHANGED, context.faction.getTag(fplayer.getFaction()), open);
+			fplayer.msg(Localization.COMMAND_OPEN_CHANGED, context.faction.getTag(fplayer.getFaction()), open);
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_OPEN_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_OPEN_DESCRIPTION;
 	}
 
 }

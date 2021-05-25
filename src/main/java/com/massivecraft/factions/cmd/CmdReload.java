@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdReload extends FCommand {
 
@@ -21,11 +21,11 @@ public class CmdReload extends FCommand {
 		FactionsPlugin.getInstance().loadLang();
 		long timeReload = (System.currentTimeMillis() - timeInitStart);
 
-		context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
+		context.msg(Localization.COMMAND_RELOAD_TIME, timeReload);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_RELOAD_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_RELOAD_DESCRIPTION;
 	}
 }

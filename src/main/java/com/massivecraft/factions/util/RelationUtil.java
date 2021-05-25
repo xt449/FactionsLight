@@ -22,14 +22,14 @@ public abstract class RelationUtil {
 
 		if(that instanceof IFaction) {
 			if(me instanceof IFactionPlayer && myFaction == thatFaction) {
-				ret = TL.GENERIC_YOURFACTION.toString();
+				ret = Localization.GENERIC_YOURFACTION.toString();
 			} else {
 				ret = thatFaction.getTag();
 			}
 		} else if(that instanceof IFactionPlayer) {
 			IFactionPlayer fplayerthat = (IFactionPlayer) that;
 			if(that == me) {
-				ret = TL.GENERIC_YOU.toString();
+				ret = Localization.GENERIC_YOU.toString();
 			} else if(thatFaction == myFaction) {
 				ret = fplayerthat.getNameAndTitle();
 			} else {

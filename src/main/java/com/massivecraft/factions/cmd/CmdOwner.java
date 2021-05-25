@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 
 public class CmdOwner extends FCommand {
@@ -31,12 +31,12 @@ public class CmdOwner extends FCommand {
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled()) {
-			context.msg(TL.COMMAND_OWNER_DISABLED);
+			context.msg(Localization.COMMAND_OWNER_DISABLED);
 			return;
 		}
 
 		if(!hasBypass && FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction() > 0 && context.faction.getCountOfClaimsWithOwners() >= FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction()) {
-			context.msg(TL.COMMAND_OWNER_LIMIT, FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction());
+			context.msg(Localization.COMMAND_OWNER_LIMIT, FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction());
 			return;
 		}
 
@@ -45,12 +45,12 @@ public class CmdOwner extends FCommand {
 		IFaction factionHere = IFactionClaimManager.getInstance().getFactionAt(flocation);
 		if(factionHere != context.faction) {
 			if(!factionHere.isNormal()) {
-				context.msg(TL.COMMAND_OWNER_NOTCLAIMED);
+				context.msg(Localization.COMMAND_OWNER_NOTCLAIMED);
 				return;
 			}
 
 			if(!hasBypass) {
-				context.msg(TL.COMMAND_OWNER_WRONGFACTION);
+				context.msg(Localization.COMMAND_OWNER_WRONGFACTION);
 				return;
 			}
 
@@ -64,35 +64,35 @@ public class CmdOwner extends FCommand {
 		String playerName = target.getName();
 
 		if(target.getFaction() != context.faction) {
-			context.msg(TL.COMMAND_OWNER_NOTMEMBER, playerName);
+			context.msg(Localization.COMMAND_OWNER_NOTMEMBER, playerName);
 			return;
 		}
 
 		// if no player name was passed, and this claim does already have owners set, clear them
 		if(context.args.isEmpty() && context.faction.doesLocationHaveOwnersSet(flocation)) {
 			context.faction.clearClaimOwnership(flocation);
-			context.msg(TL.COMMAND_OWNER_CLEARED);
+			context.msg(Localization.COMMAND_OWNER_CLEARED);
 			return;
 		}
 
 		if(context.faction.isPlayerInOwnerList(target, flocation)) {
 			context.faction.removePlayerAsOwner(target, flocation);
-			context.msg(TL.COMMAND_OWNER_REMOVED, playerName);
+			context.msg(Localization.COMMAND_OWNER_REMOVED, playerName);
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostOwner(), TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostOwner(), Localization.COMMAND_OWNER_TOSET, Localization.COMMAND_OWNER_FORSET)) {
 			return;
 		}
 
 		context.faction.setPlayerAsOwner(target, flocation);
 
-		context.msg(TL.COMMAND_OWNER_ADDED, playerName);
+		context.msg(Localization.COMMAND_OWNER_ADDED, playerName);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_OWNER_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_OWNER_DESCRIPTION;
 	}
 }

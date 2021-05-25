@@ -5,7 +5,7 @@ import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -24,7 +24,7 @@ public class CmdAHome extends FCommand {
 	public void perform(CommandContext context) {
 		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
-			context.msg(TL.GENERIC_NOPLAYERMATCH, context.argAsString(0));
+			context.msg(Localization.GENERIC_NOPLAYERMATCH, context.argAsString(0));
 			return;
 		}
 
@@ -39,21 +39,21 @@ public class CmdAHome extends FCommand {
 				}
 				FactionsPlugin.getInstance().teleport(target.getPlayer(), destination).thenAccept(success -> {
 					if(success) {
-						context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
-						target.msg(TL.COMMAND_AHOME_TARGET);
+						context.msg(Localization.COMMAND_AHOME_SUCCESS, target.getName());
+						target.msg(Localization.COMMAND_AHOME_TARGET);
 					}
 				});
 
 			} else {
-				context.msg(TL.COMMAND_AHOME_NOHOME, target.getName());
+				context.msg(Localization.COMMAND_AHOME_NOHOME, target.getName());
 			}
 		} else {
-			context.msg(TL.COMMAND_AHOME_OFFLINE, target.getName());
+			context.msg(Localization.COMMAND_AHOME_OFFLINE, target.getName());
 		}
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_AHOME_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_AHOME_DESCRIPTION;
 	}
 }

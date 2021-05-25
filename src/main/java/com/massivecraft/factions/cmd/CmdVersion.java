@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 
 public class CmdVersion extends FCommand {
@@ -16,11 +16,11 @@ public class CmdVersion extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		context.msg(TL.COMMAND_VERSION_VERSION, FactionsPlugin.getInstance().getDescription().getFullName());
+		context.msg(Localization.COMMAND_VERSION_VERSION, FactionsPlugin.getInstance().getDescription().getFullName());
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_VERSION_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_VERSION_DESCRIPTION;
 	}
 }

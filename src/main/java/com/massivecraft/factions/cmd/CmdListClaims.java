@@ -5,7 +5,7 @@ import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -34,7 +34,7 @@ public class CmdListClaims extends FCommand {
 			world = Bukkit.getWorld(context.argAsString(0));
 		}
 		if(world == null) {
-			context.msg(TL.COMMAND_LISTCLAIMS_INVALIDWORLD, context.argAsString(0));
+			context.msg(Localization.COMMAND_LISTCLAIMS_INVALIDWORLD, context.argAsString(0));
 			return;
 		}
 		IFaction faction = context.faction;
@@ -46,7 +46,7 @@ public class CmdListClaims extends FCommand {
 			}
 		}
 		if(faction == null) {
-			context.msg(TL.GENERIC_NOFACTIONMATCH, context.argAsString(1));
+			context.msg(Localization.GENERIC_NOFACTIONMATCH, context.argAsString(1));
 			return;
 		}
 		Map<Long, FLoc> worldClaims = new HashMap<>();
@@ -56,7 +56,7 @@ public class CmdListClaims extends FCommand {
 			}
 		}
 		if(worldClaims.isEmpty()) {
-			context.msg(TL.COMMAND_LISTCLAIMS_NOCLAIMS, faction.getTag(), world.getName());
+			context.msg(Localization.COMMAND_LISTCLAIMS_NOCLAIMS, faction.getTag(), world.getName());
 			return;
 		}
 		Set<FLoc> set;
@@ -94,7 +94,7 @@ public class CmdListClaims extends FCommand {
 			}
 		}
 
-		context.msg(TL.COMMAND_LISTCLAIMS_MESSAGE, faction.getTag(), world.getName());
+		context.msg(Localization.COMMAND_LISTCLAIMS_MESSAGE, faction.getTag(), world.getName());
 		StringBuilder builder = new StringBuilder();
 		String str;
 		final String separator = "   ";
@@ -125,8 +125,8 @@ public class CmdListClaims extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_LISTCLAIMS_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_LISTCLAIMS_DESCRIPTION;
 	}
 
 	private class FLoc {

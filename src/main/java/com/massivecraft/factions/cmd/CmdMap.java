@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 
 public class CmdMap extends FCommand {
@@ -33,18 +33,18 @@ public class CmdMap extends FCommand {
 				}
 
 				context.fPlayer.setMapAutoUpdating(true);
-				context.msg(TL.COMMAND_MAP_UPDATE_ENABLED);
+				context.msg(Localization.COMMAND_MAP_UPDATE_ENABLED);
 
 				// And show the map once
 				showMap(context);
 			} else {
 				// Turn off
 				context.fPlayer.setMapAutoUpdating(false);
-				context.msg(TL.COMMAND_MAP_UPDATE_DISABLED);
+				context.msg(Localization.COMMAND_MAP_UPDATE_DISABLED);
 			}
 		} else {
 			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostMap(), TL.COMMAND_MAP_TOSHOW, TL.COMMAND_MAP_FORSHOW)) {
+			if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostMap(), Localization.COMMAND_MAP_TOSHOW, Localization.COMMAND_MAP_FORSHOW)) {
 				return;
 			}
 
@@ -57,8 +57,8 @@ public class CmdMap extends FCommand {
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MAP_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_MAP_DESCRIPTION;
 	}
 
 }

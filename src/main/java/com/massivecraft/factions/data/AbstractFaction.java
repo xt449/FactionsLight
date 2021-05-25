@@ -14,9 +14,9 @@ import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -73,11 +73,11 @@ public abstract class AbstractFaction implements IFaction, IEconomyParticipator 
 		if(!announcements.containsKey(fPlayer.getId())) {
 			return;
 		}
-		fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_TOP);
+		fPlayer.msg(Localization.FACTIONS_ANNOUNCEMENT_TOP);
 		for(String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
 			fPlayer.sendMessage(s);
 		}
-		fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_BOTTOM);
+		fPlayer.msg(Localization.FACTIONS_ANNOUNCEMENT_BOTTOM);
 		announcements.remove(fPlayer.getId());
 	}
 
@@ -543,7 +543,7 @@ public abstract class AbstractFaction implements IFaction, IEconomyParticipator 
 		this.id = id;
 		this.open = FactionsPlugin.getInstance().conf().factions().other().isNewFactionsDefaultOpen();
 		this.tag = "???";
-		this.description = TL.GENERIC_DEFAULTDESCRIPTION.toString();
+		this.description = Localization.GENERIC_DEFAULTDESCRIPTION.toString();
 		this.lastPlayerLoggedOffTime = 0;
 		this.peaceful = FactionsPlugin.getInstance().conf().factions().other().isNewFactionsDefaultPeaceful();
 		this.peacefulExplosionsEnabled = false;
@@ -991,7 +991,7 @@ public abstract class AbstractFaction implements IFaction, IEconomyParticipator 
 			}
 
 			for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-				fplayer.msg(TL.LEAVE_DISBANDED, this.getTag(fplayer));
+				fplayer.msg(Localization.LEAVE_DISBANDED, this.getTag(fplayer));
 			}
 
 			FactionsPlugin.getInstance().getServer().getPluginManager().callEvent(new FactionAutoDisbandEvent(this));
@@ -1019,7 +1019,7 @@ public abstract class AbstractFaction implements IFaction, IEconomyParticipator 
 		}
 	}
 
-	public void msg(TL translation, Object... args) {
+	public void msg(Localization translation, Object... args) {
 		msg(translation.toString(), args);
 	}
 

@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.event.DTRLossEvent;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -45,7 +45,7 @@ public class DTRControl implements LandRaidControl {
 	@Override
 	public boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsJoin()) {
-			context.msg(TL.DTR_CANNOT_FROZEN);
+			context.msg(Localization.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
@@ -54,7 +54,7 @@ public class DTRControl implements LandRaidControl {
 	@Override
 	public boolean canLeaveFaction(IFactionPlayer player) {
 		if(player.getFaction().isFrozenDTR() && conf().isFreezePreventsLeave()) {
-			player.msg(TL.DTR_CANNOT_FROZEN);
+			player.msg(Localization.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
@@ -63,7 +63,7 @@ public class DTRControl implements LandRaidControl {
 	@Override
 	public boolean canDisbandFaction(IFaction faction, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsDisband()) {
-			context.msg(TL.DTR_CANNOT_FROZEN);
+			context.msg(Localization.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
@@ -75,12 +75,12 @@ public class DTRControl implements LandRaidControl {
 			IFaction faction = toKick.getFaction();
 			if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
 					IFactionClaimManager.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
-				context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
+				context.msg(Localization.COMMAND_KICK_ENEMYTERRITORY);
 				return false;
 			}
 			if(faction.isFrozenDTR() && conf().getFreezeKickPenalty() > 0) {
 				faction.setDTR(Math.min(conf().getMinDTR(), faction.getDTR() - conf().getFreezeKickPenalty()));
-				context.msg(TL.DTR_KICK_PENALTY);
+				context.msg(Localization.DTR_KICK_PENALTY);
 			}
 		}
 		return true;

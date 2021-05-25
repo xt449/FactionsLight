@@ -4,7 +4,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 
 public class CmdSaveAll extends FCommand {
 
@@ -21,12 +21,12 @@ public class CmdSaveAll extends FCommand {
 		IFactionPlayerManager.getInstance().forceSave(false);
 		Factions.getInstance().forceSave(false);
 		IFactionClaimManager.getInstance().forceSave(false);
-		context.msg(TL.COMMAND_SAVEALL_SUCCESS);
+		context.msg(Localization.COMMAND_SAVEALL_SUCCESS);
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SAVEALL_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SAVEALL_DESCRIPTION;
 	}
 
 }

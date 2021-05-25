@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
  * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent
  * changes.
  */
-public enum TL {
+public enum Localization {
 	/**
 	 * Translation meta
 	 */
@@ -209,20 +209,6 @@ public enum TL {
 	COMMAND_DTR_DESCRIPTION("Show faction DTR info"),
 	COMMAND_DTR_MODIFY_DESCRIPTION("Modify faction DTR"),
 	COMMAND_DTR_MODIFY_DONE("&eSet DTR for %s&e to %s"),
-
-	COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
-	COMMAND_FLY_CHANGE("&eFaction flight &d%1$s"),
-	COMMAND_FLY_DAMAGE("&eFaction flight &ddisabled&e due to entering combat"),
-	COMMAND_FLY_AUTO("&eFaction auto flight &d%1$s"),
-	COMMAND_FLY_NO_ACCESS("&cCannot fly in territory of %1$s"),
-	COMMAND_FLY_ENEMY_NEARBY("&cCannot enable fly, enemy nearby"),
-	COMMAND_FLY_ENEMY_DISABLE("&cEnemy nearby, disabling fly"),
-
-	COMMAND_FLYTRAILS_DESCRIPTION("Enabled or change fly trails"),
-	COMMAND_FLYTRAILS_PARTICLE_INVALID("&cInvalid particle effect"),
-	COMMAND_FLYTRAILS_PARTICLE_PERMS("&cInsufficient permission to use &d%1s"),
-	COMMAND_FLYTRAILS_PARTICLE_CHANGE("&eFaction flight trail effect set to &d%1s"),
-	COMMAND_FLYTRAILS_CHANGE("&eFaction flight trail &d%1s"),
 
 	COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
 	COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),
@@ -884,7 +870,6 @@ public enum TL {
 	PERM_TNTDEPOSIT("Deposit TNT into faction bank"),
 	PERM_TNTWITHDRAW("Withdraw TNT from faction bank"),
 	PERM_WARP("Using faction warps"),
-	PERM_FLY("Flying in faction territory"),
 	PERM_OWNER("Set ownership of land using /f owner in faction territory"),
 
 	PERM_SHORT_BUILD("build"),
@@ -911,7 +896,6 @@ public enum TL {
 	PERM_SHORT_TNTDEPOSIT("deposit TNT"),
 	PERM_SHORT_TNTWITHDRAW("withdraw TNT"),
 	PERM_SHORT_WARP("use warps"),
-	PERM_SHORT_FLY("fly"),
 	PERM_SHORT_OWNER("set ownership"),
 
 	PERM_DENIED_WILDERNESS("&cYou can't %s in the wilderness"),
@@ -1004,7 +988,7 @@ public enum TL {
 	 * @param path  The string path.
 	 * @param start The default string.
 	 */
-	TL(String path, String start) {
+	Localization(String path, String start) {
 		this.path = path;
 		this.def = start;
 	}
@@ -1014,7 +998,7 @@ public enum TL {
 	 *
 	 * @param start The default string.
 	 */
-	TL(String start) {
+	Localization(String start) {
 		this.path = this.name().replace('_', '.');
 		if(this.path.startsWith(".")) {
 			path = "root" + path;

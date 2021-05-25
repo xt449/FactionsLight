@@ -6,7 +6,7 @@ import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
@@ -34,17 +34,17 @@ public class CmdAdmin extends FCommand {
 		IFaction targetFaction = fyou.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
-			context.msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(context.fPlayer, true));
+			context.msg(Localization.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		if(context.fPlayer != null && context.fPlayer.getRole() != Role.ADMIN && !permAny) {
-			context.msg(TL.COMMAND_ADMIN_NOTADMIN);
+			context.msg(Localization.COMMAND_ADMIN_NOTADMIN);
 			return;
 		}
 
 		if(fyou == context.fPlayer && !permAny) {
-			context.msg(TL.COMMAND_ADMIN_TARGETSELF);
+			context.msg(Localization.COMMAND_ADMIN_TARGETSELF);
 			return;
 		}
 
@@ -62,8 +62,8 @@ public class CmdAdmin extends FCommand {
 		// if target player is currently admin, demote and replace him
 		if(fyou == admin) {
 			targetFaction.promoteNewLeader();
-			context.msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(context.fPlayer, true));
-			fyou.msg(TL.COMMAND_ADMIN_DEMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
+			context.msg(Localization.COMMAND_ADMIN_DEMOTES, fyou.describeTo(context.fPlayer, true));
+			fyou.msg(Localization.COMMAND_ADMIN_DEMOTED, context.player == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
 			return;
 		}
 
@@ -72,16 +72,16 @@ public class CmdAdmin extends FCommand {
 			admin.setRole(Role.COLEADER);
 		}
 		fyou.setRole(Role.ADMIN);
-		context.msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
+		context.msg(Localization.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
 
 		// Inform all players
 		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+			fplayer.msg(Localization.COMMAND_ADMIN_PROMOTED, context.player == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}
 	}
 
-	public TL getUsageTranslation() {
-		return TL.COMMAND_ADMIN_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_ADMIN_DESCRIPTION;
 	}
 
 }

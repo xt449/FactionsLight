@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.Localization;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
@@ -40,12 +40,12 @@ public class CmdSetMaxVaults extends FCommand {
 		}
 
 		targetFaction.setMaxVaults(value);
-		context.sender.sendMessage(TL.COMMAND_SETMAXVAULTS_SUCCESS.format(targetFaction.getTag(), value));
+		context.sender.sendMessage(Localization.COMMAND_SETMAXVAULTS_SUCCESS.format(targetFaction.getTag(), value));
 	}
 
 	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SETMAXVAULTS_DESCRIPTION;
+	public Localization getUsageTranslation() {
+		return Localization.COMMAND_SETMAXVAULTS_DESCRIPTION;
 	}
 
 	protected class MaxVaultBrigadier implements BrigadierProvider {

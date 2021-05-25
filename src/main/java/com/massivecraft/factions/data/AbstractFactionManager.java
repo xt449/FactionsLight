@@ -2,8 +2,8 @@ package com.massivecraft.factions.data;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ public abstract class AbstractFactionManager extends Factions {
 		if(!factions.containsKey("0")) {
 			IFaction faction = generateFactionObject("0");
 			factions.put("0", faction);
-			faction.setTag(TL.WILDERNESS.toString());
-			faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
+			faction.setTag(Localization.WILDERNESS.toString());
+			faction.setDescription(Localization.WILDERNESS_DESCRIPTION.toString());
 		} else {
 			IFaction faction = factions.get("0");
-			if(!faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
-				faction.setTag(TL.WILDERNESS.toString());
+			if(!faction.getTag().equalsIgnoreCase(Localization.WILDERNESS.toString())) {
+				faction.setTag(Localization.WILDERNESS.toString());
 			}
-			if(!faction.getDescription().equalsIgnoreCase(TL.WILDERNESS_DESCRIPTION.toString())) {
-				faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
+			if(!faction.getDescription().equalsIgnoreCase(Localization.WILDERNESS_DESCRIPTION.toString())) {
+				faction.setDescription(Localization.WILDERNESS_DESCRIPTION.toString());
 			}
 		}
 
@@ -37,19 +37,19 @@ public abstract class AbstractFactionManager extends Factions {
 		if(!factions.containsKey("-1")) {
 			IFaction faction = generateFactionObject("-1");
 			factions.put("-1", faction);
-			faction.setTag(TL.SAFEZONE.toString());
-			faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
+			faction.setTag(Localization.SAFEZONE.toString());
+			faction.setDescription(Localization.SAFEZONE_DESCRIPTION.toString());
 		} else {
 			IFaction faction = factions.get("-1");
-			if(!faction.getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) {
-				faction.setTag(TL.SAFEZONE.toString());
+			if(!faction.getTag().equalsIgnoreCase(Localization.SAFEZONE.toString())) {
+				faction.setTag(Localization.SAFEZONE.toString());
 			}
-			if(!faction.getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString())) {
-				faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
+			if(!faction.getDescription().equalsIgnoreCase(Localization.SAFEZONE_DESCRIPTION.toString())) {
+				faction.setDescription(Localization.SAFEZONE_DESCRIPTION.toString());
 			}
 			// if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
 			if(faction.getTag().contains(" ")) {
-				faction.setTag(TL.SAFEZONE.toString());
+				faction.setTag(Localization.SAFEZONE.toString());
 			}
 		}
 
@@ -57,19 +57,19 @@ public abstract class AbstractFactionManager extends Factions {
 		if(!factions.containsKey("-2")) {
 			IFaction faction = generateFactionObject("-2");
 			factions.put("-2", faction);
-			faction.setTag(TL.WARZONE.toString());
-			faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
+			faction.setTag(Localization.WARZONE.toString());
+			faction.setDescription(Localization.WARZONE_DESCRIPTION.toString());
 		} else {
 			IFaction faction = factions.get("-2");
-			if(!faction.getTag().equalsIgnoreCase(TL.WARZONE.toString())) {
-				faction.setTag(TL.WARZONE.toString());
+			if(!faction.getTag().equalsIgnoreCase(Localization.WARZONE.toString())) {
+				faction.setTag(Localization.WARZONE.toString());
 			}
-			if(!faction.getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString())) {
-				faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
+			if(!faction.getDescription().equalsIgnoreCase(Localization.WARZONE_DESCRIPTION.toString())) {
+				faction.setDescription(Localization.WARZONE_DESCRIPTION.toString());
 			}
 			// if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
 			if(faction.getTag().contains(" ")) {
-				faction.setTag(TL.WARZONE.toString());
+				faction.setTag(Localization.WARZONE.toString());
 			}
 		}
 		return 0;
