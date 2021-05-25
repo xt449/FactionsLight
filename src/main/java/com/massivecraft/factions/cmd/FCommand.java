@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
@@ -144,7 +144,7 @@ public abstract class FCommand {
 	/*
 		Common Logic
 	 */
-	public List<String> getToolTips(FPlayer player) {
+	public List<String> getToolTips(IFactionPlayer player) {
 		List<String> lines = new ArrayList<>();
 		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getPlayer()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
@@ -152,7 +152,7 @@ public abstract class FCommand {
 		return lines;
 	}
 
-	public List<String> getToolTips(Faction faction) {
+	public List<String> getToolTips(IFaction faction) {
 		List<String> lines = new ArrayList<>();
 		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getFaction()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));

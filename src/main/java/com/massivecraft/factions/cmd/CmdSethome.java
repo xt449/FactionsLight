@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
@@ -28,7 +28,7 @@ public class CmdSethome extends FCommand {
 		// Can the player set the faction home HERE?
 		if(!Permission.BYPASS.has(context.player) &&
 				FactionsPlugin.getInstance().conf().factions().homes().isMustBeInClaimedTerritory() &&
-				Board.getInstance().getFactionAt(new FLocation(context.player)) != context.faction) {
+				IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player)) != context.faction) {
 			context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
 			return;
 		}

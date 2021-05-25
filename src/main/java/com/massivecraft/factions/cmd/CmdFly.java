@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FlightUtil;
@@ -59,7 +59,7 @@ public class CmdFly extends FCommand {
 	private boolean flyTest(final CommandContext context, boolean notify) {
 		if(!context.fPlayer.canFlyAtLocation()) {
 			if(notify) {
-				Faction factionAtLocation = Board.getInstance().getFactionAt(context.fPlayer.getLastStoodAt());
+				IFaction factionAtLocation = IFactionClaimManager.getInstance().getFactionAt(context.fPlayer.getLastStoodAt());
 				context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
 			}
 			return false;

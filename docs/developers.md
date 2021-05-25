@@ -51,5 +51,5 @@ Faction faction = Factions.getInstance().getFactionById("name");
 
 If you have a FLocation, you can get the Faction that owns it (including Wilderness, Warzone, and Safezone)
 ```java
-Faction faction = Board.getInstance().getFactionAt(fLocation);
+Faction faction = Board.getInstance().getFactionAt(factionClaim);
 ```

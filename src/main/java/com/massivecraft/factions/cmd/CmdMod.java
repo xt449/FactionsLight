@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
@@ -28,10 +28,10 @@ public class CmdMod extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer you = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer you = context.argAsBestFPlayerMatch(0);
 		if(you == null) {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
-			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
+			for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
 				String s = player.getName();
 				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " mod " + s);
 			}
@@ -41,7 +41,7 @@ public class CmdMod extends FCommand {
 		}
 
 		boolean permAny = Permission.MOD_ANY.has(context.sender, false);
-		Faction targetFaction = you.getFaction();
+		IFaction targetFaction = you.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
 			context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));

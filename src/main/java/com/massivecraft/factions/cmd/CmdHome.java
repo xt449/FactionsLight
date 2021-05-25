@@ -36,7 +36,7 @@ public class CmdHome extends FCommand {
 	public void perform(final CommandContext context) {
 		// TODO: Hide this command on help also.
 
-		Faction targetFaction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
+		IFaction targetFaction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
 
 		if(targetFaction != context.faction && context.fPlayer.isAdminBypassing()) {
 			if(targetFaction.hasHome()) {
@@ -86,7 +86,7 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		Faction faction = Board.getInstance().getFactionAt(new FLocation(context.player.getLocation()));
+		IFaction faction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player.getLocation()));
 		final Location loc = context.player.getLocation().clone();
 
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
@@ -103,7 +103,7 @@ public class CmdHome extends FCommand {
 					continue;
 				}
 
-				FPlayer fp = FPlayers.getInstance().getByPlayer(p);
+				IFactionPlayer fp = IFactionPlayerManager.getInstance().getByPlayer(p);
 				if(context.fPlayer.getRelationTo(fp) != Relation.ENEMY || fp.isVanished()) {
 					continue;
 				}

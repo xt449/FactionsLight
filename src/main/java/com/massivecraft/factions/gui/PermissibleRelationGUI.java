@@ -1,6 +1,6 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.Relation;
@@ -65,7 +65,7 @@ public class PermissibleRelationGUI extends GUI<Permissible> {
 
 	private final boolean online;
 
-	public PermissibleRelationGUI(boolean online, FPlayer user) {
+	public PermissibleRelationGUI(boolean online, IFactionPlayer user) {
 		super(user, FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ? 2 : 1);
 		this.online = online;
 		build();

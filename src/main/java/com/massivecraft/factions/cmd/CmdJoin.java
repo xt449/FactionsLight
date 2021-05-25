@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
@@ -25,12 +25,12 @@ public class CmdJoin extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction faction = context.argAsFaction(0);
+		IFaction faction = context.argAsFaction(0);
 		if(faction == null) {
 			return;
 		}
 
-		FPlayer fplayer = context.argAsBestFPlayerMatch(1, context.fPlayer, false);
+		IFactionPlayer fplayer = context.argAsBestFPlayerMatch(1, context.fPlayer, false);
 		boolean samePlayer = fplayer == context.fPlayer;
 
 		if(!samePlayer && !Permission.JOIN_OTHERS.has(context.sender, false)) {
@@ -84,7 +84,7 @@ public class CmdJoin extends FCommand {
 		}
 
 		// trigger the join event (cancellable)
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(IFactionPlayerManager.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if(joinEvent.isCancelled()) {
 			return;

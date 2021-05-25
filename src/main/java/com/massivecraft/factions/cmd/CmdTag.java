@@ -62,7 +62,7 @@ public class CmdTag extends FCommand {
 		context.faction.setTag(tag);
 
 		// Inform
-		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			if(fplayer.getFactionId().equals(context.faction.getId())) {
 				fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
 				continue;
@@ -70,7 +70,7 @@ public class CmdTag extends FCommand {
 
 			// Broadcast the tag change (if applicable)
 			if(FactionsPlugin.getInstance().conf().factions().chat().isBroadcastTagChanges()) {
-				Faction faction = fplayer.getFaction();
+				IFaction faction = fplayer.getFaction();
 				fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
 			}
 		}

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.material.MaterialDb;
@@ -123,14 +123,14 @@ public class MiscUtil {
 		return errors;
 	}
 
-	public static Iterable<FPlayer> rankOrder(Iterable<FPlayer> players) {
-		List<FPlayer> admins = new ArrayList<>();
-		List<FPlayer> coleaders = new ArrayList<>();
-		List<FPlayer> moderators = new ArrayList<>();
-		List<FPlayer> normal = new ArrayList<>();
-		List<FPlayer> recruit = new ArrayList<>();
+	public static Iterable<IFactionPlayer> rankOrder(Iterable<IFactionPlayer> players) {
+		List<IFactionPlayer> admins = new ArrayList<>();
+		List<IFactionPlayer> coleaders = new ArrayList<>();
+		List<IFactionPlayer> moderators = new ArrayList<>();
+		List<IFactionPlayer> normal = new ArrayList<>();
+		List<IFactionPlayer> recruit = new ArrayList<>();
 
-		for(FPlayer player : players) {
+		for(IFactionPlayer player : players) {
 
 			// Fix for some data being broken when we added the recruit rank.
 			if(player.getRole() == null) {
@@ -161,7 +161,7 @@ public class MiscUtil {
 			}
 		}
 
-		List<FPlayer> ret = new ArrayList<>();
+		List<IFactionPlayer> ret = new ArrayList<>();
 		ret.addAll(admins);
 		ret.addAll(coleaders);
 		ret.addAll(moderators);

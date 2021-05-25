@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -53,7 +53,7 @@ public class CmdMap extends FCommand {
 	}
 
 	public void showMap(CommandContext context) {
-		context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.fPlayer.getPlayer().getLocation().getYaw()));
+		context.sendFancyMessage(IFactionClaimManager.getInstance().getMap(context.fPlayer, new FactionClaim(context.fPlayer), context.fPlayer.getPlayer().getLocation().getYaw()));
 	}
 
 	@Override

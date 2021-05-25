@@ -1,9 +1,9 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.IEconomyParticipator;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.RelationUtil;
@@ -88,7 +88,7 @@ public class Econ {
 		modifyBalance(FactionsPlugin.getInstance().conf().economy().getUniverseAccount(), delta);
 	}
 
-	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
+	public static void sendBalanceInfo(IFactionPlayer to, IEconomyParticipator about) {
 		if(!shouldBeUsed()) {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
@@ -96,7 +96,7 @@ public class Econ {
 		to.msg(TL.ECON_BALANCE, about.describeTo(to, true), Econ.moneyString(getBalance(about)));
 	}
 
-	public static void sendBalanceInfo(CommandSender to, Faction about) {
+	public static void sendBalanceInfo(CommandSender to, IFaction about) {
 		if(!shouldBeUsed()) {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
@@ -104,9 +104,9 @@ public class Econ {
 		to.sendMessage(ChatColor.stripColor(String.format(TL.ECON_BALANCE.toString(), about.getTag(), Econ.moneyString(getBalance(about)))));
 	}
 
-	public static boolean canIControlYou(EconomyParticipator i, EconomyParticipator you) {
-		Faction fI = RelationUtil.getFaction(i);
-		Faction fYou = RelationUtil.getFaction(you);
+	public static boolean canIControlYou(IEconomyParticipator i, IEconomyParticipator you) {
+		IFaction fI = RelationUtil.getFaction(i);
+		IFaction fYou = RelationUtil.getFaction(you);
 
 		// This is a system invoker. Accept it.
 		if(fI == null) {
@@ -114,12 +114,12 @@ public class Econ {
 		}
 
 		// Bypassing players can do any kind of transaction
-		if(i instanceof FPlayer && ((FPlayer) i).isAdminBypassing()) {
+		if(i instanceof IFactionPlayer && ((IFactionPlayer) i).isAdminBypassing()) {
 			return true;
 		}
 
 		// Players with the any withdraw can do.
-		if(i instanceof FPlayer && Permission.MONEY_WITHDRAW_ANY.has(((FPlayer) i).getPlayer())) {
+		if(i instanceof IFactionPlayer && Permission.MONEY_WITHDRAW_ANY.has(((IFactionPlayer) i).getPlayer())) {
 			return true;
 		}
 
@@ -136,7 +136,7 @@ public class Econ {
 		}
 
 		// Factions can be controlled by members that are moderators... or any member if any member can withdraw.
-		if(you instanceof Faction && fI == fYou && (FactionsPlugin.getInstance().conf().economy().isBankMembersCanWithdraw() || ((FPlayer) i).getRole().value >= Role.MODERATOR.value)) {
+		if(you instanceof IFaction && fI == fYou && (FactionsPlugin.getInstance().conf().economy().isBankMembersCanWithdraw() || ((IFactionPlayer) i).getRole().value >= Role.MODERATOR.value)) {
 			return true;
 		}
 
@@ -145,11 +145,11 @@ public class Econ {
 		return false;
 	}
 
-	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount) {
+	public static boolean transferMoney(IEconomyParticipator invoker, IEconomyParticipator from, IEconomyParticipator to, double amount) {
 		return transferMoney(invoker, from, to, amount, true);
 	}
 
-	public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
+	public static boolean transferMoney(IEconomyParticipator invoker, IEconomyParticipator from, IEconomyParticipator to, double amount, boolean notify) {
 		if(!shouldBeUsed()) {
 			invoker.msg(TL.ECON_DISABLED);
 			return false;
@@ -159,7 +159,7 @@ public class Econ {
 		// If the amount is negative we must flip and multiply amount with -1.
 		if(amount < 0) {
 			amount *= -1;
-			EconomyParticipator temp = from;
+			IEconomyParticipator temp = from;
 			from = to;
 			to = temp;
 		}
@@ -210,46 +210,46 @@ public class Econ {
 		return false;
 	}
 
-	public static Set<FPlayer> getFplayers(EconomyParticipator ep) {
-		Set<FPlayer> fplayers = new HashSet<>();
+	public static Set<IFactionPlayer> getFplayers(IEconomyParticipator ep) {
+		Set<IFactionPlayer> fplayers = new HashSet<>();
 
 		if(ep != null) {
-			if(ep instanceof FPlayer) {
-				fplayers.add((FPlayer) ep);
-			} else if(ep instanceof Faction) {
-				fplayers.addAll(((Faction) ep).getFPlayers());
+			if(ep instanceof IFactionPlayer) {
+				fplayers.add((IFactionPlayer) ep);
+			} else if(ep instanceof IFaction) {
+				fplayers.addAll(((IFaction) ep).getFPlayers());
 			}
 		}
 
 		return fplayers;
 	}
 
-	public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount) {
-		Set<FPlayer> recipients = new HashSet<>();
+	public static void sendTransferInfo(IEconomyParticipator invoker, IEconomyParticipator from, IEconomyParticipator to, double amount) {
+		Set<IFactionPlayer> recipients = new HashSet<>();
 		recipients.addAll(getFplayers(invoker));
 		recipients.addAll(getFplayers(from));
 		recipients.addAll(getFplayers(to));
 
 		if(invoker == null) {
-			for(FPlayer recipient : recipients) {
+			for(IFactionPlayer recipient : recipients) {
 				recipient.msg(TL.ECON_TRANSFER_NOINVOKER, moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		} else if(invoker == from) {
-			for(FPlayer recipient : recipients) {
+			for(IFactionPlayer recipient : recipients) {
 				recipient.msg(TL.ECON_TRANSFER_GAVE, from.describeTo(recipient, true), moneyString(amount), to.describeTo(recipient));
 			}
 		} else if(invoker == to) {
-			for(FPlayer recipient : recipients) {
+			for(IFactionPlayer recipient : recipients) {
 				recipient.msg(TL.ECON_TRANSFER_TOOK, to.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient));
 			}
 		} else {
-			for(FPlayer recipient : recipients) {
+			for(IFactionPlayer recipient : recipients) {
 				recipient.msg(TL.ECON_TRANSFER_TRANSFER, invoker.describeTo(recipient, true), moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
 			}
 		}
 	}
 
-	public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis) {
+	public static boolean hasAtLeast(IEconomyParticipator ep, double delta, String toDoThis) {
 		if(!shouldBeUsed()) {
 			return true;
 		}
@@ -270,7 +270,7 @@ public class Econ {
 		return true;
 	}
 
-	public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
+	public static boolean modifyMoney(IEconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
 		if(!shouldBeUsed()) {
 			return false;
 		}
@@ -373,7 +373,7 @@ public class Econ {
 		return hasAccount(getOfflinePlayerForName(name));
 	}
 
-	public static boolean hasAccount(EconomyParticipator ep) {
+	public static boolean hasAccount(IEconomyParticipator ep) {
 		return hasAccount(ep.getOfflinePlayer());
 	}
 
@@ -386,7 +386,7 @@ public class Econ {
 		return getBalance(getOfflinePlayerForName(account));
 	}
 
-	public static double getBalance(EconomyParticipator ep) {
+	public static double getBalance(IEconomyParticipator ep) {
 		return getBalance(ep.getOfflinePlayer());
 	}
 
@@ -394,7 +394,7 @@ public class Econ {
 		return econ.getBalance(checkStatus(op), getWorld(op));
 	}
 
-	public static boolean has(EconomyParticipator ep, double amount) {
+	public static boolean has(IEconomyParticipator ep, double amount) {
 		return has(ep.getOfflinePlayer(), amount);
 	}
 
@@ -413,7 +413,7 @@ public class Econ {
 		return format.format(getBalance(offline));
 	}
 
-	public static String getFriendlyBalance(FPlayer player) {
+	public static String getFriendlyBalance(IFactionPlayer player) {
 		OfflinePlayer p;
 		if((p = player.getPlayer()) == null) {
 			return "0";
@@ -426,7 +426,7 @@ public class Econ {
 		return setBalance(getOfflinePlayerForName(account), amount);
 	}
 
-	public static boolean setBalance(EconomyParticipator ep, double amount) {
+	public static boolean setBalance(IEconomyParticipator ep, double amount) {
 		return setBalance(ep.getOfflinePlayer(), amount);
 	}
 
@@ -444,7 +444,7 @@ public class Econ {
 		return modifyBalance(getOfflinePlayerForName(account), amount);
 	}
 
-	public static boolean modifyBalance(EconomyParticipator ep, double amount) {
+	public static boolean modifyBalance(IEconomyParticipator ep, double amount) {
 		return modifyBalance(ep.getOfflinePlayer(), amount);
 	}
 
@@ -461,7 +461,7 @@ public class Econ {
 		return deposit(getOfflinePlayerForName(account), amount);
 	}
 
-	public static boolean deposit(EconomyParticipator ep, double amount) {
+	public static boolean deposit(IEconomyParticipator ep, double amount) {
 		return deposit(ep.getOfflinePlayer(), amount);
 	}
 
@@ -474,7 +474,7 @@ public class Econ {
 		return withdraw(getOfflinePlayerForName(account), amount);
 	}
 
-	public static boolean withdraw(EconomyParticipator ep, double amount) {
+	public static boolean withdraw(IEconomyParticipator ep, double amount) {
 		return withdraw(ep.getOfflinePlayer(), amount);
 	}
 
@@ -487,7 +487,7 @@ public class Econ {
 		createAccount(getOfflinePlayerForName(name));
 	}
 
-	public static void createAccount(EconomyParticipator ep) {
+	public static void createAccount(IEconomyParticipator ep) {
 		createAccount(ep.getOfflinePlayer());
 	}
 

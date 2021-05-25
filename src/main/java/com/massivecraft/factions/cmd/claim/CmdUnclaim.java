@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -33,7 +33,7 @@ public class CmdUnclaim extends FCommand {
 	public void perform(final CommandContext context) {
 		// Read and validate input
 		int radius = context.argAsInt(0, 1); // Default to 1
-		final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
+		final IFaction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
 		if(radius < 1) {
 			context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
@@ -42,7 +42,7 @@ public class CmdUnclaim extends FCommand {
 
 		if(radius < 2) {
 			// single chunk
-			unClaim(new FLocation(context.player), context, forFaction);
+			unClaim(new FactionClaim(context.player), context, forFaction);
 		} else {
 			// radius claim
 			if(!Permission.CLAIM_RADIUS.has(context.sender, false)) {
@@ -50,7 +50,7 @@ public class CmdUnclaim extends FCommand {
 				return;
 			}
 
-			new SpiralTask(new FLocation(context.player), radius) {
+			new SpiralTask(new FactionClaim(context.player), radius) {
 				private int failCount = 0;
 				private final int limit = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit() - 1;
 
@@ -70,8 +70,8 @@ public class CmdUnclaim extends FCommand {
 		}
 	}
 
-	private boolean unClaim(FLocation target, CommandContext context, Faction faction) {
-		Faction targetFaction = Board.getInstance().getFactionAt(target);
+	private boolean unClaim(FactionClaim target, CommandContext context, IFaction faction) {
+		IFaction targetFaction = IFactionClaimManager.getInstance().getFactionAt(target);
 
 		if(!targetFaction.equals(faction)) {
 			context.msg(TL.COMMAND_UNCLAIM_WRONGFACTIONOTHER);
@@ -80,7 +80,7 @@ public class CmdUnclaim extends FCommand {
 
 		if(targetFaction.isSafeZone()) {
 			if(Permission.MANAGE_SAFE_ZONE.has(context.sender)) {
-				Board.getInstance().removeAt(target);
+				IFactionClaimManager.getInstance().removeAt(target);
 				context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
 				if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
@@ -93,7 +93,7 @@ public class CmdUnclaim extends FCommand {
 			}
 		} else if(targetFaction.isWarZone()) {
 			if(Permission.MANAGE_WAR_ZONE.has(context.sender)) {
-				Board.getInstance().removeAt(target);
+				IFactionClaimManager.getInstance().removeAt(target);
 				context.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
 				if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
@@ -113,7 +113,7 @@ public class CmdUnclaim extends FCommand {
 				return false;
 			}
 
-			Board.getInstance().removeAt(target);
+			IFactionClaimManager.getInstance().removeAt(target);
 
 			targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
 			context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
@@ -159,7 +159,7 @@ public class CmdUnclaim extends FCommand {
 			}
 		}
 
-		Board.getInstance().removeAt(target);
+		IFactionClaimManager.getInstance().removeAt(target);
 		context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
 		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {

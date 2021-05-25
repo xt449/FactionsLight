@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
@@ -51,7 +51,7 @@ public class CmdShow extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction faction = context.faction;
+		IFaction faction = context.faction;
 		if(context.argIsSet(0)) {
 			faction = context.argAsFaction(0);
 		}
@@ -116,11 +116,11 @@ public class CmdShow extends FCommand {
 		}
 	}
 
-	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
+	private void sendMessages(List<String> messageList, CommandSender recipient, IFaction faction, IFactionPlayer player) {
 		this.sendMessages(messageList, recipient, faction, player, null);
 	}
 
-	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
+	private void sendMessages(List<String> messageList, CommandSender recipient, IFaction faction, IFactionPlayer player, Map<UUID, String> groupMap) {
 		FancyTag tag;
 		for(String parsed : messageList) {
 			if((tag = FancyTag.getMatch(parsed)) != null) {
@@ -160,9 +160,9 @@ public class CmdShow extends FCommand {
 		}
 	}
 
-	private void onOffLineMessage(StringBuilder builder, CommandSender recipient, Faction faction, boolean online) {
+	private void onOffLineMessage(StringBuilder builder, CommandSender recipient, IFaction faction, boolean online) {
 		boolean first = true;
-		for(FPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(online))) {
+		for(IFactionPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(online))) {
 			String name = p.getNameAndTitle();
 			builder.append(first ? name : ", " + name);
 			first = false;
@@ -170,9 +170,9 @@ public class CmdShow extends FCommand {
 		recipient.sendMessage(FactionsPlugin.getInstance().txt().parse(builder.toString()));
 	}
 
-	private void relationMessage(StringBuilder builder, CommandSender recipient, Faction faction, Relation relation) {
+	private void relationMessage(StringBuilder builder, CommandSender recipient, IFaction faction, Relation relation) {
 		boolean first = true;
-		for(Faction otherFaction : Factions.getInstance().getAllFactions()) {
+		for(IFaction otherFaction : Factions.getInstance().getAllFactions()) {
 			if(otherFaction != faction && otherFaction.getRelationTo(faction) == relation) {
 				String s = otherFaction.getTag();
 				builder.append(first ? s : ", " + s);
@@ -193,11 +193,11 @@ public class CmdShow extends FCommand {
 
 	private class GroupGetter extends BukkitRunnable {
 		private final List<String> messageList;
-		private final FPlayer sender;
-		private final Faction faction;
+		private final IFactionPlayer sender;
+		private final IFaction faction;
 		private final Set<OfflinePlayer> players;
 
-		private GroupGetter(List<String> messageList, FPlayer sender, Faction faction) {
+		private GroupGetter(List<String> messageList, IFactionPlayer sender, IFaction faction) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;
@@ -216,11 +216,11 @@ public class CmdShow extends FCommand {
 
 	private class Sender extends BukkitRunnable {
 		private final List<String> messageList;
-		private final FPlayer sender;
-		private final Faction faction;
+		private final IFactionPlayer sender;
+		private final IFaction faction;
 		private final Map<UUID, String> map;
 
-		private Sender(List<String> messageList, FPlayer sender, Faction faction, Map<UUID, String> map) {
+		private Sender(List<String> messageList, IFactionPlayer sender, IFaction faction, Map<UUID, String> map) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;

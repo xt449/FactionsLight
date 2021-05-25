@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -34,9 +34,9 @@ public class CmdSafeunclaimall extends FCommand {
 		String id = Factions.getInstance().getSafeZone().getId();
 
 		if(world == null) {
-			Board.getInstance().unclaimAll(id);
+			IFactionClaimManager.getInstance().unclaimAll(id);
 		} else {
-			Board.getInstance().unclaimAllInWorld(id, world);
+			IFactionClaimManager.getInstance().unclaimAllInWorld(id, world);
 		}
 
 		context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);

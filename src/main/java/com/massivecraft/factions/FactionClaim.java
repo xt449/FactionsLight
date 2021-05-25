@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class FLocation implements Serializable {
+public class FactionClaim implements Serializable {
 	private static final long serialVersionUID = -8292915234027387983L;
 	private static final boolean worldBorderSupport;
 	private String worldName = "world";
@@ -33,33 +33,33 @@ public class FLocation implements Serializable {
 	// Constructors
 	//----------------------------------------------//
 
-	public FLocation() {
+	public FactionClaim() {
 
 	}
 
-	public FLocation(String worldName, int x, int z) {
+	public FactionClaim(String worldName, int x, int z) {
 		this.worldName = worldName;
 		this.x = x;
 		this.z = z;
 	}
 
-	public FLocation(Location location) {
+	public FactionClaim(Location location) {
 		this(location.getWorld().getName(), blockToChunk(location.getBlockX()), blockToChunk(location.getBlockZ()));
 	}
 
-	public FLocation(Chunk chunk) {
+	public FactionClaim(Chunk chunk) {
 		this(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
 	}
 
-	public FLocation(Player player) {
+	public FactionClaim(Player player) {
 		this(player.getLocation());
 	}
 
-	public FLocation(FPlayer fplayer) {
+	public FactionClaim(IFactionPlayer fplayer) {
 		this(fplayer.getPlayer());
 	}
 
-	public FLocation(Block block) {
+	public FactionClaim(Block block) {
 		this(block.getLocation());
 	}
 
@@ -108,7 +108,7 @@ public class FLocation implements Serializable {
 		return "[" + this.getWorldName() + "," + this.getCoordString() + "]";
 	}
 
-	public static FLocation fromString(String string) {
+	public static FactionClaim fromString(String string) {
 		int index = string.indexOf(',');
 		int start = 1;
 		String worldName = string.substring(start, index);
@@ -116,7 +116,7 @@ public class FLocation implements Serializable {
 		index = string.indexOf(',', start);
 		int x = Integer.parseInt(string.substring(start, index));
 		int y = Integer.parseInt(string.substring(index + 1, string.length() - 1));
-		return new FLocation(worldName, x, y);
+		return new FactionClaim(worldName, x, y);
 	}
 
 	//----------------------------------------------//
@@ -152,17 +152,17 @@ public class FLocation implements Serializable {
 	// Misc Geometry
 	//----------------------------------------------//
 
-	public FLocation getRelative(int dx, int dz) {
-		return new FLocation(this.worldName, this.x + dx, this.z + dz);
+	public FactionClaim getRelative(int dx, int dz) {
+		return new FactionClaim(this.worldName, this.x + dx, this.z + dz);
 	}
 
-	public double getDistanceTo(FLocation that) {
+	public double getDistanceTo(FactionClaim that) {
 		double dx = that.x - this.x;
 		double dz = that.z - this.z;
 		return Math.sqrt(dx * dx + dz * dz);
 	}
 
-	public double getDistanceSquaredTo(FLocation that) {
+	public double getDistanceSquaredTo(FactionClaim that) {
 		double dx = that.x - this.x;
 		double dz = that.z - this.z;
 		return dx * dx + dz * dz;
@@ -210,10 +210,10 @@ public class FLocation implements Serializable {
 	//----------------------------------------------//
 	// Some Geometry
 	//----------------------------------------------//
-	public Set<FLocation> getCircle(double radius) {
+	public Set<FactionClaim> getCircle(double radius) {
 		double radiusSquared = radius * radius;
 
-		Set<FLocation> ret = new LinkedHashSet<>();
+		Set<FactionClaim> ret = new LinkedHashSet<>();
 		if(radius <= 0) {
 			return ret;
 		}
@@ -225,7 +225,7 @@ public class FLocation implements Serializable {
 
 		for(int x = xfrom; x <= xto; x++) {
 			for(int z = zfrom; z <= zto; z++) {
-				FLocation potential = new FLocation(this.worldName, x, z);
+				FactionClaim potential = new FactionClaim(this.worldName, x, z);
 				if(this.getDistanceSquaredTo(potential) <= radiusSquared) {
 					ret.add(potential);
 				}
@@ -235,12 +235,12 @@ public class FLocation implements Serializable {
 		return ret;
 	}
 
-	public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
-		HashSet<FLocation> ret = new HashSet<>();
+	public static HashSet<FactionClaim> getArea(FactionClaim from, FactionClaim to) {
+		HashSet<FactionClaim> ret = new HashSet<>();
 
 		for(long x : MiscUtil.range(from.getX(), to.getX())) {
 			for(long z : MiscUtil.range(from.getZ(), to.getZ())) {
-				ret.add(new FLocation(from.getWorldName(), (int) x, (int) z));
+				ret.add(new FactionClaim(from.getWorldName(), (int) x, (int) z));
 			}
 		}
 
@@ -262,11 +262,11 @@ public class FLocation implements Serializable {
 		if(obj == this) {
 			return true;
 		}
-		if(!(obj instanceof FLocation)) {
+		if(!(obj instanceof FactionClaim)) {
 			return false;
 		}
 
-		FLocation that = (FLocation) obj;
+		FactionClaim that = (FactionClaim) obj;
 		return this.x == that.x && this.z == that.z && (Objects.equals(this.worldName, that.worldName));
 	}
 }

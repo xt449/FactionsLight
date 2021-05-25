@@ -1,6 +1,6 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
@@ -13,8 +13,8 @@ public enum GeneralTag implements Tag {
 	MAX_ALLIES("max-allies", () -> getRelation(Relation.ALLY)),
 	MAX_ENEMIES("max-enemies", () -> getRelation(Relation.ENEMY)),
 	MAX_TRUCES("max-truces", () -> getRelation(Relation.TRUCE)),
-	FACTIONLESS("factionless", () -> String.valueOf(FPlayers.getInstance().getOnlinePlayers().stream().filter(p -> !p.hasFaction()).count())),
-	FACTIONLESS_TOTAL("factionless-total", () -> String.valueOf(FPlayers.getInstance().getAllFPlayers().stream().filter(p -> !p.hasFaction()).count())),
+	FACTIONLESS("factionless", () -> String.valueOf(IFactionPlayerManager.getInstance().getOnlinePlayers().stream().filter(p -> !p.hasFaction()).count())),
+	FACTIONLESS_TOTAL("factionless-total", () -> String.valueOf(IFactionPlayerManager.getInstance().getAllFPlayers().stream().filter(p -> !p.hasFaction()).count())),
 	TOTAL_ONLINE("total-online", () -> String.valueOf(Bukkit.getOnlinePlayers().size())),
 	;
 

@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.ChatMode;
@@ -24,18 +23,18 @@ import java.util.List;
  * necessary.
  */
 
-public interface FPlayer extends EconomyParticipator {
+public interface IFactionPlayer extends IEconomyParticipator {
 	void login();
 
 	void logout();
 
-	Faction getFaction();
+	IFaction getFaction();
 
 	String getFactionId();
 
 	boolean hasFaction();
 
-	void setFaction(Faction faction);
+	void setFaction(IFaction faction);
 
 	boolean willAutoLeave();
 
@@ -61,9 +60,9 @@ public interface FPlayer extends EconomyParticipator {
 
 	void setPowerBoost(double powerBoost);
 
-	Faction getAutoClaimFor();
+	IFaction getAutoClaimFor();
 
-	void setAutoClaimFor(Faction faction);
+	void setAutoClaimFor(IFaction faction);
 
 	boolean isAutoSafeClaimEnabled();
 
@@ -109,9 +108,9 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean hasLoginPvpDisabled();
 
-	FLocation getLastStoodAt();
+	FactionClaim getLastStoodAt();
 
-	void setLastStoodAt(FLocation flocation);
+	void setLastStoodAt(FactionClaim flocation);
 
 	String getTitle();
 
@@ -132,9 +131,9 @@ public interface FPlayer extends EconomyParticipator {
 	// Colored concatenations:
 	// These are used in information messages
 
-	String getNameAndTitle(Faction faction);
+	String getNameAndTitle(IFaction faction);
 
-	String getNameAndTitle(FPlayer fplayer);
+	String getNameAndTitle(IFactionPlayer fplayer);
 
 	// Chat Tag:
 	// These are injected into the format of global chat messages.
@@ -142,9 +141,9 @@ public interface FPlayer extends EconomyParticipator {
 	String getChatTag();
 
 	// Colored Chat Tag
-	String getChatTag(Faction faction);
+	String getChatTag(IFaction faction);
 
-	String getChatTag(FPlayer fplayer);
+	String getChatTag(IFactionPlayer fplayer);
 
 	int getKills();
 
@@ -199,7 +198,7 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean isInEnemyTerritory();
 
-	void sendFactionHereMessage(Faction from);
+	void sendFactionHereMessage(IFaction from);
 
 	// -------------------------------
 	// Actions
@@ -207,15 +206,15 @@ public interface FPlayer extends EconomyParticipator {
 
 	void leave(boolean makePay);
 
-	boolean canClaimForFaction(Faction forFaction);
+	boolean canClaimForFaction(IFaction forFaction);
 
-	boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure);
+	boolean canClaimForFactionAtLocation(IFaction forFaction, Location location, boolean notifyFailure);
 
-	boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure);
+	boolean canClaimForFactionAtLocation(IFaction forFaction, FactionClaim location, boolean notifyFailure);
 
-	boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
+	boolean attemptClaim(IFaction forFaction, Location location, boolean notifyFailure);
 
-	boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
+	boolean attemptClaim(IFaction forFaction, FactionClaim location, boolean notifyFailure);
 
 	String getId();
 
@@ -255,9 +254,9 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean canFlyAtLocation();
 
-	boolean canFlyAtLocation(FLocation location);
+	boolean canFlyAtLocation(FactionClaim location);
 
-	boolean canFlyInFactionTerritory(Faction faction);
+	boolean canFlyInFactionTerritory(IFaction faction);
 
 	boolean isSeeingChunk();
 

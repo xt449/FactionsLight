@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.perms.Relation;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,12 +12,12 @@ public class FactionRelationEvent extends Event {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private final Faction fsender;
-	private final Faction ftarget;
+	private final IFaction fsender;
+	private final IFaction ftarget;
 	private final Relation foldrel;
 	private final Relation frel;
 
-	public FactionRelationEvent(Faction sender, Faction target, Relation oldrel, Relation rel) {
+	public FactionRelationEvent(IFaction sender, IFaction target, Relation oldrel, Relation rel) {
 		fsender = sender;
 		ftarget = target;
 		foldrel = oldrel;
@@ -40,11 +40,11 @@ public class FactionRelationEvent extends Event {
 		return frel;
 	}
 
-	public Faction getFaction() {
+	public IFaction getFaction() {
 		return fsender;
 	}
 
-	public Faction getTargetFaction() {
+	public IFaction getTargetFaction() {
 		return ftarget;
 	}
 }

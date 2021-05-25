@@ -2,9 +2,9 @@ package com.massivecraft.factions.listeners;
 
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.User;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import net.ess3.api.InvalidWorldException;
@@ -27,7 +27,7 @@ public class EssentialsListener implements Listener {
 	@EventHandler
 	public void onLeave(FPlayerLeaveEvent event) throws Exception {
 		// Get the USER from their UUID.
-		Faction faction = event.getFaction();
+		IFaction faction = event.getFaction();
 		User user = ess.getUser(UUID.fromString(event.getfPlayer().getId()));
 		if(user == null) {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Attempted to remove Essentials homes for " + event.getfPlayer().getName() + " " +
@@ -52,9 +52,9 @@ public class EssentialsListener implements Listener {
 				FactionsPlugin.getInstance().getLogger().warning("Tried to check on home \"" + homeName + "\" for user \"" + event.getfPlayer().getName() + "\" but Essentials said world \"" + e.getWorld() + "\" does not exist. Skipping it.");
 				continue;
 			}
-			FLocation floc = new FLocation(loc);
+			FactionClaim floc = new FactionClaim(loc);
 
-			Faction factionAt = Board.getInstance().getFactionAt(floc);
+			IFaction factionAt = IFactionClaimManager.getInstance().getFactionAt(floc);
 			// We're only going to remove homes in territory that belongs to THEIR faction.
 			if(factionAt.equals(faction) && factionAt.isNormal()) {
 				user.delHome(homeName);

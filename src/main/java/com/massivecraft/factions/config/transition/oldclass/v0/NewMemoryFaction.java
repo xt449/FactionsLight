@@ -1,6 +1,6 @@
 package com.massivecraft.factions.config.transition.oldclass.v0;
 
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
@@ -27,7 +27,7 @@ public class NewMemoryFaction {
 	private final long foundedDate;
 	private final double powerBoost;
 	private final Map<String, Relation> relationWish;
-	private final Map<FLocation, Set<String>> claimOwnership;
+	private final Map<FactionClaim, Set<String>> claimOwnership;
 	private final Set<String> invites;
 	private final HashMap<String, List<String>> announcements;
 	private final ConcurrentHashMap<String, LazyLocation> warps;

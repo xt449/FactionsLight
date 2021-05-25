@@ -1,7 +1,7 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FScoreboard {
-	private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();
+	private static final Map<IFactionPlayer, FScoreboard> fscoreboards = new HashMap<>();
 
 	private final Scoreboard scoreboard;
-	private final FPlayer fplayer;
+	private final IFactionPlayer fplayer;
 	private final BufferedObjective bufferedObjective;
 	private FSidebarProvider defaultProvider;
 	private FSidebarProvider temporaryProvider;
@@ -29,7 +29,7 @@ public class FScoreboard {
 		return Bukkit.getScoreboardManager() != null;
 	}
 
-	public static void init(FPlayer fplayer) {
+	public static void init(IFactionPlayer fplayer) {
 		FScoreboard fboard = new FScoreboard(fplayer);
 		fscoreboards.put(fplayer, fboard);
 
@@ -39,7 +39,7 @@ public class FScoreboard {
 		FTeamWrapper.track(fboard);
 	}
 
-	public static void remove(FPlayer fplayer, Player player) {
+	public static void remove(IFactionPlayer fplayer, Player player) {
 		FScoreboard fboard = fscoreboards.remove(fplayer);
 
 		if(fboard != null) {
@@ -51,15 +51,15 @@ public class FScoreboard {
 		}
 	}
 
-	public static FScoreboard get(FPlayer fplayer) {
+	public static FScoreboard get(IFactionPlayer fplayer) {
 		return fscoreboards.get(fplayer);
 	}
 
 	public static FScoreboard get(Player player) {
-		return fscoreboards.get(FPlayers.getInstance().getByPlayer(player));
+		return fscoreboards.get(IFactionPlayerManager.getInstance().getByPlayer(player));
 	}
 
-	private FScoreboard(FPlayer fplayer) {
+	private FScoreboard(IFactionPlayer fplayer) {
 		this.fplayer = fplayer;
 
 		if(isSupportedByServer()) {
@@ -73,7 +73,7 @@ public class FScoreboard {
 		}
 	}
 
-	protected FPlayer getFPlayer() {
+	protected IFactionPlayer getFPlayer() {
 		return fplayer;
 	}
 

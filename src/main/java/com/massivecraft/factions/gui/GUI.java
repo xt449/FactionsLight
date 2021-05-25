@@ -1,6 +1,6 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -21,9 +21,9 @@ public abstract class GUI<Type> implements InventoryHolder {
 
 	private Map<Integer, Type> slotMap = new HashMap<>();
 
-	protected FPlayer user;
+	protected IFactionPlayer user;
 
-	public GUI(FPlayer user, int rows) {
+	public GUI(IFactionPlayer user, int rows) {
 		this.size = rows * 9;
 		this.user = user;
 	}

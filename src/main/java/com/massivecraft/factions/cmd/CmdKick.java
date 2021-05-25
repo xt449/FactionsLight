@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -29,22 +29,22 @@ public class CmdKick extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer toKick = context.argIsSet(0) ? context.argAsBestFPlayerMatch(0) : null;
+		IFactionPlayer toKick = context.argIsSet(0) ? context.argAsBestFPlayerMatch(0) : null;
 		if(toKick == null) {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
-			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
+			for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
 				String s = player.getName();
 				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
 			}
 			if(context.fPlayer.getRole().isAtLeast(Role.COLEADER)) {
 				// For both coleader and admin, add mods.
-				for(FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
+				for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
 					String s = player.getName();
 					msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
 				}
 				if(context.fPlayer.getRole() == Role.ADMIN) {
 					// Only add coleader to this for the leader.
-					for(FPlayer player : context.faction.getFPlayersWhereRole(Role.COLEADER)) {
+					for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.COLEADER)) {
 						String s = player.getName();
 						msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
 					}
@@ -61,7 +61,7 @@ public class CmdKick extends FCommand {
 			return;
 		}
 
-		Faction toKickFaction = toKick.getFaction();
+		IFaction toKickFaction = toKick.getFaction();
 
 		if(toKickFaction.isWilderness()) {
 			context.sender.sendMessage(TL.COMMAND_KICK_NONE.toString());

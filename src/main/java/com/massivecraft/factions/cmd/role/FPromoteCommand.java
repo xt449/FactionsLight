@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.role;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -27,7 +27,7 @@ public class FPromoteCommand extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer target = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
 			// context.msg(TL.GENERIC_NOPLAYERFOUND, context.argAsString(0));
 			return;

@@ -1,18 +1,18 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.perms.Relation;
 import org.bukkit.event.Cancellable;
 
 public class FactionRelationWishEvent extends FactionPlayerEvent implements Cancellable {
-	private final Faction targetFaction;
+	private final IFaction targetFaction;
 	private final Relation currentRelation;
 	private final Relation targetRelation;
 
 	private boolean cancelled;
 
-	public FactionRelationWishEvent(FPlayer caller, Faction sender, Faction targetFaction, Relation currentRelation, Relation targetRelation) {
+	public FactionRelationWishEvent(IFactionPlayer caller, IFaction sender, IFaction targetFaction, Relation currentRelation, Relation targetRelation) {
 		super(sender, caller);
 
 		this.targetFaction = targetFaction;
@@ -20,7 +20,7 @@ public class FactionRelationWishEvent extends FactionPlayerEvent implements Canc
 		this.targetRelation = targetRelation;
 	}
 
-	public Faction getTargetFaction() {
+	public IFaction getTargetFaction() {
 		return targetFaction;
 	}
 

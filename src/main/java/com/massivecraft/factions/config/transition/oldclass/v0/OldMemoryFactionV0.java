@@ -1,6 +1,6 @@
 package com.massivecraft.factions.config.transition.oldclass.v0;
 
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
@@ -23,7 +23,7 @@ public class OldMemoryFactionV0 {
 	protected double money;
 	protected double powerBoost;
 	protected Map<String, Relation> relationWish = new HashMap<>();
-	protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
+	protected Map<FactionClaim, Set<String>> claimOwnership = new ConcurrentHashMap<>();
 	protected Set<String> invites = new HashSet<>();
 	protected HashMap<String, List<String>> announcements = new HashMap<>();
 	protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();

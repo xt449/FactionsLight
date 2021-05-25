@@ -1,7 +1,7 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
@@ -27,7 +27,7 @@ public enum FactionTag implements Tag {
 		return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
 	}),
 	LEADER("leader", (fac) -> {
-		FPlayer fAdmin = fac.getFPlayerAdmin();
+		IFactionPlayer fAdmin = fac.getFPlayerAdmin();
 		return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
 	}),
 	JOINING("joining", (fac) -> (fac.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString())),
@@ -61,7 +61,7 @@ public enum FactionTag implements Tag {
 	PEACEFUL("peaceful", (fac) -> fac.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getPeaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
 	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
 	LAND_VALUE("land-value", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
-	DESCRIPTION("description", Faction::getDescription),
+	DESCRIPTION("description", IFaction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),
 	LAND_REFUND("land-refund", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("refund")),
 	BANK_BALANCE("faction-balance", (fac) -> {
@@ -108,32 +108,32 @@ public enum FactionTag implements Tag {
 	;
 
 	private final String tag;
-	private final BiFunction<Faction, FPlayer, String> biFunction;
-	private final Function<Faction, String> function;
+	private final BiFunction<IFaction, IFactionPlayer, String> biFunction;
+	private final Function<IFaction, String> function;
 
-	public static String parse(String text, Faction faction, FPlayer player) {
+	public static String parse(String text, IFaction faction, IFactionPlayer player) {
 		for(FactionTag tag : FactionTag.values()) {
 			text = tag.replace(text, faction, player);
 		}
 		return text;
 	}
 
-	public static String parse(String text, Faction faction) {
+	public static String parse(String text, IFaction faction) {
 		for(FactionTag tag : FactionTag.values()) {
 			text = tag.replace(text, faction);
 		}
 		return text;
 	}
 
-	FactionTag(String tag, BiFunction<Faction, FPlayer, String> function) {
+	FactionTag(String tag, BiFunction<IFaction, IFactionPlayer, String> function) {
 		this(tag, null, function);
 	}
 
-	FactionTag(String tag, Function<Faction, String> function) {
+	FactionTag(String tag, Function<IFaction, String> function) {
 		this(tag, function, null);
 	}
 
-	FactionTag(String tag, Function<Faction, String> function, BiFunction<Faction, FPlayer, String> biFunction) {
+	FactionTag(String tag, Function<IFaction, String> function, BiFunction<IFaction, IFactionPlayer, String> biFunction) {
 		if(tag.equalsIgnoreCase("permanent")) {
 			this.tag = tag;
 		} else {
@@ -153,7 +153,7 @@ public enum FactionTag implements Tag {
 		return test != null && test.contains(this.tag);
 	}
 
-	public String replace(String text, Faction faction, FPlayer player) {
+	public String replace(String text, IFaction faction, IFactionPlayer player) {
 		if(!this.foundInString(text)) {
 			return text;
 		}
@@ -161,7 +161,7 @@ public enum FactionTag implements Tag {
 		return result == null ? null : text.replace(this.tag, result);
 	}
 
-	public String replace(String text, Faction faction) {
+	public String replace(String text, IFaction faction) {
 		return this.replace(text, faction, null);
 	}
 }

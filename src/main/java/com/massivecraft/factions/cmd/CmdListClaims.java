@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -37,7 +37,7 @@ public class CmdListClaims extends FCommand {
 			context.msg(TL.COMMAND_LISTCLAIMS_INVALIDWORLD, context.argAsString(0));
 			return;
 		}
-		Faction faction = context.faction;
+		IFaction faction = context.faction;
 		if(context.argIsSet(1)) {
 			if(Permission.LISTCLAIMS_OTHER.has(context.sender, true)) {
 				faction = context.argAsFaction(1);
@@ -50,7 +50,7 @@ public class CmdListClaims extends FCommand {
 			return;
 		}
 		Map<Long, FLoc> worldClaims = new HashMap<>();
-		for(FLocation loc : Board.getInstance().getAllClaims(faction)) {
+		for(FactionClaim loc : IFactionClaimManager.getInstance().getAllClaims(faction)) {
 			if(loc.getWorld().equals(world)) {
 				worldClaims.put(getLong(loc.getX(), (int) loc.getZ()), new FLoc(loc.getX(), loc.getZ()));
 			}

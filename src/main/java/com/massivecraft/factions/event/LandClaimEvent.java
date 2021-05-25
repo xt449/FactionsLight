@@ -1,8 +1,8 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -12,9 +12,9 @@ import org.bukkit.event.Cancellable;
 public class LandClaimEvent extends FactionPlayerEvent implements Cancellable {
 
 	private boolean cancelled;
-	private final FLocation location;
+	private final FactionClaim location;
 
-	public LandClaimEvent(FLocation loc, Faction f, FPlayer p) {
+	public LandClaimEvent(FactionClaim loc, IFaction f, IFactionPlayer p) {
 		super(f, p);
 		cancelled = false;
 		location = loc;
@@ -25,7 +25,7 @@ public class LandClaimEvent extends FactionPlayerEvent implements Cancellable {
 	 *
 	 * @return the FLocation (also a chunk) involved in this event.
 	 */
-	public FLocation getLocation() {
+	public FactionClaim getLocation() {
 		return this.location;
 	}
 

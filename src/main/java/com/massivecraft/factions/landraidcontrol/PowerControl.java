@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class PowerControl implements LandRaidControl {
 	@Override
-	public boolean isRaidable(Faction faction) {
+	public boolean isRaidable(IFaction faction) {
 		return FactionsPlugin.getInstance().conf().factions().landRaidControl().power().isRaidability() && faction.isNormal() && !faction.isPeaceful() &&
 				(FactionsPlugin.getInstance().conf().factions().landRaidControl().power().isRaidabilityOnEqualLandAndPower() ?
 						(faction.getLandRounded() >= faction.getPowerRounded()) :
@@ -20,17 +20,17 @@ public class PowerControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean hasLandInflation(Faction faction) {
+	public boolean hasLandInflation(IFaction faction) {
 		return !faction.isPeaceful() && faction.getLandRounded() > faction.getPowerRounded();
 	}
 
 	@Override
-	public int getLandLimit(Faction faction) {
+	public int getLandLimit(IFaction faction) {
 		return faction.getPowerRounded();
 	}
 
 	@Override
-	public boolean canJoinFaction(Faction faction, FPlayer player, CommandContext context) {
+	public boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && player.getPower() < 0) {
 			if(context != null) {
 				context.msg(TL.COMMAND_JOIN_NEGATIVEPOWER, player.describeTo(context.fPlayer, true));
@@ -41,7 +41,7 @@ public class PowerControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean canLeaveFaction(FPlayer player) {
+	public boolean canLeaveFaction(IFactionPlayer player) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && player.getPower() < 0) {
 			player.msg(TL.LEAVE_NEGATIVEPOWER);
 			return false;
@@ -50,18 +50,18 @@ public class PowerControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean canDisbandFaction(Faction faction, CommandContext context) {
+	public boolean canDisbandFaction(IFaction faction, CommandContext context) {
 		return true;
 	}
 
 	@Override
-	public boolean canKick(FPlayer toKick, CommandContext context) {
+	public boolean canKick(IFactionPlayer toKick, CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().landRaidControl().power().canLeaveWithNegativePower() && toKick.getPower() < 0) {
 			context.msg(TL.COMMAND_KICK_NEGATIVEPOWER);
 			return false;
 		}
 		if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
-				Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(toKick.getFaction()) == Relation.ENEMY) {
+				IFactionClaimManager.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(toKick.getFaction()) == Relation.ENEMY) {
 			context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
 			return false;
 		}
@@ -69,29 +69,29 @@ public class PowerControl implements LandRaidControl {
 	}
 
 	@Override
-	public void onRespawn(FPlayer player) {
+	public void onRespawn(IFactionPlayer player) {
 		this.update(player); // update power, so they won't have gained any while dead
 	}
 
 	@Override
-	public void onQuit(FPlayer player) {
+	public void onQuit(IFactionPlayer player) {
 		this.update(player); // Make sure player's power is up to date when they log off.
 	}
 
 	@Override
-	public void update(FPlayer player) {
+	public void update(IFactionPlayer player) {
 		player.updatePower();
 	}
 
 	@Override
-	public void onJoin(FPlayer player) {
+	public void onJoin(IFactionPlayer player) {
 		player.losePowerFromBeingOffline();
 	}
 
 	@Override
 	public void onDeath(Player player) {
-		FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-		Faction faction = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+		IFactionPlayer fplayer = IFactionPlayerManager.getInstance().getByPlayer(player);
+		IFaction faction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(player.getLocation()));
 
 		MainConfig.Factions.LandRaidControl.Power powerConf = FactionsPlugin.getInstance().conf().factions().landRaidControl().power();
 		PowerLossEvent powerLossEvent = new PowerLossEvent(faction, fplayer);
@@ -130,7 +130,7 @@ public class PowerControl implements LandRaidControl {
 			Player killer = player.getKiller();
 			if(killer != null && vamp != 0D && powerDiff > 0) {
 				double powerChange = vamp * powerDiff;
-				FPlayer fKiller = FPlayers.getInstance().getByPlayer(killer);
+				IFactionPlayer fKiller = IFactionPlayerManager.getInstance().getByPlayer(killer);
 				fKiller.alterPower(powerChange);
 				fKiller.msg(TL.PLAYER_POWER_VAMPIRISM_GAIN, powerChange, fplayer.describeTo(fKiller), fKiller.getPowerRounded(), fKiller.getPowerMaxRounded());
 			}

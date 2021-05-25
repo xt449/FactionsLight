@@ -1,4 +1,4 @@
-package com.massivecraft.factions.listeners.versionspecific;
+package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.Relation;
@@ -14,10 +14,10 @@ import org.bukkit.event.world.PortalCreateEvent;
   Blocking all portal creation not in wilderness because we can't properly check if the creator has permission
   to create at the target destination.
  */
-public class PortalListener_114 implements Listener {
+public class PortalListener implements Listener {
 	public FactionsPlugin plugin;
 
-	public PortalListener_114(FactionsPlugin plugin) {
+	public PortalListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -34,12 +34,12 @@ public class PortalListener_114 implements Listener {
 		}
 
 		Player player = (Player) entity;
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
 
 		// Only 8 blocks so a loop should be fine.
 		for(BlockState block : event.getBlocks()) {
-			FLocation loc = new FLocation(block.getLocation());
-			Faction faction = Board.getInstance().getFactionAt(loc);
+			FactionClaim loc = new FactionClaim(block.getLocation());
+			IFaction faction = IFactionClaimManager.getInstance().getFactionAt(loc);
 
 			if(faction.isWilderness()) {
 				continue; // We don't care about wilderness.

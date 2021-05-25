@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
@@ -28,10 +28,10 @@ public class CmdColeader extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer target = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
-			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
+			for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
 				String s = player.getName();
 
 				msg.then(s + " ").color(ChatColor.WHITE)
@@ -44,7 +44,7 @@ public class CmdColeader extends FCommand {
 		}
 
 		boolean permAny = Permission.COLEADER_ANY.has(context.sender, false);
-		Faction targetFaction = target.getFaction();
+		IFaction targetFaction = target.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
 			context.msg(TL.COMMAND_COLEADER_NOTMEMBER, target.describeTo(context.fPlayer, true));

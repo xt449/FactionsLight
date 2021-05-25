@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -19,7 +19,7 @@ public class CmdPower extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
+		IFactionPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
 		if(target == null) {
 			return;
 		}

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.struct.Permission;
@@ -22,14 +22,14 @@ public class CmdAHome extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer target = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
 			context.msg(TL.GENERIC_NOPLAYERMATCH, context.argAsString(0));
 			return;
 		}
 
 		if(target.isOnline()) {
-			Faction faction = target.getFaction();
+			IFaction faction = target.getFaction();
 			if(faction.hasHome()) {
 				Location destination = faction.getHome();
 				FPlayerTeleportEvent tpEvent = new FPlayerTeleportEvent(target, destination, FPlayerTeleportEvent.PlayerTeleportReason.AHOME);

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -49,7 +49,7 @@ public class CmdUnclaimall extends FCommand {
 			return;
 		}
 
-		Board.getInstance().unclaimAll(context.faction.getId());
+		IFactionClaimManager.getInstance().unclaimAll(context.faction.getId());
 		context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
 		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {

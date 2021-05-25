@@ -23,8 +23,8 @@ public class CommandContext {
 	public CommandSender sender;
 
 	public Player player;
-	public FPlayer fPlayer;
-	public Faction faction;
+	public IFactionPlayer fPlayer;
+	public IFaction faction;
 
 	public List<String> args;
 	public String alias;
@@ -38,7 +38,7 @@ public class CommandContext {
 
 		if(sender instanceof Player) {
 			this.player = (Player) sender;
-			this.fPlayer = FPlayers.getInstance().getByPlayer(player);
+			this.fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
 			this.faction = fPlayer.getFaction();
 		}
 	}
@@ -223,11 +223,11 @@ public class CommandContext {
 	// -------------------------------------------- //
 
 	// FPLAYER ======================
-	public FPlayer strAsFPlayer(String name, FPlayer def, boolean msg) {
-		FPlayer ret = def;
+	public IFactionPlayer strAsFPlayer(String name, IFactionPlayer def, boolean msg) {
+		IFactionPlayer ret = def;
 
 		if(name != null) {
-			for(FPlayer fplayer : FPlayers.getInstance().getAllFPlayers()) {
+			for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getAllFPlayers()) {
 				if(fplayer.getName().equalsIgnoreCase(name)) {
 					ret = fplayer;
 					break;
@@ -242,42 +242,42 @@ public class CommandContext {
 		return ret;
 	}
 
-	public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg) {
+	public IFactionPlayer argAsFPlayer(int idx, IFactionPlayer def, boolean msg) {
 		return this.strAsFPlayer(argAsString(idx), def, msg);
 	}
 
-	public FPlayer argAsFPlayer(int idx, FPlayer def) {
+	public IFactionPlayer argAsFPlayer(int idx, IFactionPlayer def) {
 		return argAsFPlayer(idx, def, true);
 	}
 
-	public FPlayer argAsFPlayer(int idx) {
+	public IFactionPlayer argAsFPlayer(int idx) {
 		return argAsFPlayer(idx, null);
 	}
 
 	// BEST FPLAYER MATCH ======================
-	public FPlayer strAsBestFPlayerMatch(String name, FPlayer def, boolean msg) {
+	public IFactionPlayer strAsBestFPlayerMatch(String name, IFactionPlayer def, boolean msg) {
 		return strAsFPlayer(name, def, msg);
 	}
 
-	public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg) {
+	public IFactionPlayer argAsBestFPlayerMatch(int idx, IFactionPlayer def, boolean msg) {
 		return this.strAsBestFPlayerMatch(argAsString(idx), def, msg);
 	}
 
-	public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def) {
+	public IFactionPlayer argAsBestFPlayerMatch(int idx, IFactionPlayer def) {
 		return argAsBestFPlayerMatch(idx, def, true);
 	}
 
-	public FPlayer argAsBestFPlayerMatch(int idx) {
+	public IFactionPlayer argAsBestFPlayerMatch(int idx) {
 		return argAsBestFPlayerMatch(idx, null);
 	}
 
 	// FACTION ======================
-	public Faction strAsFaction(String name, Faction def, boolean msg) {
-		Faction ret = def;
+	public IFaction strAsFaction(String name, IFaction def, boolean msg) {
+		IFaction ret = def;
 
 		if(name != null) {
 			// First we try an exact match
-			Faction faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
+			IFaction faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
 
 			// Now lets try for warzone / safezone. Helpful for custom warzone / safezone names.
 			// Do this after we check for an exact match in case they rename the warzone / safezone
@@ -297,7 +297,7 @@ public class CommandContext {
 
 			// Next we match player names
 			if(faction == null) {
-				FPlayer fplayer = strAsFPlayer(name, null, false);
+				IFactionPlayer fplayer = strAsFPlayer(name, null, false);
 				if(fplayer != null) {
 					faction = fplayer.getFaction();
 				}
@@ -315,15 +315,15 @@ public class CommandContext {
 		return ret;
 	}
 
-	public Faction argAsFaction(int idx, Faction def, boolean msg) {
+	public IFaction argAsFaction(int idx, IFaction def, boolean msg) {
 		return this.strAsFaction(argAsString(idx), def, msg);
 	}
 
-	public Faction argAsFaction(int idx, Faction def) {
+	public IFaction argAsFaction(int idx, IFaction def) {
 		return argAsFaction(idx, def, true);
 	}
 
-	public Faction argAsFaction(int idx) {
+	public IFaction argAsFaction(int idx) {
 		return argAsFaction(idx, null);
 	}
 
@@ -358,7 +358,7 @@ public class CommandContext {
 	/*
 		Common Methods
 	*/
-	public boolean canIAdministerYou(FPlayer i, FPlayer you) {
+	public boolean canIAdministerYou(IFactionPlayer i, IFactionPlayer you) {
 		if(!i.getFaction().equals(you.getFaction())) {
 			i.sendMessage(FactionsPlugin.getInstance().txt().parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
 			return false;
@@ -407,7 +407,7 @@ public class CommandContext {
 		this.doWarmUp(fPlayer, warmup, translationKey, action, runnable, delay);
 	}
 
-	public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
+	public void doWarmUp(IFactionPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
 		WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
 	}
 

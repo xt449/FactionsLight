@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
@@ -23,7 +23,7 @@ public class CmdTitle extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer you = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer you = context.argAsBestFPlayerMatch(0);
 		if(you == null) {
 			return;
 		}

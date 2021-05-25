@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 
@@ -14,7 +14,7 @@ public class FPlayerTeleportEvent extends FactionPlayerEvent implements Cancella
 		HOME, AHOME, WARP, STUCK
 	}
 
-	public FPlayerTeleportEvent(FPlayer p, Location location, FPlayerTeleportEvent.PlayerTeleportReason r) {
+	public FPlayerTeleportEvent(IFactionPlayer p, Location location, FPlayerTeleportEvent.PlayerTeleportReason r) {
 		super(p.getFaction(), p);
 		reason = r;
 		this.location = location;

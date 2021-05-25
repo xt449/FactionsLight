@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,19 +39,19 @@ public abstract class SpiralTask implements Runnable {
 	private transient int current = 0;
 
 	@SuppressWarnings("LeakingThisInConstructor")
-	public SpiralTask(FLocation fLocation, int radius) {
+	public SpiralTask(FactionClaim factionClaim, int radius) {
 		// limit is determined based on spiral leg length for given radius; see insideRadius()
 		this.limit = (radius - 1) * 2;
 
-		this.world = Bukkit.getWorld(fLocation.getWorldName());
+		this.world = Bukkit.getWorld(factionClaim.getWorldName());
 		if(this.world == null) {
 			FactionsPlugin.getInstance().log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
 			this.stop();
 			return;
 		}
 
-		this.x = (int) fLocation.getX();
-		this.z = (int) fLocation.getZ();
+		this.x = (int) factionClaim.getX();
+		this.z = (int) factionClaim.getZ();
 
 		this.readyToGo = true;
 
@@ -69,8 +69,8 @@ public abstract class SpiralTask implements Runnable {
 	/*
 	 * Returns an FLocation pointing at the current chunk X and Z values.
 	 */
-	public final FLocation currentFLocation() {
-		return new FLocation(world.getName(), x, z);
+	public final FactionClaim currentFLocation() {
+		return new FactionClaim(world.getName(), x, z);
 	}
 
 	/*
@@ -78,7 +78,7 @@ public abstract class SpiralTask implements Runnable {
 	 * note that the Location is at the corner of the chunk, not the center.
 	 */
 	public final Location currentLocation() {
-		return new Location(world, FLocation.chunkToBlock(x), 65.0, FLocation.chunkToBlock(z));
+		return new Location(world, FactionClaim.chunkToBlock(x), 65.0, FactionClaim.chunkToBlock(z));
 	}
 
 	/*

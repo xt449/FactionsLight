@@ -15,14 +15,13 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.integration.permcontext.ContextManager;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
+import com.massivecraft.factions.listeners.PortalListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.material.MaterialDb;
-import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -277,10 +276,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 
-		int loadedPlayers = FPlayers.getInstance().load();
+		int loadedPlayers = IFactionPlayerManager.getInstance().load();
 		int loadedFactions = Factions.getInstance().load();
-		for(FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
-			Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
+		for(IFactionPlayer fPlayer : IFactionPlayerManager.getInstance().getAllFPlayers()) {
+			IFaction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
 			if(faction == null) {
 				log("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId());
 				fPlayer.resetFactionData(false);
@@ -288,8 +287,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			}
 			faction.addFPlayer(fPlayer);
 		}
-		int loadedClaims = Board.getInstance().load();
-		Board.getInstance().clean();
+		int loadedClaims = IFactionClaimManager.getInstance().load();
+		IFactionClaimManager.getInstance().clean();
 		FactionsPlugin.getInstance().getLogger().info("Loaded " + loadedPlayers + " players in " + loadedFactions + " factions with " + loadedClaims + " claims");
 
 		// Add Base Commands
@@ -319,7 +318,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		startAutoLeaveTask(false);
 
 		// Run before initializing listeners to handle reloads properly.
-		particleProvider = new BukkitParticleProvider();
+		particleProvider = new ParticleProvider();
 
 		if(conf().commands().seeChunk().isParticles()) {
 			double delay = Math.floor(conf().commands().seeChunk().getParticleUpdateTime() * 20);
@@ -335,7 +334,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		getServer().getPluginManager().registerEvents(new FactionsExploitListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 		getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
-		getServer().getPluginManager().registerEvents(new PortalListener_114(this), this);
+		getServer().getPluginManager().registerEvents(new PortalListener(this), this);
 
 		// since some other plugins execute commands directly through this command interface, provide it
 		this.getCommand(refCommand).setExecutor(cmdBase);
@@ -343,8 +342,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		if(conf().commands().fly().isEnable()) {
 			FlightUtil.start();
 		}
-
-		new TitleAPI();
 
 		if(ChatColor.stripColor(TL.NOFACTION_PREFIX.toString()).equals("[4-]")) {
 			getLogger().warning("Looks like you have an old, mistaken 'nofactions-prefix' in your lang.yml. It currently displays [4-] which is... strange.");
@@ -751,7 +748,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	}
 
 	private GsonBuilder getGsonBuilder() {
-		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
+		Type mapFLocToStringSetType = new TypeToken<Map<FactionClaim, Set<String>>>() {
 		}.getType();
 
 		Type accessType = new TypeToken<Map<Permissible, Map<PermissibleAction, Boolean>>>() {
@@ -787,8 +784,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		// only save data if plugin actually loaded successfully
 		if(loadSuccessful) {
 			Factions.getInstance().forceSave();
-			FPlayers.getInstance().forceSave();
-			Board.getInstance().forceSave();
+			IFactionPlayerManager.getInstance().forceSave();
+			IFactionClaimManager.getInstance().forceSave();
 		}
 		if(this.luckPermsSetup) {
 			LuckPerms.shutdown(this);
@@ -862,7 +859,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		if(player == null) {
 			return false;
 		}
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 
 		return me != null && me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
 	}
@@ -890,7 +887,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			return tag;
 		}
 
-		FPlayer me = FPlayers.getInstance().getByPlayer(speaker);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(speaker);
 		if(me == null) {
 			return tag;
 		}
@@ -899,7 +896,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		if(listener == null || !this.conf().factions().chat().isTagRelationColored()) {
 			tag = me.getChatTag().trim();
 		} else {
-			FPlayer you = FPlayers.getInstance().getByPlayer(listener);
+			IFactionPlayer you = IFactionPlayerManager.getInstance().getByPlayer(listener);
 			if(you == null) {
 				tag = me.getChatTag().trim();
 			} else  // everything checks out, give the colored tag
@@ -921,7 +918,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			return "";
 		}
 
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 		if(me == null) {
 			return "";
 		}
@@ -939,9 +936,9 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	@Override
 	public Set<String> getPlayersInFaction(String factionTag) {
 		Set<String> players = new HashSet<>();
-		Faction faction = Factions.getInstance().getByTag(factionTag);
+		IFaction faction = Factions.getInstance().getByTag(factionTag);
 		if(faction != null) {
-			for(FPlayer fplayer : faction.getFPlayers()) {
+			for(IFactionPlayer fplayer : faction.getFPlayers()) {
 				players.add(fplayer.getName());
 			}
 		}
@@ -952,9 +949,9 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	@Override
 	public Set<String> getOnlinePlayersInFaction(String factionTag) {
 		Set<String> players = new HashSet<>();
-		Faction faction = Factions.getInstance().getByTag(factionTag);
+		IFaction faction = Factions.getInstance().getByTag(factionTag);
 		if(faction != null) {
-			for(FPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
+			for(IFactionPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
 				players.add(fplayer.getName());
 			}
 		}

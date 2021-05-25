@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -18,9 +18,9 @@ public class CmdSaveAll extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayers.getInstance().forceSave(false);
+		IFactionPlayerManager.getInstance().forceSave(false);
 		Factions.getInstance().forceSave(false);
-		Board.getInstance().forceSave(false);
+		IFactionClaimManager.getInstance().forceSave(false);
 		context.msg(TL.COMMAND_SAVEALL_SUCCESS);
 	}
 

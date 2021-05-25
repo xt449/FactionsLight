@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -58,7 +58,7 @@ public class CmdClaimLine extends FCommand {
 			return;
 		}
 
-		final Faction forFaction = context.argAsFaction(2, context.faction);
+		final IFaction forFaction = context.argAsFaction(2, context.faction);
 		Location location = context.player.getLocation();
 
 		// TODO: make this a task like claiming a radius?

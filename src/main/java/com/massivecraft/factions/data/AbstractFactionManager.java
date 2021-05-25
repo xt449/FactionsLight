@@ -1,6 +1,6 @@
 package com.massivecraft.factions.data;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
@@ -12,19 +12,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MemoryFactions extends Factions {
-	public final Map<String, Faction> factions = new ConcurrentHashMap<>();
+public abstract class AbstractFactionManager extends Factions {
+	public final Map<String, IFaction> factions = new ConcurrentHashMap<>();
 	public int nextId = 1;
 
 	public int load() {
 		// Make sure the default neutral faction exists
 		if(!factions.containsKey("0")) {
-			Faction faction = generateFactionObject("0");
+			IFaction faction = generateFactionObject("0");
 			factions.put("0", faction);
 			faction.setTag(TL.WILDERNESS.toString());
 			faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
 		} else {
-			Faction faction = factions.get("0");
+			IFaction faction = factions.get("0");
 			if(!faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
 				faction.setTag(TL.WILDERNESS.toString());
 			}
@@ -35,12 +35,12 @@ public abstract class MemoryFactions extends Factions {
 
 		// Make sure the safe zone faction exists
 		if(!factions.containsKey("-1")) {
-			Faction faction = generateFactionObject("-1");
+			IFaction faction = generateFactionObject("-1");
 			factions.put("-1", faction);
 			faction.setTag(TL.SAFEZONE.toString());
 			faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
 		} else {
-			Faction faction = factions.get("-1");
+			IFaction faction = factions.get("-1");
 			if(!faction.getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) {
 				faction.setTag(TL.SAFEZONE.toString());
 			}
@@ -55,12 +55,12 @@ public abstract class MemoryFactions extends Factions {
 
 		// Make sure the war zone faction exists
 		if(!factions.containsKey("-2")) {
-			Faction faction = generateFactionObject("-2");
+			IFaction faction = generateFactionObject("-2");
 			factions.put("-2", faction);
 			faction.setTag(TL.WARZONE.toString());
 			faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
 		} else {
-			Faction faction = factions.get("-2");
+			IFaction faction = factions.get("-2");
 			if(!faction.getTag().equalsIgnoreCase(TL.WARZONE.toString())) {
 				faction.setTag(TL.WARZONE.toString());
 			}
@@ -75,15 +75,15 @@ public abstract class MemoryFactions extends Factions {
 		return 0;
 	}
 
-	public Faction getFactionById(String id) {
+	public IFaction getFactionById(String id) {
 		return factions.get(id);
 	}
 
-	public abstract Faction generateFactionObject(String string);
+	public abstract IFaction generateFactionObject(String string);
 
-	public Faction getByTag(String str) {
+	public IFaction getByTag(String str) {
 		String compStr = MiscUtil.getComparisonString(str);
-		for(Faction faction : factions.values()) {
+		for(IFaction faction : factions.values()) {
 			if(faction.getComparisonTag().equals(compStr)) {
 				return faction;
 			}
@@ -91,12 +91,12 @@ public abstract class MemoryFactions extends Factions {
 		return null;
 	}
 
-	public Faction getBestTagMatch(String start) {
+	public IFaction getBestTagMatch(String start) {
 		int best = 0;
 		start = start.toLowerCase();
 		int minlength = start.length();
-		Faction bestMatch = null;
-		for(Faction faction : factions.values()) {
+		IFaction bestMatch = null;
+		for(IFaction faction : factions.values()) {
 			String candidate = faction.getTag();
 			candidate = ChatColor.stripColor(candidate);
 			if(candidate.length() < minlength) {
@@ -128,50 +128,50 @@ public abstract class MemoryFactions extends Factions {
 		return factions.containsKey(id);
 	}
 
-	public Faction createFaction() {
-		Faction faction = generateFactionObject();
+	public IFaction createFaction() {
+		IFaction faction = generateFactionObject();
 		factions.put(faction.getId(), faction);
 		return faction;
 	}
 
 	public Set<String> getFactionTags() {
 		Set<String> tags = new HashSet<>();
-		for(Faction faction : factions.values()) {
+		for(IFaction faction : factions.values()) {
 			tags.add(faction.getTag());
 		}
 		return tags;
 	}
 
-	public abstract Faction generateFactionObject();
+	public abstract IFaction generateFactionObject();
 
 	public void removeFaction(String id) {
 		factions.remove(id).remove();
 	}
 
 	@Override
-	public ArrayList<Faction> getAllFactions() {
+	public ArrayList<IFaction> getAllFactions() {
 		return new ArrayList<>(factions.values());
 	}
 
 	@Override
-	public Faction getNone() {
+	public IFaction getNone() {
 		return factions.get("0");
 	}
 
 	@Override
-	public Faction getWilderness() {
+	public IFaction getWilderness() {
 		return factions.get("0");
 	}
 
 	@Override
-	public Faction getSafeZone() {
+	public IFaction getSafeZone() {
 		return factions.get("-1");
 	}
 
 	@Override
-	public Faction getWarZone() {
+	public IFaction getWarZone() {
 		return factions.get("-2");
 	}
 
-	public abstract void convertFrom(MemoryFactions old);
+	public abstract void convertFrom(AbstractFactionManager old);
 }

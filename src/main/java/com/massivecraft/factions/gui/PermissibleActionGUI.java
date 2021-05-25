@@ -1,6 +1,6 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -35,7 +35,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 	private final Permissible permissible;
 	private final boolean online;
 
-	public PermissibleActionGUI(boolean online, FPlayer user, Permissible permissible) {
+	public PermissibleActionGUI(boolean online, IFactionPlayer user, Permissible permissible) {
 		super(user, (int) Math.ceil(((double) PermissibleAction.values().length) / 9d) + 1);
 		this.permissible = permissible;
 		this.online = online;

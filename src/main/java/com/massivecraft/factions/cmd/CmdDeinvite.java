@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
@@ -27,11 +27,11 @@ public class CmdDeinvite extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer you = context.argAsBestFPlayerMatch(0);
+		IFactionPlayer you = context.argAsBestFPlayerMatch(0);
 		if(you == null) {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
 			for(String id : context.faction.getInvites()) {
-				FPlayer fp = FPlayers.getInstance().getById(id);
+				IFactionPlayer fp = IFactionPlayerManager.getInstance().getById(id);
 				String name = fp != null ? fp.getName() : id;
 				msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " deinvite " + name);
 			}

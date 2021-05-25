@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
@@ -36,7 +36,7 @@ public class CmdDelWarp extends FCommand {
 		}
 	}
 
-	private boolean transact(FPlayer player, CommandContext context) {
+	private boolean transact(IFactionPlayer player, CommandContext context) {
 		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDelWarp(), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
 	}
 

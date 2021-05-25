@@ -3,7 +3,7 @@ package com.massivecraft.factions.config.transition;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.Loader;
 import com.massivecraft.factions.config.transition.oldclass.v0.*;
@@ -118,7 +118,7 @@ public class Transitioner {
 	}
 
 	private void buildV0Gson() {
-		Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
+		Type mapFLocToStringSetType = new TypeToken<Map<FactionClaim, Set<String>>>() {
 		}.getType();
 
 		Type accessTypeAdatper = new TypeToken<Map<OldPermissableV0, Map<OldPermissableActionV0, OldAccessV0>>>() {

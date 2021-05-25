@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.tnt;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -32,7 +32,7 @@ public class CmdTNTFill extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(!context.faction.equals(Board.getInstance().getFactionAt(new FLocation(context.player.getLocation())))) {
+		if(!context.faction.equals(IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player.getLocation())))) {
 			context.msg(TL.COMMAND_TNT_TERRITORYONLY);
 			return;
 		}
@@ -101,7 +101,7 @@ public class CmdTNTFill extends FCommand {
 			for(int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; y++) {
 				for(int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; z++) {
 					Block block = location.getWorld().getBlockAt(x, y, z);
-					if(!Board.getInstance().getIdAt(new FLocation(block)).equals(id)) {
+					if(!IFactionClaimManager.getInstance().getIdAt(new FactionClaim(block)).equals(id)) {
 						continue;
 					}
 					if(block.getType() == Material.DISPENSER) {

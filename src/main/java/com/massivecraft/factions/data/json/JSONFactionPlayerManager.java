@@ -2,11 +2,11 @@ package com.massivecraft.factions.data.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.data.MemoryFPlayer;
-import com.massivecraft.factions.data.MemoryFPlayers;
+import com.massivecraft.factions.data.AbstractFactionPlayer;
+import com.massivecraft.factions.data.AbstractFactionPlayerManager;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.UUIDFetcher;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-public class JSONFPlayers extends MemoryFPlayers {
+public class JSONFactionPlayerManager extends AbstractFactionPlayerManager {
 	public Gson getGson() {
 		return FactionsPlugin.getInstance().getGson();
 	}
@@ -28,17 +28,17 @@ public class JSONFPlayers extends MemoryFPlayers {
 
 	private final File file;
 
-	public JSONFPlayers() {
+	public JSONFactionPlayerManager() {
 		if(FactionsPlugin.getInstance().getServerUUID() == null) {
 			FactionsPlugin.getInstance().grumpException(new RuntimeException());
 		}
 		file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/players.json");
 	}
 
-	public void convertFrom(MemoryFPlayers old) {
-		old.fPlayers.forEach((id, faction) -> this.fPlayers.put(id, new JSONFPlayer((MemoryFPlayer) faction)));
+	public void convertFrom(AbstractFactionPlayerManager old) {
+		old.fPlayers.forEach((id, faction) -> this.fPlayers.put(id, new JSONFactionPlayer((AbstractFactionPlayer) faction)));
 		forceSave();
-		FPlayers.instance = this;
+		IFactionPlayerManager.instance = this;
 	}
 
 	public void forceSave() {
@@ -46,22 +46,22 @@ public class JSONFPlayers extends MemoryFPlayers {
 	}
 
 	public void forceSave(boolean sync) {
-		final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<>();
-		for(FPlayer entity : this.fPlayers.values()) {
-			if(((MemoryFPlayer) entity).shouldBeSaved()) {
-				entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
+		final Map<String, JSONFactionPlayer> entitiesThatShouldBeSaved = new HashMap<>();
+		for(IFactionPlayer entity : this.fPlayers.values()) {
+			if(((AbstractFactionPlayer) entity).shouldBeSaved()) {
+				entitiesThatShouldBeSaved.put(entity.getId(), (JSONFactionPlayer) entity);
 			}
 		}
 
 		saveCore(file, entitiesThatShouldBeSaved, sync);
 	}
 
-	private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
+	private boolean saveCore(File target, Map<String, JSONFactionPlayer> data, boolean sync) {
 		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
 	}
 
 	public int load() {
-		Map<String, JSONFPlayer> fplayers = this.loadCore();
+		Map<String, JSONFactionPlayer> fplayers = this.loadCore();
 		if(fplayers == null) {
 			return 0;
 		}
@@ -70,7 +70,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 		return fPlayers.size();
 	}
 
-	private Map<String, JSONFPlayer> loadCore() {
+	private Map<String, JSONFactionPlayer> loadCore() {
 		if(!this.file.exists()) {
 			return new HashMap<>();
 		}
@@ -80,11 +80,11 @@ public class JSONFPlayers extends MemoryFPlayers {
 			return null;
 		}
 
-		Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
+		Map<String, JSONFactionPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFactionPlayer>>() {
 		}.getType());
 		Set<String> list = new HashSet<>();
 		Set<String> invalidList = new HashSet<>();
-		for(Entry<String, JSONFPlayer> entry : data.entrySet()) {
+		for(Entry<String, JSONFactionPlayer> entry : data.entrySet()) {
 			String key = entry.getKey();
 			entry.getValue().setId(key);
 			if(doesKeyNeedMigration(key)) {
@@ -128,7 +128,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 					// named entry with a UUID key
 					String id = response.get(value).toString();
 
-					JSONFPlayer player = data.get(value);
+					JSONFactionPlayer player = data.get(value);
 
 					if(player == null) {
 						// The player never existed here, and shouldn't persist
@@ -174,8 +174,8 @@ public class JSONFPlayers extends MemoryFPlayers {
 	}
 
 	@Override
-	public FPlayer generateFPlayer(String id) {
-		FPlayer player = new JSONFPlayer(id);
+	public IFactionPlayer generateFPlayer(String id) {
+		IFactionPlayer player = new JSONFactionPlayer(id);
 		this.fPlayers.put(player.getId(), player);
 		return player;
 	}

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.integration.Essentials;
@@ -31,7 +31,7 @@ public class CmdStuck extends FCommand {
 	public void perform(final CommandContext context) {
 		final Player player = context.fPlayer.getPlayer();
 		final Location sentAt = player.getLocation();
-		final FLocation chunk = context.fPlayer.getLastStoodAt();
+		final FactionClaim chunk = context.fPlayer.getLastStoodAt();
 		// TODO handle delay 0
 		final long delay = FactionsPlugin.getInstance().conf().commands().stuck().getDelay();
 		final int radius = FactionsPlugin.getInstance().conf().commands().stuck().getRadius();
@@ -70,23 +70,23 @@ public class CmdStuck extends FCommand {
 						return;
 					}
 
-					final Board board = Board.getInstance();
+					final IFactionClaimManager claimManager = IFactionClaimManager.getInstance();
 					// spiral task to find nearest wilderness chunk
-					new SpiralTask(new FLocation(context.player), radius * 2) {
+					new SpiralTask(new FactionClaim(context.player), radius * 2) {
 
 						final int buffer = FactionsPlugin.getInstance().conf().worldBorder().getBuffer();
 
 						@Override
 						public boolean work() {
-							FLocation chunk = currentFLocation();
+							FactionClaim chunk = currentFLocation();
 							if(chunk.isOutsideWorldBorder(buffer)) {
 								return true;
 							}
 
-							Faction faction = board.getFactionAt(chunk);
+							IFaction faction = claimManager.getFactionAt(chunk);
 							if(faction.isWilderness()) {
-								int cx = FLocation.chunkToBlock((int) chunk.getX());
-								int cz = FLocation.chunkToBlock((int) chunk.getZ());
+								int cx = FactionClaim.chunkToBlock((int) chunk.getX());
+								int cz = FactionClaim.chunkToBlock((int) chunk.getZ());
 								int y = world.getHighestBlockYAt(cx, cz);
 								Location tp = new Location(world, cx, y, cz);
 								context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());

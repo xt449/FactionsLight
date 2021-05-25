@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -21,7 +21,7 @@ public class CmdPermanent extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction faction = context.argAsFaction(0);
+		IFaction faction = context.argAsFaction(0);
 		if(faction == null) {
 			return;
 		}
@@ -38,7 +38,7 @@ public class CmdPermanent extends FCommand {
 		FactionsPlugin.getInstance().log((context.fPlayer == null ? "A server admin" : context.fPlayer.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
 
 		// Inform all players
-		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
 			if(fplayer.getFaction() == faction) {
 				fplayer.msg(TL.COMMAND_PERMANENT_YOURS, blame, change);

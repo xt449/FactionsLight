@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -37,7 +37,7 @@ public class CmdAnnounce extends FCommand {
 		}
 
 		// Add for offline players.
-		for(FPlayer fp : context.faction.getFPlayersWhereOnline(false)) {
+		for(IFactionPlayer fp : context.faction.getFPlayersWhereOnline(false)) {
 			context.faction.addAnnouncement(fp, prefix + message);
 		}
 	}

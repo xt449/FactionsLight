@@ -25,7 +25,7 @@ public class CmdDisband extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// The faction, default to your own.. but null if console sender.
-		Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
+		IFaction faction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
 		if(faction == null) {
 			return;
 		}
@@ -62,12 +62,12 @@ public class CmdDisband extends FCommand {
 		}
 
 		// Send FPlayerLeaveEvent for each player in the faction
-		for(FPlayer fplayer : faction.getFPlayers()) {
+		for(IFactionPlayer fplayer : faction.getFPlayers()) {
 			Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, faction, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
 		}
 
 		// Inform all players
-		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			String who = context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer);
 			if(fplayer.getFaction() == faction) {
 				fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);

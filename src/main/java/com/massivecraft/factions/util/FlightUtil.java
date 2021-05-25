@@ -1,12 +1,13 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,7 +40,7 @@ public class FlightUtil {
 		return instance;
 	}
 
-	public boolean enemiesNearby(FPlayer target, int radius) {
+	public boolean enemiesNearby(IFactionPlayer target, int radius) {
 		if(this.enemiesTask == null) {
 			return false;
 		} else {
@@ -51,9 +52,9 @@ public class FlightUtil {
 
 		@Override
 		public void run() {
-			Collection<FPlayer> players = FPlayers.getInstance().getOnlinePlayers();
+			Collection<IFactionPlayer> players = IFactionPlayerManager.getInstance().getOnlinePlayers();
 			for(Player player : Bukkit.getOnlinePlayers()) {
-				FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
+				IFactionPlayer pilot = IFactionPlayerManager.getInstance().getByPlayer(player);
 				if(pilot.isFlying() && !pilot.isAdminBypassing()) {
 					if(enemiesNearby(pilot, FactionsPlugin.getInstance().conf().commands().fly().getEnemyRadius(), players)) {
 						pilot.msg(TL.COMMAND_FLY_ENEMY_DISABLE);
@@ -66,18 +67,18 @@ public class FlightUtil {
 			}
 		}
 
-		public boolean enemiesNearby(FPlayer target, int radius) {
-			return this.enemiesNearby(target, radius, FPlayers.getInstance().getOnlinePlayers());
+		public boolean enemiesNearby(IFactionPlayer target, int radius) {
+			return this.enemiesNearby(target, radius, IFactionPlayerManager.getInstance().getOnlinePlayers());
 		}
 
-		public boolean enemiesNearby(FPlayer target, int radius, Collection<FPlayer> players) {
+		public boolean enemiesNearby(IFactionPlayer target, int radius, Collection<IFactionPlayer> players) {
 			if(!FactionsPlugin.getInstance().worldUtil().isEnabled(target.getPlayer().getWorld())) {
 				return false;
 			}
 			int radiusSquared = radius * radius;
 			Location loc = target.getPlayer().getLocation();
 			Location cur = new Location(loc.getWorld(), 0, 0, 0);
-			for(FPlayer player : players) {
+			for(IFactionPlayer player : players) {
 				if(player == target || player.isAdminBypassing()) {
 					continue;
 				}
@@ -107,10 +108,10 @@ public class FlightUtil {
 		@Override
 		public void run() {
 			for(Player player : Bukkit.getOnlinePlayers()) {
-				FPlayer pilot = FPlayers.getInstance().getByPlayer(player);
+				IFactionPlayer pilot = IFactionPlayerManager.getInstance().getByPlayer(player);
 				if(pilot.isFlying()) {
 					if(pilot.getFlyTrailsEffect() != null && Permission.FLY_TRAILS.has(player) && pilot.getFlyTrailsState()) {
-						Object effect = FactionsPlugin.getInstance().getParticleProvider().effectFromString(pilot.getFlyTrailsEffect());
+						Particle effect = FactionsPlugin.getInstance().getParticleProvider().effectFromString(pilot.getFlyTrailsEffect());
 						FactionsPlugin.getInstance().getParticleProvider().spawn(effect, player.getLocation(), amount, speed, 0, 0, 0);
 					}
 				}

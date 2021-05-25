@@ -1,10 +1,10 @@
 package com.massivecraft.factions.data.json;
 
-import com.massivecraft.factions.data.MemoryFaction;
+import com.massivecraft.factions.data.AbstractFaction;
 
-public class JSONFaction extends MemoryFaction {
+public class JSONFaction extends AbstractFaction {
 
-	public JSONFaction(MemoryFaction arg0) {
+	public JSONFaction(AbstractFaction arg0) {
 		super(arg0);
 	}
 

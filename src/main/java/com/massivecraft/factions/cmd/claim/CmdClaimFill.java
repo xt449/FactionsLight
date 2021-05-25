@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -44,11 +44,11 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-		final Faction forFaction = context.argAsFaction(2, context.faction);
+		final IFaction forFaction = context.argAsFaction(2, context.faction);
 		Location location = context.player.getLocation();
-		FLocation loc = new FLocation(location);
+		FactionClaim loc = new FactionClaim(location);
 
-		Faction currentFaction = Board.getInstance().getFactionAt(loc);
+		IFaction currentFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
 
 		if(currentFaction.equals(forFaction)) {
 			context.msg(TL.CLAIM_ALREADYOWN, forFaction.describeTo(context.fPlayer, true));
@@ -69,9 +69,9 @@ public class CmdClaimFill extends FCommand {
 		long startX = loc.getX();
 		long startZ = loc.getZ();
 
-		Set<FLocation> toClaim = new HashSet<>();
-		Queue<FLocation> queue = new LinkedList<>();
-		FLocation currentHead;
+		Set<FactionClaim> toClaim = new HashSet<>();
+		Queue<FactionClaim> queue = new LinkedList<>();
+		FactionClaim currentHead;
 		queue.add(loc);
 		toClaim.add(loc);
 		while(!queue.isEmpty() && toClaim.size() <= limit) {
@@ -100,7 +100,7 @@ public class CmdClaimFill extends FCommand {
 
 		final int limFail = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit();
 		int fails = 0;
-		for(FLocation currentLocation : toClaim) {
+		for(FactionClaim currentLocation : toClaim) {
 			if(!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {
 				fails++;
 			}
@@ -111,8 +111,8 @@ public class CmdClaimFill extends FCommand {
 		}
 	}
 
-	private void addIf(Set<FLocation> toClaim, Queue<FLocation> queue, FLocation examine) {
-		if(Board.getInstance().getFactionAt(examine).isWilderness() && !toClaim.contains(examine)) {
+	private void addIf(Set<FactionClaim> toClaim, Queue<FactionClaim> queue, FactionClaim examine) {
+		if(IFactionClaimManager.getInstance().getFactionAt(examine).isWilderness() && !toClaim.contains(examine)) {
 			toClaim.add(examine);
 			queue.add(examine);
 		}

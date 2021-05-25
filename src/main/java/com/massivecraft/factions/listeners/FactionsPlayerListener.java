@@ -2,7 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.MainConfig;
-import com.massivecraft.factions.data.MemoryFPlayer;
+import com.massivecraft.factions.data.AbstractFactionPlayer;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.gui.GUI;
@@ -58,15 +58,15 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	private void initPlayer(Player player) {
 		// Make sure that all online players do have a fplayer.
-		final FPlayer me = FPlayers.getInstance().getByPlayer(player);
-		((MemoryFPlayer) me).setName(player.getName());
+		final IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
+		((AbstractFactionPlayer) me).setName(player.getName());
 
 		this.plugin.getLandRaidControl().onJoin(me);
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 
 		// Store player's current FLocation and notify them where they are
-		me.setLastStoodAt(new FLocation(player.getLocation()));
+		me.setLastStoodAt(new FactionClaim(player.getLocation()));
 
 		me.login(); // set kills / deaths
 		me.setOfflinePlayer(player);
@@ -86,7 +86,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 	}
 
-	private void initFactionWorld(FPlayer me) {
+	private void initFactionWorld(IFactionPlayer me) {
 		// Check for Faction announcements. Let's delay this so they actually see it.
 		new BukkitRunnable() {
 			@Override
@@ -103,9 +103,9 @@ public class FactionsPlayerListener extends AbstractListener {
 			FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
 		}
 
-		Faction myFaction = me.getFaction();
+		IFaction myFaction = me.getFaction();
 		if(!myFaction.isWilderness()) {
-			for(FPlayer other : myFaction.getFPlayersWhereOnline(true)) {
+			for(IFactionPlayer other : myFaction.getFPlayersWhereOnline(true)) {
 				if(other != me && other.isMonitoringJoins()) {
 					other.msg(TL.FACTION_LOGIN, me.getName());
 				}
@@ -126,7 +126,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(event.getPlayer());
 
 		FactionsPlugin.getInstance().getLandRaidControl().onQuit(me);
 		// and update their last login time to point to when the logged off, for auto-remove routine
@@ -136,18 +136,18 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		// if player is waiting for fstuck teleport but leaves, remove
 		if(FactionsPlugin.getInstance().getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
-			FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
+			IFactionPlayerManager.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
 			FactionsPlugin.getInstance().getStuckMap().remove(me.getPlayer().getUniqueId());
 			FactionsPlugin.getInstance().getTimers().remove(me.getPlayer().getUniqueId());
 		}
 
-		Faction myFaction = me.getFaction();
+		IFaction myFaction = me.getFaction();
 		if(!myFaction.isWilderness()) {
 			myFaction.memberLoggedOff();
 		}
 
 		if(!myFaction.isWilderness()) {
-			for(FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
+			for(IFactionPlayer player : myFaction.getFPlayersWhereOnline(true)) {
 				if(player != me && player.isMonitoringJoins()) {
 					player.msg(TL.FACTION_LOGOUT, me.getName());
 				}
@@ -172,7 +172,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 
 		Player player = event.getPlayer();
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 
 		// clear visualization
 		if(event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
@@ -189,8 +189,8 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 
 		// Did we change coord?
-		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(event.getTo());
+		FactionClaim from = me.getLastStoodAt();
+		FactionClaim to = new FactionClaim(event.getTo());
 
 		if(from.equals(to)) {
 			return;
@@ -208,8 +208,8 @@ public class FactionsPlayerListener extends AbstractListener {
 			if(!Permission.MANAGE_SAFE_ZONE.has(player)) {
 				me.setIsAutoSafeClaimEnabled(false);
 			} else {
-				if(!Board.getInstance().getFactionAt(to).isSafeZone()) {
-					Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
+				if(!IFactionClaimManager.getInstance().getFactionAt(to).isSafeZone()) {
+					IFactionClaimManager.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
 					me.msg(TL.PLAYER_SAFEAUTO);
 				}
 			}
@@ -217,16 +217,16 @@ public class FactionsPlayerListener extends AbstractListener {
 			if(!Permission.MANAGE_WAR_ZONE.has(player)) {
 				me.setIsAutoWarClaimEnabled(false);
 			} else {
-				if(!Board.getInstance().getFactionAt(to).isWarZone()) {
-					Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
+				if(!IFactionClaimManager.getInstance().getFactionAt(to).isWarZone()) {
+					IFactionClaimManager.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
 					me.msg(TL.PLAYER_WARAUTO);
 				}
 			}
 		}
 
 		// Did we change "host"(faction)?
-		Faction factionFrom = Board.getInstance().getFactionAt(from);
-		Faction factionTo = Board.getInstance().getFactionAt(to);
+		IFaction factionFrom = IFactionClaimManager.getInstance().getFactionAt(from);
+		IFaction factionTo = IFactionClaimManager.getInstance().getFactionAt(to);
 		boolean changedFaction = (factionFrom != factionTo);
 
 		free:
@@ -247,11 +247,11 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
-				me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
+				me.sendFancyMessage(IFactionClaimManager.getInstance().getMap(me, to, player.getLocation().getYaw()));
 				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().conf().commands().map().getCooldown());
 			}
 		} else {
-			Faction myFaction = me.getFaction();
+			IFaction myFaction = me.getFaction();
 			String ownersTo = myFaction.getOwnerListString(to);
 
 			if(changedFaction) {
@@ -342,7 +342,7 @@ public class FactionsPlayerListener extends AbstractListener {
 				}
 				int count = attempt.increment();
 				if(count >= 10) {
-					FPlayer me = FPlayers.getInstance().getByPlayer(player);
+					IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 					me.msg(TL.PLAYER_OUCH);
 					player.damage(NumberConversions.floor((double) count / 10));
 				}
@@ -408,13 +408,13 @@ public class FactionsPlayerListener extends AbstractListener {
 			return true;
 		}
 
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
 		}
 
-		FLocation loc = new FLocation(location);
-		Faction otherFaction = Board.getInstance().getFactionAt(loc);
+		FactionClaim loc = new FactionClaim(location);
+		IFaction otherFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
 
 		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
 			return true;
@@ -487,7 +487,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			return;
 		}
 
-		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(event.getPlayer());
 
 		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
 
@@ -503,7 +503,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onTeleport(PlayerTeleportEvent event) {
-		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(event.getPlayer());
 		boolean isEnabled = plugin.worldUtil().isEnabled(event.getTo().getWorld());
 		if(!isEnabled) {
 			FScoreboard.remove(me, event.getPlayer());
@@ -517,7 +517,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			this.initFactionWorld(me);
 		}
 
-		FLocation to = new FLocation(event.getTo());
+		FactionClaim to = new FactionClaim(event.getTo());
 		me.setLastStoodAt(to);
 
 		// Check the location they're teleporting to and check if they can fly there.
@@ -575,7 +575,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		fullCmd = fullCmd.toLowerCase();
 
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
 
 		String shortCmd;  // command without the slash at the beginning
 		if(fullCmd.startsWith("/")) {
@@ -594,7 +594,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			return true;
 		}
 
-		Faction at = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+		IFaction at = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(player.getLocation()));
 		if(at.isWilderness() && !protection.getWildernessDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getWildernessDenyCommands())) {
 			me.msg(TL.PLAYER_COMMAND_WILDERNESS, fullCmd);
 			return true;
@@ -681,7 +681,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event) {
-		FPlayer badGuy = FPlayers.getInstance().getByPlayer(event.getPlayer());
+		IFactionPlayer badGuy = IFactionPlayerManager.getInstance().getByPlayer(event.getPlayer());
 		if(badGuy == null) {
 			return;
 		}
@@ -723,6 +723,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerPreLogin(PlayerLoginEvent event) {
-		FPlayers.getInstance().getByPlayer(event.getPlayer());
+		IFactionPlayerManager.getInstance().getByPlayer(event.getPlayer());
 	}
 }

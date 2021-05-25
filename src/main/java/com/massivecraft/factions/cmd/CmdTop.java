@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
@@ -29,7 +29,7 @@ public class CmdTop extends FCommand {
 	public void perform(CommandContext context) {
 		// Can sort by: money, members, online, allies, enemies, power, land.
 		// Get all Factions and remove non player ones.
-		ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
+		ArrayList<IFaction> factionList = Factions.getInstance().getAllFactions();
 		factionList.remove(Factions.getInstance().getWilderness());
 		factionList.remove(Factions.getInstance().getSafeZone());
 		factionList.remove(Factions.getInstance().getWarZone());
@@ -97,11 +97,11 @@ public class CmdTop extends FCommand {
 			factionList.sort((f1, f2) -> {
 				double f1Size = Econ.getBalance(f1);
 				// Lets get the balance of /all/ the players in the Faction.
-				for(FPlayer fp : f1.getFPlayers()) {
+				for(IFactionPlayer fp : f1.getFPlayers()) {
 					f1Size = f1Size + Econ.getBalance(fp);
 				}
 				double f2Size = Econ.getBalance(f2);
-				for(FPlayer fp : f2.getFPlayers()) {
+				for(IFactionPlayer fp : f2.getFPlayers()) {
 					f2Size = f2Size + Econ.getBalance(fp);
 				}
 				if(f1Size < f2Size) {
@@ -135,7 +135,7 @@ public class CmdTop extends FCommand {
 		lines.add(TL.COMMAND_TOP_TOP.format(criteria.toUpperCase(), pagenumber, pagecount));
 
 		int rank = 1;
-		for(Faction faction : factionList.subList(start, end)) {
+		for(IFaction faction : factionList.subList(start, end)) {
 			// Get the relation color if player is executing this.
 			String fac = context.sender instanceof Player ? faction.getRelationTo(context.fPlayer).getColor() + faction.getTag() : faction.getTag();
 			lines.add(TL.COMMAND_TOP_LINE.format(rank, fac, getValue(faction, criteria)));
@@ -145,7 +145,7 @@ public class CmdTop extends FCommand {
 		context.sendMessage(lines);
 	}
 
-	private String getValue(Faction faction, String criteria) {
+	private String getValue(IFaction faction, String criteria) {
 		if(criteria.equalsIgnoreCase("online")) {
 			return String.valueOf(faction.getFPlayersWhereOnline(true).size());
 		} else if(criteria.equalsIgnoreCase("start")) {
@@ -158,7 +158,7 @@ public class CmdTop extends FCommand {
 			return String.valueOf(faction.getPowerRounded());
 		} else { // Last one is balance, and it has 3 different things it could be.
 			double balance = Econ.getBalance(faction);
-			for(FPlayer fp : faction.getFPlayers()) {
+			for(IFactionPlayer fp : faction.getFPlayers()) {
 				balance = balance + Econ.getBalance(fp);
 			}
 			return String.valueOf(balance);

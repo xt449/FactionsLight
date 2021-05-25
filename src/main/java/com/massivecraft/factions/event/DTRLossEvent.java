@@ -1,7 +1,7 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -12,7 +12,7 @@ public class DTRLossEvent extends FactionPlayerEvent implements Cancellable {
 
 	private boolean cancelled = false;
 
-	public DTRLossEvent(Faction f, FPlayer p) {
+	public DTRLossEvent(IFaction f, IFactionPlayer p) {
 		super(f, p);
 	}
 

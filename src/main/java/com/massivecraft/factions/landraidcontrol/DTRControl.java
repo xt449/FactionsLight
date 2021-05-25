@@ -28,22 +28,22 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean isRaidable(Faction faction) {
+	public boolean isRaidable(IFaction faction) {
 		return !faction.isPeaceful() && faction.getDTR() <= 0;
 	}
 
 	@Override
-	public boolean hasLandInflation(Faction faction) {
+	public boolean hasLandInflation(IFaction faction) {
 		return false; // fail all attempts at claiming
 	}
 
 	@Override
-	public int getLandLimit(Faction faction) {
+	public int getLandLimit(IFaction faction) {
 		return conf().getLandStarting() + (faction.getFPlayers().size() * conf().getLandPerPlayer());
 	}
 
 	@Override
-	public boolean canJoinFaction(Faction faction, FPlayer player, CommandContext context) {
+	public boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsJoin()) {
 			context.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
@@ -52,7 +52,7 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean canLeaveFaction(FPlayer player) {
+	public boolean canLeaveFaction(IFactionPlayer player) {
 		if(player.getFaction().isFrozenDTR() && conf().isFreezePreventsLeave()) {
 			player.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
@@ -61,7 +61,7 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean canDisbandFaction(Faction faction, CommandContext context) {
+	public boolean canDisbandFaction(IFaction faction, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsDisband()) {
 			context.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
@@ -70,11 +70,11 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean canKick(FPlayer toKick, CommandContext context) {
+	public boolean canKick(IFactionPlayer toKick, CommandContext context) {
 		if(toKick.getFaction().isNormal()) {
-			Faction faction = toKick.getFaction();
+			IFaction faction = toKick.getFaction();
 			if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
-					Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
+					IFactionClaimManager.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
 				context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
 				return false;
 			}
@@ -87,12 +87,12 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public void onRespawn(FPlayer player) {
+	public void onRespawn(IFactionPlayer player) {
 		// Handled on death
 	}
 
 	@Override
-	public void update(FPlayer player) {
+	public void update(IFactionPlayer player) {
 		if(player.getFaction().isNormal()) {
 			this.updateDTR(player.getFaction());
 		}
@@ -100,8 +100,8 @@ public class DTRControl implements LandRaidControl {
 
 	@Override
 	public void onDeath(Player player) {
-		FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-		Faction faction = fplayer.getFaction();
+		IFactionPlayer fplayer = IFactionPlayerManager.getInstance().getByPlayer(player);
+		IFaction faction = fplayer.getFaction();
 		if(!faction.isNormal()) {
 			return;
 		}
@@ -118,22 +118,22 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public void onQuit(FPlayer player) {
+	public void onQuit(IFactionPlayer player) {
 		this.update(player);
 	}
 
 	@Override
-	public void onJoin(FPlayer player) {
+	public void onJoin(IFactionPlayer player) {
 		if(player.getFaction().isNormal()) {
 			this.updateDTR(player.getFaction(), 1);
 		}
 	}
 
-	public void updateDTR(Faction faction) {
+	public void updateDTR(IFaction faction) {
 		this.updateDTR(faction, 0);
 	}
 
-	public void updateDTR(Faction faction, int minusPlayer) {
+	public void updateDTR(IFaction faction, int minusPlayer) {
 		long now = System.currentTimeMillis();
 		if(faction.getFrozenDTRUntilTime() > now) {
 			// Not yet time to regen
@@ -146,7 +146,7 @@ public class DTRControl implements LandRaidControl {
 		faction.setDTR(Math.min(faction.getDTRWithoutUpdate() + regain, this.getMaxDTR(faction)));
 	}
 
-	public double getMaxDTR(Faction faction) {
+	public double getMaxDTR(IFaction faction) {
 		return Math.min(conf().getStartingDTR() + (conf().getPerPlayer() * faction.getFPlayers().size()), conf().getMaxDTR());
 	}
 }

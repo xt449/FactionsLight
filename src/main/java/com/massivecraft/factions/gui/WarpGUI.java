@@ -1,7 +1,7 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -36,13 +36,13 @@ public class WarpGUI extends GUI<Integer> {
 	private final List<String> warps;
 	private final String name;
 	private final int page;
-	private final Faction faction;
+	private final IFaction faction;
 
-	public WarpGUI(FPlayer user, Faction faction) {
+	public WarpGUI(IFactionPlayer user, IFaction faction) {
 		this(user, -1, faction);
 	}
 
-	private WarpGUI(FPlayer user, int page, Faction faction) {
+	private WarpGUI(IFactionPlayer user, int page, IFaction faction) {
 		super(user, getRows(faction));
 		this.faction = faction;
 		warps = new ArrayList<>(faction.getWarps().keySet());
@@ -59,7 +59,7 @@ public class WarpGUI extends GUI<Integer> {
 		return name;
 	}
 
-	private static int getRows(Faction faction) {
+	private static int getRows(IFaction faction) {
 		int warpCount = faction.getWarps().size();
 		if(warpCount == 0) {
 			return 1;

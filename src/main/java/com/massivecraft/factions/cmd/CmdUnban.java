@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
@@ -23,7 +23,7 @@ public class CmdUnban extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		FPlayer target = context.argAsFPlayer(0);
+		IFactionPlayer target = context.argAsFPlayer(0);
 		if(target == null) {
 			return; // the above method sends a message if fails to find someone.
 		}

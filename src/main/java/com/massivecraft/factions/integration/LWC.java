@@ -2,9 +2,9 @@ package com.massivecraft.factions.integration;
 
 import com.griefcraft.lwc.LWCPlugin;
 import com.griefcraft.model.Protection;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,18 +37,18 @@ public class LWC {
 		return lwc == null ? null : lwc.getPlugin();
 	}
 
-	public static void clearOtherLocks(FLocation flocation, Faction faction) {
+	public static void clearOtherLocks(FactionClaim flocation, IFaction faction) {
 		Protection protection;
 		for(Block block : findBlocks(flocation)) {
 			if((protection = lwc.findProtection(block)) != null) {
-				if(!faction.getFPlayers().contains(FPlayers.getInstance().getByOfflinePlayer(Bukkit.getServer().getOfflinePlayer(protection.getOwner())))) {
+				if(!faction.getFPlayers().contains(IFactionPlayerManager.getInstance().getByOfflinePlayer(Bukkit.getServer().getOfflinePlayer(protection.getOwner())))) {
 					protection.remove();
 				}
 			}
 		}
 	}
 
-	public static void clearAllLocks(FLocation flocation) {
+	public static void clearAllLocks(FactionClaim flocation) {
 		Protection protection;
 		for(Block block : findBlocks(flocation)) {
 			if((protection = lwc.findProtection(block)) != null) {
@@ -57,7 +57,7 @@ public class LWC {
 		}
 	}
 
-	private static List<Block> findBlocks(FLocation flocation) {
+	private static List<Block> findBlocks(FactionClaim flocation) {
 		World world = Bukkit.getWorld(flocation.getWorldName());
 		if(world == null) {
 			return Collections.emptyList();  // world not loaded or something? cancel out to prevent error

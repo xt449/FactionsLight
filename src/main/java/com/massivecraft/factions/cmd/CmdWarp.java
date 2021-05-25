@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.gui.WarpGUI;
@@ -61,7 +61,7 @@ public class CmdWarp extends FCommand {
 				if(!transact(context.fPlayer, context)) {
 					return;
 				}
-				final FPlayer fPlayer = context.fPlayer;
+				final IFactionPlayer fPlayer = context.fPlayer;
 				final UUID uuid = context.fPlayer.getPlayer().getUniqueId();
 				context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
 					Player player = Bukkit.getPlayer(uuid);
@@ -79,7 +79,7 @@ public class CmdWarp extends FCommand {
 		}
 	}
 
-	private boolean transact(FPlayer player, CommandContext context) {
+	private boolean transact(IFactionPlayer player, CommandContext context) {
 		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostWarp(), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 	}
 

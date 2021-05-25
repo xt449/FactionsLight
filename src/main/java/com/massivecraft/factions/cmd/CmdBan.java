@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -28,7 +28,7 @@ public class CmdBan extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// Good on permission checks. Now lets just ban the player.
-		FPlayer target = context.argAsFPlayer(0);
+		IFactionPlayer target = context.argAsFPlayer(0);
 		if(target == null) {
 			return; // the above method sends a message if fails to find someone.
 		}

@@ -43,7 +43,7 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		Faction targetFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
+		IFaction targetFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock().getLocation()));
 		if(targetFaction.isNormal() && !targetFaction.isPeaceful() && FactionsPlugin.getInstance().conf().factions().specialCase().getIgnoreBuildMaterials().contains(event.getBlock().getType())) {
 			return;
 		}
@@ -64,8 +64,8 @@ public class FactionsBlockListener implements Listener {
 		}
 		if(event.getBlock().isLiquid()) {
 			if(event.getToBlock().isEmpty()) {
-				Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-				Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
+				IFaction from = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock()));
+				IFaction to = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getToBlock()));
 				if(from == to) {
 					// not concerned with inter-faction events
 					return;
@@ -88,7 +88,7 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		if(FactionsPlugin.getInstance().conf().factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
-				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
+				IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock().getLocation())).isNormal()) {
 			return;
 		}
 
@@ -104,7 +104,7 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		if(FactionsPlugin.getInstance().conf().factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
-				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
+				IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock().getLocation())).isNormal()) {
 			return;
 		}
 
@@ -128,7 +128,7 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+		IFaction pistonFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock()));
 
 		if(!canPistonMoveBlock(pistonFaction, event.getBlocks(), event.getDirection())) {
 			event.setCancelled(true);
@@ -153,25 +153,25 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+		IFaction pistonFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getBlock()));
 
 		if(!canPistonMoveBlock(pistonFaction, blocks, null)) {
 			event.setCancelled(true);
 		}
 	}
 
-	private boolean canPistonMoveBlock(Faction pistonFaction, List<Block> blocks, BlockFace direction) {
+	private boolean canPistonMoveBlock(IFaction pistonFaction, List<Block> blocks, BlockFace direction) {
 		String world = blocks.get(0).getWorld().getName();
-		List<Faction> factions = (direction == null ? blocks.stream() : blocks.stream().map(b -> b.getRelative(direction)))
+		List<IFaction> factions = (direction == null ? blocks.stream() : blocks.stream().map(b -> b.getRelative(direction)))
 				.map(Block::getLocation)
-				.map(FLocation::new)
+				.map(FactionClaim::new)
 				.distinct()
-				.map(Board.getInstance()::getFactionAt)
+				.map(IFactionClaimManager.getInstance()::getFactionAt)
 				.distinct()
 				.collect(Collectors.toList());
 
 		boolean disableOverall = FactionsPlugin.getInstance().conf().factions().other().isDisablePistonsInTerritory();
-		for(Faction otherFaction : factions) {
+		for(IFaction otherFaction : factions) {
 			if(pistonFaction == otherFaction) {
 				continue;
 			}
@@ -208,7 +208,7 @@ public class FactionsBlockListener implements Listener {
 		Location location = event.getBlock().getLocation();
 
 		// only notify every 10 seconds
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+		IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
 		boolean justCheck = fPlayer.getLastFrostwalkerMessage() + 10000 > System.currentTimeMillis();
 		if(!justCheck) {
 			fPlayer.setLastFrostwalkerMessage();
@@ -227,13 +227,13 @@ public class FactionsBlockListener implements Listener {
 			return true;
 		}
 
-		FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
+		IFactionPlayer me = IFactionPlayerManager.getInstance().getById(player.getUniqueId().toString());
 		if(me.isAdminBypassing()) {
 			return true;
 		}
 
-		FLocation loc = new FLocation(location);
-		Faction otherFaction = Board.getInstance().getFactionAt(loc);
+		FactionClaim loc = new FactionClaim(location);
+		IFaction otherFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
 
 		if(otherFaction.isWilderness()) {
 			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player, location)) {
@@ -282,7 +282,7 @@ public class FactionsBlockListener implements Listener {
 			return true;
 		}
 
-		Faction myFaction = me.getFaction();
+		IFaction myFaction = me.getFaction();
 		boolean pain = !justCheck && otherFaction.hasAccess(me, PermissibleAction.PAINBUILD);
 
 		// If the faction hasn't: defined access or denied, fallback to config values

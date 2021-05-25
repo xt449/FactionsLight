@@ -1,7 +1,7 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import org.bukkit.event.Cancellable;
 
 public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable {
@@ -13,7 +13,7 @@ public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable
 		KICKED, DISBAND, RESET, JOINOTHER, LEAVE, BANNED
 	}
 
-	public FPlayerLeaveEvent(FPlayer p, Faction f, PlayerLeaveReason r) {
+	public FPlayerLeaveEvent(IFactionPlayer p, IFaction f, PlayerLeaveReason r) {
 		super(f, p);
 		reason = r;
 	}

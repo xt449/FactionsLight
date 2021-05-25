@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.dtr;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -22,7 +22,7 @@ public class CmdDTRModify extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction target = context.argAsFaction(0, null);
+		IFaction target = context.argAsFaction(0, null);
 		if(target == null) {
 			return;
 		}

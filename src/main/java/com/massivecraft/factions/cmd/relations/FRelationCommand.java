@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.relations;
 
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -33,7 +33,7 @@ public abstract class FRelationCommand extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction them = context.argAsFaction(0);
+		IFaction them = context.argAsFaction(0);
 		if(them == null) {
 			return;
 		}
@@ -103,7 +103,7 @@ public abstract class FRelationCommand extends FCommand {
 		FTeamWrapper.updatePrefixes(them);
 	}
 
-	private boolean hasMaxRelations(Faction them, Relation targetRelation, CommandContext context) {
+	private boolean hasMaxRelations(IFaction them, Relation targetRelation, CommandContext context) {
 		if(FactionsPlugin.getInstance().conf().factions().maxRelations().isEnabled()) {
 			int max = targetRelation.getMax();
 			if(max != -1) {

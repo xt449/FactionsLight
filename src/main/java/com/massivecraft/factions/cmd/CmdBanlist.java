@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -27,7 +27,7 @@ public class CmdBanlist extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		Faction target = context.faction;
+		IFaction target = context.faction;
 		if(!context.args.isEmpty()) {
 			target = context.argAsFaction(0);
 		}
@@ -47,8 +47,8 @@ public class CmdBanlist extends FCommand {
 		int i = 1;
 
 		for(BanInfo info : target.getBannedPlayers()) {
-			FPlayer banned = FPlayers.getInstance().getById(info.getBanned());
-			FPlayer banner = FPlayers.getInstance().getById(info.getBanner());
+			IFactionPlayer banned = IFactionPlayerManager.getInstance().getById(info.getBanned());
+			IFactionPlayer banner = IFactionPlayerManager.getInstance().getById(info.getBanner());
 			String timestamp = TL.sdf.format(info.getTime());
 
 			lines.add(TL.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));

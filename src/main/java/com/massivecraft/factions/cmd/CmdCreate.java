@@ -62,7 +62,7 @@ public class CmdCreate extends FCommand {
 			return;
 		}
 
-		Faction faction = Factions.getInstance().createFaction();
+		IFaction faction = Factions.getInstance().createFaction();
 
 		// TODO: Why would this even happen??? Auto increment clash??
 		if(faction == null) {
@@ -74,7 +74,7 @@ public class CmdCreate extends FCommand {
 		faction.setTag(tag);
 
 		// trigger the faction join event for the creator
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(IFactionPlayerManager.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		// join event cannot be cancelled or you'll have an empty faction
 
@@ -86,7 +86,7 @@ public class CmdCreate extends FCommand {
 		FactionCreateEvent createEvent = new FactionCreateEvent(context.player, tag, faction);
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 
-		for(FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
+		for(IFactionPlayer follower : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.describeTo(follower, true), faction.getTag(follower));
 		}
 

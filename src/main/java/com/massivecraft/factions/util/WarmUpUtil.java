@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,7 +15,7 @@ public class WarmUpUtil {
 	 *                       <p/>
 	 *                       note: for translations: %s = action, %d = delay
 	 */
-	public static void process(final FPlayer player, Warmup warmup, TL translationKey, String action, final Runnable runnable, long delay) {
+	public static void process(final IFactionPlayer player, Warmup warmup, TL translationKey, String action, final Runnable runnable, long delay) {
 		if(delay > 0) {
 			if(player.isWarmingUp()) {
 				player.msg(TL.WARMUPS_ALREADY);

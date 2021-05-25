@@ -52,8 +52,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			return "";
 		}
 
-		FPlayer fp1 = FPlayers.getInstance().getByPlayer(p1);
-		FPlayer fp2 = FPlayers.getInstance().getByPlayer(p2);
+		IFactionPlayer fp1 = IFactionPlayerManager.getInstance().getByPlayer(p1);
+		IFactionPlayer fp2 = IFactionPlayerManager.getInstance().getByPlayer(p2);
 		if(fp1 == null || fp2 == null) {
 			return "";
 		}
@@ -76,11 +76,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			return "";
 		}
 
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-		Faction faction = fPlayer.getFaction();
+		IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
+		IFaction faction = fPlayer.getFaction();
 		boolean territory = false;
 		if(placeholder.contains("faction_territory")) {
-			faction = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
+			faction = IFactionClaimManager.getInstance().getFactionAt(fPlayer.getLastStoodAt());
 			placeholder = placeholder.replace("_territory", "");
 			territory = true;
 		}
@@ -151,7 +151,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				double powerBoost = faction.getPowerBoost();
 				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
 			case "faction_leader":
-				FPlayer fAdmin = faction.getFPlayerAdmin();
+				IFactionPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
 			case "faction_warps":
 				return String.valueOf(faction.getWarps().size());
@@ -219,9 +219,9 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 		return null;
 	}
 
-	private int countOn(Faction f, Relation relation, Boolean status, FPlayer player) {
+	private int countOn(IFaction f, Relation relation, Boolean status, IFactionPlayer player) {
 		int count = 0;
-		for(Faction faction : Factions.getInstance().getAllFactions()) {
+		for(IFaction faction : Factions.getInstance().getAllFactions()) {
 			if(faction.getRelationTo(f) == relation) {
 				if(status == null) {
 					count += faction.getFPlayers().size();

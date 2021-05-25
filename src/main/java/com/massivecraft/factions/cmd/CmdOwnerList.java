@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -32,15 +32,15 @@ public class CmdOwnerList extends FCommand {
 			return;
 		}
 
-		FLocation flocation = new FLocation(context.fPlayer);
+		FactionClaim flocation = new FactionClaim(context.fPlayer);
 
-		if(Board.getInstance().getFactionAt(flocation) != context.faction) {
+		if(IFactionClaimManager.getInstance().getFactionAt(flocation) != context.faction) {
 			if(!hasBypass) {
 				context.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
 				return;
 			}
 			//TODO: This code won't ever be called.
-			context.faction = Board.getInstance().getFactionAt(flocation);
+			context.faction = IFactionClaimManager.getInstance().getFactionAt(flocation);
 			if(!context.faction.isNormal()) {
 				context.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
 				return;

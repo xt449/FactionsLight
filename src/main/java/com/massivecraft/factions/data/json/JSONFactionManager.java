@@ -2,12 +2,12 @@ package com.massivecraft.factions.data.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.data.MemoryFaction;
-import com.massivecraft.factions.data.MemoryFactions;
+import com.massivecraft.factions.data.AbstractFaction;
+import com.massivecraft.factions.data.AbstractFactionManager;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.UUIDFetcher;
 
@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-public class JSONFactions extends MemoryFactions {
+public class JSONFactionManager extends AbstractFactionManager {
 	public Gson getGson() {
 		return FactionsPlugin.getInstance().getGson();
 	}
@@ -32,7 +32,7 @@ public class JSONFactions extends MemoryFactions {
 	// CONSTRUCTORS
 	// -------------------------------------------- //
 
-	public JSONFactions() {
+	public JSONFactionManager() {
 		if(FactionsPlugin.getInstance().getServerUUID() == null) {
 			FactionsPlugin.getInstance().grumpException(new RuntimeException());
 		}
@@ -46,7 +46,7 @@ public class JSONFactions extends MemoryFactions {
 
 	public void forceSave(boolean sync) {
 		final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<>();
-		for(Faction entity : this.factions.values()) {
+		for(IFaction entity : this.factions.values()) {
 			entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
 		}
 
@@ -87,7 +87,7 @@ public class JSONFactions extends MemoryFactions {
 		int needsUpdate = 0;
 		for(Entry<String, JSONFaction> entry : data.entrySet()) {
 			String id = entry.getKey();
-			Faction f = entry.getValue();
+			IFaction f = entry.getValue();
 			f.checkPerms();
 			f.setId(id);
 			this.updateNextIdForId(id);
@@ -117,9 +117,9 @@ public class JSONFactions extends MemoryFactions {
 			// Update claim ownership
 
 			for(String string : data.keySet()) {
-				Faction f = data.get(string);
-				Map<FLocation, Set<String>> claims = f.getClaimOwnership();
-				for(FLocation key : claims.keySet()) {
+				IFaction f = data.get(string);
+				Map<FactionClaim, Set<String>> claims = f.getClaimOwnership();
+				for(FactionClaim key : claims.keySet()) {
 					Set<String> set = claims.get(key);
 
 					Set<String> list = whichKeysNeedMigration(set);
@@ -147,7 +147,7 @@ public class JSONFactions extends MemoryFactions {
 			// Update invites
 
 			for(String string : data.keySet()) {
-				Faction f = data.get(string);
+				IFaction f = data.get(string);
 				Set<String> invites = f.getInvites();
 				Set<String> list = whichKeysNeedMigration(invites);
 
@@ -224,21 +224,21 @@ public class JSONFactions extends MemoryFactions {
 	}
 
 	@Override
-	public Faction generateFactionObject() {
+	public IFaction generateFactionObject() {
 		String id = getNextId();
-		Faction faction = new JSONFaction(id);
+		IFaction faction = new JSONFaction(id);
 		updateNextIdForId(id);
 		return faction;
 	}
 
 	@Override
-	public Faction generateFactionObject(String id) {
+	public IFaction generateFactionObject(String id) {
 		return new JSONFaction(id);
 	}
 
 	@Override
-	public void convertFrom(MemoryFactions old) {
-		old.factions.forEach((tag, faction) -> this.factions.put(tag, new JSONFaction((MemoryFaction) faction)));
+	public void convertFrom(AbstractFactionManager old) {
+		old.factions.forEach((tag, faction) -> this.factions.put(tag, new JSONFaction((AbstractFaction) faction)));
 		this.nextId = old.nextId;
 		forceSave();
 		Factions.instance = this;

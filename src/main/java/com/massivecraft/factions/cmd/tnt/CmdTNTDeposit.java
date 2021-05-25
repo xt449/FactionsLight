@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.tnt;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -28,7 +28,7 @@ public class CmdTNTDeposit extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		Player player = context.player;
-		if(!context.faction.equals(Board.getInstance().getFactionAt(new FLocation(player.getLocation())))) {
+		if(!context.faction.equals(IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(player.getLocation())))) {
 			context.msg(TL.COMMAND_TNT_TERRITORYONLY);
 			return;
 		}

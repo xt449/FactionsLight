@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
@@ -25,13 +25,13 @@ public class CmdNear extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		int radius = FactionsPlugin.getInstance().conf().commands().near().getRadius();
-		Set<FPlayer> onlineMembers = context.faction.getFPlayersWhereOnline(true, context.fPlayer);
-		List<FPlayer> nearbyMembers = new ArrayList<>();
+		Set<IFactionPlayer> onlineMembers = context.faction.getFPlayersWhereOnline(true, context.fPlayer);
+		List<IFactionPlayer> nearbyMembers = new ArrayList<>();
 
 		int radiusSquared = radius * radius;
 		Location loc = context.player.getLocation();
 		Location cur = new Location(loc.getWorld(), 0, 0, 0);
-		for(FPlayer player : onlineMembers) {
+		for(IFactionPlayer player : onlineMembers) {
 			if(player == context.fPlayer) {
 				continue;
 			}
@@ -44,7 +44,7 @@ public class CmdNear extends FCommand {
 
 		StringBuilder playerMessageBuilder = new StringBuilder();
 		String playerMessage = TL.COMMAND_NEAR_PLAYER.toString();
-		for(FPlayer member : nearbyMembers) {
+		for(IFactionPlayer member : nearbyMembers) {
 			playerMessageBuilder.append(parsePlaceholders(context.fPlayer, member, playerMessage));
 		}
 		// Append none text if no players where found
@@ -55,7 +55,7 @@ public class CmdNear extends FCommand {
 		context.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
 	}
 
-	private String parsePlaceholders(FPlayer user, FPlayer target, String string) {
+	private String parsePlaceholders(IFactionPlayer user, IFactionPlayer target, String string) {
 		string = Tag.parsePlain(target, string);
 		string = Tag.parsePlaceholders(target.getPlayer(), string);
 		string = string.replace("{role}", target.getRole().toString());

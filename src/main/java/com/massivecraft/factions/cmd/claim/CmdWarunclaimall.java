@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Board;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -35,9 +35,9 @@ public class CmdWarunclaimall extends FCommand {
 		String id = Factions.getInstance().getWarZone().getId();
 
 		if(world == null) {
-			Board.getInstance().unclaimAll(id);
+			IFactionClaimManager.getInstance().unclaimAll(id);
 		} else {
-			Board.getInstance().unclaimAllInWorld(id, world);
+			IFactionClaimManager.getInstance().unclaimAllInWorld(id, world);
 		}
 
 		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {

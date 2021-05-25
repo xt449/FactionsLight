@@ -1,7 +1,7 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public interface Tag {
 	 * @param line    raw line from config with variables to replace for
 	 * @return clean line
 	 */
-	static String parsePlain(Faction faction, String line) {
+	static String parsePlain(IFaction faction, String line) {
 		return GeneralTag.parse(FactionTag.parse(line, faction));
 	}
 
@@ -27,7 +27,7 @@ public interface Tag {
 	 * @param line    raw line from config with variables to replace for
 	 * @return clean line
 	 */
-	static String parsePlain(FPlayer fplayer, String line) {
+	static String parsePlain(IFactionPlayer fplayer, String line) {
 		return parsePlain(fplayer.getFaction(), fplayer, line);
 	}
 
@@ -39,7 +39,7 @@ public interface Tag {
 	 * @param line    raw line from config with variables to replace for
 	 * @return clean line
 	 */
-	static String parsePlain(Faction faction, FPlayer fplayer, String line) {
+	static String parsePlain(IFaction faction, IFactionPlayer fplayer, String line) {
 		return GeneralTag.parse(PlayerTag.parse(FactionTag.parse(line, faction, fplayer), fplayer));
 	}
 

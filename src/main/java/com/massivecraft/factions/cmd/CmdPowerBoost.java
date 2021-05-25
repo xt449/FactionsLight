@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -44,7 +44,7 @@ public class CmdPowerBoost extends FCommand {
 		String target;
 
 		if(doPlayer) {
-			FPlayer targetPlayer = context.argAsBestFPlayerMatch(1);
+			IFactionPlayer targetPlayer = context.argAsBestFPlayerMatch(1);
 			if(targetPlayer == null) {
 				return;
 			}
@@ -55,7 +55,7 @@ public class CmdPowerBoost extends FCommand {
 			targetPlayer.setPowerBoost(targetPower);
 			target = TL.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
 		} else {
-			Faction targetFaction = context.argAsFaction(1);
+			IFaction targetFaction = context.argAsFaction(1);
 			if(targetFaction == null) {
 				return;
 			}

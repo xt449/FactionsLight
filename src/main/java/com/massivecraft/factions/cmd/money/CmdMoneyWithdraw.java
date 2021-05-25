@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd.money;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
-import com.massivecraft.factions.iface.EconomyParticipator;
+import com.massivecraft.factions.IEconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
@@ -28,7 +28,7 @@ public class CmdMoneyWithdraw extends MoneyCommand {
 	@Override
 	public void perform(CommandContext context) {
 		double amount = context.argAsDouble(0, 0d);
-		EconomyParticipator faction = context.argAsFaction(1, context.faction);
+		IEconomyParticipator faction = context.argAsFaction(1, context.faction);
 		if(faction == null) {
 			return;
 		}

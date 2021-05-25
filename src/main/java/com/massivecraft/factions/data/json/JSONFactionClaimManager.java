@@ -1,10 +1,10 @@
 package com.massivecraft.factions.data.json;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.data.MemoryBoard;
+import com.massivecraft.factions.data.AbstractFactionClaimManager;
 import com.massivecraft.factions.util.DiscUtil;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 
 
-public class JSONBoard extends MemoryBoard {
+public class JSONFactionClaimManager extends AbstractFactionClaimManager {
 	private static final transient File file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/board.json");
 
 	// -------------------------------------------- //
@@ -29,7 +29,7 @@ public class JSONBoard extends MemoryBoard {
 		String worldName, coords;
 		String id;
 
-		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+		for(Entry<FactionClaim, String> entry : flocationIds.entrySet()) {
 			worldName = entry.getKey().getWorldName();
 			coords = entry.getKey().getCoordString();
 			id = entry.getValue();
@@ -58,7 +58,7 @@ public class JSONBoard extends MemoryBoard {
 				x = Integer.parseInt(coords[0]);
 				z = Integer.parseInt(coords[1]);
 				factionId = entry2.getValue();
-				flocationIds.put(new FLocation(worldName, x, z), factionId);
+				flocationIds.put(new FactionClaim(worldName, x, z), factionId);
 			}
 		}
 	}
@@ -92,9 +92,9 @@ public class JSONBoard extends MemoryBoard {
 	}
 
 	@Override
-	public void convertFrom(MemoryBoard old) {
+	public void convertFrom(AbstractFactionClaimManager old) {
 		this.flocationIds = old.flocationIds;
 		forceSave();
-		Board.instance = this;
+		IFactionClaimManager.instance = this;
 	}
 }

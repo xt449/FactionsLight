@@ -1,14 +1,14 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 public class LandUnclaimAllEvent extends FactionPlayerEvent implements Cancellable {
 	private boolean cancelled;
 
-	public LandUnclaimAllEvent(Faction f, FPlayer p) {
+	public LandUnclaimAllEvent(IFaction f, IFactionPlayer p) {
 		super(f, p);
 	}
 

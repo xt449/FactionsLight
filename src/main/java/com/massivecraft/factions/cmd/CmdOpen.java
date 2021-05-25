@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
@@ -34,7 +34,7 @@ public class CmdOpen extends FCommand {
 		String open = context.faction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
 
 		// Inform
-		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
 			if(fplayer.getFactionId().equals(context.faction.getId())) {
 				fplayer.msg(TL.COMMAND_OPEN_CHANGES, context.fPlayer.getName(), open);
 				continue;

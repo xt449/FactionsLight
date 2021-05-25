@@ -1,6 +1,6 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.TL;
@@ -28,7 +28,7 @@ public enum PlayerTag implements Tag {
 	PLAYER_MAXPOWER("player-maxpower", (fp) -> String.valueOf(fp.getPowerMaxRounded())),
 	PLAYER_KILLS("player-kills", (fp) -> String.valueOf(fp.getKills())),
 	PLAYER_DEATHS("player-deaths", (fp) -> String.valueOf(fp.getDeaths())),
-	PLAYER_NAME("name", FPlayer::getName),
+	PLAYER_NAME("name", IFactionPlayer::getName),
 	TOTAL_ONLINE_VISIBLE("total-online-visible", (fp) -> {
 		if(fp == null) {
 			return String.valueOf(Bukkit.getOnlinePlayers().size());
@@ -45,16 +45,16 @@ public enum PlayerTag implements Tag {
 	;
 
 	private final String tag;
-	private final Function<FPlayer, String> function;
+	private final Function<IFactionPlayer, String> function;
 
-	public static String parse(String text, FPlayer player) {
+	public static String parse(String text, IFactionPlayer player) {
 		for(PlayerTag tag : PlayerTag.values()) {
 			text = tag.replace(text, player);
 		}
 		return text;
 	}
 
-	PlayerTag(String tag, Function<FPlayer, String> function) {
+	PlayerTag(String tag, Function<IFactionPlayer, String> function) {
 		this.tag = '{' + tag + '}';
 		this.function = function;
 	}
@@ -69,7 +69,7 @@ public enum PlayerTag implements Tag {
 		return test != null && test.contains(this.tag);
 	}
 
-	public String replace(String text, FPlayer player) {
+	public String replace(String text, IFactionPlayer player) {
 		if(!this.foundInString(text)) {
 			return text;
 		}
