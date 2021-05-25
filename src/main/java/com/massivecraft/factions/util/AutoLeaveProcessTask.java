@@ -1,9 +1,9 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.scheduler.BukkitRunnable;
 

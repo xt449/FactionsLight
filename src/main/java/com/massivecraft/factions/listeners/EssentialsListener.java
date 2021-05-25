@@ -2,10 +2,10 @@ package com.massivecraft.factions.listeners;
 
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.User;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import net.ess3.api.InvalidWorldException;
 import org.bukkit.Location;

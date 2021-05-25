@@ -1,8 +1,8 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.IFaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

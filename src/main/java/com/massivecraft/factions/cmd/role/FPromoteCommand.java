@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.role;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;

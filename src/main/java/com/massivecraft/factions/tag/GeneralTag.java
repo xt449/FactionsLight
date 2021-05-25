@@ -1,7 +1,7 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;

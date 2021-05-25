@@ -22,7 +22,7 @@ import java.util.Random;
 //            8    North - West
 //-----------------------------
 
-public class SmokeUtil {
+public abstract class SmokeUtil {
 
 	public static Random random = new Random();
 

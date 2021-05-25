@@ -1,9 +1,9 @@
 package com.massivecraft.factions.data;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.IFactionPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

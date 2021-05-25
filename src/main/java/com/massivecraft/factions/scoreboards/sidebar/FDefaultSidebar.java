@@ -1,7 +1,7 @@
 package com.massivecraft.factions.scoreboards.sidebar;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
 
 import java.util.ArrayList;

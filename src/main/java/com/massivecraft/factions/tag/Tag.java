@@ -1,8 +1,8 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 

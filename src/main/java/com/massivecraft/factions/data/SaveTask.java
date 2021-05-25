@@ -1,9 +1,9 @@
 package com.massivecraft.factions.data;
 
-import com.massivecraft.factions.IFactionClaimManager;
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionClaimManager;
+import com.massivecraft.factions.IFactionPlayerManager;
 
 public class SaveTask implements Runnable {
 

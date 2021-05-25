@@ -1,7 +1,7 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;

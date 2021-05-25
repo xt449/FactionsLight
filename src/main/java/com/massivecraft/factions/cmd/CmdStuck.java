@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;

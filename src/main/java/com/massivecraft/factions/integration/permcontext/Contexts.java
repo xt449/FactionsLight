@@ -1,7 +1,7 @@
 package com.massivecraft.factions.integration.permcontext;
 
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Relation;

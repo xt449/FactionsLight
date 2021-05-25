@@ -1,9 +1,9 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IEconomyParticipator;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.RelationUtil;

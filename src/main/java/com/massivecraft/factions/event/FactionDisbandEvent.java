@@ -1,8 +1,8 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.Factions;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 

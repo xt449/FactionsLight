@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.tnt;
 
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;

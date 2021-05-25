@@ -1,7 +1,7 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd.money;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IEconomyParticipator;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
-import com.massivecraft.factions.IEconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;

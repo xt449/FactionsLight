@@ -1,9 +1,9 @@
 package com.massivecraft.factions.listeners;
 
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;

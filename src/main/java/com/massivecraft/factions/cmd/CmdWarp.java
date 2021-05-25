@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.gui.WarpGUI;
 import com.massivecraft.factions.perms.PermissibleAction;

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.FactionTag;

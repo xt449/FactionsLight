@@ -15,7 +15,6 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.integration.permcontext.ContextManager;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.listeners.PortalListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;

@@ -1,8 +1,8 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
 

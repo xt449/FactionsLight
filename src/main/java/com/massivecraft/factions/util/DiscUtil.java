@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 
-public class DiscUtil {
+public abstract class DiscUtil {
 
 	// -------------------------------------------- //
 	// BYTE

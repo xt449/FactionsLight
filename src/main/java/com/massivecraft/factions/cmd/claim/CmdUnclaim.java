@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;

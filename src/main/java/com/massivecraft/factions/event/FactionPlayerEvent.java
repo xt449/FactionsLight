@@ -1,7 +1,7 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 
 /**
  * Represents an event involving a Faction and a FPlayer.

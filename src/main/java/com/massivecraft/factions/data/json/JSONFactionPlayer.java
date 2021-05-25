@@ -1,7 +1,7 @@
 package com.massivecraft.factions.data.json;
 
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.data.AbstractFactionPlayer;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 

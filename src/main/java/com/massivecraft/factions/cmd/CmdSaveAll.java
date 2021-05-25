@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 

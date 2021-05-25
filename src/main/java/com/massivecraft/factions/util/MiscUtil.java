@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.material.MaterialDb;
 import org.bukkit.ChatColor;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 
-public class MiscUtil {
+public abstract class MiscUtil {
 	private static final Map<String, EntityType> entityTypeMap;
 	public static final Function<String, EntityType> ENTITY_TYPE_FUNCTION;
 	public static final Function<String, Material> MATERIAL_FUNCTION;

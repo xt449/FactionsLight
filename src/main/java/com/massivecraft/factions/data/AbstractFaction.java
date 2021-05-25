@@ -3,8 +3,6 @@ package com.massivecraft.factions.data;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
-import com.massivecraft.factions.IEconomyParticipator;
-import com.massivecraft.factions.IRelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.landraidcontrol.DTRControl;

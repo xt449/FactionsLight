@@ -1,13 +1,13 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IRelationParticipator;
 import com.massivecraft.factions.perms.Relation;
 import org.bukkit.ChatColor;
 
-public class RelationUtil {
+public abstract class RelationUtil {
 
 	public static String describeThatToMe(IRelationParticipator that, IRelationParticipator me, boolean ucfirst) {
 		String ret = "";

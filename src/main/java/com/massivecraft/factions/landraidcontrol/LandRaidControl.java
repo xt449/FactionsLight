@@ -1,7 +1,7 @@
 package com.massivecraft.factions.landraidcontrol;
 
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.cmd.CommandContext;
 import org.bukkit.entity.Player;
 

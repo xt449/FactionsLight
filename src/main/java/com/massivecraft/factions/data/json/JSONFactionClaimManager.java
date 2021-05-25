@@ -1,9 +1,9 @@
 package com.massivecraft.factions.data.json;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.FactionClaim;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.data.AbstractFactionClaimManager;
 import com.massivecraft.factions.util.DiscUtil;
 

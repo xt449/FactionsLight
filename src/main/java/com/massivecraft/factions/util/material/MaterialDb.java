@@ -10,11 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class MaterialDb {
+public abstract class MaterialDb {
 	private static Map<String, Material> map;
-
-	private MaterialDb() {
-	}
 
 	public static Material get(String name) {
 		return get(name, Material.AIR);

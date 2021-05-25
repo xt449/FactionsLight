@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;

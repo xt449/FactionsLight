@@ -1,7 +1,7 @@
 package com.massivecraft.factions.data;
 
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;

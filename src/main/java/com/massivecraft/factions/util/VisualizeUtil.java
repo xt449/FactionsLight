@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class VisualizeUtil {
+public abstract class VisualizeUtil {
 
 	protected static Map<UUID, Set<Location>> playerLocations = new HashMap<>();
 

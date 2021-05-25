@@ -1,8 +1,8 @@
 package com.massivecraft.factions.gui;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;

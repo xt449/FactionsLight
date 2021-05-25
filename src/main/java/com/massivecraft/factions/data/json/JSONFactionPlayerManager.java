@@ -2,9 +2,9 @@ package com.massivecraft.factions.data.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.AbstractFactionPlayer;
 import com.massivecraft.factions.data.AbstractFactionPlayerManager;
 import com.massivecraft.factions.util.DiscUtil;

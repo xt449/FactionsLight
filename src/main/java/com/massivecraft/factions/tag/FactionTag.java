@@ -1,8 +1,8 @@
 package com.massivecraft.factions.tag;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;

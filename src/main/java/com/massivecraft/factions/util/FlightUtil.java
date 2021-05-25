@@ -1,8 +1,8 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import org.bukkit.Bukkit;
