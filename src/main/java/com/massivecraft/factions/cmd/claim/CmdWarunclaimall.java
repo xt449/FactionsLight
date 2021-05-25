@@ -13,41 +13,41 @@ import org.bukkit.World;
 
 public class CmdWarunclaimall extends FCommand {
 
-    public CmdWarunclaimall() {
-        this.aliases.add("warunclaimall");
-        this.aliases.add("wardeclaimall");
+	public CmdWarunclaimall() {
+		this.aliases.add("warunclaimall");
+		this.aliases.add("wardeclaimall");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("world", "all");
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("world", "all");
 
-        this.requirements = new CommandRequirements.Builder(Permission.MANAGE_WAR_ZONE).build();
-    }
+		this.requirements = new CommandRequirements.Builder(Permission.MANAGE_WAR_ZONE).build();
+	}
 
-    @Override
-    public void perform(CommandContext context) {
-        String worldName = context.argAsString(0);
-        World world = null;
+	@Override
+	public void perform(CommandContext context) {
+		String worldName = context.argAsString(0);
+		World world = null;
 
-        if (worldName != null) {
-            world = Bukkit.getWorld(worldName);
-        }
+		if(worldName != null) {
+			world = Bukkit.getWorld(worldName);
+		}
 
-        String id = Factions.getInstance().getWarZone().getId();
+		String id = Factions.getInstance().getWarZone().getId();
 
-        if (world == null) {
-            Board.getInstance().unclaimAll(id);
-        } else {
-            Board.getInstance().unclaimAllInWorld(id, world);
-        }
+		if(world == null) {
+			Board.getInstance().unclaimAll(id);
+		} else {
+			Board.getInstance().unclaimAllInWorld(id, world);
+		}
 
-        if (FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
-            FactionsPlugin.getInstance().log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
-        }
-    }
+		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
+			FactionsPlugin.getInstance().log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
+		}
+	}
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
-    }
+	@Override
+	public TL getUsageTranslation() {
+		return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
+	}
 
 }

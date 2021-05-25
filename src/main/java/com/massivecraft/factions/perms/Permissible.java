@@ -3,7 +3,7 @@ package com.massivecraft.factions.perms;
 import org.bukkit.ChatColor;
 
 public interface Permissible {
-    String name();
+	String name();
 
-    ChatColor getColor();
+	ChatColor getColor();
 }

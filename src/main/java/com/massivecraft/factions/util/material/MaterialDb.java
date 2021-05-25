@@ -11,49 +11,49 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class MaterialDb {
-    private static Map<String, Material> map;
+	private static Map<String, Material> map;
 
-    private MaterialDb() {
-    }
+	private MaterialDb() {
+	}
 
-    public static Material get(String name) {
-        return get(name, Material.AIR);
-    }
+	public static Material get(String name) {
+		return get(name, Material.AIR);
+	}
 
-    public static Material get(String name, Material defaultMaterial) {
-        if (name == null) {
-            FactionsPlugin.getInstance().log("Null material name found");
-            return defaultMaterial;
-        }
+	public static Material get(String name, Material defaultMaterial) {
+		if(name == null) {
+			FactionsPlugin.getInstance().log("Null material name found");
+			return defaultMaterial;
+		}
 
-        Material material = Material.getMaterial(name);
-        if (material == null) {
-            material = map.get(name.toUpperCase());
-        }
+		Material material = Material.getMaterial(name);
+		if(material == null) {
+			material = map.get(name.toUpperCase());
+		}
 
-        if (material == null) {
-            FactionsPlugin.getInstance().log(Level.INFO, "Material does not exist: " + name.toUpperCase());
-            return defaultMaterial;
-        }
+		if(material == null) {
+			FactionsPlugin.getInstance().log(Level.INFO, "Material does not exist: " + name.toUpperCase());
+			return defaultMaterial;
+		}
 
-        return material;
-    }
+		return material;
+	}
 
-    public static void load() {
-        InputStreamReader reader = new InputStreamReader(FactionsPlugin.getInstance().getResource("materials.json"));
-        Type typeToken = new TypeToken<HashMap<String, String>>() {
-        }.getType();
-        HashMap<String, String> materialData = FactionsPlugin.getInstance().getGson().fromJson(reader, typeToken);
-        map = new HashMap<>();
-        materialData.forEach((n, l) -> {
-            Material matN = Material.getMaterial(n);
-            Material matL = Material.getMaterial(l);
-            boolean nNull = matN == null;
-            if (nNull == (matL == null)) {
-                return;
-            }
-            map.put(nNull ? n : l, nNull ? matL : matN);
-        });
-        FactionsPlugin.getInstance().getLogger().info(String.format("Loaded %s material mappings.", map.size()));
-    }
+	public static void load() {
+		InputStreamReader reader = new InputStreamReader(FactionsPlugin.getInstance().getResource("materials.json"));
+		Type typeToken = new TypeToken<HashMap<String, String>>() {
+		}.getType();
+		HashMap<String, String> materialData = FactionsPlugin.getInstance().getGson().fromJson(reader, typeToken);
+		map = new HashMap<>();
+		materialData.forEach((n, l) -> {
+			Material matN = Material.getMaterial(n);
+			Material matL = Material.getMaterial(l);
+			boolean nNull = matN == null;
+			if(nNull == (matL == null)) {
+				return;
+			}
+			map.put(nNull ? n : l, nNull ? matL : matN);
+		});
+		FactionsPlugin.getInstance().getLogger().info(String.format("Loaded %s material mappings.", map.size()));
+	}
 }

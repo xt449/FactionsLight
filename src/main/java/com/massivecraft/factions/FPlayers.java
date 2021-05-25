@@ -7,32 +7,32 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 
 public abstract class FPlayers {
-    protected static FPlayers instance = getFPlayersImpl();
+	protected static FPlayers instance = getFPlayersImpl();
 
-    public abstract void clean();
+	public abstract void clean();
 
-    public static FPlayers getInstance() {
-        return instance;
-    }
+	public static FPlayers getInstance() {
+		return instance;
+	}
 
-    private static FPlayers getFPlayersImpl() {
-        // TODO switch on configuration backend
-        return new JSONFPlayers();
-    }
+	private static FPlayers getFPlayersImpl() {
+		// TODO switch on configuration backend
+		return new JSONFPlayers();
+	}
 
-    public abstract Collection<FPlayer> getOnlinePlayers();
+	public abstract Collection<FPlayer> getOnlinePlayers();
 
-    public abstract FPlayer getByPlayer(Player player);
+	public abstract FPlayer getByPlayer(Player player);
 
-    public abstract Collection<FPlayer> getAllFPlayers();
+	public abstract Collection<FPlayer> getAllFPlayers();
 
-    public abstract void forceSave();
+	public abstract void forceSave();
 
-    public abstract void forceSave(boolean sync);
+	public abstract void forceSave(boolean sync);
 
-    public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
+	public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
 
-    public abstract FPlayer getById(String string);
+	public abstract FPlayer getById(String string);
 
-    public abstract int load();
+	public abstract int load();
 }
