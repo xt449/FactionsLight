@@ -2502,7 +2502,7 @@ public class MainConfig {
             }
 
             public int getPrefixLength() {
-                return prefixLength < 1 ? (FactionsPlugin.getMCVersion() < 1300 ? 16 : 32) : prefixLength;
+                return prefixLength < 1 ? 32 : prefixLength;
             }
 
             public String getPrefixTemplate() {
@@ -2514,7 +2514,7 @@ public class MainConfig {
             }
 
             public int getSuffixLength() {
-                return suffixLength < 1 ? (FactionsPlugin.getMCVersion() < 1300 ? 16 : 32) : suffixLength;
+                return suffixLength < 1 ? 32 : suffixLength;
             }
 
             public String getSuffixTemplate() {

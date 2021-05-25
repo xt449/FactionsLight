@@ -27,8 +27,6 @@ import com.massivecraft.factions.listeners.FactionsEntityListener;
 import com.massivecraft.factions.listeners.FactionsExploitListener;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.listeners.OneEightPlusListener;
-import com.massivecraft.factions.listeners.versionspecific.PortalHandler;
-import com.massivecraft.factions.listeners.versionspecific.PortalListenerLegacy;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -61,6 +59,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
@@ -107,15 +106,15 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
     // Our single plugin instance.
     // Single 4 life.
     private static FactionsPlugin instance;
-    private static int mcVersion;
+    //private static int mcVersion;
 
     public static FactionsPlugin getInstance() {
         return instance;
     }
 
-    public static int getMCVersion() {
-        return mcVersion;
-    }
+//    public static int getMCVersion() {
+//        return mcVersion;
+//    }
 
     private final ConfigManager configManager = new ConfigManager(this);
 
@@ -243,37 +242,37 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         this.serverUUID = new UUID(ms, ((0xaf & 0xffL) << 56) + ((0xac & 0xffL) << 48) + (u & 0xffffffffL) + ((p & 0xffffL) << 32));
 
         // Version party
-        Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
-        Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
+//        Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
+//        Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
         getLogger().info("");
-        getLogger().info("Factions UUID!");
+        getLogger().info("Patriam Factions UUID!");
         getLogger().info("Version " + this.getDescription().getVersion());
         getLogger().info("");
         getLogger().info("Need support? https://factions.support/help/");
         getLogger().info("");
-        Integer versionInteger = null;
-        if (versionMatcher.find()) {
-            try {
-                int minor = Integer.parseInt(versionMatcher.group(1));
-                String patchS = versionMatcher.group(2);
-                int patch = (patchS == null || patchS.isEmpty()) ? 0 : Integer.parseInt(patchS);
-                versionInteger = (minor * 100) + patch;
-                getLogger().info("Detected Minecraft " + versionMatcher.group());
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        if (versionInteger == null) {
-            getLogger().warning("");
-            getLogger().warning("Could not identify version. Going with least supported version, 1.7.10.");
-            getLogger().warning("Please visit our support live chat for help - https://factions.support/help/");
-            getLogger().warning("");
-            versionInteger = 710;
-        }
-        mcVersion = versionInteger;
-        if (mcVersion < 808) {
-            getLogger().info("");
-            getLogger().warning("FactionsUUID works better with at least Minecraft 1.8.8");
-        }
+//        Integer versionInteger = null;
+//        if (versionMatcher.find()) {
+//            try {
+//                int minor = Integer.parseInt(versionMatcher.group(1));
+//                String patchS = versionMatcher.group(2);
+//                int patch = (patchS == null || patchS.isEmpty()) ? 0 : Integer.parseInt(patchS);
+//                versionInteger = (minor * 100) + patch;
+//                getLogger().info("Detected Minecraft " + versionMatcher.group());
+//            } catch (NumberFormatException ignored) {
+//            }
+//        }
+//        if (versionInteger == null) {
+//            getLogger().warning("");
+//            getLogger().warning("Could not identify version. Going with least supported version, 1.7.10.");
+//            getLogger().warning("Please visit our support live chat for help - https://factions.support/help/");
+//            getLogger().warning("");
+//            versionInteger = 710;
+//        }
+//        mcVersion = versionInteger;
+//        if (mcVersion < 808) {
+//            getLogger().info("");
+//            getLogger().warning("FactionsUUID works better with at least Minecraft 1.8.8");
+//        }
         getLogger().info("");
         this.buildNumber = this.getBuildNumber(this.getDescription().getVersion());
 
@@ -366,12 +365,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         startAutoLeaveTask(false);
 
         // Run before initializing listeners to handle reloads properly.
-        if (mcVersion < 1300) { // Before 1.13
-            particleProvider = new PacketParticleProvider();
-        } else {
-            particleProvider = new BukkitParticleProvider();
-        }
-        getLogger().info(txt.parse("Using %1s as a particle provider", particleProvider.name()));
+        particleProvider = new BukkitParticleProvider();
 
         if (conf().commands().seeChunk().isParticles()) {
             double delay = Math.floor(conf().commands().seeChunk().getParticleUpdateTime() * 20);
@@ -386,16 +380,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsExploitListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
-        if (mcVersion >= 800) {
-            getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
-        }
-
-        // Version specific portal listener check.
-        if (mcVersion >= 1400) { // Starting with 1.14
-            getServer().getPluginManager().registerEvents(new PortalListener_114(this), this);
-        } else {
-            getServer().getPluginManager().registerEvents(new PortalListenerLegacy(new PortalHandler()), this);
-        }
+        getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
+        getServer().getPluginManager().registerEvents(new PortalListener_114(this), this);
 
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(refCommand).setExecutor(cmdBase);
@@ -426,20 +412,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
                 startupExceptionLog = startupExceptionBuilder.toString();
             }
         }.runTask(this);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (checkForUpdates()) {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.broadcast(updateMessage, com.massivecraft.factions.struct.Permission.UPDATES.toString());
-                        }
-                    }.runTask(FactionsPlugin.this);
-                    this.cancel();
-                }
-            }
-        }.runTaskTimerAsynchronously(this, 0, 20 * 60 * 10); // ten minutes
 
         getLogger().info("=== Ready to go after " + (System.currentTimeMillis() - timeEnableStart) + "ms! ===");
         this.loadSuccessful = true;
@@ -670,33 +642,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
             }
         }
         return -1;
-    }
-
-    private boolean checkForUpdates() {
-        try {
-            URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=1035");
-            HttpURLConnection con = ((HttpURLConnection) url.openConnection());
-            int status = con.getResponseCode();
-            if (status == 200) {
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                    String line;
-                    while ((line = in.readLine()) != null) {
-                        if (line.startsWith("1.6.9.5-U") && !this.getDescription().getVersion().equals(line)) {
-                            if (this.buildNumber > 0) {
-                                int build = this.getBuildNumber(line);
-                                if (build > 0 && build <= this.buildNumber) {
-                                    return false;
-                                }
-                            }
-                            this.updateMessage = ChatColor.GREEN + "New version of " + ChatColor.DARK_AQUA + "Factions" + ChatColor.GREEN + " available: " + ChatColor.DARK_AQUA + line;
-                            return true;
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) {
-        }
-        return false;
     }
 
     public UUID getServerUUID() {

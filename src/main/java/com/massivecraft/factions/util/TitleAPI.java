@@ -33,12 +33,6 @@ public class TitleAPI {
     public TitleAPI() {
         instance = this;
 
-        if (FactionsPlugin.getMCVersion() < 800) {
-            bailOut = true;
-            FactionsPlugin.getInstance().getLogger().info("Title support disabled because 1.7.10 is too old.");
-            return;
-        }
-
         try {
             Player.class.getMethod("sendTitle", String.class, String.class, int.class, int.class, int.class);
             supportsAPI = true;
