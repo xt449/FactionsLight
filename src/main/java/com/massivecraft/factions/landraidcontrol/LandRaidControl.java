@@ -1,7 +1,7 @@
 package com.massivecraft.factions.landraidcontrol;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.CommandContext;
 import org.bukkit.entity.Player;
 
@@ -16,31 +16,31 @@ public interface LandRaidControl {
 		}
 	}
 
-	boolean isRaidable(IFaction faction);
+	boolean isRaidable(Faction faction);
 
-	boolean hasLandInflation(IFaction faction);
+	boolean hasLandInflation(Faction faction);
 
-	int getLandLimit(IFaction faction);
+	int getLandLimit(Faction faction);
 
-	default int getPossibleClaimCount(IFaction faction) {
+	default int getPossibleClaimCount(Faction faction) {
 		return this.getLandLimit(faction) - faction.getLandRounded();
 	}
 
-	boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context);
+	boolean canJoinFaction(Faction faction, FPlayer player, CommandContext context);
 
-	boolean canLeaveFaction(IFactionPlayer player);
+	boolean canLeaveFaction(FPlayer player);
 
-	boolean canDisbandFaction(IFaction faction, CommandContext context);
+	boolean canDisbandFaction(Faction faction, CommandContext context);
 
-	boolean canKick(IFactionPlayer toKick, CommandContext context);
+	boolean canKick(FPlayer toKick, CommandContext context);
 
-	void onRespawn(IFactionPlayer player);
+	void onRespawn(FPlayer player);
 
 	void onDeath(Player player);
 
-	void onQuit(IFactionPlayer player);
+	void onQuit(FPlayer player);
 
-	void onJoin(IFactionPlayer player);
+	void onJoin(FPlayer player);
 
-	void update(IFactionPlayer player);
+	void update(FPlayer player);
 }

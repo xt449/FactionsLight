@@ -1,45 +1,26 @@
 package com.massivecraft.factions.util.particle;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class ParticleProvider {
+public interface ParticleProvider<Effect> {
 
-	public void spawn(Particle effect, Location location, int count) {
-		location.getWorld().spawnParticle(effect, location, count);
-	}
+	String name();
 
-	public void playerSpawn(Player player, Particle effect, Location location, int count) {
-		player.spawnParticle(effect, location, count);
-	}
+	void spawn(Effect effect, Location location, int count);
 
-	public void spawn(Particle particle, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ) {
-		location.getWorld().spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, speed);
-	}
+	void playerSpawn(Player player, Effect effect, Location location, int count);
 
-	public void playerSpawn(Player player, Particle particle, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ) {
-		player.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, speed);
-	}
+	void spawn(Effect effect, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ);
 
-	public void spawn(Particle particle, Location location, ParticleColor color) {
-		location.getWorld().spawnParticle(particle, location, 1, new Particle.DustOptions(color.getColor(), 1));
-	}
+	void playerSpawn(Player player, Effect effect, Location location, int count, double speed, double offsetX, double offsetY, double offsetZ);
 
-	public void playerSpawn(Player player, Particle particle, Location location, ParticleColor color) {
-		player.spawnParticle(particle, location, 1, new Particle.DustOptions(color.getColor(), 1.5f));
-	}
+	void spawn(Effect effect, Location location, ParticleColor color);
 
-	public Particle effectFromString(String string) {
-		for(Particle particle : Particle.values()) {
-			if(particle.name().equalsIgnoreCase(string)) {
-				return particle;
-			}
-		}
-		return null;
-	}
+	void playerSpawn(Player player, Effect effect, Location location, ParticleColor color);
 
-	public String effectName(Particle particle) {
-		return particle.name();
-	}
+	Effect effectFromString(String string);
+
+	String effectName(Effect effect);
+
 }

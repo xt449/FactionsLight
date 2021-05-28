@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Localization;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -26,7 +26,7 @@ public class CmdSetMaxVaults extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction targetFaction = context.argAsFaction(0);
+		Faction targetFaction = context.argAsFaction(0);
 		int value = context.argAsInt(1, -1);
 		if(value < 0) {
 			context.sender.sendMessage(ChatColor.RED + "Number must be greater than 0.");

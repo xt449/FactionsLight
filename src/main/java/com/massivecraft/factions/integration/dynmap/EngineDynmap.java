@@ -2,7 +2,7 @@ package com.massivecraft.factions.integration.dynmap;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.DynmapConfig;
-import com.massivecraft.factions.data.AbstractFactionClaimManager;
+import com.massivecraft.factions.data.MemoryBoard;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
@@ -151,7 +151,7 @@ public class EngineDynmap {
 		Map<String, TempMarker> ret = new HashMap<>();
 
 		// Loop current factions
-		for(IFaction faction : Factions.getInstance().getAllFactions()) {
+		for(Faction faction : Factions.getInstance().getAllFactions()) {
 			Location ps = faction.getHome();
 			if(ps == null) {
 				continue;
@@ -217,25 +217,25 @@ public class EngineDynmap {
 
 	// Thread Safe: YES
 	public Map<String, TempAreaMarker> createAreas() {
-		Map<String, Map<IFaction, Set<FactionClaim>>> worldFactionChunks = createWorldFactionChunks();
+		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = createWorldFactionChunks();
 		return createAreas(worldFactionChunks);
 	}
 
 	// Thread Safe: YES
-	public Map<String, Map<IFaction, Set<FactionClaim>>> createWorldFactionChunks() {
+	public Map<String, Map<Faction, Set<FLocation>>> createWorldFactionChunks() {
 		// Create map "world name --> faction --> set of chunk coords"
-		Map<String, Map<IFaction, Set<FactionClaim>>> worldFactionChunks = new HashMap<>();
+		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = new HashMap<>();
 
 		// Note: The board is the world. The board id is the world name.
-		AbstractFactionClaimManager board = (AbstractFactionClaimManager) IFactionClaimManager.getInstance();
+		MemoryBoard board = (MemoryBoard) Board.getInstance();
 
-		for(Entry<FactionClaim, String> entry : board.flocationIds.entrySet()) {
+		for(Entry<FLocation, String> entry : board.flocationIds.entrySet()) {
 			String world = entry.getKey().getWorldName();
-			IFaction chunkOwner = Factions.getInstance().getFactionById(entry.getValue());
+			Faction chunkOwner = Factions.getInstance().getFactionById(entry.getValue());
 
-			Map<IFaction, Set<FactionClaim>> factionChunks = worldFactionChunks.computeIfAbsent(world, k -> new HashMap<>());
+			Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.computeIfAbsent(world, k -> new HashMap<>());
 
-			Set<FactionClaim> factionTerritory = factionChunks.computeIfAbsent(chunkOwner, k -> new HashSet<>());
+			Set<FLocation> factionTerritory = factionChunks.computeIfAbsent(chunkOwner, k -> new HashSet<>());
 
 			factionTerritory.add(entry.getKey());
 		}
@@ -244,18 +244,18 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe: YES
-	public Map<String, TempAreaMarker> createAreas(Map<String, Map<IFaction, Set<FactionClaim>>> worldFactionChunks) {
+	public Map<String, TempAreaMarker> createAreas(Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks) {
 		Map<String, TempAreaMarker> ret = new HashMap<>();
 
 		// For each world
-		for(Entry<String, Map<IFaction, Set<FactionClaim>>> entry : worldFactionChunks.entrySet()) {
+		for(Entry<String, Map<Faction, Set<FLocation>>> entry : worldFactionChunks.entrySet()) {
 			String world = entry.getKey();
-			Map<IFaction, Set<FactionClaim>> factionChunks = entry.getValue();
+			Map<Faction, Set<FLocation>> factionChunks = entry.getValue();
 
 			// For each faction and its chunks in that world
-			for(Entry<IFaction, Set<FactionClaim>> entry1 : factionChunks.entrySet()) {
-				IFaction faction = entry1.getKey();
-				Set<FactionClaim> chunks = entry1.getValue();
+			for(Entry<Faction, Set<FLocation>> entry1 : factionChunks.entrySet()) {
+				Faction faction = entry1.getKey();
+				Set<FLocation> chunks = entry1.getValue();
 				Map<String, TempAreaMarker> worldFactionMarkers = createAreas(world, faction, chunks);
 				ret.putAll(worldFactionMarkers);
 			}
@@ -267,7 +267,7 @@ public class EngineDynmap {
 	// Thread Safe: YES
 	// Handle specific faction on specific world
 	// "handle faction on world"
-	public Map<String, TempAreaMarker> createAreas(String world, IFaction faction, Set<FactionClaim> chunks) {
+	public Map<String, TempAreaMarker> createAreas(String world, Faction faction, Set<FLocation> chunks) {
 		Map<String, TempAreaMarker> ret = new HashMap<>();
 
 		// If the faction is visible ...
@@ -291,8 +291,8 @@ public class EngineDynmap {
 
 		// Loop through chunks: set flags on chunk map
 		TileFlags allChunkFlags = new TileFlags();
-		LinkedList<FactionClaim> allChunks = new LinkedList<>();
-		for(FactionClaim chunk : chunks) {
+		LinkedList<FLocation> allChunks = new LinkedList<>();
+		for(FLocation chunk : chunks) {
 			allChunkFlags.setFlag((int) chunk.getX(), (int) chunk.getZ(), true); // Set flag for chunk
 			allChunks.addLast(chunk);
 		}
@@ -300,12 +300,12 @@ public class EngineDynmap {
 		// Loop through until we don't find more areas
 		while(allChunks != null) {
 			TileFlags ourChunkFlags = null;
-			LinkedList<FactionClaim> ourChunks = null;
-			LinkedList<FactionClaim> newChunks = null;
+			LinkedList<FLocation> ourChunks = null;
+			LinkedList<FLocation> newChunks = null;
 
 			int minimumX = Integer.MAX_VALUE;
 			int minimumZ = Integer.MAX_VALUE;
-			for(FactionClaim chunk : allChunks) {
+			for(FLocation chunk : allChunks) {
 				int chunkX = (int) chunk.getX();
 				int chunkZ = (int) chunk.getZ();
 
@@ -483,7 +483,7 @@ public class EngineDynmap {
 	// -------------------------------------------- //
 
 	// Thread Safe / Asynchronous: Yes
-	public String createPlayersetId(IFaction faction) {
+	public String createPlayersetId(Faction faction) {
 		if(faction == null) {
 			return null;
 		}
@@ -498,7 +498,7 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	public Set<String> createPlayerset(IFaction faction) {
+	public Set<String> createPlayerset(Faction faction) {
 		if(faction == null) {
 			return null;
 		}
@@ -508,7 +508,7 @@ public class EngineDynmap {
 
 		Set<String> ret = new HashSet<>();
 
-		for(IFactionPlayer fplayer : faction.getFPlayers()) {
+		for(FPlayer fplayer : faction.getFPlayers()) {
 			// NOTE: We add both UUID and name. This might be a good idea for future proofing.
 			ret.add(fplayer.getId());
 			ret.add(fplayer.getName());
@@ -525,7 +525,7 @@ public class EngineDynmap {
 
 		Map<String, Set<String>> ret = new HashMap<>();
 
-		for(IFaction faction : Factions.getInstance().getAllFactions()) {
+		for(Faction faction : Factions.getInstance().getAllFactions()) {
 			String playersetId = createPlayersetId(faction);
 			if(playersetId == null) {
 				continue;
@@ -590,7 +590,7 @@ public class EngineDynmap {
 	// -------------------------------------------- //
 
 	// Thread Safe / Asynchronous: Yes
-	private String getDescription(IFaction faction) {
+	private String getDescription(Faction faction) {
 		String ret = "<div class=\"regioninfo\">" + dynmapConf.dynmap().getDescription() + "</div>";
 
 		// Name
@@ -615,23 +615,23 @@ public class EngineDynmap {
 
 
 		// Players
-		Set<IFactionPlayer> playersList = faction.getFPlayers();
+		Set<FPlayer> playersList = faction.getFPlayers();
 		String playersCount = String.valueOf(playersList.size());
 		String players = getHtmlPlayerString(playersList);
 
-		IFactionPlayer playersLeaderObject = faction.getFPlayerAdmin();
+		FPlayer playersLeaderObject = faction.getFPlayerAdmin();
 		String playersLeader = getHtmlPlayerName(playersLeaderObject);
 
-		List<IFactionPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
+		List<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.ADMIN);
 		String playersAdminsCount = String.valueOf(playersAdminsList.size());
 		String playersAdmins = getHtmlPlayerString(playersAdminsList);
 
-		List<IFactionPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
+		List<FPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
 		String playersModeratorsCount = String.valueOf(playersModeratorsList.size());
 		String playersModerators = getHtmlPlayerString(playersModeratorsList);
 
 
-		List<IFactionPlayer> playersNormalsList = faction.getFPlayersWhereRole(Role.NORMAL);
+		List<FPlayer> playersNormalsList = faction.getFPlayersWhereRole(Role.NORMAL);
 		String playersNormalsCount = String.valueOf(playersNormalsList.size());
 		String playersNormals = getHtmlPlayerString(playersNormalsList);
 
@@ -649,9 +649,9 @@ public class EngineDynmap {
 		return ret;
 	}
 
-	public static String getHtmlPlayerString(Collection<IFactionPlayer> playersOfficersList) {
+	public static String getHtmlPlayerString(Collection<FPlayer> playersOfficersList) {
 		StringBuilder ret = new StringBuilder();
-		for(IFactionPlayer fplayer : playersOfficersList) {
+		for(FPlayer fplayer : playersOfficersList) {
 			if(ret.length() > 0) {
 				ret.append(", ");
 			}
@@ -660,7 +660,7 @@ public class EngineDynmap {
 		return ret.toString();
 	}
 
-	public static String getHtmlPlayerName(IFactionPlayer fplayer) {
+	public static String getHtmlPlayerName(FPlayer fplayer) {
 		if(fplayer == null) {
 			return "none";
 		}
@@ -686,7 +686,7 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	private boolean isVisible(IFaction faction, String world) {
+	private boolean isVisible(Faction faction, String world) {
 		if(faction == null) {
 			return false;
 		}
@@ -710,7 +710,7 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	public DynmapStyle getStyle(IFaction faction) {
+	public DynmapStyle getStyle(Faction faction) {
 		DynmapStyle ret;
 
 		ret = dynmapConf.dynmap().getFactionStyles().get(faction.getId());

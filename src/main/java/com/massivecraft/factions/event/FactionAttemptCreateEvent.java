@@ -1,7 +1,7 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -23,8 +23,8 @@ public class FactionAttemptCreateEvent extends Event implements Cancellable {
 		this.sender = sender;
 	}
 
-	public IFactionPlayer getFPlayer() {
-		return IFactionPlayerManager.getInstance().getByPlayer(sender);
+	public FPlayer getFPlayer() {
+		return FPlayers.getInstance().getByPlayer(sender);
 	}
 
 	@Deprecated

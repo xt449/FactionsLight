@@ -1,11 +1,12 @@
 package com.massivecraft.factions.gui;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.material.MaterialDb;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.Backable {
-	private static final SimpleItem backItem = SimpleItem.builder().setMaterial(Material.ARROW).setName(Localization.GUI_BUTTON_BACK.toString()).build();
+	private static final SimpleItem backItem = SimpleItem.builder().setMaterial(MaterialDb.get("ARROW")).setName(TL.GUI_BUTTON_BACK.toString()).build();
 	private static final SimpleItem base;
 	private static final String locked;
 	private static final String allow;
@@ -24,17 +25,17 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 
 	static {
 		base = SimpleItem.builder().setLore(FactionsPlugin.getInstance().conf().commands().perms().getGuiLore()).setName("&8[{action-access-color}{action}&8]").build();
-		locked = ' ' + Localization.GUI_PERMS_ACTION_LOCKED.toString();
-		allow = Localization.GUI_PERMS_ACTION_ALLOW.toString();
+		locked = ' ' + TL.GUI_PERMS_ACTION_LOCKED.toString();
+		allow = TL.GUI_PERMS_ACTION_ALLOW.toString();
 		allowLower = allow.toLowerCase();
-		deny = Localization.GUI_PERMS_ACTION_DENY.toString();
+		deny = TL.GUI_PERMS_ACTION_DENY.toString();
 		denyLower = deny.toLowerCase();
 	}
 
 	private final Permissible permissible;
 	private final boolean online;
 
-	public PermissibleActionGUI(boolean online, IFactionPlayer user, Permissible permissible) {
+	public PermissibleActionGUI(boolean online, FPlayer user, Permissible permissible) {
 		super(user, (int) Math.ceil(((double) PermissibleAction.values().length) / 9d) + 1);
 		this.permissible = permissible;
 		this.online = online;
@@ -44,9 +45,9 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 	@Override
 	protected String getName() {
 		String bit = FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ?
-				Localization.GUI_PERMS_ACTION_ONLINEOFFLINEBIT.format(online ? Localization.GUI_PERMS_ONLINE.toString() : Localization.GUI_PERMS_OFFLINE)
+				TL.GUI_PERMS_ACTION_ONLINEOFFLINEBIT.format(online ? TL.GUI_PERMS_ONLINE.toString() : TL.GUI_PERMS_OFFLINE)
 				: "";
-		return Localization.GUI_PERMS_ACTION_NAME.format(permissible.name().toLowerCase(), bit);
+		return TL.GUI_PERMS_ACTION_NAME.format(permissible.name().toLowerCase(), bit);
 	}
 
 	@Override
@@ -89,10 +90,10 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		if(user.getFaction().setPermission(online, permissible, action, access)) {
 			// Reload item to reparse placeholders
 			buildItem(action);
-			user.msg(Localization.COMMAND_PERM_SET, action.getShortDescription(), access ? allowLower : denyLower, permissible.name());
-			FactionsPlugin.getInstance().log(Localization.COMMAND_PERM_SET.format(action.getShortDescription(), access ? "Allow" : "Deny", permissible.name()) + " for faction " + user.getTag());
+			user.msg(TL.COMMAND_PERM_SET, action.getShortDescription(), access ? allowLower : denyLower, permissible.name());
+			FactionsPlugin.getInstance().log(TL.COMMAND_PERM_SET.format(action.getShortDescription(), access ? "Allow" : "Deny", permissible.name()) + " for faction " + user.getTag());
 		} else {
-			user.msg(Localization.COMMAND_PERM_INVALID_SET);
+			user.msg(TL.COMMAND_PERM_INVALID_SET);
 		}
 	}
 

@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,31 +27,31 @@ public class CmdBanlist extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction target = context.faction;
+		Faction target = context.faction;
 		if(!context.args.isEmpty()) {
 			target = context.argAsFaction(0);
 		}
 
 		if(target == null) {
-			context.msg(Localization.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
+			context.msg(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
 			return;
 		}
 
 		if(!target.isNormal()) {
-			context.msg(Localization.COMMAND_BANLIST_NOFACTION);
+			context.msg(TL.COMMAND_BANLIST_NOFACTION);
 			return;
 		}
 
 		List<String> lines = new ArrayList<>();
-		lines.add(Localization.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
+		lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
 		int i = 1;
 
 		for(BanInfo info : target.getBannedPlayers()) {
-			IFactionPlayer banned = IFactionPlayerManager.getInstance().getById(info.getBanned());
-			IFactionPlayer banner = IFactionPlayerManager.getInstance().getById(info.getBanner());
-			String timestamp = Localization.sdf.format(info.getTime());
+			FPlayer banned = FPlayers.getInstance().getById(info.getBanned());
+			FPlayer banner = FPlayers.getInstance().getById(info.getBanner());
+			String timestamp = TL.sdf.format(info.getTime());
 
-			lines.add(Localization.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
+			lines.add(TL.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
 			i++;
 		}
 
@@ -61,7 +61,7 @@ public class CmdBanlist extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_BANLIST_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_BANLIST_DESCRIPTION;
 	}
 }

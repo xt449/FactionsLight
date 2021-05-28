@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd.money;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IEconomyParticipator;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
+import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
 
@@ -25,11 +25,11 @@ public class CmdMoneyTransferFp extends MoneyCommand {
 	@Override
 	public void perform(CommandContext context) {
 		double amount = context.argAsDouble(0, 0d);
-		IEconomyParticipator from = context.argAsFaction(1);
+		EconomyParticipator from = context.argAsFaction(1);
 		if(from == null) {
 			return;
 		}
-		IEconomyParticipator to = context.argAsBestFPlayerMatch(2);
+		EconomyParticipator to = context.argAsBestFPlayerMatch(2);
 		if(to == null) {
 			return;
 		}
@@ -37,12 +37,12 @@ public class CmdMoneyTransferFp extends MoneyCommand {
 		boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
 
 		if(success && FactionsPlugin.getInstance().conf().logging().isMoneyTransactions()) {
-			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(Localization.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_MONEYTRANSFERFP_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_MONEYTRANSFERFP_DESCRIPTION;
 	}
 }

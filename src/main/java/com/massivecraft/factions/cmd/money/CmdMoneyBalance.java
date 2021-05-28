@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.money;
 
-import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.integration.Econ;
@@ -24,7 +24,7 @@ public class CmdMoneyBalance extends MoneyCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction faction = context.faction;
+		Faction faction = context.faction;
 		if(context.argIsSet(0)) {
 			faction = context.argAsFaction(0);
 		}

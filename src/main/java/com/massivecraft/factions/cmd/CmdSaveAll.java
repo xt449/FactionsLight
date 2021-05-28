@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.IFactionClaimManager;
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdSaveAll extends FCommand {
 
@@ -18,15 +18,15 @@ public class CmdSaveAll extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFactionPlayerManager.getInstance().forceSave(false);
+		FPlayers.getInstance().forceSave(false);
 		Factions.getInstance().forceSave(false);
-		IFactionClaimManager.getInstance().forceSave(false);
-		context.msg(Localization.COMMAND_SAVEALL_SUCCESS);
+		Board.getInstance().forceSave(false);
+		context.msg(TL.COMMAND_SAVEALL_SUCCESS);
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_SAVEALL_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_SAVEALL_DESCRIPTION;
 	}
 
 }

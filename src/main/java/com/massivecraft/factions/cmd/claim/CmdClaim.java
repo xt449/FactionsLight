@@ -1,14 +1,14 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.factions.util.TL;
 
 
 public class CmdClaim extends FCommand {
@@ -30,10 +30,10 @@ public class CmdClaim extends FCommand {
 	public void perform(final CommandContext context) {
 		// Read and validate input
 		int radius = context.argAsInt(0, 1); // Default to 1
-		final IFaction forFaction = context.argAsFaction(1, context.faction); // Default to own
+		final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
 		if(radius < 1) {
-			context.msg(Localization.COMMAND_CLAIM_INVALIDRADIUS);
+			context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
 			return;
 		}
 
@@ -43,11 +43,11 @@ public class CmdClaim extends FCommand {
 		} else {
 			// radius claim
 			if(!Permission.CLAIM_RADIUS.has(context.sender, false)) {
-				context.msg(Localization.COMMAND_CLAIM_DENIED);
+				context.msg(TL.COMMAND_CLAIM_DENIED);
 				return;
 			}
 
-			new SpiralTask(new FactionClaim(context.player), radius) {
+			new SpiralTask(new FLocation(context.player), radius) {
 				private int failCount = 0;
 				private final int limit = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit() - 1;
 
@@ -68,8 +68,8 @@ public class CmdClaim extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_CLAIM_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_CLAIM_DESCRIPTION;
 	}
 
 }

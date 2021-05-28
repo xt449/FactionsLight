@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import java.util.Collection;
 import java.util.Random;
 
-// https://wiki.vg/Protocol
+// http://mc.kev009.com/Protocol
 // -----------------------------
 // Smoke Directions 
 // -----------------------------

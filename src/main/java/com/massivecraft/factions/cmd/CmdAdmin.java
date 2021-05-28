@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
@@ -25,45 +25,45 @@ public class CmdAdmin extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFactionPlayer fyou = context.argAsBestFPlayerMatch(0);
+		FPlayer fyou = context.argAsBestFPlayerMatch(0);
 		if(fyou == null) {
 			return;
 		}
 
 		boolean permAny = Permission.ADMIN_ANY.has(context.sender, false);
-		IFaction targetFaction = fyou.getFaction();
+		Faction targetFaction = fyou.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
-			context.msg(Localization.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(context.fPlayer, true));
+			context.msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		if(context.fPlayer != null && context.fPlayer.getRole() != Role.ADMIN && !permAny) {
-			context.msg(Localization.COMMAND_ADMIN_NOTADMIN);
+			context.msg(TL.COMMAND_ADMIN_NOTADMIN);
 			return;
 		}
 
 		if(fyou == context.fPlayer && !permAny) {
-			context.msg(Localization.COMMAND_ADMIN_TARGETSELF);
+			context.msg(TL.COMMAND_ADMIN_TARGETSELF);
 			return;
 		}
 
 		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
 		if(fyou.getFaction() != targetFaction) {
-			FPlayerJoinEvent event = new FPlayerJoinEvent(IFactionPlayerManager.getInstance().getByPlayer(context.player), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
+			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 			if(event.isCancelled()) {
 				return;
 			}
 		}
 
-		IFactionPlayer admin = targetFaction.getFPlayerAdmin();
+		FPlayer admin = targetFaction.getFPlayerAdmin();
 
 		// if target player is currently admin, demote and replace him
 		if(fyou == admin) {
 			targetFaction.promoteNewLeader();
-			context.msg(Localization.COMMAND_ADMIN_DEMOTES, fyou.describeTo(context.fPlayer, true));
-			fyou.msg(Localization.COMMAND_ADMIN_DEMOTED, context.player == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
+			context.msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(context.fPlayer, true));
+			fyou.msg(TL.COMMAND_ADMIN_DEMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
 			return;
 		}
 
@@ -72,16 +72,16 @@ public class CmdAdmin extends FCommand {
 			admin.setRole(Role.COLEADER);
 		}
 		fyou.setRole(Role.ADMIN);
-		context.msg(Localization.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
+		context.msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
 
 		// Inform all players
-		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			fplayer.msg(Localization.COMMAND_ADMIN_PROMOTED, context.player == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+			fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
 		}
 	}
 
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_ADMIN_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_ADMIN_DESCRIPTION;
 	}
 
 }

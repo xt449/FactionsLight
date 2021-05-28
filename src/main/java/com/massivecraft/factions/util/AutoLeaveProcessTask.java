@@ -1,9 +1,9 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,11 +15,11 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
 	private transient boolean readyToGo;
 	private transient boolean finished;
-	private final transient ListIterator<IFactionPlayer> iterator;
+	private final transient ListIterator<FPlayer> iterator;
 	private final transient double toleranceMillis;
 
 	public AutoLeaveProcessTask() {
-		ArrayList<IFactionPlayer> fplayers = (ArrayList<IFactionPlayer>) IFactionPlayerManager.getInstance().getAllFPlayers();
+		ArrayList<FPlayer> fplayers = (ArrayList<FPlayer>) FPlayers.getInstance().getAllFPlayers();
 		this.iterator = fplayers.listIterator();
 		this.toleranceMillis = FactionsPlugin.getInstance().conf().factions().other().getAutoLeaveAfterDaysOfInactivity() * 24 * 60 * 60 * 1000;
 		this.readyToGo = true;
@@ -49,7 +49,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 				return;
 			}
 
-			IFactionPlayer fplayer = iterator.next();
+			FPlayer fplayer = iterator.next();
 
 			// Check if they should be exempt from this.
 			if(!fplayer.willAutoLeave()) {
@@ -64,7 +64,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
 				// if player is faction admin, sort out the faction since he's going away
 				if(fplayer.getRole() == Role.ADMIN) {
-					IFaction faction = fplayer.getFaction();
+					Faction faction = fplayer.getFaction();
 					if(faction != null) {
 						fplayer.getFaction().promoteNewLeader();
 					}

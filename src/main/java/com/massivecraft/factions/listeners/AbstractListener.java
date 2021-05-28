@@ -32,13 +32,13 @@ public abstract class AbstractListener implements Listener {
 			return true;
 		}
 
-		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
+		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
 		}
 
-		FactionClaim loc = new FactionClaim(location);
-		IFaction otherFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
+		FLocation loc = new FLocation(location);
+		Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
 		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
 			return true;
@@ -88,13 +88,13 @@ public abstract class AbstractListener implements Listener {
 			return;
 		}
 
-		if(explosionDisallowed(boomer, new FactionClaim(loc))) {
+		if(explosionDisallowed(boomer, new FLocation(loc))) {
 			event.setCancelled(true);
 			return;
 		}
 
 		List<Chunk> chunks = blockList.stream().map(Block::getChunk).distinct().collect(Collectors.toList());
-		if(chunks.removeIf(chunk -> explosionDisallowed(boomer, new FactionClaim(chunk)))) {
+		if(chunks.removeIf(chunk -> explosionDisallowed(boomer, new FLocation(chunk)))) {
 			blockList.removeIf(block -> !chunks.contains(block.getChunk()));
 		}
 
@@ -130,7 +130,7 @@ public abstract class AbstractListener implements Listener {
 						case ENDER_CHEST:
 							continue;
 					}
-					if(!explosionDisallowed(boomer, new FactionClaim(target.getLocation()))) {
+					if(!explosionDisallowed(boomer, new FLocation(target.getLocation()))) {
 						target.breakNaturally();
 					}
 				}
@@ -138,8 +138,8 @@ public abstract class AbstractListener implements Listener {
 		}
 	}
 
-	public static boolean explosionDisallowed(Entity boomer, FactionClaim location) {
-		IFaction faction = IFactionClaimManager.getInstance().getFactionAt(location);
+	public static boolean explosionDisallowed(Entity boomer, FLocation location) {
+		Faction faction = Board.getInstance().getFactionAt(location);
 		boolean online = faction.hasPlayersOnline();
 		if(faction.noExplosionsInTerritory() || (faction.isPeaceful() && FactionsPlugin.getInstance().conf().factions().specialCase().isPeacefulTerritoryDisableBoom())) {
 			// faction is peaceful and has explosions set to disabled
@@ -182,13 +182,13 @@ public abstract class AbstractListener implements Listener {
 			return true;
 		}
 
-		IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
+		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
 		}
 
-		FactionClaim loc = new FactionClaim(location);
-		IFaction otherFaction = IFactionClaimManager.getInstance().getFactionAt(loc);
+		FLocation loc = new FLocation(location);
+		Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
 		// no door/chest/whatever protection in wilderness, war zones, or safe zones
 		if(!otherFaction.isNormal()) {
@@ -308,7 +308,7 @@ public abstract class AbstractListener implements Listener {
 		}
 
 		// Dupe fix.
-		IFaction myFaction = me.getFaction();
+		Faction myFaction = me.getFaction();
 		Relation rel = myFaction.getRelationTo(otherFaction);
 		if(FactionsPlugin.getInstance().conf().exploits().doPreventDuping() &&
 				(!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc))) {

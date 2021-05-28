@@ -43,7 +43,7 @@ public class Magic implements BlockBuildManager, BlockBreakManager, PVPManager, 
 			return true;
 		}
 		if(player == null) {
-			return IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(block)).isWilderness();
+			return Board.getInstance().getFactionAt(new FLocation(block)).isWilderness();
 		}
 		return FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), PermissibleAction.BUILD, true);
 	}
@@ -54,7 +54,7 @@ public class Magic implements BlockBuildManager, BlockBreakManager, PVPManager, 
 			return true;
 		}
 		if(player == null) {
-			return IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(block)).isWilderness();
+			return Board.getInstance().getFactionAt(new FLocation(block)).isWilderness();
 		}
 		return FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), PermissibleAction.DESTROY, true);
 	}
@@ -68,15 +68,15 @@ public class Magic implements BlockBuildManager, BlockBreakManager, PVPManager, 
 		if(facConf.protection().getPlayersWhoBypassAllProtection().contains(player.getName())) {
 			return true;
 		}
-		IFaction defFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(location));
+		Faction defFaction = Board.getInstance().getFactionAt(new FLocation(location));
 		if(defFaction.noPvPInTerritory()) {
 			return false;
 		}
-		IFactionPlayer attacker = IFactionPlayerManager.getInstance().getByPlayer(player);
+		FPlayer attacker = FPlayers.getInstance().getByPlayer(player);
 		if(attacker.hasLoginPvpDisabled()) {
 			return false;
 		}
-		IFaction locFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(attacker));
+		Faction locFaction = Board.getInstance().getFactionAt(new FLocation(attacker));
 		if(locFaction.noPvPInTerritory()) {
 			return false;
 		}
@@ -88,8 +88,8 @@ public class Magic implements BlockBuildManager, BlockBreakManager, PVPManager, 
 		if(!(attacker instanceof Player && entity instanceof Player)) {
 			return false;
 		}
-		IFactionPlayer attack = IFactionPlayerManager.getInstance().getByPlayer((Player) attacker);
-		IFactionPlayer defend = IFactionPlayerManager.getInstance().getByPlayer((Player) entity);
+		FPlayer attack = FPlayers.getInstance().getByPlayer((Player) attacker);
+		FPlayer defend = FPlayers.getInstance().getByPlayer((Player) entity);
 		if(attack.getFaction().isWilderness() || defend.getFaction().isWilderness()) {
 			return false;
 		}

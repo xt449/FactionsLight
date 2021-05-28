@@ -1,14 +1,14 @@
 package com.massivecraft.factions.cmd.role;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class FPromoteCommand extends FCommand {
 
@@ -27,14 +27,14 @@ public class FPromoteCommand extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
+		FPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
 			// context.msg(TL.GENERIC_NOPLAYERFOUND, context.argAsString(0));
 			return;
 		}
 
 		if(!target.getFaction().equals(context.faction)) {
-			context.msg(Localization.COMMAND_PROMOTE_WRONGFACTION, target.getName());
+			context.msg(TL.COMMAND_PROMOTE_WRONGFACTION, target.getName());
 			return;
 		}
 
@@ -42,37 +42,37 @@ public class FPromoteCommand extends FCommand {
 		Role promotion = Role.getRelative(current, +relative);
 
 		if(promotion == null) {
-			context.msg(Localization.COMMAND_PROMOTE_NOTTHATPLAYER);
+			context.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
 			return;
 		}
 
 		// Don't allow people to promote people to their same or higher rnak.
 		if(context.fPlayer.getRole().value <= promotion.value) {
-			context.msg(Localization.COMMAND_PROMOTE_NOT_ALLOWED);
+			context.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
 			return;
 		}
 
 		if(promotion == Role.COLEADER && !FactionsPlugin.getInstance().conf().factions().other().isAllowMultipleColeaders()) {
 			if(!target.getFaction().getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
-				context.msg(Localization.COMMAND_COLEADER_ALREADY_COLEADER);
+				context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 				return;
 			}
 		}
 
-		String action = relative > 0 ? Localization.COMMAND_PROMOTE_PROMOTED.toString() : Localization.COMMAND_PROMOTE_DEMOTED.toString();
+		String action = relative > 0 ? TL.COMMAND_PROMOTE_PROMOTED.toString() : TL.COMMAND_PROMOTE_DEMOTED.toString();
 
 		// Success!
 		target.setRole(promotion);
 		if(target.isOnline()) {
-			target.msg(Localization.COMMAND_PROMOTE_TARGET, action, promotion.nicename);
+			target.msg(TL.COMMAND_PROMOTE_TARGET, action, promotion.nicename);
 		}
 
-		context.msg(Localization.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
+		context.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_PROMOTE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_PROMOTE_DESCRIPTION;
 	}
 
 }

@@ -6,8 +6,8 @@ import com.massivecraft.factions.event.FactionAttemptCreateEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -31,12 +31,12 @@ public class CmdCreate extends FCommand {
 		String tag = context.argAsString(0);
 
 		if(context.fPlayer.hasFaction()) {
-			context.msg(Localization.COMMAND_CREATE_MUSTLEAVE);
+			context.msg(TL.COMMAND_CREATE_MUSTLEAVE);
 			return;
 		}
 
 		if(Factions.getInstance().isTagTaken(tag)) {
-			context.msg(Localization.COMMAND_CREATE_INUSE);
+			context.msg(TL.COMMAND_CREATE_INUSE);
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class CmdCreate extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), Localization.COMMAND_CREATE_TOCREATE.toString())) {
+		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE.toString())) {
 			return;
 		}
 
@@ -58,15 +58,15 @@ public class CmdCreate extends FCommand {
 		}
 
 		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), Localization.COMMAND_CREATE_TOCREATE, Localization.COMMAND_CREATE_FORCREATE)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
 			return;
 		}
 
-		IFaction faction = Factions.getInstance().createFaction();
+		Faction faction = Factions.getInstance().createFaction();
 
 		// TODO: Why would this even happen??? Auto increment clash??
 		if(faction == null) {
-			context.msg(Localization.COMMAND_CREATE_ERROR);
+			context.msg(TL.COMMAND_CREATE_ERROR);
 			return;
 		}
 
@@ -74,7 +74,7 @@ public class CmdCreate extends FCommand {
 		faction.setTag(tag);
 
 		// trigger the faction join event for the creator
-		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(IFactionPlayerManager.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
+		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		// join event cannot be cancelled or you'll have an empty faction
 
@@ -86,20 +86,20 @@ public class CmdCreate extends FCommand {
 		FactionCreateEvent createEvent = new FactionCreateEvent(context.player, tag, faction);
 		Bukkit.getServer().getPluginManager().callEvent(createEvent);
 
-		for(IFactionPlayer follower : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			follower.msg(Localization.COMMAND_CREATE_CREATED, context.fPlayer.describeTo(follower, true), faction.getTag(follower));
+		for(FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
+			follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.describeTo(follower, true), faction.getTag(follower));
 		}
 
-		context.msg(Localization.COMMAND_CREATE_YOUSHOULD, FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context));
+		context.msg(TL.COMMAND_CREATE_YOUSHOULD, FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context));
 
 		if(FactionsPlugin.getInstance().conf().logging().isFactionCreate()) {
-			FactionsPlugin.getInstance().log(context.fPlayer.getName() + Localization.COMMAND_CREATE_CREATEDLOG + tag);
+			FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag);
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_CREATE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_CREATE_DESCRIPTION;
 	}
 
 }

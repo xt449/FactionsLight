@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
 
 import java.lang.reflect.Type;
@@ -14,17 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 
-public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FactionClaim, Set<String>>>, JsonSerializer<Map<FactionClaim, Set<String>>> {
+public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLocation, Set<String>>>, JsonSerializer<Map<FLocation, Set<String>>> {
 
 	@Override
-	public Map<FactionClaim, Set<String>> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+	public Map<FLocation, Set<String>> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		try {
 			JsonObject obj = json.getAsJsonObject();
 			if(obj == null) {
 				return null;
 			}
 
-			Map<FactionClaim, Set<String>> locationMap = new ConcurrentHashMap<>();
+			Map<FLocation, Set<String>> locationMap = new ConcurrentHashMap<>();
 			Set<String> nameSet;
 			Iterator<JsonElement> iter;
 			String worldName;
@@ -44,7 +44,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<Facti
 						nameSet.add(iter.next().getAsString());
 					}
 
-					locationMap.put(new FactionClaim(worldName, x, z), nameSet);
+					locationMap.put(new FLocation(worldName, x, z), nameSet);
 				}
 			}
 
@@ -57,19 +57,19 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<Facti
 	}
 
 	@Override
-	public JsonElement serialize(Map<FactionClaim, Set<String>> src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(Map<FLocation, Set<String>> src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject obj = new JsonObject();
 
 		try {
 			if(src != null) {
-				FactionClaim loc;
+				FLocation loc;
 				String locWorld;
 				Set<String> nameSet;
 				Iterator<String> iter;
 				JsonArray nameArray;
 				JsonPrimitive nameElement;
 
-				for(Entry<FactionClaim, Set<String>> entry : src.entrySet()) {
+				for(Entry<FLocation, Set<String>> entry : src.entrySet()) {
 					loc = entry.getKey();
 					locWorld = loc.getWorldName();
 					nameSet = entry.getValue();

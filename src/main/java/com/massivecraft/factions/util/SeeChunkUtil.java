@@ -15,7 +15,7 @@ public class SeeChunkUtil extends BukkitRunnable {
 
 	private final Set<UUID> playersSeeingChunks = new HashSet<>();
 	private final boolean useColor;
-	private final Particle effect;
+	private final Object effect;
 
 	public SeeChunkUtil() {
 		String effectName = FactionsPlugin.getInstance().conf().commands().seeChunk().getParticleName();
@@ -36,7 +36,7 @@ public class SeeChunkUtil extends BukkitRunnable {
 			if(!FactionsPlugin.getInstance().worldUtil().isEnabled(player)) {
 				continue;
 			}
-			IFactionPlayer fme = IFactionPlayerManager.getInstance().getByPlayer(player);
+			FPlayer fme = FPlayers.getInstance().getByPlayer(player);
 			showPillars(player, fme, this.effect, useColor);
 		}
 	}
@@ -49,15 +49,15 @@ public class SeeChunkUtil extends BukkitRunnable {
 		}
 	}
 
-	public static void showPillars(Player me, IFactionPlayer fme, Particle effect, boolean useColor) {
+	public static void showPillars(Player me, FPlayer fme, Object effect, boolean useColor) {
 		World world = me.getWorld();
-		FactionClaim flocation = new FactionClaim(me);
+		FLocation flocation = new FLocation(me);
 		int chunkX = (int) flocation.getX();
 		int chunkZ = (int) flocation.getZ();
 
 		ParticleColor color = null;
 		if(useColor) {
-			ChatColor chatColor = IFactionClaimManager.getInstance().getFactionAt(flocation).getRelationTo(fme).getColor();
+			ChatColor chatColor = Board.getInstance().getFactionAt(flocation).getRelationTo(fme).getColor();
 			color = ParticleColor.fromChatColor(chatColor);
 		}
 
@@ -81,7 +81,7 @@ public class SeeChunkUtil extends BukkitRunnable {
 		showPillar(me, world, blockX, blockZ, effect, color);
 	}
 
-	public static void showPillar(Player player, World world, int blockX, int blockZ, Particle effect, ParticleColor color) {
+	public static void showPillar(Player player, World world, int blockX, int blockZ, Object effect, ParticleColor color) {
 		// Lets start at the player's Y spot -30 to optimize
 		for(int blockY = player.getLocation().getBlockY() - 30; blockY < player.getLocation().getBlockY() + 30; blockY++) {
 			Location loc = new Location(world, blockX, blockY, blockZ);

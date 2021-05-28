@@ -40,9 +40,9 @@ public class CmdOwner extends FCommand {
 			return;
 		}
 
-		FactionClaim flocation = new FactionClaim(context.fPlayer);
+		FLocation flocation = new FLocation(context.fPlayer);
 
-		IFaction factionHere = IFactionClaimManager.getInstance().getFactionAt(flocation);
+		Faction factionHere = Board.getInstance().getFactionAt(flocation);
 		if(factionHere != context.faction) {
 			if(!factionHere.isNormal()) {
 				context.msg(Localization.COMMAND_OWNER_NOTCLAIMED);
@@ -56,7 +56,7 @@ public class CmdOwner extends FCommand {
 
 		}
 
-		IFactionPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
+		FPlayer target = context.argAsBestFPlayerMatch(0, context.fPlayer);
 		if(target == null) {
 			return;
 		}

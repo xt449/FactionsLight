@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd.dtr;
 
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdDTRModify extends FCommand {
 
@@ -22,7 +22,7 @@ public class CmdDTRModify extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction target = context.argAsFaction(0, null);
+		Faction target = context.argAsFaction(0, null);
 		if(target == null) {
 			return;
 		}
@@ -34,11 +34,11 @@ public class CmdDTRModify extends FCommand {
 
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
 		target.setDTR(Math.max(Math.min(target.getDTR() + amount, dtr.getMaxDTR(target)), FactionsPlugin.getInstance().conf().factions().landRaidControl().dtr().getMinDTR()));
-		context.msg(Localization.COMMAND_DTR_MODIFY_DONE, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()));
+		context.msg(TL.COMMAND_DTR_MODIFY_DONE, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()));
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_DTR_MODIFY_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_DTR_MODIFY_DESCRIPTION;
 	}
 }

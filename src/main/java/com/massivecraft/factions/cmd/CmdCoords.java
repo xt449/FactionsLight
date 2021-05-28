@@ -1,8 +1,8 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 
 public class CmdCoords extends FCommand {
@@ -20,15 +20,15 @@ public class CmdCoords extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		Location location = context.player.getLocation();
-		String message = Localization.COMMAND_COORDS_MESSAGE.format(context.player.getDisplayName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName());
-		for(IFactionPlayer fPlayer : context.faction.getFPlayers()) {
+		String message = TL.COMMAND_COORDS_MESSAGE.format(context.player.getDisplayName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName());
+		for(FPlayer fPlayer : context.faction.getFPlayers()) {
 			fPlayer.sendMessage(message);
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_COORDS_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_COORDS_DESCRIPTION;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -23,7 +23,7 @@ public class CmdAutoClaim extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction forFaction = context.argAsFaction(0, context.faction);
+		Faction forFaction = context.argAsFaction(0, context.faction);
 		if(forFaction == null || forFaction == context.fPlayer.getAutoClaimFor()) {
 			context.fPlayer.setAutoClaimFor(null);
 			context.msg(Localization.COMMAND_AUTOCLAIM_DISABLED);

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdPermanentPower extends FCommand {
 	public CmdPermanentPower() {
@@ -18,7 +18,7 @@ public class CmdPermanentPower extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction targetFaction = context.argAsFaction(0);
+		Faction targetFaction = context.argAsFaction(0);
 		if(targetFaction == null) {
 			return;
 		}
@@ -27,26 +27,26 @@ public class CmdPermanentPower extends FCommand {
 
 		targetFaction.setPermanentPower(targetPower);
 
-		String change = Localization.COMMAND_PERMANENTPOWER_REVOKE.toString();
+		String change = TL.COMMAND_PERMANENTPOWER_REVOKE.toString();
 		if(targetFaction.hasPermanentPower()) {
-			change = Localization.COMMAND_PERMANENTPOWER_GRANT.toString();
+			change = TL.COMMAND_PERMANENTPOWER_GRANT.toString();
 		}
 
 		// Inform sender
-		context.msg(Localization.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(context.fPlayer));
+		context.msg(TL.COMMAND_PERMANENTPOWER_SUCCESS, change, targetFaction.describeTo(context.fPlayer));
 
 		// Inform all other players
-		for(IFactionPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
+		for(FPlayer fplayer : targetFaction.getFPlayersWhereOnline(true)) {
 			if(fplayer == context.fPlayer) {
 				continue;
 			}
-			String blame = (context.fPlayer == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
-			fplayer.msg(Localization.COMMAND_PERMANENTPOWER_FACTION, blame, change);
+			String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
+			fplayer.msg(TL.COMMAND_PERMANENTPOWER_FACTION, blame, change);
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_PERMANENTPOWER_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_PERMANENTPOWER_DESCRIPTION;
 	}
 }

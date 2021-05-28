@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -25,13 +25,13 @@ public class CmdNear extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		int radius = FactionsPlugin.getInstance().conf().commands().near().getRadius();
-		Set<IFactionPlayer> onlineMembers = context.faction.getFPlayersWhereOnline(true, context.fPlayer);
-		List<IFactionPlayer> nearbyMembers = new ArrayList<>();
+		Set<FPlayer> onlineMembers = context.faction.getFPlayersWhereOnline(true, context.fPlayer);
+		List<FPlayer> nearbyMembers = new ArrayList<>();
 
 		int radiusSquared = radius * radius;
 		Location loc = context.player.getLocation();
 		Location cur = new Location(loc.getWorld(), 0, 0, 0);
-		for(IFactionPlayer player : onlineMembers) {
+		for(FPlayer player : onlineMembers) {
 			if(player == context.fPlayer) {
 				continue;
 			}
@@ -43,19 +43,19 @@ public class CmdNear extends FCommand {
 		}
 
 		StringBuilder playerMessageBuilder = new StringBuilder();
-		String playerMessage = Localization.COMMAND_NEAR_PLAYER.toString();
-		for(IFactionPlayer member : nearbyMembers) {
+		String playerMessage = TL.COMMAND_NEAR_PLAYER.toString();
+		for(FPlayer member : nearbyMembers) {
 			playerMessageBuilder.append(parsePlaceholders(context.fPlayer, member, playerMessage));
 		}
 		// Append none text if no players where found
 		if(playerMessageBuilder.toString().isEmpty()) {
-			playerMessageBuilder.append(Localization.COMMAND_NEAR_NONE);
+			playerMessageBuilder.append(TL.COMMAND_NEAR_NONE);
 		}
 
-		context.msg(Localization.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
+		context.msg(TL.COMMAND_NEAR_PLAYERLIST.toString().replace("{players-nearby}", playerMessageBuilder.toString()));
 	}
 
-	private String parsePlaceholders(IFactionPlayer user, IFactionPlayer target, String string) {
+	private String parsePlaceholders(FPlayer user, FPlayer target, String string) {
 		string = Tag.parsePlain(target, string);
 		string = Tag.parsePlaceholders(target.getPlayer(), string);
 		string = string.replace("{role}", target.getRole().toString());
@@ -69,8 +69,8 @@ public class CmdNear extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_NEAR_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_NEAR_DESCRIPTION;
 	}
 
 }

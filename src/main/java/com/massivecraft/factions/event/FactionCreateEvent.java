@@ -1,8 +1,8 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -16,16 +16,16 @@ public class FactionCreateEvent extends Event {
 
 	private final String factionTag;
 	private final Player sender;
-	private final IFaction faction;
+	private final Faction faction;
 
-	public FactionCreateEvent(Player sender, String tag, IFaction faction) {
+	public FactionCreateEvent(Player sender, String tag, Faction faction) {
 		this.factionTag = tag;
 		this.sender = sender;
 		this.faction = faction;
 	}
 
-	public IFactionPlayer getFPlayer() {
-		return IFactionPlayerManager.getInstance().getByPlayer(sender);
+	public FPlayer getFPlayer() {
+		return FPlayers.getInstance().getByPlayer(sender);
 	}
 
 	@Deprecated
@@ -33,7 +33,7 @@ public class FactionCreateEvent extends Event {
 		return factionTag;
 	}
 
-	public IFaction getFaction() {
+	public Faction getFaction() {
 		return this.faction;
 	}
 

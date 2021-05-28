@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -26,7 +26,7 @@ public class CmdClaimAt extends FCommand {
 	public void perform(CommandContext context) {
 		int x = context.argAsInt(1);
 		int z = context.argAsInt(2);
-		FactionClaim location = new FactionClaim(context.argAsString(0), x, z);
+		FLocation location = new FLocation(context.argAsString(0), x, z);
 		context.fPlayer.attemptClaim(context.faction, location, true);
 	}
 

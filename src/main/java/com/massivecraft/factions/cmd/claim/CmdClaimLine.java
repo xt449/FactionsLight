@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd.claim;
 
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 
@@ -36,7 +36,7 @@ public class CmdClaimLine extends FCommand {
 		Integer amount = context.argAsInt(0, 1); // Default to 1
 
 		if(amount > FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit()) {
-			context.msg(Localization.COMMAND_CLAIMLINE_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit());
+			context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getLineClaimLimit());
 			return;
 		}
 
@@ -54,11 +54,11 @@ public class CmdClaimLine extends FCommand {
 		} else if(direction.equalsIgnoreCase("west")) {
 			blockFace = BlockFace.WEST;
 		} else {
-			context.fPlayer.msg(Localization.COMMAND_CLAIMLINE_NOTVALID, direction);
+			context.fPlayer.msg(TL.COMMAND_CLAIMLINE_NOTVALID, direction);
 			return;
 		}
 
-		final IFaction forFaction = context.argAsFaction(2, context.faction);
+		final Faction forFaction = context.argAsFaction(2, context.faction);
 		Location location = context.player.getLocation();
 
 		// TODO: make this a task like claiming a radius?
@@ -69,7 +69,7 @@ public class CmdClaimLine extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_CLAIMLINE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_CLAIMLINE_DESCRIPTION;
 	}
 }

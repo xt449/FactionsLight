@@ -1,14 +1,14 @@
 package com.massivecraft.factions.cmd.tnt;
 
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,24 +28,24 @@ public class CmdTNTDeposit extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		Player player = context.player;
-		if(!context.faction.equals(IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(player.getLocation())))) {
-			context.msg(Localization.COMMAND_TNT_TERRITORYONLY);
+		if(!context.faction.equals(Board.getInstance().getFactionAt(new FLocation(player.getLocation())))) {
+			context.msg(TL.COMMAND_TNT_TERRITORYONLY);
 			return;
 		}
 		int amount = context.argAsInt(0, -1);
 		if(amount <= 0) {
-			context.msg(Localization.COMMAND_TNT_DEPOSIT_FAIL_POSITIVE, amount);
+			context.msg(TL.COMMAND_TNT_DEPOSIT_FAIL_POSITIVE, amount);
 			return;
 		}
 
 		if(!player.getInventory().containsAtLeast(new ItemStack(Material.TNT), amount)) {
-			context.msg(Localization.COMMAND_TNT_DEPOSIT_FAIL_NOTENOUGH, amount);
+			context.msg(TL.COMMAND_TNT_DEPOSIT_FAIL_NOTENOUGH, amount);
 			return;
 		}
 
 		if(FactionsPlugin.getInstance().conf().commands().tnt().isAboveMaxStorage(context.faction.getTNTBank() + amount)) {
 			if(FactionsPlugin.getInstance().conf().commands().tnt().getMaxStorage() == context.faction.getTNTBank()) {
-				context.msg(Localization.COMMAND_TNT_DEPOSIT_FAIL_FULL, FactionsPlugin.getInstance().conf().commands().tnt().getMaxStorage());
+				context.msg(TL.COMMAND_TNT_DEPOSIT_FAIL_FULL, FactionsPlugin.getInstance().conf().commands().tnt().getMaxStorage());
 				return;
 			}
 			amount = FactionsPlugin.getInstance().conf().commands().tnt().getMaxStorage() - context.faction.getTNTBank();
@@ -66,11 +66,11 @@ public class CmdTNTDeposit extends FCommand {
 			}
 		}
 		context.faction.setTNTBank(context.faction.getTNTBank() + amount);
-		context.msg(Localization.COMMAND_TNT_DEPOSIT_SUCCESS, context.faction.getTNTBank());
+		context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS, context.faction.getTNTBank());
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_TNT_DEPOSIT_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_TNT_DEPOSIT_DESCRIPTION;
 	}
 }

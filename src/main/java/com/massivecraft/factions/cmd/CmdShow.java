@@ -1,16 +1,16 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -51,7 +51,7 @@ public class CmdShow extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction faction = context.faction;
+		Faction faction = context.faction;
 		if(context.argIsSet(0)) {
 			faction = context.argAsFaction(0);
 		}
@@ -61,12 +61,12 @@ public class CmdShow extends FCommand {
 
 		if(context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
 				&& FactionsPlugin.getInstance().conf().commands().show().getExempt().contains(faction.getTag())) {
-			context.msg(Localization.COMMAND_SHOW_EXEMPT);
+			context.msg(TL.COMMAND_SHOW_EXEMPT);
 			return;
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostShow(), Localization.COMMAND_SHOW_TOSHOW, Localization.COMMAND_SHOW_FORSHOW)) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostShow(), TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
 			return;
 		}
 
@@ -103,7 +103,7 @@ public class CmdShow extends FCommand {
 			if(!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
 				if(parsed.contains("{ig}")) {
 					// replaces all variables with no home TL
-					parsed = parsed.substring(0, parsed.indexOf("{ig}")) + Localization.COMMAND_SHOW_NOHOME;
+					parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
 				}
 				parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
 				messageList.add(parsed);
@@ -116,11 +116,11 @@ public class CmdShow extends FCommand {
 		}
 	}
 
-	private void sendMessages(List<String> messageList, CommandSender recipient, IFaction faction, IFactionPlayer player) {
+	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
 		this.sendMessages(messageList, recipient, faction, player, null);
 	}
 
-	private void sendMessages(List<String> messageList, CommandSender recipient, IFaction faction, IFactionPlayer player, Map<UUID, String> groupMap) {
+	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
 		FancyTag tag;
 		for(String parsed : messageList) {
 			if((tag = FancyTag.getMatch(parsed)) != null) {
@@ -160,9 +160,9 @@ public class CmdShow extends FCommand {
 		}
 	}
 
-	private void onOffLineMessage(StringBuilder builder, CommandSender recipient, IFaction faction, boolean online) {
+	private void onOffLineMessage(StringBuilder builder, CommandSender recipient, Faction faction, boolean online) {
 		boolean first = true;
-		for(IFactionPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(online))) {
+		for(FPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(online))) {
 			String name = p.getNameAndTitle();
 			builder.append(first ? name : ", " + name);
 			first = false;
@@ -170,9 +170,9 @@ public class CmdShow extends FCommand {
 		recipient.sendMessage(FactionsPlugin.getInstance().txt().parse(builder.toString()));
 	}
 
-	private void relationMessage(StringBuilder builder, CommandSender recipient, IFaction faction, Relation relation) {
+	private void relationMessage(StringBuilder builder, CommandSender recipient, Faction faction, Relation relation) {
 		boolean first = true;
-		for(IFaction otherFaction : Factions.getInstance().getAllFactions()) {
+		for(Faction otherFaction : Factions.getInstance().getAllFactions()) {
 			if(otherFaction != faction && otherFaction.getRelationTo(faction) == relation) {
 				String s = otherFaction.getTag();
 				builder.append(first ? s : ", " + s);
@@ -193,11 +193,11 @@ public class CmdShow extends FCommand {
 
 	private class GroupGetter extends BukkitRunnable {
 		private final List<String> messageList;
-		private final IFactionPlayer sender;
-		private final IFaction faction;
+		private final FPlayer sender;
+		private final Faction faction;
 		private final Set<OfflinePlayer> players;
 
-		private GroupGetter(List<String> messageList, IFactionPlayer sender, IFaction faction) {
+		private GroupGetter(List<String> messageList, FPlayer sender, Faction faction) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;
@@ -216,11 +216,11 @@ public class CmdShow extends FCommand {
 
 	private class Sender extends BukkitRunnable {
 		private final List<String> messageList;
-		private final IFactionPlayer sender;
-		private final IFaction faction;
+		private final FPlayer sender;
+		private final Faction faction;
 		private final Map<UUID, String> map;
 
-		private Sender(List<String> messageList, IFactionPlayer sender, IFaction faction, Map<UUID, String> map) {
+		private Sender(List<String> messageList, FPlayer sender, Faction faction, Map<UUID, String> map) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;
@@ -237,8 +237,8 @@ public class CmdShow extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_SHOW_COMMANDDESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
 	}
 
 }

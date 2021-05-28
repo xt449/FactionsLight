@@ -62,31 +62,31 @@ public class Sentinel extends SentinelIntegration {
 	public boolean isTarget(LivingEntity ent, String prefix, String value) {
 		try {
 			if(prefix.equals("factions") && ent instanceof Player) {
-				IFaction faction = Factions.getInstance().getByTag(value);
+				Faction faction = Factions.getInstance().getByTag(value);
 				if(faction == null) {
 					return false;
 				}
-				for(IFactionPlayer pl : faction.getFPlayers()) {
+				for(FPlayer pl : faction.getFPlayers()) {
 					if(pl.getPlayer() != null && pl.getPlayer().getUniqueId() != null
 							&& pl.getPlayer().getUniqueId().equals(ent.getUniqueId())) {
 						return true;
 					}
 				}
 			} else if(prefix.equals("factionsenemy") && ent instanceof Player) {
-				IFaction faction = Factions.getInstance().getByTag(value);
+				Faction faction = Factions.getInstance().getByTag(value);
 				if(faction == null) {
 					return false;
 				}
-				IFaction plf = IFactionPlayerManager.getInstance().getByPlayer((Player) ent).getFaction();
+				Faction plf = FPlayers.getInstance().getByPlayer((Player) ent).getFaction();
 				if(faction.getRelationTo(plf).equals(Relation.ENEMY)) {
 					return true;
 				}
 			} else if(prefix.equals("factionsally") && ent instanceof Player) {
-				IFaction faction = Factions.getInstance().getByTag(value);
+				Faction faction = Factions.getInstance().getByTag(value);
 				if(faction == null) {
 					return false;
 				}
-				IFaction plf = IFactionPlayerManager.getInstance().getByPlayer((Player) ent).getFaction();
+				Faction plf = FPlayers.getInstance().getByPlayer((Player) ent).getFaction();
 				if(faction.getRelationTo(plf).equals(Relation.ALLY)) {
 					return true;
 				}

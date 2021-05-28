@@ -1,23 +1,23 @@
 package com.massivecraft.factions.data.json;
 
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayerManager;
-import com.massivecraft.factions.data.AbstractFactionPlayer;
+import com.massivecraft.factions.data.MemoryFPlayer;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 
-public class JSONFactionPlayer extends AbstractFactionPlayer {
+public class JSONFPlayer extends MemoryFPlayer {
 
-	public JSONFactionPlayer(AbstractFactionPlayer arg0) {
+	public JSONFPlayer(MemoryFPlayer arg0) {
 		super(arg0);
 	}
 
-	public JSONFactionPlayer(String id) {
+	public JSONFPlayer(String id) {
 		super(id);
 	}
 
 	@Override
 	public void remove() {
-		((JSONFactionPlayerManager) IFactionPlayerManager.getInstance()).fPlayers.remove(getId());
+		((JSONFPlayers) FPlayers.getInstance()).fPlayers.remove(getId());
 	}
 
 	public boolean shouldBeSaved() {

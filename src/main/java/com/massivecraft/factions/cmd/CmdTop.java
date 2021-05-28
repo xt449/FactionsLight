@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CmdTop extends FCommand {
 	public void perform(CommandContext context) {
 		// Can sort by: money, members, online, allies, enemies, power, land.
 		// Get all Factions and remove non player ones.
-		ArrayList<IFaction> factionList = Factions.getInstance().getAllFactions();
+		ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
 		factionList.remove(Factions.getInstance().getWilderness());
 		factionList.remove(Factions.getInstance().getSafeZone());
 		factionList.remove(Factions.getInstance().getWarZone());
@@ -97,11 +97,11 @@ public class CmdTop extends FCommand {
 			factionList.sort((f1, f2) -> {
 				double f1Size = Econ.getBalance(f1);
 				// Lets get the balance of /all/ the players in the Faction.
-				for(IFactionPlayer fp : f1.getFPlayers()) {
+				for(FPlayer fp : f1.getFPlayers()) {
 					f1Size = f1Size + Econ.getBalance(fp);
 				}
 				double f2Size = Econ.getBalance(f2);
-				for(IFactionPlayer fp : f2.getFPlayers()) {
+				for(FPlayer fp : f2.getFPlayers()) {
 					f2Size = f2Size + Econ.getBalance(fp);
 				}
 				if(f1Size < f2Size) {
@@ -112,7 +112,7 @@ public class CmdTop extends FCommand {
 				return 0;
 			});
 		} else {
-			context.msg(Localization.COMMAND_TOP_INVALID, criteria);
+			context.msg(TL.COMMAND_TOP_INVALID, criteria);
 			return;
 		}
 
@@ -132,24 +132,24 @@ public class CmdTop extends FCommand {
 			end = factionList.size();
 		}
 
-		lines.add(Localization.COMMAND_TOP_TOP.format(criteria.toUpperCase(), pagenumber, pagecount));
+		lines.add(TL.COMMAND_TOP_TOP.format(criteria.toUpperCase(), pagenumber, pagecount));
 
 		int rank = 1;
-		for(IFaction faction : factionList.subList(start, end)) {
+		for(Faction faction : factionList.subList(start, end)) {
 			// Get the relation color if player is executing this.
 			String fac = context.sender instanceof Player ? faction.getRelationTo(context.fPlayer).getColor() + faction.getTag() : faction.getTag();
-			lines.add(Localization.COMMAND_TOP_LINE.format(rank, fac, getValue(faction, criteria)));
+			lines.add(TL.COMMAND_TOP_LINE.format(rank, fac, getValue(faction, criteria)));
 			rank++;
 		}
 
 		context.sendMessage(lines);
 	}
 
-	private String getValue(IFaction faction, String criteria) {
+	private String getValue(Faction faction, String criteria) {
 		if(criteria.equalsIgnoreCase("online")) {
 			return String.valueOf(faction.getFPlayersWhereOnline(true).size());
 		} else if(criteria.equalsIgnoreCase("start")) {
-			return Localization.sdf.format(faction.getFoundedDate());
+			return TL.sdf.format(faction.getFoundedDate());
 		} else if(criteria.equalsIgnoreCase("members")) {
 			return String.valueOf(faction.getFPlayers().size());
 		} else if(criteria.equalsIgnoreCase("land")) {
@@ -158,7 +158,7 @@ public class CmdTop extends FCommand {
 			return String.valueOf(faction.getPowerRounded());
 		} else { // Last one is balance, and it has 3 different things it could be.
 			double balance = Econ.getBalance(faction);
-			for(IFactionPlayer fp : faction.getFPlayers()) {
+			for(FPlayer fp : faction.getFPlayers()) {
 				balance = balance + Econ.getBalance(fp);
 			}
 			return String.valueOf(balance);
@@ -166,7 +166,7 @@ public class CmdTop extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_TOP_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_TOP_DESCRIPTION;
 	}
 }

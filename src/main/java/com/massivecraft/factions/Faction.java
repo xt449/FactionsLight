@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface IFaction extends IEconomyParticipator {
+public interface Faction extends EconomyParticipator {
 	Map<String, List<String>> getAnnouncements();
 
 	Map<String, LazyLocation> getWarps();
@@ -39,27 +40,27 @@ public interface IFaction extends IEconomyParticipator {
 
 	void setMaxVaults(int value);
 
-	void addAnnouncement(IFactionPlayer fPlayer, String msg);
+	void addAnnouncement(FPlayer fPlayer, String msg);
 
-	void sendUnreadAnnouncements(IFactionPlayer fPlayer);
+	void sendUnreadAnnouncements(FPlayer fPlayer);
 
-	void removeAnnouncements(IFactionPlayer fPlayer);
+	void removeAnnouncements(FPlayer fPlayer);
 
 	Set<String> getInvites();
 
 	String getId();
 
-	void invite(IFactionPlayer fplayer);
+	void invite(FPlayer fplayer);
 
-	void deinvite(IFactionPlayer fplayer);
+	void deinvite(FPlayer fplayer);
 
-	boolean isInvited(IFactionPlayer fplayer);
+	boolean isInvited(FPlayer fplayer);
 
-	void ban(IFactionPlayer target, IFactionPlayer banner);
+	void ban(FPlayer target, FPlayer banner);
 
-	void unban(IFactionPlayer player);
+	void unban(FPlayer player);
 
-	boolean isBanned(IFactionPlayer player);
+	boolean isBanned(FPlayer player);
 
 	Set<BanInfo> getBannedPlayers();
 
@@ -85,9 +86,9 @@ public interface IFaction extends IEconomyParticipator {
 
 	String getTag(String prefix);
 
-	String getTag(IFaction otherFaction);
+	String getTag(Faction otherFaction);
 
-	String getTag(IFactionPlayer otherFplayer);
+	String getTag(FPlayer otherFplayer);
 
 	void setTag(String str);
 
@@ -136,7 +137,7 @@ public interface IFaction extends IEconomyParticipator {
 
 	boolean hasAccess(boolean online, Permissible permissible, PermissibleAction permissibleAction);
 
-	boolean hasAccess(IFactionPlayer player, PermissibleAction permissibleAction);
+	boolean hasAccess(FPlayer player, PermissibleAction permissibleAction);
 
 	boolean isLocked(boolean online, Permissible permissible, PermissibleAction permissibleAction);
 
@@ -160,9 +161,9 @@ public interface IFaction extends IEconomyParticipator {
 	// Relation and relation colors
 	// -------------------------------
 
-	Relation getRelationWish(IFaction otherFaction);
+	Relation getRelationWish(Faction otherFaction);
 
-	void setRelationWish(IFaction otherFaction, Relation relation);
+	void setRelationWish(Faction otherFaction, Relation relation);
 
 	int getRelationCount(Relation relation);
 
@@ -216,21 +217,21 @@ public interface IFaction extends IEconomyParticipator {
 	// maintain the reference list of FPlayers in this faction
 	void refreshFPlayers();
 
-	boolean addFPlayer(IFactionPlayer fplayer);
+	boolean addFPlayer(FPlayer fplayer);
 
-	boolean removeFPlayer(IFactionPlayer fplayer);
+	boolean removeFPlayer(FPlayer fplayer);
 
 	int getSize();
 
-	Set<IFactionPlayer> getFPlayers();
+	Set<FPlayer> getFPlayers();
 
-	Set<IFactionPlayer> getFPlayersWhereOnline(boolean online);
+	Set<FPlayer> getFPlayersWhereOnline(boolean online);
 
-	Set<IFactionPlayer> getFPlayersWhereOnline(boolean online, IFactionPlayer viewer);
+	Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer);
 
-	IFactionPlayer getFPlayerAdmin();
+	FPlayer getFPlayerAdmin();
 
-	List<IFactionPlayer> getFPlayersWhereRole(Role role);
+	List<FPlayer> getFPlayersWhereRole(Role role);
 
 	List<Player> getOnlinePlayers();
 
@@ -256,36 +257,36 @@ public interface IFaction extends IEconomyParticipator {
 	// Ownership of specific claims
 	// ----------------------------------------------//
 
-	Map<FactionClaim, Set<String>> getClaimOwnership();
+	Map<FLocation, Set<String>> getClaimOwnership();
 
 	void clearAllClaimOwnership();
 
-	void clearClaimOwnership(FactionClaim loc);
+	void clearClaimOwnership(FLocation loc);
 
-	void clearClaimOwnership(IFactionPlayer player);
+	void clearClaimOwnership(FPlayer player);
 
 	int getCountOfClaimsWithOwners();
 
-	boolean doesLocationHaveOwnersSet(FactionClaim loc);
+	boolean doesLocationHaveOwnersSet(FLocation loc);
 
-	boolean isPlayerInOwnerList(IFactionPlayer player, FactionClaim loc);
+	boolean isPlayerInOwnerList(FPlayer player, FLocation loc);
 
-	void setPlayerAsOwner(IFactionPlayer player, FactionClaim loc);
+	void setPlayerAsOwner(FPlayer player, FLocation loc);
 
-	void removePlayerAsOwner(IFactionPlayer player, FactionClaim loc);
+	void removePlayerAsOwner(FPlayer player, FLocation loc);
 
-	Set<String> getOwnerList(FactionClaim loc);
+	Set<String> getOwnerList(FLocation loc);
 
-	String getOwnerListString(FactionClaim loc);
+	String getOwnerListString(FLocation loc);
 
-	boolean playerHasOwnershipRights(IFactionPlayer fplayer, FactionClaim loc);
+	boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
 
 	// ----------------------------------------------//
 	// Persistance and entity management
 	// ----------------------------------------------//
 	void remove();
 
-	Set<FactionClaim> getAllClaims();
+	Set<FLocation> getAllClaims();
 
 	void setId(String id);
 

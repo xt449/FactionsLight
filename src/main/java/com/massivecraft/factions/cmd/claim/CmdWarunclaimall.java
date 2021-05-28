@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd.claim;
 
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -35,19 +35,19 @@ public class CmdWarunclaimall extends FCommand {
 		String id = Factions.getInstance().getWarZone().getId();
 
 		if(world == null) {
-			IFactionClaimManager.getInstance().unclaimAll(id);
+			Board.getInstance().unclaimAll(id);
 		} else {
-			IFactionClaimManager.getInstance().unclaimAllInWorld(id, world);
+			Board.getInstance().unclaimAllInWorld(id, world);
 		}
 
 		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
-			FactionsPlugin.getInstance().log(Localization.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
+			FactionsPlugin.getInstance().log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_WARUNCLAIMALL_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.IFaction;
+import com.massivecraft.factions.Faction;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -10,9 +10,9 @@ import org.bukkit.event.HandlerList;
 public class FactionEvent extends Event {
 
 	private static final HandlerList handlers = new HandlerList();
-	private final IFaction faction;
+	private final Faction faction;
 
-	public FactionEvent(IFaction faction) {
+	public FactionEvent(Faction faction) {
 		this.faction = faction;
 	}
 
@@ -21,7 +21,7 @@ public class FactionEvent extends Event {
 	 *
 	 * @return faction involved in the event.
 	 */
-	public IFaction getFaction() {
+	public Faction getFaction() {
 		return this.faction;
 	}
 

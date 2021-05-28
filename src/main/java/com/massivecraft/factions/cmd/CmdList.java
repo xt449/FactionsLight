@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +33,7 @@ public class CmdList extends FCommand {
 			return;
 		}
 
-		ArrayList<IFaction> factionList = Factions.getInstance().getAllFactions();
+		ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
 		factionList.remove(Factions.getInstance().getWilderness());
 		factionList.remove(Factions.getInstance().getSafeZone());
 		factionList.remove(Factions.getInstance().getWarZone());
@@ -45,7 +45,7 @@ public class CmdList extends FCommand {
 		}
 
 		// Sort by total followers first
-		factionList.sort(this.compare(IFaction::getFPlayers));
+		factionList.sort(this.compare(Faction::getFPlayers));
 
 		// Then sort by how many members are online now
 		factionList.sort(this.compare(f -> f.getFPlayersWhereOnline(true)));
@@ -77,7 +77,7 @@ public class CmdList extends FCommand {
 			lines.add(plugin.txt().parse(header));
 		}
 
-		for(IFaction faction : factionList.subList(start, end)) {
+		for(Faction faction : factionList.subList(start, end)) {
 			if(faction.isWilderness()) {
 				lines.add(plugin.txt().parse(Tag.parsePlain(faction, plugin.conf().commands().list().getFactionlessEntry())));
 				continue;
@@ -93,7 +93,7 @@ public class CmdList extends FCommand {
 		context.sendMessage(lines);
 	}
 
-	private Comparator<IFaction> compare(Function<IFaction, ? extends Collection<?>> func) {
+	private Comparator<Faction> compare(Function<Faction, ? extends Collection<?>> func) {
 		return (f1, f2) -> {
 			int f1Size = func.apply(f1).size();
 			int f2Size = func.apply(f2).size();
@@ -107,7 +107,7 @@ public class CmdList extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_LIST_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_LIST_DESCRIPTION;
 	}
 }

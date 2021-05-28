@@ -1,9 +1,9 @@
-package com.massivecraft.factions;
+package com.massivecraft.factions.iface;
 
 import com.massivecraft.factions.util.Localization;
 import org.bukkit.OfflinePlayer;
 
-public interface IEconomyParticipator extends IRelationParticipator {
+public interface EconomyParticipator extends RelationParticipator {
 
 	String getAccountId();
 

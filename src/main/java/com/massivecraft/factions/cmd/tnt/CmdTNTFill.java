@@ -1,15 +1,15 @@
 package com.massivecraft.factions.cmd.tnt;
 
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
 import com.massivecraft.factions.util.Pair;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,25 +32,25 @@ public class CmdTNTFill extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(!context.faction.equals(IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(context.player.getLocation())))) {
-			context.msg(Localization.COMMAND_TNT_TERRITORYONLY);
+		if(!context.faction.equals(Board.getInstance().getFactionAt(new FLocation(context.player.getLocation())))) {
+			context.msg(TL.COMMAND_TNT_TERRITORYONLY);
 			return;
 		}
 		final int radius = context.argAsInt(0, -1);
 		final int amount = context.argAsInt(1, -1);
 
 		if(radius <= 0 || amount <= 0) {
-			context.msg(Localization.COMMAND_TNT_FILL_FAIL_POSITIVE);
+			context.msg(TL.COMMAND_TNT_FILL_FAIL_POSITIVE);
 			return;
 		}
 
 		if(amount > context.faction.getTNTBank()) {
-			context.msg(Localization.COMMAND_TNT_FILL_FAIL_NOTENOUGH, amount);
+			context.msg(TL.COMMAND_TNT_FILL_FAIL_NOTENOUGH, amount);
 			return;
 		}
 
 		if(radius > FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius()) {
-			context.msg(Localization.COMMAND_TNT_FILL_FAIL_MAXRADIUS, radius, FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius());
+			context.msg(TL.COMMAND_TNT_FILL_FAIL_MAXRADIUS, radius, FactionsPlugin.getInstance().conf().commands().tnt().getMaxRadius());
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class CmdTNTFill extends FCommand {
 
 		context.faction.setTNTBank(context.faction.getTNTBank() - amount + remaining);
 
-		context.msg(Localization.COMMAND_TNT_FILL_MESSAGE, amount - remaining, dispenserCount, context.faction.getTNTBank());
+		context.msg(TL.COMMAND_TNT_FILL_MESSAGE, amount - remaining, dispenserCount, context.faction.getTNTBank());
 	}
 
 	static ItemStack[] getStacks(int count) {
@@ -101,7 +101,7 @@ public class CmdTNTFill extends FCommand {
 			for(int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; y++) {
 				for(int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; z++) {
 					Block block = location.getWorld().getBlockAt(x, y, z);
-					if(!IFactionClaimManager.getInstance().getIdAt(new FactionClaim(block)).equals(id)) {
+					if(!Board.getInstance().getIdAt(new FLocation(block)).equals(id)) {
 						continue;
 					}
 					if(block.getType() == Material.DISPENSER) {
@@ -123,7 +123,7 @@ public class CmdTNTFill extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_TNT_FILL_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_TNT_FILL_DESCRIPTION;
 	}
 }

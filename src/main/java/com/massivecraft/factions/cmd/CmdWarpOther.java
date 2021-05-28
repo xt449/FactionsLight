@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.gui.WarpGUI;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,17 +32,17 @@ public class CmdWarpOther extends FCommand {
 	public void perform(CommandContext context) {
 		// TODO: check if in combat.
 		if(context.args.size() < 1) {
-			context.msg(Localization.COMMAND_WARPOTHER_COMMANDFORMAT);
+			context.msg(TL.COMMAND_WARPOTHER_COMMANDFORMAT);
 			return;
 		}
-		IFaction faction = context.argAsFaction(0);
+		Faction faction = context.argAsFaction(0);
 		if(faction == null) {
-			context.msg(Localization.GENERIC_NOFACTIONMATCH, context.argAsString(0));
+			context.msg(TL.GENERIC_NOFACTIONMATCH, context.argAsString(0));
 			return;
 		}
 
 		if(!context.fPlayer.isAdminBypassing() && !faction.hasAccess(context.fPlayer, PermissibleAction.WARP)) {
-			context.msg(Localization.COMMAND_FWARP_NOACCESS, faction.getTag(context.fPlayer));
+			context.msg(TL.COMMAND_FWARP_NOACCESS, faction.getTag(context.fPlayer));
 			return;
 		}
 
@@ -56,7 +56,7 @@ public class CmdWarpOther extends FCommand {
 			if(faction.isWarp(warpName)) {
 				// Check if requires password and if so, check if valid. CASE SENSITIVE
 				if(!context.fPlayer.isAdminBypassing() && faction.hasWarpPassword(warpName) && !faction.isWarpPassword(warpName, passwordAttempt)) {
-					context.fPlayer.msg(Localization.COMMAND_FWARP_INVALID_PASSWORD);
+					context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
 					return;
 				}
 				FPlayerTeleportEvent tpEvent = new FPlayerTeleportEvent(context.fPlayer, faction.getWarp(warpName).getLocation(), FPlayerTeleportEvent.PlayerTeleportReason.WARP);
@@ -68,30 +68,30 @@ public class CmdWarpOther extends FCommand {
 				if(!transact(context.fPlayer, context)) {
 					return;
 				}
-				final IFactionPlayer fPlayer = context.fPlayer;
+				final FPlayer fPlayer = context.fPlayer;
 				final UUID uuid = context.fPlayer.getPlayer().getUniqueId();
-				context.doWarmUp(WarmUpUtil.Warmup.WARP, Localization.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
+				context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
 					Player player = Bukkit.getPlayer(uuid);
 					if(player != null) {
 						FactionsPlugin.getInstance().teleport(player, faction.getWarp(warpName).getLocation()).thenAccept(success -> {
 							if(success) {
-								fPlayer.msg(Localization.COMMAND_FWARP_WARPED, warpName);
+								fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
 							}
 						});
 					}
 				}, this.plugin.conf().commands().warp().getDelay());
 			} else {
-				context.fPlayer.msg(Localization.COMMAND_FWARP_INVALID_WARP, warpName);
+				context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName);
 			}
 		}
 	}
 
-	private boolean transact(IFactionPlayer player, CommandContext context) {
-		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostWarp(), Localization.COMMAND_FWARP_TOWARP.toString(), Localization.COMMAND_FWARP_FORWARPING.toString());
+	private boolean transact(FPlayer player, CommandContext context) {
+		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostWarp(), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_FWARP_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_FWARP_DESCRIPTION;
 	}
 }

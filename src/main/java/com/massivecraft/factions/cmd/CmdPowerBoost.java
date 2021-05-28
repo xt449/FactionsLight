@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdPowerBoost extends FCommand {
 
@@ -26,8 +26,8 @@ public class CmdPowerBoost extends FCommand {
 		if(type.equals("f") || type.equals("faction")) {
 			doPlayer = false;
 		} else if(!type.equals("p") && !type.equals("player")) {
-			context.msg(Localization.COMMAND_POWERBOOST_HELP_1);
-			context.msg(Localization.COMMAND_POWERBOOST_HELP_2);
+			context.msg(TL.COMMAND_POWERBOOST_HELP_1);
+			context.msg(TL.COMMAND_POWERBOOST_HELP_2);
 			return;
 		}
 
@@ -36,7 +36,7 @@ public class CmdPowerBoost extends FCommand {
 			if(context.argAsString(2).equalsIgnoreCase("reset")) {
 				targetPower = 0D;
 			} else {
-				context.msg(Localization.COMMAND_POWERBOOST_INVALIDNUM);
+				context.msg(TL.COMMAND_POWERBOOST_INVALIDNUM);
 				return;
 			}
 		}
@@ -44,7 +44,7 @@ public class CmdPowerBoost extends FCommand {
 		String target;
 
 		if(doPlayer) {
-			IFactionPlayer targetPlayer = context.argAsBestFPlayerMatch(1);
+			FPlayer targetPlayer = context.argAsBestFPlayerMatch(1);
 			if(targetPlayer == null) {
 				return;
 			}
@@ -53,9 +53,9 @@ public class CmdPowerBoost extends FCommand {
 				targetPower += targetPlayer.getPowerBoost();
 			}
 			targetPlayer.setPowerBoost(targetPower);
-			target = Localization.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
+			target = TL.COMMAND_POWERBOOST_PLAYER.format(targetPlayer.getName());
 		} else {
-			IFaction targetFaction = context.argAsFaction(1);
+			Faction targetFaction = context.argAsFaction(1);
 			if(targetFaction == null) {
 				return;
 			}
@@ -64,18 +64,18 @@ public class CmdPowerBoost extends FCommand {
 				targetPower += targetFaction.getPowerBoost();
 			}
 			targetFaction.setPowerBoost(targetPower);
-			target = Localization.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
+			target = TL.COMMAND_POWERBOOST_FACTION.format(targetFaction.getTag());
 		}
 
 		int roundedPower = (int) Math.round(targetPower);
-		context.msg(Localization.COMMAND_POWERBOOST_BOOST, target, roundedPower);
+		context.msg(TL.COMMAND_POWERBOOST_BOOST, target, roundedPower);
 		if(context.player != null) {
-			FactionsPlugin.getInstance().log(Localization.COMMAND_POWERBOOST_BOOSTLOG.toString(), context.fPlayer.getName(), target, roundedPower);
+			FactionsPlugin.getInstance().log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), context.fPlayer.getName(), target, roundedPower);
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_POWERBOOST_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_POWERBOOST_DESCRIPTION;
 	}
 }

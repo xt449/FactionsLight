@@ -1,9 +1,9 @@
 package com.massivecraft.factions.tag;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
@@ -20,7 +20,7 @@ public enum FancyTag implements Tag {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
 		FancyMessage currentOnline = FactionsPlugin.getInstance().txt().parseFancy(prefix);
 		boolean firstOnline = true;
-		for(IFactionPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
+		for(FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
 			if(fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
 				continue; // skip
 			}
@@ -40,7 +40,7 @@ public enum FancyTag implements Tag {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
 		FancyMessage currentOffline = FactionsPlugin.getInstance().txt().parseFancy(prefix);
 		boolean firstOffline = true;
-		for(IFactionPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
+		for(FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
 			String name = p.getNameAndTitle();
 			// Also make sure to add players that are online BUT can't be seen.
 			if(!p.isOnline() || (fme.getPlayer() != null && p.isOnline() && !fme.getPlayer().canSee(p.getPlayer()))) {
@@ -59,13 +59,13 @@ public enum FancyTag implements Tag {
 	;
 
 	private final String tag;
-	private final QuadFunction<IFaction, IFactionPlayer, String, Map<UUID, String>, List<FancyMessage>> function;
+	private final QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function;
 
-	private static List<FancyMessage> processRelation(String prefix, IFaction faction, IFactionPlayer fPlayer, Relation relation) {
+	private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
 		FancyMessage message = FactionsPlugin.getInstance().txt().parseFancy(prefix);
 		boolean first = true;
-		for(IFaction otherFaction : Factions.getInstance().getAllFactions()) {
+		for(Faction otherFaction : Factions.getInstance().getAllFactions()) {
 			if(otherFaction == faction) {
 				continue;
 			}
@@ -84,7 +84,7 @@ public enum FancyTag implements Tag {
 		return first && Tag.isMinimalShow() ? null : fancyMessages;
 	}
 
-	public static List<FancyMessage> parse(String text, IFaction faction, IFactionPlayer player, Map<UUID, String> groupMap) {
+	public static List<FancyMessage> parse(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
 		for(FancyTag tag : FancyTag.values()) {
 			if(tag.foundInString(text)) {
 				return tag.getMessage(text, faction, player, groupMap);
@@ -112,7 +112,7 @@ public enum FancyTag implements Tag {
 	 * @param faction faction to tooltip for
 	 * @return list of tooltips for a fancy message
 	 */
-	private static List<String> tipFaction(IFaction faction, IFactionPlayer player) {
+	private static List<String> tipFaction(Faction faction, FPlayer player) {
 		List<String> lines = new ArrayList<>();
 		for(String line : FactionsPlugin.getInstance().conf().commands().toolTips().getFaction()) {
 			String string = Tag.parsePlain(faction, player, line);
@@ -130,7 +130,7 @@ public enum FancyTag implements Tag {
 	 * @param fplayer player to tooltip for
 	 * @return list of tooltips for a fancy message
 	 */
-	private static List<String> tipPlayer(IFactionPlayer fplayer, Map<UUID, String> groupMap) {
+	private static List<String> tipPlayer(FPlayer fplayer, Map<UUID, String> groupMap) {
 		List<String> lines = new ArrayList<>();
 		for(String line : FactionsPlugin.getInstance().conf().commands().toolTips().getPlayer()) {
 			String newLine = line;
@@ -154,7 +154,7 @@ public enum FancyTag implements Tag {
 		return lines;
 	}
 
-	FancyTag(String tag, QuadFunction<IFaction, IFactionPlayer, String, Map<UUID, String>, List<FancyMessage>> function) {
+	FancyTag(String tag, QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function) {
 		this.tag = '{' + tag + '}';
 		this.function = function;
 	}
@@ -169,7 +169,7 @@ public enum FancyTag implements Tag {
 		return test != null && test.contains(this.tag);
 	}
 
-	public List<FancyMessage> getMessage(String text, IFaction faction, IFactionPlayer player, Map<UUID, String> groupMap) {
+	public List<FancyMessage> getMessage(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
 		if(!this.foundInString(text)) {
 			return Collections.emptyList(); // We really, really shouldn't be here.
 		}

@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -22,14 +22,14 @@ public class CmdAHome extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
+		FPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
-			context.msg(Localization.GENERIC_NOPLAYERMATCH, context.argAsString(0));
+			context.msg(TL.GENERIC_NOPLAYERMATCH, context.argAsString(0));
 			return;
 		}
 
 		if(target.isOnline()) {
-			IFaction faction = target.getFaction();
+			Faction faction = target.getFaction();
 			if(faction.hasHome()) {
 				Location destination = faction.getHome();
 				FPlayerTeleportEvent tpEvent = new FPlayerTeleportEvent(target, destination, FPlayerTeleportEvent.PlayerTeleportReason.AHOME);
@@ -39,21 +39,21 @@ public class CmdAHome extends FCommand {
 				}
 				FactionsPlugin.getInstance().teleport(target.getPlayer(), destination).thenAccept(success -> {
 					if(success) {
-						context.msg(Localization.COMMAND_AHOME_SUCCESS, target.getName());
-						target.msg(Localization.COMMAND_AHOME_TARGET);
+						context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
+						target.msg(TL.COMMAND_AHOME_TARGET);
 					}
 				});
 
 			} else {
-				context.msg(Localization.COMMAND_AHOME_NOHOME, target.getName());
+				context.msg(TL.COMMAND_AHOME_NOHOME, target.getName());
 			}
 		} else {
-			context.msg(Localization.COMMAND_AHOME_OFFLINE, target.getName());
+			context.msg(TL.COMMAND_AHOME_OFFLINE, target.getName());
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_AHOME_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_AHOME_DESCRIPTION;
 	}
 }

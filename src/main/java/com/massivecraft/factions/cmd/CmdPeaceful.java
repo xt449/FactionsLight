@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
-import com.massivecraft.factions.IFactionPlayerManager;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdPeaceful extends FCommand {
 
@@ -19,35 +19,35 @@ public class CmdPeaceful extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFaction faction = context.argAsFaction(0);
+		Faction faction = context.argAsFaction(0);
 		if(faction == null) {
 			return;
 		}
 
 		String change;
 		if(faction.isPeaceful()) {
-			change = Localization.COMMAND_PEACEFUL_REVOKE.toString();
+			change = TL.COMMAND_PEACEFUL_REVOKE.toString();
 			faction.setPeaceful(false);
 		} else {
-			change = Localization.COMMAND_PEACEFUL_GRANT.toString();
+			change = TL.COMMAND_PEACEFUL_GRANT.toString();
 			faction.setPeaceful(true);
 		}
 
 		// Inform all players
-		for(IFactionPlayer fplayer : IFactionPlayerManager.getInstance().getOnlinePlayers()) {
-			String blame = (context.fPlayer == null ? Localization.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
+		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+			String blame = (context.fPlayer == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true));
 			if(fplayer.getFaction() == faction) {
-				fplayer.msg(Localization.COMMAND_PEACEFUL_YOURS, blame, change);
+				fplayer.msg(TL.COMMAND_PEACEFUL_YOURS, blame, change);
 			} else {
-				fplayer.msg(Localization.COMMAND_PEACEFUL_OTHER, blame, change, faction.getTag(fplayer));
+				fplayer.msg(TL.COMMAND_PEACEFUL_OTHER, blame, change, faction.getTag(fplayer));
 			}
 		}
 
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_PEACEFUL_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_PEACEFUL_DESCRIPTION;
 	}
 
 }

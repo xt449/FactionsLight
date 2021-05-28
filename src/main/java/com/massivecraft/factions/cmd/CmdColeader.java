@@ -1,11 +1,11 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
@@ -28,14 +28,14 @@ public class CmdColeader extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		IFactionPlayer target = context.argAsBestFPlayerMatch(0);
+		FPlayer target = context.argAsBestFPlayerMatch(0);
 		if(target == null) {
-			FancyMessage msg = new FancyMessage(Localization.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
-			for(IFactionPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
+			FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
+			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
 				String s = player.getName();
 
 				msg.then(s + " ").color(ChatColor.WHITE)
-						.tooltip(Localization.COMMAND_COLEADER_CLICKTOPROMOTE + s)
+						.tooltip(TL.COMMAND_COLEADER_CLICKTOPROMOTE + s)
 						.command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " coleader " + s);
 			}
 
@@ -44,51 +44,51 @@ public class CmdColeader extends FCommand {
 		}
 
 		boolean permAny = Permission.COLEADER_ANY.has(context.sender, false);
-		IFaction targetFaction = target.getFaction();
+		Faction targetFaction = target.getFaction();
 
 		if(targetFaction != context.faction && !permAny) {
-			context.msg(Localization.COMMAND_COLEADER_NOTMEMBER, target.describeTo(context.fPlayer, true));
+			context.msg(TL.COMMAND_COLEADER_NOTMEMBER, target.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		if(context.fPlayer != null && context.fPlayer.getRole() != Role.ADMIN && !permAny) {
-			context.msg(Localization.COMMAND_COLEADER_NOTADMIN);
+			context.msg(TL.COMMAND_COLEADER_NOTADMIN);
 			return;
 		}
 
 		if(target == context.fPlayer && !permAny) {
-			context.msg(Localization.COMMAND_COLEADER_SELF);
+			context.msg(TL.COMMAND_COLEADER_SELF);
 			return;
 		}
 
 		if(target.getRole() == Role.ADMIN) {
-			context.msg(Localization.COMMAND_COLEADER_TARGETISADMIN);
+			context.msg(TL.COMMAND_COLEADER_TARGETISADMIN);
 			return;
 		}
 
 		if(target.getRole() == Role.COLEADER) {
 			// Revoke
 			target.setRole(Role.MODERATOR);
-			targetFaction.msg(Localization.COMMAND_COLEADER_REVOKED, target.describeTo(targetFaction, true));
-			context.msg(Localization.COMMAND_COLEADER_REVOKES, target.describeTo(context.fPlayer, true));
+			targetFaction.msg(TL.COMMAND_COLEADER_REVOKED, target.describeTo(targetFaction, true));
+			context.msg(TL.COMMAND_COLEADER_REVOKES, target.describeTo(context.fPlayer, true));
 			return;
 		}
 
 		// Check to see if we should allow multiple coleaders or not.
 		if(!FactionsPlugin.getInstance().conf().factions().other().isAllowMultipleColeaders() && !targetFaction.getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
-			context.msg(Localization.COMMAND_COLEADER_ALREADY_COLEADER);
+			context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 			return;
 		}
 
 		// Give
 		target.setRole(Role.COLEADER);
-		targetFaction.msg(Localization.COMMAND_COLEADER_PROMOTED, target.describeTo(targetFaction, true));
-		context.msg(Localization.COMMAND_COLEADER_PROMOTES, target.describeTo(context.fPlayer, true));
+		targetFaction.msg(TL.COMMAND_COLEADER_PROMOTED, target.describeTo(targetFaction, true));
+		context.msg(TL.COMMAND_COLEADER_PROMOTES, target.describeTo(context.fPlayer, true));
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_COLEADER_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_COLEADER_DESCRIPTION;
 	}
 
 }

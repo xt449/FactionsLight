@@ -1,15 +1,15 @@
 package com.massivecraft.factions.gui;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.perms.PermissibleAction;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.util.material.MaterialDb;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -23,11 +23,11 @@ public class WarpGUI extends GUI<Integer> {
 	static {
 		warpItem = SimpleItem.builder()
 				.setName("&8[&7{warp}&8]")
-				.setMaterial(Material.LIME_STAINED_GLASS)
+				.setMaterial(MaterialDb.get("LIME_STAINED_GLASS"))
 				.setColor(DyeColor.LIME)
 				.build();
 		passwordModifier = SimpleItem.builder()
-				.setMaterial(Material.BLACK_STAINED_GLASS)
+				.setMaterial(MaterialDb.get("BLACK_STAINED_GLASS"))
 				.setColor(DyeColor.BLACK)
 				.setLore(Collections.singletonList("&8Password Protected"))
 				.build();
@@ -36,13 +36,13 @@ public class WarpGUI extends GUI<Integer> {
 	private final List<String> warps;
 	private final String name;
 	private final int page;
-	private final IFaction faction;
+	private final Faction faction;
 
-	public WarpGUI(IFactionPlayer user, IFaction faction) {
+	public WarpGUI(FPlayer user, Faction faction) {
 		this(user, -1, faction);
 	}
 
-	private WarpGUI(IFactionPlayer user, int page, IFaction faction) {
+	private WarpGUI(FPlayer user, int page, Faction faction) {
 		super(user, getRows(faction));
 		this.faction = faction;
 		warps = new ArrayList<>(faction.getWarps().keySet());
@@ -50,7 +50,7 @@ public class WarpGUI extends GUI<Integer> {
 			page = 0;
 		}
 		this.page = page;
-		name = page == -1 ? Localization.GUI_WARPS_ONE_PAGE.format(faction.getTag()) : Localization.GUI_WARPS_PAGE.format(faction.getTag(), page + 1);
+		name = page == -1 ? TL.GUI_WARPS_ONE_PAGE.format(faction.getTag()) : TL.GUI_WARPS_PAGE.format(faction.getTag(), page + 1);
 		build();
 	}
 
@@ -59,7 +59,7 @@ public class WarpGUI extends GUI<Integer> {
 		return name;
 	}
 
-	private static int getRows(IFaction faction) {
+	private static int getRows(Faction faction) {
 		int warpCount = faction.getWarps().size();
 		if(warpCount == 0) {
 			return 1;
@@ -84,7 +84,7 @@ public class WarpGUI extends GUI<Integer> {
 	@Override
 	protected void onClick(Integer index, ClickType clickType) {
 		if(!faction.hasAccess(this.user, PermissibleAction.WARP)) {
-			user.msg(Localization.COMMAND_FWARP_NOACCESS, faction.getTag(user));
+			user.msg(TL.COMMAND_FWARP_NOACCESS, faction.getTag(user));
 			this.user.getPlayer().closeInventory();
 			return;
 		}
@@ -157,10 +157,10 @@ public class WarpGUI extends GUI<Integer> {
 	@Override
 	protected SimpleItem getItem(Integer index) {
 		if(index == -1) {
-			return SimpleItem.builder().setName(Localization.GUI_BUTTON_NEXT.toString()).setMaterial(Material.ARROW).build();
+			return SimpleItem.builder().setName(TL.GUI_BUTTON_NEXT.toString()).setMaterial(MaterialDb.get("ARROW")).build();
 		}
 		if(index == -2) {
-			return SimpleItem.builder().setName(Localization.GUI_BUTTON_PREV.toString()).setMaterial(Material.ARROW).build();
+			return SimpleItem.builder().setName(TL.GUI_BUTTON_PREV.toString()).setMaterial(MaterialDb.get("ARROW")).build();
 		}
 		SimpleItem item = new SimpleItem(warpItem);
 		if(faction.hasWarpPassword(warps.get(index))) {
@@ -185,7 +185,7 @@ public class WarpGUI extends GUI<Integer> {
 
 		@Override
 		public String getPromptText(ConversationContext context) {
-			return Localization.COMMAND_FWARP_PASSWORD_REQUIRED.toString();
+			return TL.COMMAND_FWARP_PASSWORD_REQUIRED.toString();
 		}
 
 		@Override
@@ -198,7 +198,7 @@ public class WarpGUI extends GUI<Integer> {
 				}
 			} else {
 				// Invalid Password
-				user.msg(Localization.COMMAND_FWARP_INVALID_PASSWORD);
+				user.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
 			}
 			return END_OF_CONVERSATION;
 		}
@@ -207,23 +207,23 @@ public class WarpGUI extends GUI<Integer> {
 		public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
 			if(abandonedEvent.getCanceller() instanceof ManuallyAbandonedConversationCanceller ||
 					abandonedEvent.getCanceller() instanceof InactivityConversationCanceller) {
-				user.msg(Localization.COMMAND_FWARP_PASSWORD_CANCEL);
+				user.msg(TL.COMMAND_FWARP_PASSWORD_CANCEL);
 				open();
 			}
 		}
 	}
 
 	private void doWarmup(final String warp) {
-		WarmUpUtil.process(user, WarmUpUtil.Warmup.WARP, Localization.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
+		WarmUpUtil.process(user, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
 			Player player = Bukkit.getPlayer(user.getPlayer().getUniqueId());
 			if(player != null) {
 				if(!faction.hasAccess(this.user, PermissibleAction.WARP)) {
-					user.msg(Localization.COMMAND_FWARP_NOACCESS, faction.getTag(user));
+					user.msg(TL.COMMAND_FWARP_NOACCESS, faction.getTag(user));
 					return;
 				}
 				FactionsPlugin.getInstance().teleport(player, faction.getWarp(warp).getLocation()).thenAccept(success -> {
 					if(success) {
-						user.msg(Localization.COMMAND_FWARP_WARPED, warp);
+						user.msg(TL.COMMAND_FWARP_WARPED, warp);
 					}
 				});
 			}
@@ -242,9 +242,9 @@ public class WarpGUI extends GUI<Integer> {
 		}
 
 		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysCosts() && user.hasFaction() && user.getFaction().hasAccess(user, PermissibleAction.ECONOMY)) {
-			return Econ.modifyMoney(user.getFaction(), -cost, Localization.COMMAND_FWARP_TOWARP.toString(), Localization.COMMAND_FWARP_FORWARPING.toString());
+			return Econ.modifyMoney(user.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 		} else {
-			return Econ.modifyMoney(user, -cost, Localization.COMMAND_FWARP_TOWARP.toString(), Localization.COMMAND_FWARP_FORWARPING.toString());
+			return Econ.modifyMoney(user, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 		}
 	}
 

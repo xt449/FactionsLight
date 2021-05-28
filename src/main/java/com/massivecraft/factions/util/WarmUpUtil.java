@@ -1,10 +1,10 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class WarmUpUtil {
+public class WarmUpUtil {
 
 	/**
 	 * @param player         The player to notify.
@@ -15,10 +15,10 @@ public abstract class WarmUpUtil {
 	 *                       <p/>
 	 *                       note: for translations: %s = action, %d = delay
 	 */
-	public static void process(final IFactionPlayer player, Warmup warmup, Localization translationKey, String action, final Runnable runnable, long delay) {
+	public static void process(final FPlayer player, Warmup warmup, TL translationKey, String action, final Runnable runnable, long delay) {
 		if(delay > 0) {
 			if(player.isWarmingUp()) {
-				player.msg(Localization.WARMUPS_ALREADY);
+				player.msg(TL.WARMUPS_ALREADY);
 			} else {
 				player.msg(translationKey.format(action, delay));
 				int id = new BukkitRunnable() {

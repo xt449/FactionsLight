@@ -1,9 +1,9 @@
 package com.massivecraft.factions.tag;
 
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayerManager;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 import java.util.function.Supplier;
@@ -13,8 +13,8 @@ public enum GeneralTag implements Tag {
 	MAX_ALLIES("max-allies", () -> getRelation(Relation.ALLY)),
 	MAX_ENEMIES("max-enemies", () -> getRelation(Relation.ENEMY)),
 	MAX_TRUCES("max-truces", () -> getRelation(Relation.TRUCE)),
-	FACTIONLESS("factionless", () -> String.valueOf(IFactionPlayerManager.getInstance().getOnlinePlayers().stream().filter(p -> !p.hasFaction()).count())),
-	FACTIONLESS_TOTAL("factionless-total", () -> String.valueOf(IFactionPlayerManager.getInstance().getAllFPlayers().stream().filter(p -> !p.hasFaction()).count())),
+	FACTIONLESS("factionless", () -> String.valueOf(FPlayers.getInstance().getOnlinePlayers().stream().filter(p -> !p.hasFaction()).count())),
+	FACTIONLESS_TOTAL("factionless-total", () -> String.valueOf(FPlayers.getInstance().getAllFPlayers().stream().filter(p -> !p.hasFaction()).count())),
 	TOTAL_ONLINE("total-online", () -> String.valueOf(Bukkit.getOnlinePlayers().size())),
 	;
 
@@ -25,7 +25,7 @@ public enum GeneralTag implements Tag {
 		if(FactionsPlugin.getInstance().conf().factions().maxRelations().isEnabled()) {
 			return String.valueOf(relation.getMax());
 		}
-		return Localization.GENERIC_INFINITY.toString();
+		return TL.GENERIC_INFINITY.toString();
 	}
 
 	public static String parse(String text) {

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -13,7 +13,7 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
 	private boolean cancelled = false;
 	private String message;
 
-	public PowerLossEvent(IFaction f, IFactionPlayer p) {
+	public PowerLossEvent(Faction f, FPlayer p) {
 		super(f, p);
 	}
 

@@ -12,17 +12,17 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class FTeamWrapper {
-	private static final Map<IFaction, FTeamWrapper> wrappers = new HashMap<>();
+	private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
 	private static final List<FScoreboard> tracking = new ArrayList<>();
 	private static int factionTeamPtr;
-	private static final Set<IFaction> updating = new HashSet<>();
+	private static final Set<Faction> updating = new HashSet<>();
 
 	private final Map<FScoreboard, Team> teams = new HashMap<>();
 	private final String teamName;
-	private final IFaction faction;
+	private final Faction faction;
 	private final Set<OfflinePlayer> members = new HashSet<>();
 
-	public static void applyUpdatesLater(final IFaction faction) {
+	public static void applyUpdatesLater(final Faction faction) {
 		if(!FScoreboard.isSupportedByServer()) {
 			return;
 		}
@@ -47,7 +47,7 @@ public class FTeamWrapper {
 		}
 	}
 
-	public static void applyUpdates(IFaction faction) {
+	public static void applyUpdates(Faction faction) {
 		if(!FScoreboard.isSupportedByServer()) {
 			return;
 		}
@@ -66,7 +66,7 @@ public class FTeamWrapper {
 		}
 
 		FTeamWrapper wrapper = wrappers.get(faction);
-		Set<IFactionPlayer> factionMembers = faction.getFPlayers();
+		Set<FPlayer> factionMembers = faction.getFPlayers();
 
 		if(wrapper != null && Factions.getInstance().getFactionById(faction.getId()) == null) {
 			// Faction was disbanded
@@ -81,13 +81,13 @@ public class FTeamWrapper {
 		}
 
 		for(OfflinePlayer player : wrapper.getPlayers()) {
-			if(!player.isOnline() || !factionMembers.contains(IFactionPlayerManager.getInstance().getByOfflinePlayer(player))) {
+			if(!player.isOnline() || !factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
 				// Player is offline or no longer in faction
 				wrapper.removePlayer(player);
 			}
 		}
 
-		for(IFactionPlayer fmember : factionMembers) {
+		for(FPlayer fmember : factionMembers) {
 			if(!fmember.isOnline()) {
 				continue;
 			}
@@ -99,7 +99,7 @@ public class FTeamWrapper {
 		wrapper.updatePrefixesAndSuffixes();
 	}
 
-	public static void updatePrefixes(IFaction faction) {
+	public static void updatePrefixes(Faction faction) {
 		if(!FScoreboard.isSupportedByServer()) {
 			return;
 		}
@@ -132,7 +132,7 @@ public class FTeamWrapper {
 	}
 
 
-	private FTeamWrapper(IFaction faction) {
+	private FTeamWrapper(Faction faction) {
 		this.teamName = "faction_" + (factionTeamPtr++);
 		this.faction = faction;
 
@@ -185,7 +185,7 @@ public class FTeamWrapper {
 		}
 	}
 
-	private String apply(String prefixOrSuffix, IFactionPlayer fplayer, int maxLength) {
+	private String apply(String prefixOrSuffix, FPlayer fplayer, int maxLength) {
 		prefixOrSuffix = Tag.parsePlaceholders(fplayer.getPlayer(), prefixOrSuffix);
 		prefixOrSuffix = prefixOrSuffix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
 		int remaining = Math.min("{faction}".length() + maxLength - prefixOrSuffix.length(), faction.getTag().length());

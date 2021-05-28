@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
@@ -28,25 +28,25 @@ public class CmdBan extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// Good on permission checks. Now lets just ban the player.
-		IFactionPlayer target = context.argAsFPlayer(0);
+		FPlayer target = context.argAsFPlayer(0);
 		if(target == null) {
 			return; // the above method sends a message if fails to find someone.
 		}
 
 		if(context.fPlayer == target) {
 			// You may not ban yourself
-			context.msg(Localization.COMMAND_BAN_SELF);
+			context.msg(TL.COMMAND_BAN_SELF);
 			return;
 		} else if(target.getFaction() == context.faction && target.getRole().value >= context.fPlayer.getRole().value) {
 			// You may not ban someone that has same or higher faction rank
-			context.msg(Localization.COMMAND_BAN_INSUFFICIENTRANK, target.getName());
+			context.msg(TL.COMMAND_BAN_INSUFFICIENTRANK, target.getName());
 			return;
 		}
 
 		// Check if the user is already banned
 		for(BanInfo banInfo : context.faction.getBannedPlayers()) {
 			if(banInfo.getBanned().equals(target.getId())) {
-				context.msg(Localization.COMMAND_BAN_ALREADYBANNED, target.getName());
+				context.msg(TL.COMMAND_BAN_ALREADYBANNED, target.getName());
 				return;
 			}
 		}
@@ -73,12 +73,12 @@ public class CmdBan extends FCommand {
 		}
 
 		// Lets inform the people!
-		target.msg(Localization.COMMAND_BAN_TARGET, context.faction.getTag(target.getFaction()));
-		context.faction.msg(Localization.COMMAND_BAN_BANNED, context.fPlayer.getName(), target.getName());
+		target.msg(TL.COMMAND_BAN_TARGET, context.faction.getTag(target.getFaction()));
+		context.faction.msg(TL.COMMAND_BAN_BANNED, context.fPlayer.getName(), target.getName());
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_BAN_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_BAN_DESCRIPTION;
 	}
 }

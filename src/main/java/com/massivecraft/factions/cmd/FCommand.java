@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFaction;
-import com.massivecraft.factions.IFactionPlayer;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.ChatColor;
 
@@ -23,7 +23,7 @@ public abstract class FCommand {
 	}
 
 	public FactionsPlugin plugin;
-	public SimpleDateFormat sdf = new SimpleDateFormat(Localization.DATE_FORMAT.toString());
+	public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
 	// Command Aliases
 	public List<String> aliases;
@@ -92,7 +92,7 @@ public abstract class FCommand {
 	public boolean validArgs(CommandContext context) {
 		if(context.args.size() < this.requiredArgs.size()) {
 			if(context.sender != null) {
-				context.msg(Localization.GENERIC_ARGS_TOOFEW);
+				context.msg(TL.GENERIC_ARGS_TOOFEW);
 				context.sender.sendMessage(this.getUsageTemplate(context));
 			}
 			return false;
@@ -102,7 +102,7 @@ public abstract class FCommand {
 			if(context.sender != null) {
 				// Get the to many string slice
 				List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
-				context.msg(Localization.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
+				context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
 				context.sender.sendMessage(this.getUsageTemplate(context));
 			}
 			return false;
@@ -139,12 +139,12 @@ public abstract class FCommand {
 		return this.helpShort;
 	}
 
-	public abstract Localization getUsageTranslation();
+	public abstract TL getUsageTranslation();
 
 	/*
 		Common Logic
 	 */
-	public List<String> getToolTips(IFactionPlayer player) {
+	public List<String> getToolTips(FPlayer player) {
 		List<String> lines = new ArrayList<>();
 		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getPlayer()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
@@ -152,7 +152,7 @@ public abstract class FCommand {
 		return lines;
 	}
 
-	public List<String> getToolTips(IFaction faction) {
+	public List<String> getToolTips(Faction faction) {
 		List<String> lines = new ArrayList<>();
 		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getFaction()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));

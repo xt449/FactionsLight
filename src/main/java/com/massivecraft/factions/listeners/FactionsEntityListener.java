@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -66,7 +66,7 @@ public class FactionsEntityListener extends AbstractListener {
 			event.setCancelled(true);
 		} else if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
-			IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
+			FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
 			if(fPlayer != null && !fPlayer.shouldTakeFallDamage()) {
 				event.setCancelled(true); // Falling after /f fly
 			}
@@ -95,20 +95,44 @@ public class FactionsEntityListener extends AbstractListener {
 
 			if(playerHurt) {
 				cancelFStuckTeleport((Player) damagee);
+				if((damager instanceof Player) || plugin.conf().commands().fly().isDisableOnHurtByMobs()) {
+					cancelFFly((Player) damagee);
+				}
 			}
 			if(damager instanceof Player) {
 				cancelFStuckTeleport((Player) damager);
+				if((playerHurt && plugin.conf().commands().fly().isDisableOnHurtingPlayers()) ||
+						(!playerHurt && plugin.conf().commands().fly().isDisableOnHurtingMobs())) {
+					cancelFFly((Player) damager);
+				}
 			}
 		}
 
 		// entity took generic damage?
 		if(playerHurt) {
 			Player player = (Player) damagee;
-			IFactionPlayer me = IFactionPlayerManager.getInstance().getByPlayer(player);
+			FPlayer me = FPlayers.getInstance().getByPlayer(player);
 			cancelFStuckTeleport(player);
+			if(plugin.conf().commands().fly().isDisableOnGenericDamage()) {
+				cancelFFly(player);
+			}
 			if(me.isWarmingUp()) {
 				me.clearWarmup();
-				me.msg(Localization.WARMUPS_CANCELLED);
+				me.msg(TL.WARMUPS_CANCELLED);
+			}
+		}
+	}
+
+	private void cancelFFly(Player player) {
+		if(player == null) {
+			return;
+		}
+
+		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+		if(fPlayer.isFlying()) {
+			fPlayer.setFlying(false, true);
+			if(fPlayer.isAutoFlying()) {
+				fPlayer.setAutoFlying(false);
 			}
 		}
 	}
@@ -119,7 +143,7 @@ public class FactionsEntityListener extends AbstractListener {
 		}
 		UUID uuid = player.getUniqueId();
 		if(FactionsPlugin.getInstance().getStuckMap().containsKey(uuid)) {
-			IFactionPlayerManager.getInstance().getByPlayer(player).msg(Localization.COMMAND_STUCK_CANCELLED);
+			FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
 			FactionsPlugin.getInstance().getStuckMap().remove(uuid);
 		}
 	}
@@ -169,7 +193,7 @@ public class FactionsEntityListener extends AbstractListener {
 
 		if(thrower instanceof Player) {
 			Player player = (Player) thrower;
-			IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer(player);
+			FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
 			if(badjuju && fPlayer.getFaction().isPeaceful()) {
 				event.setCancelled(true);
 				return;
@@ -189,7 +213,7 @@ public class FactionsEntityListener extends AbstractListener {
 		if(!(damagee instanceof Player)) {
 			return false;
 		}
-		return IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(damagee.getLocation())).isSafeZone();
+		return Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
 	}
 
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
@@ -201,7 +225,7 @@ public class FactionsEntityListener extends AbstractListener {
 	}
 
 	public static boolean canDamage(Entity damager, Entity damagee, boolean notify) {
-		IFaction defLocFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(damagee.getLocation()));
+		Faction defLocFaction = Board.getInstance().getFactionAt(new FLocation(damagee.getLocation()));
 
 		// for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
 		if(damager instanceof Projectile) {
@@ -219,7 +243,7 @@ public class FactionsEntityListener extends AbstractListener {
 				case ITEM_FRAME:
 				case ARMOR_STAND:
 				case PAINTING:
-					if(explosionDisallowed(damager, new FactionClaim(damagee.getLocation()))) {
+					if(explosionDisallowed(damager, new FLocation(damagee.getLocation()))) {
 						return false;
 					}
 			}
@@ -244,21 +268,21 @@ public class FactionsEntityListener extends AbstractListener {
 		if(!(damagee instanceof Player)) {
 			if(FactionsPlugin.getInstance().conf().factions().protection().isSafeZoneBlockAllEntityDamage() && defLocFaction.isSafeZone()) {
 				if(damager instanceof Player && notify) {
-					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(Localization.PERM_DENIED_SAFEZONE.format(Localization.GENERIC_ATTACK.toString()));
+					FPlayers.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_SAFEZONE.format(TL.GENERIC_ATTACK.toString()));
 				}
 				return false;
 			}
 			if(FactionsPlugin.getInstance().conf().factions().protection().isPeacefulBlockAllEntityDamage() && defLocFaction.isPeaceful()) {
 				if(damager instanceof Player && notify) {
-					IFactionPlayerManager.getInstance().getByPlayer((Player) damager).msg(Localization.PERM_DENIED_TERRITORY.format(Localization.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
+					FPlayers.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_TERRITORY.format(TL.GENERIC_ATTACK.toString(), defLocFaction.getTag(FPlayers.getInstance().getByPlayer((Player) damager))));
 				}
 				return false;
 			}
 			if(FactionsPlugin.getInstance().conf().factions().protection().isTerritoryBlockEntityDamageMatchingPerms() && damager instanceof Player && defLocFaction.isNormal()) {
-				IFactionPlayer fPlayer = IFactionPlayerManager.getInstance().getByPlayer((Player) damager);
+				FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) damager);
 				if(!defLocFaction.hasAccess(fPlayer, PermissibleAction.DESTROY)) {
 					if(notify) {
-						fPlayer.msg(Localization.PERM_DENIED_TERRITORY.format(Localization.GENERIC_ATTACK.toString(), defLocFaction.getTag(IFactionPlayerManager.getInstance().getByPlayer((Player) damager))));
+						fPlayer.msg(TL.PERM_DENIED_TERRITORY.format(TL.GENERIC_ATTACK.toString(), defLocFaction.getTag(FPlayers.getInstance().getByPlayer((Player) damager))));
 					}
 					return false;
 				}
@@ -266,7 +290,7 @@ public class FactionsEntityListener extends AbstractListener {
 			return true;
 		}
 
-		IFactionPlayer defender = IFactionPlayerManager.getInstance().getByPlayer((Player) damagee);
+		FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
 
 		if(defender == null || defender.getPlayer() == null) {
 			return true;
@@ -282,8 +306,8 @@ public class FactionsEntityListener extends AbstractListener {
 		if(defLocFaction.noPvPInTerritory()) {
 			if(damager instanceof Player) {
 				if(notify) {
-					IFactionPlayer attacker = IFactionPlayerManager.getInstance().getByPlayer((Player) damager);
-					attacker.msg(Localization.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? Localization.REGION_SAFEZONE.toString() : Localization.REGION_PEACEFUL.toString()));
+					FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
+					attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
 				}
 				return false;
 			}
@@ -294,7 +318,7 @@ public class FactionsEntityListener extends AbstractListener {
 			return true;
 		}
 
-		IFactionPlayer attacker = IFactionPlayerManager.getInstance().getByPlayer((Player) damager);
+		FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
 
 		if(attacker == null || attacker.getPlayer() == null) {
 			return true;
@@ -307,17 +331,17 @@ public class FactionsEntityListener extends AbstractListener {
 
 		if(attacker.hasLoginPvpDisabled()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_PVP_LOGIN, facConf.pvp().getNoPVPDamageToOthersForXSecondsAfterLogin());
+				attacker.msg(TL.PLAYER_PVP_LOGIN, facConf.pvp().getNoPVPDamageToOthersForXSecondsAfterLogin());
 			}
 			return false;
 		}
 
-		IFaction locFaction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(attacker));
+		Faction locFaction = Board.getInstance().getFactionAt(new FLocation(attacker));
 
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if(locFaction.noPvPInTerritory()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_CANTHURT, (locFaction.isSafeZone() ? Localization.REGION_SAFEZONE.toString() : Localization.REGION_PEACEFUL.toString()));
+				attacker.msg(TL.PLAYER_CANTHURT, (locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
 			}
 			return false;
 		}
@@ -330,12 +354,12 @@ public class FactionsEntityListener extends AbstractListener {
 			return true;
 		}
 
-		IFaction defendFaction = defender.getFaction();
-		IFaction attackFaction = attacker.getFaction();
+		Faction defendFaction = defender.getFaction();
+		Faction attackFaction = attacker.getFaction();
 
 		if(attackFaction.isWilderness() && facConf.pvp().isDisablePVPForFactionlessPlayers()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_PVP_REQUIREFACTION);
+				attacker.msg(TL.PLAYER_PVP_REQUIREFACTION);
 			}
 			return false;
 		} else if(defendFaction.isWilderness()) {
@@ -344,7 +368,7 @@ public class FactionsEntityListener extends AbstractListener {
 				return true;
 			} else if(facConf.pvp().isDisablePVPForFactionlessPlayers()) {
 				if(notify) {
-					attacker.msg(Localization.PLAYER_PVP_FACTIONLESS);
+					attacker.msg(TL.PLAYER_PVP_FACTIONLESS);
 				}
 				return false;
 			}
@@ -353,12 +377,12 @@ public class FactionsEntityListener extends AbstractListener {
 		if(!defLocFaction.isWarZone() || facConf.pvp().isDisablePeacefulPVPInWarzone()) {
 			if(defendFaction.isPeaceful()) {
 				if(notify) {
-					attacker.msg(Localization.PLAYER_PVP_PEACEFUL);
+					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
 				}
 				return false;
 			} else if(attackFaction.isPeaceful()) {
 				if(notify) {
-					attacker.msg(Localization.PLAYER_PVP_PEACEFUL);
+					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
 				}
 				return false;
 			}
@@ -369,7 +393,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can not hurt neutral factions
 		if(facConf.pvp().isDisablePVPBetweenNeutralFactions() && relation.isNeutral()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_PVP_NEUTRAL);
+				attacker.msg(TL.PLAYER_PVP_NEUTRAL);
 			}
 			return false;
 		}
@@ -382,7 +406,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can never hurt faction members or allies
 		if(relation.isMember() || relation.isAlly() || relation.isTruce()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
+				attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
 			}
 			return false;
 		}
@@ -392,8 +416,8 @@ public class FactionsEntityListener extends AbstractListener {
 		// You can not hurt neutrals in their own territory.
 		if(ownTerritory && relation.isNeutral()) {
 			if(notify) {
-				attacker.msg(Localization.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
-				defender.msg(Localization.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
+				attacker.msg(TL.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
+				defender.msg(TL.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
 			}
 			return false;
 		}
@@ -424,7 +448,7 @@ public class FactionsEntityListener extends AbstractListener {
 			return;
 		}
 
-		IFaction faction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(event.getLocation()));
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getLocation()));
 		CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
 		EntityType type = event.getEntityType();
 		MainConfig.Factions.Spawning spawning = FactionsPlugin.getInstance().conf().factions().spawning();
@@ -465,7 +489,7 @@ public class FactionsEntityListener extends AbstractListener {
 			return;
 		}
 
-		if(event.getEntity() instanceof Monster && IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(target.getLocation())).noMonstersInTerritory()) {
+		if(event.getEntity() instanceof Monster && Board.getInstance().getFactionAt(new FLocation(target.getLocation())).noMonstersInTerritory()) {
 			event.setCancelled(true);
 		}
 	}
@@ -478,7 +502,7 @@ public class FactionsEntityListener extends AbstractListener {
 
 		if(event.getCause() == RemoveCause.EXPLOSION || (event.getCause() == RemoveCause.ENTITY && event instanceof HangingBreakByEntityEvent && ((HangingBreakByEntityEvent) event).getRemover() instanceof Creeper)) {
 			Location loc = event.getEntity().getLocation();
-			IFaction faction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(loc));
+			Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
 			if(faction.noExplosionsInTerritory()) {
 				// faction is peaceful and has explosions set to disabled
 				event.setCancelled(true);
@@ -543,7 +567,7 @@ public class FactionsEntityListener extends AbstractListener {
 				event.setCancelled(true);
 			}
 		} else if(entity instanceof Wither) {
-			IFaction faction = IFactionClaimManager.getInstance().getFactionAt(new FactionClaim(loc));
+			Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
 			MainConfig.Factions.Protection protection = FactionsPlugin.getInstance().conf().factions().protection();
 			// it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
 			if((faction.isWilderness() && protection.isWildernessBlockFireballs() && !protection.getWorldsNoWildernessProtection().contains(loc.getWorld().getName())) ||
@@ -569,8 +593,8 @@ public class FactionsEntityListener extends AbstractListener {
 			return true;
 		}
 
-		FactionClaim fLoc = new FactionClaim(loc);
-		IFaction claimFaction = IFactionClaimManager.getInstance().getFactionAt(fLoc);
+		FLocation fLoc = new FLocation(loc);
+		Faction claimFaction = Board.getInstance().getFactionAt(fLoc);
 
 		if(claimFaction.isWilderness()) {
 			return protection.isWildernessDenyEndermanBlocks();

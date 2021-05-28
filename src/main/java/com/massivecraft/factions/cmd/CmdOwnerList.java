@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FactionClaim;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.IFactionClaimManager;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 
 public class CmdOwnerList extends FCommand {
@@ -28,21 +28,21 @@ public class CmdOwnerList extends FCommand {
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled()) {
-			context.msg(Localization.COMMAND_OWNERLIST_DISABLED);
+			context.msg(TL.COMMAND_OWNERLIST_DISABLED);
 			return;
 		}
 
-		FactionClaim flocation = new FactionClaim(context.fPlayer);
+		FLocation flocation = new FLocation(context.fPlayer);
 
-		if(IFactionClaimManager.getInstance().getFactionAt(flocation) != context.faction) {
+		if(Board.getInstance().getFactionAt(flocation) != context.faction) {
 			if(!hasBypass) {
-				context.msg(Localization.COMMAND_OWNERLIST_WRONGFACTION);
+				context.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
 				return;
 			}
 			//TODO: This code won't ever be called.
-			context.faction = IFactionClaimManager.getInstance().getFactionAt(flocation);
+			context.faction = Board.getInstance().getFactionAt(flocation);
 			if(!context.faction.isNormal()) {
-				context.msg(Localization.COMMAND_OWNERLIST_NOTCLAIMED);
+				context.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
 				return;
 			}
 		}
@@ -50,15 +50,15 @@ public class CmdOwnerList extends FCommand {
 		String owners = context.faction.getOwnerListString(flocation);
 
 		if(owners == null || owners.isEmpty()) {
-			context.msg(Localization.COMMAND_OWNERLIST_NONE);
+			context.msg(TL.COMMAND_OWNERLIST_NONE);
 			return;
 		}
 
-		context.msg(Localization.COMMAND_OWNERLIST_OWNERS, owners);
+		context.msg(TL.COMMAND_OWNERLIST_OWNERS, owners);
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_OWNERLIST_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_OWNERLIST_DESCRIPTION;
 	}
 }

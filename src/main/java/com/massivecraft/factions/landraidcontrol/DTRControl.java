@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.event.DTRLossEvent;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -28,71 +28,71 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public boolean isRaidable(IFaction faction) {
+	public boolean isRaidable(Faction faction) {
 		return !faction.isPeaceful() && faction.getDTR() <= 0;
 	}
 
 	@Override
-	public boolean hasLandInflation(IFaction faction) {
+	public boolean hasLandInflation(Faction faction) {
 		return false; // fail all attempts at claiming
 	}
 
 	@Override
-	public int getLandLimit(IFaction faction) {
+	public int getLandLimit(Faction faction) {
 		return conf().getLandStarting() + (faction.getFPlayers().size() * conf().getLandPerPlayer());
 	}
 
 	@Override
-	public boolean canJoinFaction(IFaction faction, IFactionPlayer player, CommandContext context) {
+	public boolean canJoinFaction(Faction faction, FPlayer player, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsJoin()) {
-			context.msg(Localization.DTR_CANNOT_FROZEN);
+			context.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public boolean canLeaveFaction(IFactionPlayer player) {
+	public boolean canLeaveFaction(FPlayer player) {
 		if(player.getFaction().isFrozenDTR() && conf().isFreezePreventsLeave()) {
-			player.msg(Localization.DTR_CANNOT_FROZEN);
+			player.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public boolean canDisbandFaction(IFaction faction, CommandContext context) {
+	public boolean canDisbandFaction(Faction faction, CommandContext context) {
 		if(faction.isFrozenDTR() && conf().isFreezePreventsDisband()) {
-			context.msg(Localization.DTR_CANNOT_FROZEN);
+			context.msg(TL.DTR_CANNOT_FROZEN);
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public boolean canKick(IFactionPlayer toKick, CommandContext context) {
+	public boolean canKick(FPlayer toKick, CommandContext context) {
 		if(toKick.getFaction().isNormal()) {
-			IFaction faction = toKick.getFaction();
+			Faction faction = toKick.getFaction();
 			if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
-					IFactionClaimManager.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
-				context.msg(Localization.COMMAND_KICK_ENEMYTERRITORY);
+					Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
+				context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
 				return false;
 			}
 			if(faction.isFrozenDTR() && conf().getFreezeKickPenalty() > 0) {
 				faction.setDTR(Math.min(conf().getMinDTR(), faction.getDTR() - conf().getFreezeKickPenalty()));
-				context.msg(Localization.DTR_KICK_PENALTY);
+				context.msg(TL.DTR_KICK_PENALTY);
 			}
 		}
 		return true;
 	}
 
 	@Override
-	public void onRespawn(IFactionPlayer player) {
+	public void onRespawn(FPlayer player) {
 		// Handled on death
 	}
 
 	@Override
-	public void update(IFactionPlayer player) {
+	public void update(FPlayer player) {
 		if(player.getFaction().isNormal()) {
 			this.updateDTR(player.getFaction());
 		}
@@ -100,8 +100,8 @@ public class DTRControl implements LandRaidControl {
 
 	@Override
 	public void onDeath(Player player) {
-		IFactionPlayer fplayer = IFactionPlayerManager.getInstance().getByPlayer(player);
-		IFaction faction = fplayer.getFaction();
+		FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+		Faction faction = fplayer.getFaction();
 		if(!faction.isNormal()) {
 			return;
 		}
@@ -118,22 +118,22 @@ public class DTRControl implements LandRaidControl {
 	}
 
 	@Override
-	public void onQuit(IFactionPlayer player) {
+	public void onQuit(FPlayer player) {
 		this.update(player);
 	}
 
 	@Override
-	public void onJoin(IFactionPlayer player) {
+	public void onJoin(FPlayer player) {
 		if(player.getFaction().isNormal()) {
 			this.updateDTR(player.getFaction(), 1);
 		}
 	}
 
-	public void updateDTR(IFaction faction) {
+	public void updateDTR(Faction faction) {
 		this.updateDTR(faction, 0);
 	}
 
-	public void updateDTR(IFaction faction, int minusPlayer) {
+	public void updateDTR(Faction faction, int minusPlayer) {
 		long now = System.currentTimeMillis();
 		if(faction.getFrozenDTRUntilTime() > now) {
 			// Not yet time to regen
@@ -146,7 +146,7 @@ public class DTRControl implements LandRaidControl {
 		faction.setDTR(Math.min(faction.getDTRWithoutUpdate() + regain, this.getMaxDTR(faction)));
 	}
 
-	public double getMaxDTR(IFaction faction) {
+	public double getMaxDTR(Faction faction) {
 		return Math.min(conf().getStartingDTR() + (conf().getPerPlayer() * faction.getFPlayers().size()), conf().getMaxDTR());
 	}
 }
