@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public abstract class MemoryBoard extends Board {
 
-	public class MemoryBoardMap extends HashMap<FLocation, String> {
+	public static class MemoryBoardMap extends HashMap<FLocation, String> {
 		private static final long serialVersionUID = -6689617828610585368L;
 
 		Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
@@ -303,9 +303,6 @@ public abstract class MemoryBoard extends Board {
 			for(int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
 				if(dx == halfWidth && dz == halfHeight) {
 					row.then("+").color(ChatColor.AQUA);
-					if(false) {
-						row.tooltip(TL.CLAIM_YOUAREHERE.toString());
-					}
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);

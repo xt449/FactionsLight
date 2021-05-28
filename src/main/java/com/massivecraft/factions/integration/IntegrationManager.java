@@ -67,11 +67,8 @@ public class IntegrationManager implements Listener {
 		}
 
 		static Consumer<Plugin> getStartup(String pluginName) {
-			return STARTUP_MAP.getOrDefault(pluginName, Integration::omNomNom);
-		}
-
-		private static void omNomNom(Plugin plugin) {
-			// NOOP
+			return STARTUP_MAP.getOrDefault(pluginName, plugin -> {
+			});
 		}
 
 		private final String pluginName;

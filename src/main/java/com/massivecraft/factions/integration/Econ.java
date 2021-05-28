@@ -509,14 +509,4 @@ public class Econ {
 		}
 		return op;
 	}
-
-	@Deprecated
-	public static boolean isUUID(String uuid) {
-		try {
-			UUID.fromString(uuid);
-			return true;
-		} catch(IllegalArgumentException ex) {
-			return false;
-		}
-	}
 }

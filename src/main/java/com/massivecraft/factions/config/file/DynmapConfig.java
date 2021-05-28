@@ -1,6 +1,5 @@
 package com.massivecraft.factions.config.file;
 
-import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.config.annotation.Comment;
 import com.massivecraft.factions.config.annotation.DefinedType;
 import com.massivecraft.factions.config.annotation.WipeOnReload;
@@ -58,7 +57,7 @@ public class DynmapConfig {
 		private final Set<String> visibleFactions = new HashSet<>();
 
 		@Comment("To hide all factions in a world, use 'world:worldnamehere'")
-		private final Set<String> hiddenFactions = new HashSet<String>();
+		private final Set<String> hiddenFactions = new HashSet<>();
 
 		public boolean isEnabled() {
 			return enabled;
@@ -109,57 +108,23 @@ public class DynmapConfig {
 			}
 		};
 
-		private final transient TypeToken<Map<String, Style>> factionStylesToken = new TypeToken<Map<String, Style>>() {
-		};
-
 		@WipeOnReload
 		private transient Map<String, DynmapStyle> styles;
 
 		public Map<String, DynmapStyle> getFactionStyles() {
 			if(styles == null) {
 				styles = new HashMap<>();
-				Map<String, ? extends Object> mappy = factionStyles;
-				for(Map.Entry<String, ? extends Object> e : mappy.entrySet()) {
+				for(Map.Entry<String, Style> e : factionStyles.entrySet()) {
 					String faction = e.getKey();
-					Object s = e.getValue();
-					if(s instanceof Style) {
-						Style style = (Style) s;
-						styles.put(faction, new DynmapStyle()
-								.setLineColor(style.getLineColor())
-								.setLineOpacity(style.getLineOpacity())
-								.setLineWeight(style.getLineWeight())
-								.setFillColor(style.getFillColor())
-								.setFillOpacity(style.getFillOpacity())
-								.setHomeMarker(style.getHomeMarker())
-								.setBoost(style.isStyleBoost()));
-					} else if(s instanceof Map) {
-						DynmapStyle style = new DynmapStyle();
-						Map<String, Object> map = (Map<String, Object>) s;
-						if(map.containsKey("homeMarker")) {
-							style.setHomeMarker(map.get("homeMarker").toString());
-						}
-						if(map.containsKey("fillOpacity")) {
-							style.setFillOpacity(getDouble(map.get("fillOpacity").toString()));
-						}
-						if(map.containsKey("lineWeight")) {
-							style.setLineWeight(getInt(map.get("lineWeight").toString()));
-						}
-						if(map.containsKey("lineColor")) {
-							style.setLineColor(map.get("lineColor").toString());
-						}
-						if(map.containsKey("styleBoost")) {
-							style.setBoost(Boolean.parseBoolean(map.get("styleBoost").toString()));
-						}
-						if(map.containsKey("fillColor")) {
-							style.setFillColor(map.get("fillColor").toString());
-						}
-						if(map.containsKey("lineOpacity")) {
-							style.setLineOpacity(getDouble(map.get("lineOpacity").toString()));
-						}
-						styles.put(faction, style);
-					} else {
-						// Panic!
-					}
+					Style style = e.getValue();
+					styles.put(faction, new DynmapStyle()
+							.setLineColor(style.getLineColor())
+							.setLineOpacity(style.getLineOpacity())
+							.setLineWeight(style.getLineWeight())
+							.setFillColor(style.getFillColor())
+							.setFillOpacity(style.getFillOpacity())
+							.setHomeMarker(style.getHomeMarker())
+							.setBoost(style.isStyleBoost()));
 				}
 			}
 			return styles;

@@ -8,7 +8,7 @@ import com.massivecraft.factions.perms.Role;
 
 public class DefaultPermissionsConfig {
 	public static class Permissions {
-		public class PermissiblePermInfo {
+		public static class PermissiblePermInfo {
 			public boolean isLocked() {
 				return this.locked;
 			}
@@ -22,7 +22,7 @@ public class DefaultPermissionsConfig {
 			private boolean value = false;
 		}
 
-		public class FactionOnlyPermInfo {
+		public static class FactionOnlyPermInfo {
 			protected PermissiblePermInfo coleader = new PermissiblePermInfo();
 			protected PermissiblePermInfo moderator = new PermissiblePermInfo();
 			protected PermissiblePermInfo normal = new PermissiblePermInfo();

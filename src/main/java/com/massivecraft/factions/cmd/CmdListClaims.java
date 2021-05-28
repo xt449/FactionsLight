@@ -129,7 +129,7 @@ public class CmdListClaims extends FCommand {
 		return TL.COMMAND_LISTCLAIMS_DESCRIPTION;
 	}
 
-	private class FLoc {
+	private static class FLoc {
 		private final int x;
 		private final int z;
 		private boolean processed;

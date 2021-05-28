@@ -200,7 +200,7 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		if(event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null) {
+		if(event.getEntity().getType() != EntityType.PLAYER) {
 			return;
 		}
 

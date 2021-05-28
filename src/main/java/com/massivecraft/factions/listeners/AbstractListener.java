@@ -153,10 +153,7 @@ public abstract class AbstractListener implements Listener {
 			// creeper which needs prevention
 			return true;
 		} else if(
-				(boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isWilderness() && protection.isWildernessBlockFireballs() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
-						(faction.isNormal() && (online ? protection.isTerritoryBlockFireballs() : protection.isTerritoryBlockFireballsWhenOffline())) ||
-						(faction.isWarZone() && protection.isWarZoneBlockFireballs()) ||
-						faction.isSafeZone())) {
+				(boomer instanceof Fireball || boomer instanceof Wither) && (faction.isWilderness() && protection.isWildernessBlockFireballs() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName()) || faction.isNormal() && (online ? protection.isTerritoryBlockFireballs() : protection.isTerritoryBlockFireballsWhenOffline()) || faction.isWarZone() && protection.isWarZoneBlockFireballs() || faction.isSafeZone())) {
 			// ghast fireball which needs prevention
 			// it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
 			return true;

@@ -790,7 +790,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 	public boolean isPowerFrozen() {
 		int freezeSeconds = FactionsPlugin.getInstance().conf().factions().landRaidControl().power().getPowerFreeze();
-		return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
+		return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000L;
 	}
 
 	public int getLandRounded() {
@@ -1138,7 +1138,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 			}
 			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(anOwnerData));
 			//TODO:TL
-			ownerList.append(offlinePlayer != null ? offlinePlayer.getName() : "null player");
+			ownerList.append(offlinePlayer.getName());
 		}
 		return ownerList.toString();
 	}

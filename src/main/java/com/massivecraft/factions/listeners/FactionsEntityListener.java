@@ -82,18 +82,6 @@ public class FactionsEntityListener extends AbstractListener {
 		Entity damagee = event.getEntity();
 		boolean playerHurt = damagee instanceof Player;
 
-		if(event instanceof EntityDamageByEntityEvent) {
-			Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
-
-			if(damager instanceof Projectile) {
-				Projectile projectile = (Projectile) damager;
-
-				if(projectile.getShooter() instanceof Entity) {
-					damager = (Entity) projectile.getShooter();
-				}
-			}
-		}
-
 		// entity took generic damage?
 		if(playerHurt) {
 			Player player = (Player) damagee;
@@ -163,7 +151,7 @@ public class FactionsEntityListener extends AbstractListener {
 		if(thrower instanceof Player) {
 			Player player = (Player) thrower;
 			FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-			if(badjuju && fPlayer.getFaction().isPeaceful()) {
+			if(fPlayer.getFaction().isPeaceful()) {
 				event.setCancelled(true);
 				return;
 			}
@@ -413,10 +401,6 @@ public class FactionsEntityListener extends AbstractListener {
 			return;
 		}
 
-		if(event.getLocation() == null) { // Just in case
-			return;
-		}
-
 		Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getLocation()));
 		CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
 		EntityType type = event.getEntityType();
@@ -524,13 +508,9 @@ public class FactionsEntityListener extends AbstractListener {
 
 		Entity entity = event.getEntity();
 
-		// for now, only interested in Enderman and Wither boss tomfoolery
-		if(!(entity instanceof Enderman) && !(entity instanceof Wither)) {
-			return;
-		}
-
 		Location loc = event.getBlock().getLocation();
 
+		// for now, only interested in Enderman and Wither boss tomfoolery
 		if(entity instanceof Enderman) {
 			if(stopEndermanBlockManipulation(loc)) {
 				event.setCancelled(true);

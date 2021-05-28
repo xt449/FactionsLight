@@ -49,15 +49,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	// Our single plugin instance.
 	// Single 4 life.
 	private static FactionsPlugin instance;
-	//private static int mcVersion;
 
 	public static FactionsPlugin getInstance() {
 		return instance;
 	}
-
-//    public static int getMCVersion() {
-//        return mcVersion;
-//    }
 
 	private final ConfigManager configManager = new ConfigManager(this);
 
@@ -106,11 +101,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private IWorldguard worldguard;
 	private LandRaidControl landRaidControl;
 	private boolean luckPermsSetup;
-	private IntegrationManager integrationManager;
 
 	private final Pattern factionsVersionPattern = Pattern.compile("b(\\d{1,4})");
-	private String updateMessage;
-	private int buildNumber = -1;
 	private UUID serverUUID;
 	private String startupLog;
 	private String startupExceptionLog;
@@ -182,40 +174,12 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 		this.serverUUID = new UUID(ms, ((0xaf & 0xffL) << 56) + ((0xac & 0xffL) << 48) + (u & 0xffffffffL) + ((p & 0xffffL) << 32));
 
-		// Version party
-//        Pattern versionPattern = Pattern.compile("1\\.(\\d{1,2})(?:\\.(\\d{1,2}))?");
-//        Matcher versionMatcher = versionPattern.matcher(this.getServer().getVersion());
 		getLogger().info("");
 		getLogger().info("Patriam Factions UUID!");
 		getLogger().info("Version " + this.getDescription().getVersion());
 		getLogger().info("");
 		getLogger().info("Need support? https://factions.support/help/");
 		getLogger().info("");
-//        Integer versionInteger = null;
-//        if (versionMatcher.find()) {
-//            try {
-//                int minor = Integer.parseInt(versionMatcher.group(1));
-//                String patchS = versionMatcher.group(2);
-//                int patch = (patchS == null || patchS.isEmpty()) ? 0 : Integer.parseInt(patchS);
-//                versionInteger = (minor * 100) + patch;
-//                getLogger().info("Detected Minecraft " + versionMatcher.group());
-//            } catch (NumberFormatException ignored) {
-//            }
-//        }
-//        if (versionInteger == null) {
-//            getLogger().warning("");
-//            getLogger().warning("Could not identify version. Going with least supported version, 1.7.10.");
-//            getLogger().warning("Please visit our support live chat for help - https://factions.support/help/");
-//            getLogger().warning("");
-//            versionInteger = 710;
-//        }
-//        mcVersion = versionInteger;
-//        if (mcVersion < 808) {
-//            getLogger().info("");
-//            getLogger().warning("FactionsUUID works better with at least Minecraft 1.8.8");
-//        }
-		getLogger().info("");
-		this.buildNumber = this.getBuildNumber(this.getDescription().getVersion());
 
 		this.getLogger().info("Server UUID " + this.serverUUID);
 
@@ -249,7 +213,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		String refCommand = "";
 		try {
 			Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
-			if(refCmd != null && !refCmd.isEmpty()) {
+			if(!refCmd.isEmpty()) {
 				refCommand = (String) (refCmd.keySet().toArray()[0]);
 			}
 		} catch(ClassCastException ignored) {
@@ -323,7 +287,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		// Integration time
-		getServer().getPluginManager().registerEvents(integrationManager = new IntegrationManager(this), this);
+		getServer().getPluginManager().registerEvents(new IntegrationManager(this), this);
 
 		new BukkitRunnable() {
 			@Override
@@ -437,13 +401,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	public String getStartupExceptionLog() {
 		return this.startupExceptionLog;
-	}
-
-	public void updatesOnJoin(Player player) {
-		if(this.updateMessage != null && player.hasPermission(com.massivecraft.factions.struct.Permission.UPDATES.toString())) {
-			player.sendMessage(this.updateMessage);
-			player.sendMessage(ChatColor.GREEN + "Get it at " + ChatColor.DARK_AQUA + "https://www.spigotmc.org/resources/factionsuuid.1035/");
-		}
 	}
 
 	public PermUtil getPermUtil() {

@@ -370,7 +370,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		if(!loginPvpDisabled) {
 			return false;
 		}
-		if(this.lastLoginTime + (FactionsPlugin.getInstance().conf().factions().pvp().getNoPVPDamageToOthersForXSecondsAfterLogin() * 1000) < System.currentTimeMillis()) {
+		if(this.lastLoginTime + (FactionsPlugin.getInstance().conf().factions().pvp().getNoPVPDamageToOthersForXSecondsAfterLogin() * 1000L) < System.currentTimeMillis()) {
 			this.loginPvpDisabled = false;
 			return false;
 		}

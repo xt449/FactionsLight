@@ -120,12 +120,11 @@ public class Loader {
 					}
 				}
 			} else {
-				Object o = defaultValue;
-				if(o == null) {
+				if(defaultValue == null) {
 					curNode.setValue(null);
 					newNewNode.setValue(null);
 				} else {
-					loadNode(curNode, newNewNode, o);
+					loadNode(curNode, newNewNode, defaultValue);
 				}
 			}
 		}

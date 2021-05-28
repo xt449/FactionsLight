@@ -67,9 +67,10 @@ public class Sentinel extends SentinelIntegration {
 					return false;
 				}
 				for(FPlayer pl : faction.getFPlayers()) {
-					if(pl.getPlayer() != null && pl.getPlayer().getUniqueId() != null
-							&& pl.getPlayer().getUniqueId().equals(ent.getUniqueId())) {
-						return true;
+					if(pl.getPlayer() != null) {
+						if(pl.getPlayer().getUniqueId().equals(ent.getUniqueId())) {
+							return true;
+						}
 					}
 				}
 			} else if(prefix.equals("factionsenemy") && ent instanceof Player) {
