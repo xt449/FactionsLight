@@ -92,20 +92,6 @@ public class FactionsEntityListener extends AbstractListener {
 					damager = (Entity) projectile.getShooter();
 				}
 			}
-
-			if(playerHurt) {
-				cancelFStuckTeleport((Player) damagee);
-				if((damager instanceof Player) || plugin.conf().commands().fly().isDisableOnHurtByMobs()) {
-					cancelFFly((Player) damagee);
-				}
-			}
-			if(damager instanceof Player) {
-				cancelFStuckTeleport((Player) damager);
-				if((playerHurt && plugin.conf().commands().fly().isDisableOnHurtingPlayers()) ||
-						(!playerHurt && plugin.conf().commands().fly().isDisableOnHurtingMobs())) {
-					cancelFFly((Player) damager);
-				}
-			}
 		}
 
 		// entity took generic damage?
@@ -113,26 +99,9 @@ public class FactionsEntityListener extends AbstractListener {
 			Player player = (Player) damagee;
 			FPlayer me = FPlayers.getInstance().getByPlayer(player);
 			cancelFStuckTeleport(player);
-			if(plugin.conf().commands().fly().isDisableOnGenericDamage()) {
-				cancelFFly(player);
-			}
 			if(me.isWarmingUp()) {
 				me.clearWarmup();
 				me.msg(TL.WARMUPS_CANCELLED);
-			}
-		}
-	}
-
-	private void cancelFFly(Player player) {
-		if(player == null) {
-			return;
-		}
-
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-		if(fPlayer.isFlying()) {
-			fPlayer.setFlying(false, true);
-			if(fPlayer.isAutoFlying()) {
-				fPlayer.setAutoFlying(false);
 			}
 		}
 	}

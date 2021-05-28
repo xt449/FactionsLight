@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CommandRequirements {
 
@@ -48,7 +48,7 @@ public class CommandRequirements {
 			// Is Player
 			if(!context.fPlayer.hasFaction() && memberOnly) {
 				if(informIfNot) {
-					context.msg(Localization.GENERIC_MEMBERONLY);
+					context.msg(TL.GENERIC_MEMBERONLY);
 				}
 				return false;
 			}
@@ -62,7 +62,7 @@ public class CommandRequirements {
 				boolean access = context.faction.hasAccess(context.fPlayer, action);
 				if(!access) {
 					if(informIfNot) {
-						context.msg(Localization.GENERIC_NOPERMISSION, action.name());
+						context.msg(TL.GENERIC_NOPERMISSION, action.name());
 					}
 					return false;
 				}
@@ -70,14 +70,14 @@ public class CommandRequirements {
 				return true;
 			} else {
 				if((role != null && !context.fPlayer.getRole().isAtLeast(role)) && informIfNot) {
-					context.msg(Localization.GENERIC_YOUMUSTBE, role.translation);
+					context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
 				}
 				return role == null || context.fPlayer.getRole().isAtLeast(role);
 			}
 		} else {
 			if(playerOnly) {
 				if(informIfNot) {
-					context.sender.sendMessage(Localization.GENERIC_PLAYERONLY.toString());
+					context.sender.sendMessage(TL.GENERIC_PLAYERONLY.toString());
 				}
 				return false;
 			}

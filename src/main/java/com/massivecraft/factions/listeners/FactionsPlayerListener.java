@@ -115,13 +115,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		// If they have the permission, don't let them autoleave. Bad inverted setter :\
 		me.setAutoLeave(!me.getPlayer().hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
 		me.setTakeFallDamage(true);
-		if(plugin.conf().commands().fly().isEnable() && me.isFlying()) { // TODO allow flight to continue
-			me.setFlying(false);
-		}
-
-		if(FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-			FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
-		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -156,9 +149,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		FScoreboard.remove(me, event.getPlayer());
 
-		if(FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-			FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), false);
-		}
 		me.setOfflinePlayer(null);
 	}
 
@@ -200,8 +190,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		me.setLastStoodAt(to);
 
-		boolean canFlyPreClaim = me.canFlyAtLocation();
-
 		if(me.getAutoClaimFor() != null) {
 			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
 		} else if(me.isAutoSafeClaimEnabled()) {
@@ -228,22 +216,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		Faction factionFrom = Board.getInstance().getFactionAt(from);
 		Faction factionTo = Board.getInstance().getFactionAt(to);
 		boolean changedFaction = (factionFrom != factionTo);
-
-		free:
-		if(plugin.conf().commands().fly().isEnable() && !me.isAdminBypassing()) {
-			boolean canFly = me.canFlyInFactionTerritory(factionTo);
-			if(!changedFaction) {
-				if(canFly && !canFlyPreClaim && me.isFlying() && plugin.conf().commands().fly().isDisableFlightDuringAutoclaim()) {
-					me.setFlying(false);
-				}
-				break free;
-			}
-			if(me.isFlying() && !canFly) {
-				me.setFlying(false);
-			} else if(me.isAutoFlying() && !me.isFlying() && canFly) {
-				me.setFlying(true);
-			}
-		}
 
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
@@ -507,9 +479,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		boolean isEnabled = plugin.worldUtil().isEnabled(event.getTo().getWorld());
 		if(!isEnabled) {
 			FScoreboard.remove(me, event.getPlayer());
-			if(me.isFlying()) {
-				me.setFlying(false);
-			}
 			return;
 		}
 		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
@@ -519,17 +488,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		FLocation to = new FLocation(event.getTo());
 		me.setLastStoodAt(to);
-
-		// Check the location they're teleporting to and check if they can fly there.
-		if(plugin.conf().commands().fly().isEnable() && !me.isAdminBypassing()) {
-			boolean canFly = me.canFlyAtLocation(to);
-			if(me.isFlying() && !canFly) {
-				me.setFlying(false, false);
-			} else if(me.isAutoFlying() && !me.isFlying() && canFly) {
-				me.setFlying(true);
-			}
-		}
-
 	}
 
 	// For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),

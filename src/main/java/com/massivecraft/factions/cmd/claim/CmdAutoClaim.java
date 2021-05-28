@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdAutoClaim extends FCommand {
 
@@ -26,15 +26,15 @@ public class CmdAutoClaim extends FCommand {
 		Faction forFaction = context.argAsFaction(0, context.faction);
 		if(forFaction == null || forFaction == context.fPlayer.getAutoClaimFor()) {
 			context.fPlayer.setAutoClaimFor(null);
-			context.msg(Localization.COMMAND_AUTOCLAIM_DISABLED);
+			context.msg(TL.COMMAND_AUTOCLAIM_DISABLED);
 			return;
 		}
 
 		if(!context.fPlayer.canClaimForFaction(forFaction)) {
 			if(context.faction == forFaction) {
-				context.msg(Localization.CLAIM_CANTCLAIM, forFaction.describeTo(context.fPlayer));
+				context.msg(TL.CLAIM_CANTCLAIM, forFaction.describeTo(context.fPlayer));
 			} else {
-				context.msg(Localization.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(context.fPlayer));
+				context.msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(context.fPlayer));
 			}
 
 			return;
@@ -42,13 +42,13 @@ public class CmdAutoClaim extends FCommand {
 
 		context.fPlayer.setAutoClaimFor(forFaction);
 
-		context.msg(Localization.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
+		context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
 		context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_AUTOCLAIM_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_AUTOCLAIM_DESCRIPTION;
 	}
 
 }

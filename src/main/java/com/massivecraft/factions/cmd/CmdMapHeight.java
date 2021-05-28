@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdMapHeight extends FCommand {
 
@@ -21,19 +21,19 @@ public class CmdMapHeight extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		if(context.args.size() == 0) {
-			context.fPlayer.sendMessage(Localization.COMMAND_MAPHEIGHT_CURRENT.format(context.fPlayer.getMapHeight()));
+			context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_CURRENT.format(context.fPlayer.getMapHeight()));
 			return;
 		}
 
 		int height = context.argAsInt(0);
 
 		context.fPlayer.setMapHeight(height);
-		context.fPlayer.sendMessage(Localization.COMMAND_MAPHEIGHT_SET.format(context.fPlayer.getMapHeight()));
+		context.fPlayer.sendMessage(TL.COMMAND_MAPHEIGHT_SET.format(context.fPlayer.getMapHeight()));
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_MAPHEIGHT_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_MAPHEIGHT_DESCRIPTION;
 	}
 
 }

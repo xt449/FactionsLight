@@ -4,7 +4,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdTNTInfo extends FCommand {
 	public CmdTNTInfo() {
@@ -17,11 +17,11 @@ public class CmdTNTInfo extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		context.msg(Localization.COMMAND_TNT_INFO_MESSAGE, context.faction.getTNTBank());
+		context.msg(TL.COMMAND_TNT_INFO_MESSAGE, context.faction.getTNTBank());
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_TNT_INFO_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_TNT_INFO_DESCRIPTION;
 	}
 }

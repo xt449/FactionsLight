@@ -192,10 +192,10 @@ public class TextUtil {
 		ret.add(this.titleize(title + " " + pageHumanBased + "/" + pagecount));
 
 		if(pagecount == 0) {
-			ret.add(this.parseTags(Localization.NOPAGES.toString()));
+			ret.add(this.parseTags(TL.NOPAGES.toString()));
 			return ret;
 		} else if(pageZeroBased < 0 || pageHumanBased > pagecount) {
-			ret.add(this.parseTags(Localization.INVALIDPAGE.format(pagecount)));
+			ret.add(this.parseTags(TL.INVALIDPAGE.format(pagecount)));
 			return ret;
 		}
 

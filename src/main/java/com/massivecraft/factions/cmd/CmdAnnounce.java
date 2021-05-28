@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -43,8 +43,8 @@ public class CmdAnnounce extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_ANNOUNCE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_ANNOUNCE_DESCRIPTION;
 	}
 
 	protected class AnnounceBrigadier implements BrigadierProvider {

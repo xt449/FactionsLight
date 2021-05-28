@@ -2,7 +2,7 @@ package com.massivecraft.factions.listeners.versionspecific;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -14,10 +14,10 @@ import org.bukkit.event.world.PortalCreateEvent;
   Blocking all portal creation not in wilderness because we can't properly check if the creator has permission
   to create at the target destination.
  */
-public class PortalListener_114 implements Listener {
+public class PortalListener implements Listener {
 	public FactionsPlugin plugin;
 
-	public PortalListener_114(FactionsPlugin plugin) {
+	public PortalListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -54,7 +54,7 @@ public class PortalListener_114 implements Listener {
 			// Don't let people portal into nether bases if server owners don't want that.
 			if(!fPlayer.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
 				event.setCancelled(true);
-				player.sendMessage(Localization.PLAYER_PORTAL_NOTALLOWED.toString());
+				player.sendMessage(TL.PLAYER_PORTAL_NOTALLOWED.toString());
 				return;
 			}
 		}

@@ -7,7 +7,7 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdDTRResetAll extends FCommand {
 
@@ -26,11 +26,11 @@ public class CmdDTRResetAll extends FCommand {
 
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
 		Factions.getInstance().getAllFactions().forEach(target -> target.setDTR(dtr.getMaxDTR(target)));
-		context.msg(Localization.COMMAND_DTR_MODIFY_DONE, "EVERYONE", "MAX");
+		context.msg(TL.COMMAND_DTR_MODIFY_DONE, "EVERYONE", "MAX");
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_DTR_MODIFY_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_DTR_MODIFY_DESCRIPTION;
 	}
 }

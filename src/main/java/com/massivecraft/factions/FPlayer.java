@@ -243,34 +243,6 @@ public interface FPlayer extends EconomyParticipator {
 
 	void setId(String id);
 
-	boolean isFlying();
-
-	void setFlying(boolean fly);
-
-	void setFlying(boolean fly, boolean damage);
-
-	boolean isAutoFlying();
-
-	void setAutoFlying(boolean autoFly);
-
-	boolean canFlyAtLocation();
-
-	boolean canFlyAtLocation(FLocation location);
-
-	boolean canFlyInFactionTerritory(Faction faction);
-
-	boolean isSeeingChunk();
-
-	void setSeeingChunk(boolean seeingChunk);
-
-	boolean getFlyTrailsState();
-
-	void setFlyTrailsState(boolean state);
-
-	String getFlyTrailsEffect();
-
-	void setFlyTrailsEffect(String effect);
-
 	// -------------------------------
 	// Warmups
 	// -------------------------------

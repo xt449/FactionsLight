@@ -30,16 +30,16 @@ public abstract class AsciiCompass {
 
 		public String getTranslation() {
 			if(this == N) {
-				return Localization.COMPASS_SHORT_NORTH.toString();
+				return TL.COMPASS_SHORT_NORTH.toString();
 			}
 			if(this == E) {
-				return Localization.COMPASS_SHORT_EAST.toString();
+				return TL.COMPASS_SHORT_EAST.toString();
 			}
 			if(this == S) {
-				return Localization.COMPASS_SHORT_SOUTH.toString();
+				return TL.COMPASS_SHORT_SOUTH.toString();
 			}
 			if(this == W) {
-				return Localization.COMPASS_SHORT_WEST.toString();
+				return TL.COMPASS_SHORT_WEST.toString();
 			}
 			return toString();
 		}

@@ -6,7 +6,7 @@ import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.SmokeUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import org.bukkit.Bukkit;
@@ -42,47 +42,47 @@ public class CmdHome extends FCommand {
 			if(targetFaction.hasHome()) {
 				FactionsPlugin.getInstance().teleport(context.player, targetFaction.getHome());
 			} else {
-				context.fPlayer.msg(Localization.COMMAND_HOME_NOHOME.toString());
+				context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString());
 			}
 			return;
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().homes().isEnabled()) {
-			context.fPlayer.msg(Localization.COMMAND_HOME_DISABLED);
+			context.fPlayer.msg(TL.COMMAND_HOME_DISABLED);
 			return;
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportCommandEnabled()) {
-			context.fPlayer.msg(Localization.COMMAND_HOME_TELEPORTDISABLED);
+			context.fPlayer.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
 			return;
 		}
 
 		if(!targetFaction.hasHome()) {
 			if(targetFaction == context.faction) {
 				if(context.faction.hasAccess(context.fPlayer, PermissibleAction.SETHOME)) {
-					context.fPlayer.msg(Localization.COMMAND_HOME_NOHOME.toString() + Localization.GENERIC_YOUSHOULD);
+					context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString() + TL.GENERIC_YOUSHOULD);
 				} else {
-					context.fPlayer.msg(Localization.COMMAND_HOME_NOHOME.toString() + Localization.GENERIC_ASKYOURLEADER);
+					context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString() + TL.GENERIC_ASKYOURLEADER);
 				}
 				context.fPlayer.sendMessage(FCmdRoot.getInstance().cmdSethome.getUsageTemplate(context));
 			} else {
-				context.fPlayer.msg(Localization.COMMAND_HOME_NOHOME.toString());
+				context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString());
 			}
 			return;
 		}
 
 		if(!targetFaction.hasAccess(context.fPlayer, PermissibleAction.HOME)) {
-			context.fPlayer.msg(Localization.COMMAND_HOME_DENIED, targetFaction.getTag(context.fPlayer));
+			context.fPlayer.msg(TL.COMMAND_HOME_DENIED, targetFaction.getTag(context.fPlayer));
 			return;
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportAllowedFromEnemyTerritory() && context.fPlayer.isInEnemyTerritory()) {
-			context.fPlayer.msg(Localization.COMMAND_HOME_INENEMY);
+			context.fPlayer.msg(TL.COMMAND_HOME_INENEMY);
 			return;
 		}
 
 		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportAllowedFromDifferentWorld() && context.player.getWorld().getUID() != targetFaction.getHome().getWorld().getUID()) {
-			context.fPlayer.msg(Localization.COMMAND_HOME_WRONGWORLD);
+			context.fPlayer.msg(TL.COMMAND_HOME_WRONGWORLD);
 			return;
 		}
 
@@ -119,7 +119,7 @@ public class CmdHome extends FCommand {
 					continue;
 				}
 
-				context.fPlayer.msg(Localization.COMMAND_HOME_ENEMYNEAR, String.valueOf(FactionsPlugin.getInstance().conf().factions().homes().getTeleportAllowedEnemyDistance()));
+				context.fPlayer.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(FactionsPlugin.getInstance().conf().factions().homes().getTeleportAllowedEnemyDistance()));
 				return;
 			}
 		}
@@ -132,7 +132,7 @@ public class CmdHome extends FCommand {
 		}
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostHome(), Localization.COMMAND_HOME_TOTELEPORT.toString(), Localization.COMMAND_HOME_FORTELEPORT.toString())) {
+		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostHome(), TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
 			return;
 		}
 
@@ -141,7 +141,7 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		context.doWarmUp(WarmUpUtil.Warmup.HOME, Localization.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
+		context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
 			// Create a smoke effect
 			if(FactionsPlugin.getInstance().conf().factions().homes().isTeleportCommandSmokeEffectEnabled()) {
 				List<Location> smokeLocations = new ArrayList<>();
@@ -157,8 +157,8 @@ public class CmdHome extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_HOME_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_HOME_DESCRIPTION;
 	}
 
 }

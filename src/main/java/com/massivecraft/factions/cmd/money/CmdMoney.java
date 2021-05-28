@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd.money;
 
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdMoney extends MoneyCommand {
 
@@ -10,7 +10,7 @@ public class CmdMoney extends MoneyCommand {
 		super();
 		this.aliases.add("money");
 
-		this.helpLong.add(plugin.txt().parseTags(Localization.COMMAND_MONEY_LONG.toString()));
+		this.helpLong.add(plugin.txt().parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
 		this.addSubCommand(new CmdMoneyBalance());
 		this.addSubCommand(new CmdMoneyDeposit());
@@ -27,8 +27,8 @@ public class CmdMoney extends MoneyCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_MONEY_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_MONEY_DESCRIPTION;
 	}
 
 }

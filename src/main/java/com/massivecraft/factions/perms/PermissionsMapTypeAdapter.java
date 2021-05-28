@@ -2,7 +2,7 @@ package com.massivecraft.factions.perms;
 
 import com.google.gson.*;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -65,11 +65,11 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissib
 				return null;
 			}
 		} else {
-			if(name.equals(Localization.ROLE_RECRUIT.toString())) {
+			if(name.equals(TL.ROLE_RECRUIT.toString())) {
 				return Role.RECRUIT;
-			} else if(name.equals(Localization.ROLE_NORMAL.toString())) {
+			} else if(name.equals(TL.ROLE_NORMAL.toString())) {
 				return Role.NORMAL;
-			} else if(name.equals(Localization.ROLE_MODERATOR.toString())) {
+			} else if(name.equals(TL.ROLE_MODERATOR.toString())) {
 				return Role.MODERATOR;
 			} else {
 				// If it is explicitly member and its old data then it refers to relation member not role, skip it

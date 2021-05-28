@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
@@ -27,7 +27,7 @@ public class CmdChat extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		if(!FactionsPlugin.getInstance().conf().factions().chat().isFactionOnlyChat()) {
-			context.msg(Localization.COMMAND_CHAT_DISABLED.toString());
+			context.msg(TL.COMMAND_CHAT_DISABLED.toString());
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class CmdChat extends FCommand {
 			if(modeString.startsWith("m")) {
 				modeTarget = ChatMode.MOD;
 				if(!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
-					context.msg(Localization.COMMAND_CHAT_INSUFFICIENTRANK);
+					context.msg(TL.COMMAND_CHAT_INSUFFICIENTRANK);
 					return;
 				}
 			} else if(modeString.startsWith("p")) {
@@ -59,7 +59,7 @@ public class CmdChat extends FCommand {
 			} else if(modeString.startsWith("t")) {
 				modeTarget = ChatMode.TRUCE;
 			} else {
-				context.msg(Localization.COMMAND_CHAT_INVALIDMODE);
+				context.msg(TL.COMMAND_CHAT_INVALIDMODE);
 				return;
 			}
 		}
@@ -67,21 +67,21 @@ public class CmdChat extends FCommand {
 		context.fPlayer.setChatMode(modeTarget);
 
 		if(context.fPlayer.getChatMode() == ChatMode.MOD) {
-			context.msg(Localization.COMMAND_CHAT_MODE_MOD);
+			context.msg(TL.COMMAND_CHAT_MODE_MOD);
 		} else if(context.fPlayer.getChatMode() == ChatMode.PUBLIC) {
-			context.msg(Localization.COMMAND_CHAT_MODE_PUBLIC);
+			context.msg(TL.COMMAND_CHAT_MODE_PUBLIC);
 		} else if(context.fPlayer.getChatMode() == ChatMode.ALLIANCE) {
-			context.msg(Localization.COMMAND_CHAT_MODE_ALLIANCE);
+			context.msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
 		} else if(context.fPlayer.getChatMode() == ChatMode.TRUCE) {
-			context.msg(Localization.COMMAND_CHAT_MODE_TRUCE);
+			context.msg(TL.COMMAND_CHAT_MODE_TRUCE);
 		} else {
-			context.msg(Localization.COMMAND_CHAT_MODE_FACTION);
+			context.msg(TL.COMMAND_CHAT_MODE_FACTION);
 		}
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_CHAT_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_CHAT_DESCRIPTION;
 	}
 
 	protected class ChatBrigadier implements BrigadierProvider {

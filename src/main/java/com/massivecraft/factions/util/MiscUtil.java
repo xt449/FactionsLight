@@ -3,9 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.util.material.MaterialDb;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
@@ -16,7 +14,6 @@ import java.util.logging.Level;
 public class MiscUtil {
 	private static final Map<String, EntityType> entityTypeMap;
 	public static final Function<String, EntityType> ENTITY_TYPE_FUNCTION;
-	public static final Function<String, Material> MATERIAL_FUNCTION;
 	private static final Map<String, CreatureSpawnEvent.SpawnReason> spawnReasonMap;
 	public static final Function<String, CreatureSpawnEvent.SpawnReason> SPAWN_REASON_FUNCTION;
 
@@ -26,14 +23,6 @@ public class MiscUtil {
 			entityTypeMap.put(entityType.name(), entityType);
 		}
 		ENTITY_TYPE_FUNCTION = (string) -> string == null ? null : entityTypeMap.get(string.toUpperCase());
-
-		MATERIAL_FUNCTION = (string) -> {
-			Material mat = null;
-			if(string != null) {
-				mat = MaterialDb.get(string, null);
-			}
-			return mat;
-		};
 
 		spawnReasonMap = new HashMap<>();
 		for(CreatureSpawnEvent.SpawnReason reason : CreatureSpawnEvent.SpawnReason.values()) {

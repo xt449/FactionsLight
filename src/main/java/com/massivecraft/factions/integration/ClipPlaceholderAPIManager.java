@@ -5,7 +5,7 @@ import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -89,12 +89,12 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			case "player_name":
 				return fPlayer.getName();
 			case "player_lastseen":
-				String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fPlayer.getLastLoginTime(), true, true) + Localization.COMMAND_STATUS_AGOSUFFIX;
-				return fPlayer.isOnline() ? ChatColor.GREEN + Localization.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fPlayer.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+				String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fPlayer.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
+				return fPlayer.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fPlayer.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
 			case "player_group":
 				return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
 			case "player_balance":
-				return Econ.isSetup() ? Econ.getFriendlyBalance(fPlayer) : Localization.ECON_OFF.format("balance");
+				return Econ.isSetup() ? Econ.getFriendlyBalance(fPlayer) : TL.ECON_OFF.format("balance");
 			case "player_power":
 				return String.valueOf(fPlayer.getPowerRounded());
 			case "player_maxpower":
@@ -106,12 +106,12 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			case "player_role":
 				return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
 			case "player_role_name":
-				return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : Localization.PLACEHOLDER_ROLE_NAME.toString();
+				return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : TL.PLACEHOLDER_ROLE_NAME.toString();
 			// Then Faction stuff
 			case "faction_name":
-				return (fPlayer.hasFaction() || territory) ? faction.getTag() : Localization.NOFACTION_PREFIX.toString();
+				return (fPlayer.hasFaction() || territory) ? faction.getTag() : TL.NOFACTION_PREFIX.toString();
 			case "faction_name_custom":
-				return (fPlayer.hasFaction() || territory) ? Tag.parsePlain(fPlayer, Localization.PLACEHOLDER_CUSTOM_FACTION.toString()) : "";
+				return (fPlayer.hasFaction() || territory) ? Tag.parsePlain(fPlayer, TL.PLACEHOLDER_CUSTOM_FACTION.toString()) : "";
 			case "faction_only_space":
 				return (fPlayer.hasFaction() || territory) ? " " : "";
 			case "faction_power":
@@ -142,14 +142,14 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			case "faction_claims":
 				return String.valueOf(faction.getAllClaims().size());
 			case "faction_founded":
-				return Localization.sdf.format(faction.getFoundedDate());
+				return TL.sdf.format(faction.getFoundedDate());
 			case "faction_joining":
-				return (faction.getOpen() ? Localization.COMMAND_SHOW_UNINVITED.toString() : Localization.COMMAND_SHOW_INVITATION.toString());
+				return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
 			case "faction_peaceful":
-				return faction.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getNeutral() + Localization.COMMAND_SHOW_PEACEFUL.toString() : "";
+				return faction.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getNeutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
 			case "faction_powerboost":
 				double powerBoost = faction.getPowerBoost();
-				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? Localization.COMMAND_SHOW_BONUS.toString() : Localization.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
+				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
@@ -157,7 +157,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return String.valueOf(faction.getWarps().size());
 			case "faction_raidable":
 				boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(faction);
-				return raid ? Localization.RAIDABLE_TRUE.toString() : Localization.RAIDABLE_FALSE.toString();
+				return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
 			case "faction_home_world":
 				return faction.hasHome() ? faction.getHome().getWorld().getName() : "";
 			case "faction_home_x":
@@ -167,11 +167,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			case "faction_home_z":
 				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockZ()) : "";
 			case "faction_land_value":
-				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(faction.getLandRounded())) : Localization.ECON_OFF.format("value");
+				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(faction.getLandRounded())) : TL.ECON_OFF.format("value");
 			case "faction_land_refund":
-				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(faction.getLandRounded())) : Localization.ECON_OFF.format("refund");
+				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(faction.getLandRounded())) : TL.ECON_OFF.format("refund");
 			case "faction_bank_balance":
-				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.getBalance(faction)) : Localization.ECON_OFF.format("balance");
+				return Econ.shouldBeUsed() ? Econ.moneyString(Econ.getBalance(faction)) : TL.ECON_OFF.format("balance");
 			case "faction_tnt_balance":
 				return FactionTag.TNT_BALANCE.replace(FactionTag.TNT_BALANCE.getTag(), faction);
 			case "faction_tnt_max_balance":

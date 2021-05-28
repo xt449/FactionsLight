@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdLeave extends FCommand {
 
@@ -20,8 +20,8 @@ public class CmdLeave extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.LEAVE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.LEAVE_DESCRIPTION;
 	}
 
 }

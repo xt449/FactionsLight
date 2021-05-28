@@ -7,22 +7,16 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.config.ConfigManager;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.data.SaveTask;
-import com.massivecraft.factions.event.FactionCreateEvent;
-import com.massivecraft.factions.event.FactionEvent;
-import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.integration.*;
-import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.integration.permcontext.ContextManager;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.listeners.versionspecific.PortalListener_114;
+import com.massivecraft.factions.listeners.versionspecific.PortalListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.factions.util.material.MaterialDb;
-import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -31,11 +25,9 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -44,16 +36,13 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
@@ -113,14 +102,12 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private boolean mvdwPlaceholderAPIManager = false;
 	private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-	private SeeChunkUtil seeChunkUtil;
 	private ParticleProvider particleProvider;
 	private IWorldguard worldguard;
 	private LandRaidControl landRaidControl;
 	private boolean luckPermsSetup;
 	private IntegrationManager integrationManager;
 
-	private Metrics metrics;
 	private final Pattern factionsVersionPattern = Pattern.compile("b(\\d{1,4})");
 	private String updateMessage;
 	private int buildNumber = -1;
@@ -249,9 +236,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			dataFolder.mkdir();
 		}
 
-		// Load Material database
-		MaterialDb.load();
-
 		// Create Utility Instances
 		this.permUtil = new PermUtil(this);
 		this.persist = new Persist(this);
@@ -319,13 +303,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		startAutoLeaveTask(false);
 
 		// Run before initializing listeners to handle reloads properly.
-		particleProvider = new BukkitParticleProvider();
-
-		if(conf().commands().seeChunk().isParticles()) {
-			double delay = Math.floor(conf().commands().seeChunk().getParticleUpdateTime() * 20);
-			seeChunkUtil = new SeeChunkUtil();
-			seeChunkUtil.runTaskTimer(this, 0, (long) delay);
-		}
+		particleProvider = new ParticleProvider();
 		// End run before registering event handlers.
 
 		// Register Event Handlers
@@ -335,16 +313,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		getServer().getPluginManager().registerEvents(new FactionsExploitListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 		getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
-		getServer().getPluginManager().registerEvents(new PortalListener_114(this), this);
+		getServer().getPluginManager().registerEvents(new PortalListener(this), this);
 
 		// since some other plugins execute commands directly through this command interface, provide it
 		this.getCommand(refCommand).setExecutor(cmdBase);
-
-		if(conf().commands().fly().isEnable()) {
-			FlightUtil.start();
-		}
-
-		new TitleAPI();
 
 		if(ChatColor.stripColor(TL.NOFACTION_PREFIX.toString()).equals("[4-]")) {
 			getLogger().warning("Looks like you have an old, mistaken 'nofactions-prefix' in your lang.yml. It currently displays [4-] which is... strange.");
@@ -359,8 +331,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 				Econ.setup();
 				vaultPerms = new VaultPerms();
 				cmdBase.done();
-				// Grand metrics adventure!
-				setupMetrics();
 				getLogger().removeHandler(handler);
 				startupLog = startupBuilder.toString();
 				startupExceptionLog = startupExceptionBuilder.toString();
@@ -377,147 +347,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		} catch(NumberFormatException ignored) {
 			return or;
 		}
-	}
-
-	private void setupMetrics() {
-		this.metrics = new Metrics(this);
-
-		// Version
-		String verString = this.getDescription().getVersion().replace("${build.number}", "selfbuilt");
-		Pattern verPattern = Pattern.compile("U([\\d.]+)-b(.*)");
-		Matcher matcher = verPattern.matcher(verString);
-		final String fuuidVersion;
-		final String fuuidBuild;
-		if(matcher.find()) {
-			fuuidVersion = matcher.group(1);
-			fuuidBuild = matcher.group(2) + (likesCats ? "" : "p");
-		} else {
-			fuuidVersion = "Unknown";
-			fuuidBuild = verString;
-		}
-		this.metricsDrillPie("fuuid_version", () -> {
-			Map<String, Map<String, Integer>> map = new HashMap<>();
-			Map<String, Integer> entry = new HashMap<>();
-			entry.put(fuuidBuild, 1);
-			map.put(fuuidVersion, entry);
-			return map;
-		});
-
-		// Essentials
-		Plugin ess = Essentials.getEssentials();
-		this.metricsDrillPie("essentials", () -> this.metricsPluginInfo(ess));
-		if(ess != null) {
-			this.metricsSimplePie("essentials_delete_homes", () -> "" + conf().factions().other().isDeleteEssentialsHomes());
-			this.metricsSimplePie("essentials_home_teleport", () -> "" + this.conf().factions().homes().isTeleportCommandEssentialsIntegration());
-		}
-
-		// LWC
-		Plugin lwc = LWC.getLWC();
-		this.metricsDrillPie("lwc", () -> this.metricsPluginInfo(lwc));
-		if(lwc != null) {
-			boolean enabled = conf().lwc().isEnabled();
-			this.metricsSimplePie("lwc_integration", () -> "" + enabled);
-			if(enabled) {
-				this.metricsSimplePie("lwc_reset_locks_unclaim", () -> "" + conf().lwc().isResetLocksOnUnclaim());
-				this.metricsSimplePie("lwc_reset_locks_capture", () -> "" + conf().lwc().isResetLocksOnCapture());
-			}
-		}
-
-		// Vault
-		Plugin vault = Bukkit.getServer().getPluginManager().getPlugin("Vault");
-		this.metricsDrillPie("vault", () -> this.metricsPluginInfo(vault));
-		if(vault != null) {
-			this.metricsDrillPie("vault_perms", () -> this.metricsInfo(vaultPerms.getPerms(), () -> vaultPerms.getName()));
-			this.metricsDrillPie("vault_econ", () -> {
-				Map<String, Map<String, Integer>> map = new HashMap<>();
-				Map<String, Integer> entry = new HashMap<>();
-				entry.put(Econ.getEcon() == null ? "none" : Econ.getEcon().getName(), 1);
-				map.put((this.conf().economy().isEnabled() && Econ.getEcon() != null) ? "enabled" : "disabled", entry);
-				return map;
-			});
-		}
-
-		// LuckPerms
-		this.metricsSimplePie("luckperms_contexts", () -> "" + this.luckPermsSetup);
-
-		// WorldGuard
-		IWorldguard wg = this.getWorldguard();
-		String wgVersion = wg == null ? "nope" : wg.getVersion();
-		this.metricsDrillPie("worldguard", () -> this.metricsInfo(wg, () -> wgVersion));
-
-		// Dynmap
-		String dynmapVersion = EngineDynmap.getInstance().getVersion();
-		boolean dynmapEnabled = EngineDynmap.getInstance().isRunning();
-		this.metricsDrillPie("dynmap", () -> {
-			Map<String, Map<String, Integer>> map = new HashMap<>();
-			Map<String, Integer> entry = new HashMap<>();
-			entry.put(dynmapVersion == null ? "none" : dynmapVersion, 1);
-			map.put(dynmapEnabled ? "enabled" : "disabled", entry);
-			return map;
-		});
-
-		// Clip Placeholder
-		Plugin clipPlugin = getServer().getPluginManager().getPlugin("PlaceholderAPI");
-		this.metricsDrillPie("clipplaceholder", () -> this.metricsPluginInfo(clipPlugin));
-
-		// MVdW Placeholder
-		Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
-		this.metricsDrillPie("mvdwplaceholder", () -> this.metricsPluginInfo(mvdw));
-
-		// Overall stats
-		this.metricsLine("factions", () -> Factions.getInstance().getAllFactions().size() - 3);
-		this.metricsSimplePie("scoreboard", () -> "" + conf().scoreboard().constant().isEnabled());
-
-		// Event listeners
-		this.metricsDrillPie("event_listeners", () -> {
-			Set<Plugin> pluginsListening = this.getPlugins(FactionEvent.getHandlerList(), FactionCreateEvent.getHandlerList(), FactionRelationEvent.getHandlerList());
-			Map<String, Map<String, Integer>> map = new HashMap<>();
-			for(Plugin plugin : pluginsListening) {
-				if(plugin.getName().equalsIgnoreCase("factions")) {
-					continue;
-				}
-				Map<String, Integer> entry = new HashMap<>();
-				entry.put(plugin.getDescription().getVersion(), 1);
-				map.put(plugin.getName(), entry);
-			}
-			return map;
-		});
-	}
-
-	private Set<Plugin> getPlugins(HandlerList... handlerLists) {
-		Set<Plugin> plugins = new HashSet<>();
-		for(HandlerList handlerList : handlerLists) {
-			plugins.addAll(this.getPlugins(handlerList));
-		}
-		return plugins;
-	}
-
-	private Set<Plugin> getPlugins(HandlerList handlerList) {
-		return Arrays.stream(handlerList.getRegisteredListeners()).map(RegisteredListener::getPlugin).collect(Collectors.toSet());
-	}
-
-	private void metricsLine(String name, Callable<Integer> callable) {
-		this.metrics.addCustomChart(new Metrics.SingleLineChart(name, callable));
-	}
-
-	private void metricsDrillPie(String name, Callable<Map<String, Map<String, Integer>>> callable) {
-		this.metrics.addCustomChart(new Metrics.DrilldownPie(name, callable));
-	}
-
-	private void metricsSimplePie(String name, Callable<String> callable) {
-		this.metrics.addCustomChart(new Metrics.SimplePie(name, callable));
-	}
-
-	private Map<String, Map<String, Integer>> metricsPluginInfo(Plugin plugin) {
-		return this.metricsInfo(plugin, () -> plugin.getDescription().getVersion());
-	}
-
-	private Map<String, Map<String, Integer>> metricsInfo(Object plugin, Supplier<String> versionGetter) {
-		Map<String, Map<String, Integer>> map = new HashMap<>();
-		Map<String, Integer> entry = new HashMap<>();
-		entry.put(plugin == null ? "nope" : versionGetter.get(), 1);
-		map.put(plugin == null ? "absent" : "present", entry);
-		return map;
 	}
 
 	public void setWorldGuard(IWorldguard wg) {
@@ -623,10 +452,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	public Gson getGson() {
 		return gson;
-	}
-
-	public SeeChunkUtil getSeeChunkUtil() {
-		return seeChunkUtil;
 	}
 
 	public ParticleProvider getParticleProvider() {

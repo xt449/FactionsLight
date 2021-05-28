@@ -8,7 +8,7 @@ import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,7 +47,7 @@ public class CmdPerm extends FCommand {
 
 		// If not opening GUI, then setting the permission manually.
 		if(context.args.size() < 3) {
-			context.fPlayer.msg(Localization.COMMAND_PERM_DESCRIPTION);
+			context.fPlayer.msg(TL.COMMAND_PERM_DESCRIPTION);
 			return;
 		}
 
@@ -64,7 +64,7 @@ public class CmdPerm extends FCommand {
 			Permissible permissible = getPermissible(context.argAsString(0));
 
 			if(permissible == null) {
-				context.fPlayer.msg(Localization.COMMAND_PERM_INVALID_RELATION);
+				context.fPlayer.msg(TL.COMMAND_PERM_INVALID_RELATION);
 				return;
 			}
 
@@ -76,7 +76,7 @@ public class CmdPerm extends FCommand {
 		} else {
 			PermissibleAction permissibleAction = PermissibleAction.fromString(context.argAsString(1));
 			if(permissibleAction == null) {
-				context.fPlayer.msg(Localization.COMMAND_PERM_INVALID_ACTION);
+				context.fPlayer.msg(TL.COMMAND_PERM_INVALID_ACTION);
 				return;
 			}
 
@@ -94,7 +94,7 @@ public class CmdPerm extends FCommand {
 				access = false;
 				break;
 			default:
-				context.fPlayer.msg(Localization.COMMAND_PERM_INVALID_ACCESS);
+				context.fPlayer.msg(TL.COMMAND_PERM_INVALID_ACCESS);
 				return;
 		}
 
@@ -104,8 +104,8 @@ public class CmdPerm extends FCommand {
 			}
 		}
 
-		context.fPlayer.msg(Localization.COMMAND_PERM_SET, context.argAsString(1), access, context.argAsString(0));
-		FactionsPlugin.getInstance().log(String.format(Localization.COMMAND_PERM_SET.toString(), context.argAsString(1), access, context.argAsString(0)) + " for faction " + context.fPlayer.getTag());
+		context.fPlayer.msg(TL.COMMAND_PERM_SET, context.argAsString(1), access, context.argAsString(0));
+		FactionsPlugin.getInstance().log(String.format(TL.COMMAND_PERM_SET.toString(), context.argAsString(1), access, context.argAsString(0)) + " for faction " + context.fPlayer.getTag());
 	}
 
 	private Permissible getPermissible(String name) {
@@ -119,8 +119,8 @@ public class CmdPerm extends FCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_PERM_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_PERM_DESCRIPTION;
 	}
 
 }

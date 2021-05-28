@@ -11,7 +11,7 @@ import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -88,7 +88,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public CmdSB cmdSB = new CmdSB();
 	public CmdShowInvites cmdShowInvites = new CmdShowInvites();
 	public CmdAnnounce cmdAnnounce = new CmdAnnounce();
-	public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
 	public CmdWarp cmdWarp = new CmdWarp();
 	public CmdWarpOther cmdWarpOther = new CmdWarpOther();
 	public CmdSetWarp cmdSetWarp = new CmdSetWarp();
@@ -179,7 +178,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdSB);
 		this.addSubCommand(this.cmdShowInvites);
 		this.addSubCommand(this.cmdAnnounce);
-		this.addSubCommand(this.cmdSeeChunk);
 		this.addSubCommand(this.cmdWarp);
 		this.addSubCommand(this.cmdWarpOther);
 		this.addSubCommand(this.cmdSetWarp);
@@ -223,11 +221,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		} else {
 			this.addSubCommand(this.cmdTop);
 		}
-		if(Bukkit.getServer().getPluginManager().isPluginEnabled("PlayerVaults")) {
-			FactionsPlugin.getInstance().getLogger().info("Found PlayerVaults hook, adding /f vault and /f setmaxvault commands.");
-			this.addSubCommand(new CmdSetMaxVaults());
-			this.addSubCommand(new CmdVault());
-		}
 		if(CommodoreProvider.isSupported()) {
 			brigadierManager.build();
 		}
@@ -242,7 +235,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!plugin.worldUtil().isEnabled(sender)) {
-			sender.sendMessage(Localization.GENERIC_DISABLEDWORLD.toString());
+			sender.sendMessage(TL.GENERIC_DISABLEDWORLD.toString());
 			return false;
 		}
 
@@ -259,8 +252,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.GENERIC_PLACEHOLDER;
+	public TL getUsageTranslation() {
+		return TL.GENERIC_PLACEHOLDER;
 	}
 
 }

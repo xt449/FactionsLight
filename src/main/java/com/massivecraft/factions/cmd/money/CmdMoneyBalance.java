@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 public class CmdMoneyBalance extends MoneyCommand {
 
@@ -19,7 +19,7 @@ public class CmdMoneyBalance extends MoneyCommand {
 
 		this.requirements = new CommandRequirements.Builder(Permission.MONEY_BALANCE).build();
 
-		this.setHelpShort(Localization.COMMAND_MONEYBALANCE_SHORT.toString());
+		this.setHelpShort(TL.COMMAND_MONEYBALANCE_SHORT.toString());
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class CmdMoneyBalance extends MoneyCommand {
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_MONEYBALANCE_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_MONEYBALANCE_DESCRIPTION;
 	}
 
 }

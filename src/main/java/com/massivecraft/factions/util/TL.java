@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
  * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent
  * changes.
  */
-public enum Localization {
+public enum TL {
 	/**
 	 * Translation meta
 	 */
@@ -988,7 +988,7 @@ public enum Localization {
 	 * @param path  The string path.
 	 * @param start The default string.
 	 */
-	Localization(String path, String start) {
+	TL(String path, String start) {
 		this.path = path;
 		this.def = start;
 	}
@@ -998,7 +998,7 @@ public enum Localization {
 	 *
 	 * @param start The default string.
 	 */
-	Localization(String start) {
+	TL(String start) {
 		this.path = this.name().replace('_', '.');
 		if(this.path.startsWith(".")) {
 			path = "root" + path;

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.Localization;
+import com.massivecraft.factions.util.TL;
 
 import java.util.ArrayList;
 
@@ -33,11 +33,11 @@ public class CmdAutoHelp extends FCommand {
 			// TODO deal with other visibilities
 		}
 
-		context.sendMessage(FactionsPlugin.getInstance().txt().getPage(lines, context.argAsInt(0, 1), Localization.COMMAND_AUTOHELP_HELPFOR + pcmd.aliases.get(0) + "\""));
+		context.sendMessage(FactionsPlugin.getInstance().txt().getPage(lines, context.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR + pcmd.aliases.get(0) + "\""));
 	}
 
 	@Override
-	public Localization getUsageTranslation() {
-		return Localization.COMMAND_HELP_DESCRIPTION;
+	public TL getUsageTranslation() {
+		return TL.COMMAND_HELP_DESCRIPTION;
 	}
 }

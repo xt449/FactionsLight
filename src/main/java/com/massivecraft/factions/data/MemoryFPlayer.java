@@ -29,7 +29,6 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -739,9 +738,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 		myFaction.removeAnnouncements(this);
 		this.resetFactionData();
-		if(FactionsPlugin.getInstance().conf().commands().fly().isEnable()) {
-			setFlying(false, false);
-		}
 
 		if(myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
 			// Remove this faction
@@ -968,115 +964,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 		return !isOnline();
 	}
 
-	public boolean isFlying() {
-		return isFlying;
-	}
-
-	public void setFlying(boolean fly) {
-		setFlying(fly, false);
-	}
-
-	public void setFlying(boolean fly, boolean damage) {
-		Player player = getPlayer();
-		if(player != null) {
-			player.setAllowFlight(fly);
-			player.setFlying(fly);
-		}
-
-		if(!damage) {
-			msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-		} else {
-			msg(TL.COMMAND_FLY_DAMAGE);
-		}
-
-		// If leaving fly mode, don't let them take fall damage for x seconds.
-		if(!fly) {
-			int cooldown = FactionsPlugin.getInstance().conf().commands().fly().getFallDamageCooldown();
-
-			// If the value is 0 or lower, make them take fall damage.
-			// Otherwise, start a timer and have this cancel after a few seconds.
-			// Short task so we're just doing it in method. Not clean but eh.
-			if(cooldown > 0) {
-				setTakeFallDamage(false);
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						setTakeFallDamage(true);
-					}
-				}.runTaskLater(FactionsPlugin.getInstance(), 20L * cooldown);
-			}
-		}
-
-		isFlying = fly;
-	}
-
-	public boolean isAutoFlying() {
-		return isAutoFlying;
-	}
-
-	public void setAutoFlying(boolean autoFly) {
-		msg(TL.COMMAND_FLY_AUTO, autoFly ? "enabled" : "disabled");
-		this.isAutoFlying = autoFly;
-	}
-
-	public boolean canFlyAtLocation() {
-		return canFlyAtLocation(lastStoodAt);
-	}
-
-	public boolean canFlyAtLocation(FLocation location) {
-		return this.canFlyInFactionTerritory(Board.getInstance().getFactionAt(location));
-	}
-
-	public boolean canFlyInFactionTerritory(Faction faction) {
-		if(faction.isWilderness()) {
-			return Permission.FLY_WILDERNESS.has(getPlayer());
-		} else if(faction.isSafeZone()) {
-			return Permission.FLY_SAFEZONE.has(getPlayer());
-		} else if(faction.isWarZone()) {
-			return Permission.FLY_WARZONE.has(getPlayer());
-		}
-
-		// admin bypass (ops) can fly.
-		if(isAdminBypassing) {
-			return true;
-		}
-
-		return faction.hasAccess(this, PermissibleAction.FLY);
-	}
-
 	public boolean shouldTakeFallDamage() {
 		return this.shouldTakeFallDamage;
 	}
 
 	public void setTakeFallDamage(boolean fallDamage) {
 		this.shouldTakeFallDamage = fallDamage;
-	}
-
-	public boolean isSeeingChunk() {
-		return seeingChunk;
-	}
-
-	public void setSeeingChunk(boolean seeingChunk) {
-		this.seeingChunk = seeingChunk;
-		FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(getId()), seeingChunk);
-	}
-
-	public boolean getFlyTrailsState() {
-		return flyTrailsState;
-	}
-
-	public void setFlyTrailsState(boolean state) {
-		flyTrailsState = state;
-		msg(TL.COMMAND_FLYTRAILS_CHANGE, state ? "enabled" : "disabled");
-	}
-
-	public String getFlyTrailsEffect() {
-		return flyTrailsEffect;
-	}
-
-	public void setFlyTrailsEffect(String effect) {
-		flyTrailsEffect = effect;
-		msg(TL.COMMAND_FLYTRAILS_PARTICLE_CHANGE, effect);
 	}
 
 	// -------------------------------------------- //
