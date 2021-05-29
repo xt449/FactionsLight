@@ -426,7 +426,6 @@ public class MainConfig {
 		private Home home = new Home();
 		private ListCmd list = new ListCmd();
 		private MapCmd map = new MapCmd();
-		private Near near = new Near();
 		private Perms perms = new Perms();
 		private Show show = new Show();
 		private Stuck stuck = new Stuck();
@@ -451,10 +450,6 @@ public class MainConfig {
 
 		public MapCmd map() {
 			return map;
-		}
-
-		public Near near() {
-			return near;
 		}
 
 		public Perms perms() {

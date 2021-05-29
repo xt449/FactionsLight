@@ -354,11 +354,6 @@ public enum TL {
 	COMMAND_MODIFYPOWER_ADDED("&eAdded &6%1$f &epower to &6%2$s. &eNew total rounded power: &6%3$d"),
 	COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
 
-	COMMAND_NEAR_DESCRIPTION("Show nearby faction members"),
-	COMMAND_NEAR_PLAYER("&a&l{role-prefix}&8{name} (&d{distance}m&8)"),
-	COMMAND_NEAR_PLAYERLIST("&eNear: {players-nearby}"),
-	COMMAND_NEAR_NONE("&8None"),
-
 	COMMAND_OPEN_TOOPEN("to open or close the faction"),
 	COMMAND_OPEN_FOROPEN("for opening or closing the faction"),
 	COMMAND_OPEN_OPEN("open"),

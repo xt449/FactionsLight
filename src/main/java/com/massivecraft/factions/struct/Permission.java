@@ -48,7 +48,6 @@ public enum Permission {
 	LISTCLAIMS_OTHER("listclaims.other"),
 	LOCK("lock"),
 	MAP("map"),
-	MAPHEIGHT("mapheight"),
 	MOD("mod"),
 	MOD_ANY("mod.any"),
 	MODIFY_DTR("modifydtr"),
@@ -92,7 +91,6 @@ public enum Permission {
 	SEECHUNK("seechunk"),
 	SETWARP("setwarp"),
 	TOP("top"),
-	NEAR("near"),
 	WARP("warp"),
 	UPDATES("updates"),
 	DEBUG("debug");

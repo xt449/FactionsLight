@@ -106,7 +106,6 @@ permissions:
       factions.togglealliancechat: true
       factions.ban: true
       factions.coleader: true
-      factions.near: true
       factions.permissions: true
   factions.admin:
     description: hand over your admin rights
@@ -254,8 +253,6 @@ permissions:
     description: Ban players from Factions
   factions.coleader:
     description: Allow use of /f coleader <target>
-  factions.near:
-    description: Allow use of /f near to show nearby faction members
   factions.updates:
     description: Be informed of available updates to the plugin
   factions.permissions:
