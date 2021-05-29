@@ -5,7 +5,6 @@ import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.SmokeUtil;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
 import org.bukkit.Bukkit;
@@ -130,16 +129,6 @@ public class CmdHome extends FCommand {
 		}
 
 		context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
-			// Create a smoke effect
-			if(FactionsPlugin.getInstance().conf().factions().homes().isTeleportCommandSmokeEffectEnabled()) {
-				List<Location> smokeLocations = new ArrayList<>();
-				smokeLocations.add(loc);
-				smokeLocations.add(loc.add(0, 1, 0));
-				smokeLocations.add(destination);
-				smokeLocations.add(destination.clone().add(0, 1, 0));
-				SmokeUtil.spawnCloudRandom(smokeLocations, FactionsPlugin.getInstance().conf().factions().homes().getTeleportCommandSmokeEffectThickness());
-			}
-
 			FactionsPlugin.getInstance().teleport(context.player, destination);
 		}, this.plugin.conf().commands().home().getDelay());
 	}
