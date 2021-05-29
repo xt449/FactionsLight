@@ -430,11 +430,8 @@ public class MainConfig {
 		private MapCmd map = new MapCmd();
 		private Near near = new Near();
 		private Perms perms = new Perms();
-		private SeeChunk seeChunk = new SeeChunk();
 		private Show show = new Show();
 		private Stuck stuck = new Stuck();
-		@Comment("TNT bank!")
-		private TNT tnt = new TNT();
 		private ToolTips toolTips = new ToolTips();
 		private Warp warp = new Warp();
 
@@ -466,20 +463,12 @@ public class MainConfig {
 			return perms;
 		}
 
-		public SeeChunk seeChunk() {
-			return seeChunk;
-		}
-
 		public Show show() {
 			return show;
 		}
 
 		public Stuck stuck() {
 			return stuck;
-		}
-
-		public TNT tnt() {
-			return tnt;
 		}
 
 		public ToolTips toolTips() {

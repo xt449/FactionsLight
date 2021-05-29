@@ -158,10 +158,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockY()) : "";
 			case "faction_home_z":
 				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockZ()) : "";
-			case "faction_tnt_balance":
-				return FactionTag.TNT_BALANCE.replace(FactionTag.TNT_BALANCE.getTag(), faction);
-			case "faction_tnt_max_balance":
-				return FactionTag.TNT_MAX.replace(FactionTag.TNT_MAX.getTag(), faction);
 			case "faction_allies":
 				return String.valueOf(faction.getRelationCount(Relation.ALLY));
 			case "faction_allies_players":

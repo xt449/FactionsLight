@@ -61,18 +61,6 @@ public enum FactionTag implements Tag {
 	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
 	DESCRIPTION("description", Faction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),
-	TNT_BALANCE("tnt-balance", (fac) -> {
-		if(FactionsPlugin.getInstance().conf().commands().tnt().isEnable()) {
-			return String.valueOf(fac.getTNTBank());
-		}
-		return Tag.isMinimalShow() ? null : "";
-	}),
-	TNT_MAX("tnt-max-balance", (fac) -> {
-		if(FactionsPlugin.getInstance().conf().commands().tnt().isEnable()) {
-			return String.valueOf(FactionsPlugin.getInstance().conf().commands().tnt().getMaxStorage());
-		}
-		return Tag.isMinimalShow() ? null : "";
-	}),
 	ALLIES_COUNT("allies", (fac) -> String.valueOf(fac.getRelationCount(Relation.ALLY))),
 	ENEMIES_COUNT("enemies", (fac) -> String.valueOf(fac.getRelationCount(Relation.ENEMY))),
 	TRUCES_COUNT("truces", (fac) -> String.valueOf(fac.getRelationCount(Relation.TRUCE))),

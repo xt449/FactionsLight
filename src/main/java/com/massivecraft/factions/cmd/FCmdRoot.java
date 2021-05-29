@@ -108,7 +108,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public CmdColeader cmdColeader = new CmdColeader();
 	public CmdNear cmdNear = new CmdNear();
 	public CmdDebug cmdDebug = new CmdDebug();
-	public CmdTNT cmdTNT = new CmdTNT();
 	public CmdListClaims cmdListClaims = new CmdListClaims();
 
 	public FCmdRoot() {
@@ -205,10 +204,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
 			FactionsPlugin.getInstance().getLogger().info("Using DTR for land/raid control. Enabling DTR commands.");
 			this.addSubCommand(this.cmdDTR);
-		}
-		if(FactionsPlugin.getInstance().conf().commands().tnt().isEnable()) {
-			this.addSubCommand(this.cmdTNT);
-			FactionsPlugin.getInstance().getLogger().info("Enabling TNT bank management");
 		}
 	}
 

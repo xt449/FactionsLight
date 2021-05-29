@@ -200,7 +200,6 @@ public enum TL {
 	COMMAND_DISBAND_MARKEDPERMANENT("&eThis faction is designated as permanent, so you cannot disband it."),
 	COMMAND_DISBAND_BROADCAST_YOURS("&d%1$s&e disbanded your faction."),
 	COMMAND_DISBAND_BROADCAST_NOTYOURS("&d%1$s&e disbanded the faction %2$s."),
-	COMMAND_DISBAND_HOLDINGS("&eYou have been given the disbanded faction's bank, totaling %1$s."),
 	COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
 	COMMAND_DTR_TOSHOW("to show faction DTR info"),
@@ -229,9 +228,6 @@ public enum TL {
 	COMMAND_HELP_NEXTCREATE("&eLearn how to create a faction on the next page."),
 	COMMAND_HELP_INVITATIONS("command.help.invitations", "&eYou might want to close it and use invitations:"),
 	COMMAND_HELP_HOME("&eAnd don't forget to set your home:"),
-	COMMAND_HELP_BANK_1("&eYour faction has a bank which is used to pay for certain"),
-	COMMAND_HELP_BANK_2("&ethings, so it will need to have money deposited into it."),
-	COMMAND_HELP_BANK_3("&eTo learn more, use the money command."),
 	COMMAND_HELP_PLAYERTITLES("&ePlayer titles are just for fun. No rules connected to them."),
 	COMMAND_HELP_OWNERSHIP_1("&eClaimed land with ownership set is further protected so"),
 	COMMAND_HELP_OWNERSHIP_2("&ethat only the owner(s), faction admin, and possibly the"),
@@ -361,27 +357,6 @@ public enum TL {
 
 	COMMAND_MODIFYPOWER_ADDED("&eAdded &6%1$f &epower to &6%2$s. &eNew total rounded power: &6%3$d"),
 	COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
-
-	COMMAND_MONEY_LONG("&eThe faction money commands."),
-	COMMAND_MONEY_DESCRIPTION("Faction money commands"),
-
-	COMMAND_MONEYBALANCE_SHORT("show faction balance"),
-	COMMAND_MONEYBALANCE_DESCRIPTION("Show your factions current money balance"),
-
-	COMMAND_MONEYDEPOSIT_DESCRIPTION("Deposit money"),
-	COMMAND_MONEYDEPOSIT_DEPOSITED("%1$s deposited %2$s in the faction bank: %3$s"),
-
-	COMMAND_MONEYTRANSFERFF_DESCRIPTION("Transfer f -> f"),
-	COMMAND_MONEYTRANSFERFF_TRANSFER("%1$s transferred %2$s from the faction \"%3$s\" to the faction \"%4$s\""),
-
-	COMMAND_MONEYTRANSFERFP_DESCRIPTION("Transfer f -> p"),
-	COMMAND_MONEYTRANSFERFP_TRANSFER("%1$s transferred %2$s from the faction \"%3$s\" to the player \"%4$s\""),
-
-	COMMAND_MONEYTRANSFERPF_DESCRIPTION("Transfer p -> f"),
-	COMMAND_MONEYTRANSFERPF_TRANSFER("%1$s transferred %2$s from the player \"%3$s\" to the faction \"%4$s\""),
-
-	COMMAND_MONEYWITHDRAW_DESCRIPTION("Withdraw money"),
-	COMMAND_MONEYWITHDRAW_WITHDRAW("%1$s withdrew %2$s from the faction bank: %3$s"),
 
 	COMMAND_NEAR_DESCRIPTION("Show nearby faction members"),
 	COMMAND_NEAR_PLAYER("&a&l{role-prefix}&8{name} (&d{distance}m&8)"),
@@ -518,29 +493,6 @@ public enum TL {
 	COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
 	COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
 
-	COMMAND_TNT_TERRITORYONLY("&cCommand can only be run from your faction's territory!"),
-	COMMAND_TNT_DEPOSIT_DESCRIPTION("Add to your faction's TNT bank"),
-	COMMAND_TNT_DEPOSIT_FAIL_FULL("&cFaction bank already at maximum!"),
-	COMMAND_TNT_DEPOSIT_FAIL_NOTENOUGH("&cYou do not have that much TNT!"),
-	COMMAND_TNT_DEPOSIT_FAIL_POSITIVE("&cMust deposit at least one!"),
-	COMMAND_TNT_DEPOSIT_SUCCESS("&eYour faction now has %d TNT"),
-	COMMAND_TNT_FILL_DESCRIPTION("Fill TNT into nearby dispensers"),
-	COMMAND_TNT_FILL_MESSAGE("&eFilled %d TNT into %d dispensers. %d left in the faction bank."),
-	COMMAND_TNT_FILL_FAIL_MAXRADIUS("&c%d is bigger than the maximum radius of %d"),
-	COMMAND_TNT_FILL_FAIL_NOTENOUGH("&cThe faction bank does not have %d TNT!"),
-	COMMAND_TNT_FILL_FAIL_POSITIVE("&cPositive values only!"),
-	COMMAND_TNT_INFO_DESCRIPTION("View your faction's TNT bank"),
-	COMMAND_TNT_INFO_MESSAGE("&eYour faction has %d TNT"),
-	COMMAND_TNT_SIPHON_DESCRIPTION("Take TNT from nearby dispensers"),
-	COMMAND_TNT_SIPHON_MESSAGE("&eAcquired %d TNT, for a total of %d in the faction bank."),
-	COMMAND_TNT_SIPHON_FAIL_POSITIVE("&cPositive values only!"),
-	COMMAND_TNT_SIPHON_FAIL_FULL("&cFaction bank already at maximum!"),
-	COMMAND_TNT_SIPHON_FAIL_MAXRADIUS("&c%d is bigger than the maximum radius of %d"),
-	COMMAND_TNT_WITHDRAW_DESCRIPTION("Withdraw TNT from the faction bank"),
-	COMMAND_TNT_WITHDRAW_MESSAGE("&eWithdrew %d TNT. %d left in the faction bank."),
-	COMMAND_TNT_WITHDRAW_FAIL_NOTENOUGH("&cThe faction bank does not have %d TNT!"),
-	COMMAND_TNT_WITHDRAW_FAIL_POSITIVE("&cPositive values only!"),
-
 	COMMAND_VAULT_DESCRIPTION("/f vault <number> to open one of your Faction's vaults."),
 	COMMAND_VAULT_TOOHIGH("&cYou tried to open vault %d but your Faction only has %d vaults."),
 
@@ -563,7 +515,6 @@ public enum TL {
 	COMMAND_SHOW_PENALTY(" (penalty: "),
 	COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
 	COMMAND_SHOW_LANDVALUE("&6Total land value: &e%1$s %2$s"),
-	COMMAND_SHOW_BANKCONTAINS("&6Bank contains: &e%1$s"),
 	COMMAND_SHOW_ALLIES("Allies: "),
 	COMMAND_SHOW_ENEMIES("Enemies: "),
 	COMMAND_SHOW_MEMBERSONLINE("Members online: "),
@@ -867,8 +818,6 @@ public enum TL {
 	PERM_SETHOME("Setting the faction home"),
 	PERM_LISTCLAIMS("View listed faction claims"),
 	PERM_SETWARP("Setting and unsetting faction warps"),
-	PERM_TNTDEPOSIT("Deposit TNT into faction bank"),
-	PERM_TNTWITHDRAW("Withdraw TNT from faction bank"),
 	PERM_WARP("Using faction warps"),
 	PERM_OWNER("Set ownership of land using /f owner in faction territory"),
 
