@@ -8,7 +8,6 @@ import com.massivecraft.factions.config.ConfigManager;
 import com.massivecraft.factions.config.file.MainConfig;
 import com.massivecraft.factions.data.SaveTask;
 import com.massivecraft.factions.integration.*;
-import com.massivecraft.factions.integration.permcontext.ContextManager;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.versionspecific.PortalListener;
@@ -100,7 +99,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private ParticleProvider particleProvider;
 	private IWorldguard worldguard;
 	private LandRaidControl landRaidControl;
-	private boolean luckPermsSetup;
 
 	private final Pattern factionsVersionPattern = Pattern.compile("b(\\d{1,4})");
 	private UUID serverUUID;
@@ -243,19 +241,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		// Add Base Commands
 		FCmdRoot cmdBase = new FCmdRoot();
 
-		ContextManager.init(this);
-		if(getServer().getPluginManager().getPlugin("PermissionsEx") != null) {
-			if(getServer().getPluginManager().getPlugin("PermissionsEx").getDescription().getVersion().startsWith("1")) {
-				getLogger().info(" ");
-				getLogger().warning("Notice: PermissionsEx version 1.x is dead. We suggest using LuckPerms (or PEX 2.0 when available). https://luckperms.net/");
-				getLogger().info(" ");
-			}
-		}
-		if(getServer().getPluginManager().getPlugin("GroupManager") != null) {
-			getLogger().info(" ");
-			getLogger().warning("Notice: GroupManager died in 2014. We suggest using LuckPerms instead. https://luckperms.net/");
-			getLogger().info(" ");
-		}
 		Plugin lwc = getServer().getPluginManager().getPlugin("LWC");
 		if(lwc != null && lwc.getDescription().getWebsite() != null && !lwc.getDescription().getWebsite().contains("extended")) {
 			getLogger().info(" ");
@@ -571,10 +556,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			FPlayers.getInstance().forceSave();
 			Board.getInstance().forceSave();
 		}
-		if(this.luckPermsSetup) {
-			LuckPerms.shutdown(this);
-		}
-		ContextManager.shutdown();
 		log("Disabled");
 	}
 
@@ -754,10 +735,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	public void debug(String s) {
 		debug(Level.INFO, s);
-	}
-
-	public void luckpermsEnabled() {
-		this.luckPermsSetup = true;
 	}
 
 	public CompletableFuture<Boolean> teleport(Player player, Location location) {

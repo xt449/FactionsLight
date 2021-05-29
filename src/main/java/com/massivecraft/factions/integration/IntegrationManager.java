@@ -19,25 +19,6 @@ public class IntegrationManager implements Listener {
 	@SuppressWarnings("Convert2MethodRef")
 	private enum Integration {
 		DYNMAP("dynmap", EngineDynmap.getInstance()::init),
-		LUCKPERMS("LuckPerms", (plugin) -> {
-			String[] version = plugin.getDescription().getVersion().split("\\.");
-			boolean notSupported = true;
-			try {
-				int major = Integer.parseInt(version[0]);
-				int minor = Integer.parseInt(version[1]);
-				if((major == 5 && minor > 0) || major > 5) {
-					notSupported = false;
-				}
-			} catch(NumberFormatException ignored) {
-			}
-			if(notSupported) {
-				FactionsPlugin.getInstance().log("Found an outdated LuckPerms. With LuckPerms 5.1.0 and above, FactionsUUID supports permission contexts!");
-			} else {
-				if(LuckPerms.init(FactionsPlugin.getInstance())) {
-					FactionsPlugin.getInstance().luckpermsEnabled();
-				}
-			}
-		}),
 		LWC("LWC", com.massivecraft.factions.integration.LWC::setup),
 		PLACEHOLDERAPI("PlaceholderAPI", (p) -> FactionsPlugin.getInstance().setupPlaceholderAPI()),
 		PLACEHOLDERAPI_OTHER("MVdWPlaceholderAPI", (p) -> FactionsPlugin.getInstance().setupOtherPlaceholderAPI()),
