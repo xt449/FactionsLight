@@ -4,7 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -95,14 +95,14 @@ public class CmdTop extends FCommand {
 			});
 		} else if(criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
 			factionList.sort((f1, f2) -> {
-				double f1Size = Econ.getBalance(f1);
+				double f1Size = VaultEconomy.getBalance(f1);
 				// Lets get the balance of /all/ the players in the Faction.
 				for(FPlayer fp : f1.getFPlayers()) {
-					f1Size = f1Size + Econ.getBalance(fp);
+					f1Size = f1Size + VaultEconomy.getBalance(fp);
 				}
-				double f2Size = Econ.getBalance(f2);
+				double f2Size = VaultEconomy.getBalance(f2);
 				for(FPlayer fp : f2.getFPlayers()) {
-					f2Size = f2Size + Econ.getBalance(fp);
+					f2Size = f2Size + VaultEconomy.getBalance(fp);
 				}
 				if(f1Size < f2Size) {
 					return 1;
@@ -157,9 +157,9 @@ public class CmdTop extends FCommand {
 		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl && criteria.equalsIgnoreCase("power")) {
 			return String.valueOf(faction.getPowerRounded());
 		} else { // Last one is balance, and it has 3 different things it could be.
-			double balance = Econ.getBalance(faction);
+			double balance = VaultEconomy.getBalance(faction);
 			for(FPlayer fp : faction.getFPlayers()) {
-				balance = balance + Econ.getBalance(fp);
+				balance = balance + VaultEconomy.getBalance(fp);
 			}
 			return String.valueOf(balance);
 		}

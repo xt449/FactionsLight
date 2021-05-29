@@ -8,7 +8,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.LandUnclaimEvent;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
@@ -145,15 +145,15 @@ public class CmdUnclaim extends FCommand {
 			return false;
 		}
 
-		if(Econ.shouldBeUsed()) {
-			double refund = Econ.calculateClaimRefund(context.faction.getLandRounded());
+		if(VaultEconomy.shouldBeUsed()) {
+			double refund = VaultEconomy.calculateClaimRefund(context.faction.getLandRounded());
 
 			if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysLandCosts()) {
-				if(!Econ.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+				if(!VaultEconomy.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
 					return false;
 				}
 			} else {
-				if(!Econ.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+				if(!VaultEconomy.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
 					return false;
 				}
 			}

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.TL;
@@ -375,14 +375,14 @@ public class CommandContext {
 
 	// if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
 	public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
-		if(!Econ.shouldBeUsed() || this.fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
+		if(!VaultEconomy.shouldBeUsed() || this.fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
 			return true;
 		}
 
 		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysCosts() && fPlayer.hasFaction() && fPlayer.getFaction().hasAccess(fPlayer, PermissibleAction.ECONOMY)) {
-			return Econ.modifyMoney(faction, -cost, toDoThis, forDoingThis);
+			return VaultEconomy.modifyMoney(faction, -cost, toDoThis, forDoingThis);
 		} else {
-			return Econ.modifyMoney(fPlayer, -cost, toDoThis, forDoingThis);
+			return VaultEconomy.modifyMoney(fPlayer, -cost, toDoThis, forDoingThis);
 		}
 	}
 
@@ -392,14 +392,14 @@ public class CommandContext {
 
 	// like above, but just make sure they can pay; returns true unless person can't afford the cost
 	public boolean canAffordCommand(double cost, String toDoThis) {
-		if(!Econ.shouldBeUsed() || fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
+		if(!VaultEconomy.shouldBeUsed() || fPlayer == null || cost == 0.0 || fPlayer.isAdminBypassing()) {
 			return true;
 		}
 
 		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysCosts() && fPlayer.hasFaction()) {
-			return Econ.hasAtLeast(faction, cost, toDoThis);
+			return VaultEconomy.hasAtLeast(faction, cost, toDoThis);
 		} else {
-			return Econ.hasAtLeast(fPlayer, cost, toDoThis);
+			return VaultEconomy.hasAtLeast(fPlayer, cost, toDoThis);
 		}
 	}
 

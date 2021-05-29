@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
@@ -103,8 +102,7 @@ public class CmdHome extends FCommand {
 					continue;
 				}
 
-				FPlayer fp = FPlayers.getInstance().getByPlayer(p);
-				if(context.fPlayer.getRelationTo(fp) != Relation.ENEMY || fp.isVanished()) {
+				if(context.fPlayer.getRelationTo(FPlayers.getInstance().getByPlayer(p)) != Relation.ENEMY) {
 					continue;
 				}
 
@@ -133,11 +131,6 @@ public class CmdHome extends FCommand {
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostHome(), TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
-			return;
-		}
-
-		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-		if(Essentials.handleTeleport(context.player, destination)) {
 			return;
 		}
 

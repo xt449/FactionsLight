@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
@@ -89,7 +89,7 @@ public class CmdHelp extends FCommand {
 		pageLines.add(FCmdRoot.getInstance().cmdSethome.getUsageTemplate(context, true));
 		helpPages.add(pageLines);
 
-		if(Econ.isSetup() && FactionsPlugin.getInstance().conf().economy().isEnabled() && FactionsPlugin.getInstance().conf().economy().isBankEnabled()) {
+		if(VaultEconomy.isSetup() && FactionsPlugin.getInstance().conf().economy().isEnabled() && FactionsPlugin.getInstance().conf().economy().isBankEnabled()) {
 			pageLines = new ArrayList<>();
 			pageLines.add("");
 			pageLines.add(plugin.txt().parse(TL.COMMAND_HELP_BANK_1.toString()));

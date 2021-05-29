@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.iface.EconomyParticipator;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
@@ -38,10 +38,10 @@ public class CmdMoneyWithdraw extends MoneyCommand {
 			return;
 		}
 
-		boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
+		boolean success = VaultEconomy.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
 		if(success && FactionsPlugin.getInstance().conf().logging().isMoneyTransactions()) {
-			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), VaultEconomy.moneyString(amount), faction.describeTo(null))));
 		}
 	}
 

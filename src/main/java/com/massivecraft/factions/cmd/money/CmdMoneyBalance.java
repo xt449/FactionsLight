@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd.money;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
@@ -37,9 +37,9 @@ public class CmdMoneyBalance extends MoneyCommand {
 		}
 
 		if(context.fPlayer != null) {
-			Econ.sendBalanceInfo(context.fPlayer, faction);
+			VaultEconomy.sendBalanceInfo(context.fPlayer, faction);
 		} else {
-			Econ.sendBalanceInfo(context.sender, faction);
+			VaultEconomy.sendBalanceInfo(context.sender, faction);
 		}
 	}
 

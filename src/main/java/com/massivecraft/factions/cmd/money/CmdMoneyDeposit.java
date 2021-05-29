@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.iface.EconomyParticipator;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
@@ -32,10 +32,10 @@ public class CmdMoneyDeposit extends MoneyCommand {
 		if(faction == null) {
 			return;
 		}
-		boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
+		boolean success = VaultEconomy.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
 
 		if(success && FactionsPlugin.getInstance().conf().logging().isMoneyTransactions()) {
-			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+			FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt().parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), VaultEconomy.moneyString(amount), faction.describeTo(null))));
 		}
 	}
 

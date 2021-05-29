@@ -107,7 +107,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private String startupLog;
 	private String startupExceptionLog;
 	private final List<RuntimeException> grumpyExceptions = new ArrayList<>();
-	private VaultPerms vaultPerms;
+	private VaultPermission vaultPermission;
 	public final boolean likesCats = Arrays.stream(FactionsPlugin.class.getDeclaredMethods()).anyMatch(m -> m.isSynthetic() && m.getName().startsWith("loadCon") && m.getName().endsWith("0"));
 
 	public FactionsPlugin() {
@@ -292,8 +292,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Econ.setup();
-				vaultPerms = new VaultPerms();
+				VaultEconomy.setup();
+				vaultPermission = new VaultPermission();
 				cmdBase.done();
 				getLogger().removeHandler(handler);
 				startupLog = startupBuilder.toString();
@@ -744,7 +744,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	}
 
 	public String getPrimaryGroup(OfflinePlayer player) {
-		return this.vaultPerms.getPrimaryGroup(player);
+		return this.vaultPermission.getPrimaryGroup(player);
 	}
 
 	public void debug(Level level, String s) {

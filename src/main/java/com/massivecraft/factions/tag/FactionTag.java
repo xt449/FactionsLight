@@ -3,7 +3,7 @@ package com.massivecraft.factions.tag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.perms.Relation;
@@ -60,13 +60,13 @@ public enum FactionTag implements Tag {
 	MAX_CHUNKS("max-chunks", (fac -> String.valueOf(FactionsPlugin.getInstance().getLandRaidControl().getLandLimit(fac)))),
 	PEACEFUL("peaceful", (fac) -> fac.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getPeaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
 	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
-	LAND_VALUE("land-value", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
+	LAND_VALUE("land-value", (fac) -> VaultEconomy.shouldBeUsed() ? VaultEconomy.moneyString(VaultEconomy.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
 	DESCRIPTION("description", Faction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),
-	LAND_REFUND("land-refund", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("refund")),
+	LAND_REFUND("land-refund", (fac) -> VaultEconomy.shouldBeUsed() ? VaultEconomy.moneyString(VaultEconomy.calculateTotalLandRefund(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("refund")),
 	BANK_BALANCE("faction-balance", (fac) -> {
-		if(Econ.shouldBeUsed()) {
-			return FactionsPlugin.getInstance().conf().economy().isBankEnabled() ? Econ.moneyString(Econ.getBalance(fac)) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
+		if(VaultEconomy.shouldBeUsed()) {
+			return FactionsPlugin.getInstance().conf().economy().isBankEnabled() ? VaultEconomy.moneyString(VaultEconomy.getBalance(fac)) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
 		}
 		return Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
 	}),

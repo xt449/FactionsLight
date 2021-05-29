@@ -3,7 +3,7 @@ package com.massivecraft.factions.gui;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -237,14 +237,14 @@ public class WarpGUI extends GUI<Integer> {
 
 		double cost = FactionsPlugin.getInstance().conf().economy().getCostWarp();
 
-		if(!Econ.shouldBeUsed() || this.user == null || cost == 0.0 || user.isAdminBypassing()) {
+		if(!VaultEconomy.shouldBeUsed() || this.user == null || cost == 0.0 || user.isAdminBypassing()) {
 			return true;
 		}
 
 		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysCosts() && user.hasFaction() && user.getFaction().hasAccess(user, PermissibleAction.ECONOMY)) {
-			return Econ.modifyMoney(user.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+			return VaultEconomy.modifyMoney(user.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 		} else {
-			return Econ.modifyMoney(user, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+			return VaultEconomy.modifyMoney(user, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 		}
 	}
 

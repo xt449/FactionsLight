@@ -19,7 +19,6 @@ public class IntegrationManager implements Listener {
 	@SuppressWarnings("Convert2MethodRef")
 	private enum Integration {
 		DYNMAP("dynmap", EngineDynmap.getInstance()::init),
-		ESS("Essentials", Essentials::setup),
 		LUCKPERMS("LuckPerms", (plugin) -> {
 			String[] version = plugin.getDescription().getVersion().split("\\.");
 			boolean notSupported = true;

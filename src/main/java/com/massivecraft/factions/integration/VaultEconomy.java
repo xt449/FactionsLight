@@ -22,9 +22,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class Econ {
+public class VaultEconomy {
 
-	private static Economy econ = null;
+	private static Economy economy = null;
 
 	public static void setup() {
 		if(isSetup()) {
@@ -43,9 +43,9 @@ public class Econ {
 			FactionsPlugin.getInstance().getLogger().info(integrationFail + "is not hooked into an economy plugin.");
 			return;
 		}
-		econ = rsp.getProvider();
+		economy = rsp.getProvider();
 
-		FactionsPlugin.getInstance().getLogger().info("Found economy plugin through Vault: " + econ.getName());
+		FactionsPlugin.getInstance().getLogger().info("Found economy plugin through Vault: " + economy.getName());
 
 		if(!FactionsPlugin.getInstance().conf().economy().isEnabled()) {
 			FactionsPlugin.getInstance().getLogger().info("NOTE: Economy is disabled. You can enable it in config/main.conf");
@@ -55,15 +55,15 @@ public class Econ {
 	}
 
 	public static boolean shouldBeUsed() {
-		return FactionsPlugin.getInstance().conf().economy().isEnabled() && econ != null && econ.isEnabled();
+		return FactionsPlugin.getInstance().conf().economy().isEnabled() && economy != null && economy.isEnabled();
 	}
 
 	public static boolean isSetup() {
-		return econ != null;
+		return economy != null;
 	}
 
-	public static Economy getEcon() {
-		return econ;
+	public static Economy getEconomy() {
+		return economy;
 	}
 
 	private static String getWorld(OfflinePlayer op) {
@@ -93,7 +93,7 @@ public class Econ {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		to.msg(TL.ECON_BALANCE, about.describeTo(to, true), Econ.moneyString(getBalance(about)));
+		to.msg(TL.ECON_BALANCE, about.describeTo(to, true), VaultEconomy.moneyString(getBalance(about)));
 	}
 
 	public static void sendBalanceInfo(CommandSender to, Faction about) {
@@ -101,7 +101,7 @@ public class Econ {
 			FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
-		to.sendMessage(ChatColor.stripColor(String.format(TL.ECON_BALANCE.toString(), about.getTag(), Econ.moneyString(getBalance(about)))));
+		to.sendMessage(ChatColor.stripColor(String.format(TL.ECON_BALANCE.toString(), about.getTag(), VaultEconomy.moneyString(getBalance(about)))));
 	}
 
 	public static boolean canIControlYou(EconomyParticipator i, EconomyParticipator you) {
@@ -179,12 +179,6 @@ public class Econ {
 				invoker.msg(TL.ECON_CANTAFFORD_TRANSFER, from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
 			}
 
-			return false;
-		}
-
-		// Check if the new balance is over Essential's money cap.
-		if(Essentials.isOverBalCap(to, getBalance(toAcc) + amount)) {
-			invoker.msg(TL.ECON_OVER_BAL_CAP, amount);
 			return false;
 		}
 
@@ -378,7 +372,7 @@ public class Econ {
 	}
 
 	private static boolean hasAccount(OfflinePlayer op) {
-		return econ.hasAccount(op, getWorld(op));
+		return economy.hasAccount(op, getWorld(op));
 	}
 
 	@Deprecated
@@ -391,7 +385,7 @@ public class Econ {
 	}
 
 	private static double getBalance(OfflinePlayer op) {
-		return econ.getBalance(checkStatus(op), getWorld(op));
+		return economy.getBalance(checkStatus(op), getWorld(op));
 	}
 
 	public static boolean has(EconomyParticipator ep, double amount) {
@@ -399,7 +393,7 @@ public class Econ {
 	}
 
 	private static boolean has(OfflinePlayer op, double amount) {
-		return econ.has(checkStatus(op), getWorld(op), amount);
+		return economy.has(checkStatus(op), getWorld(op), amount);
 	}
 
 	private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
@@ -433,9 +427,9 @@ public class Econ {
 	private static boolean setBalance(OfflinePlayer op, double amount) {
 		double current = getBalance(op); // Already checks status
 		if(current > amount) {
-			return econ.withdrawPlayer(op, getWorld(op), current - amount).transactionSuccess();
+			return economy.withdrawPlayer(op, getWorld(op), current - amount).transactionSuccess();
 		} else {
-			return econ.depositPlayer(op, getWorld(op), amount - current).transactionSuccess();
+			return economy.depositPlayer(op, getWorld(op), amount - current).transactionSuccess();
 		}
 	}
 
@@ -450,9 +444,9 @@ public class Econ {
 
 	private static boolean modifyBalance(OfflinePlayer op, double amount) {
 		if(amount < 0) {
-			return econ.withdrawPlayer(checkStatus(op), getWorld(op), -amount).transactionSuccess();
+			return economy.withdrawPlayer(checkStatus(op), getWorld(op), -amount).transactionSuccess();
 		} else {
-			return econ.depositPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
+			return economy.depositPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
 		}
 	}
 
@@ -466,7 +460,7 @@ public class Econ {
 	}
 
 	private static boolean deposit(OfflinePlayer op, double amount) {
-		return econ.depositPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
+		return economy.depositPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
 	}
 
 	@Deprecated
@@ -479,7 +473,7 @@ public class Econ {
 	}
 
 	private static boolean withdraw(OfflinePlayer op, double amount) {
-		return econ.withdrawPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
+		return economy.withdrawPlayer(checkStatus(op), getWorld(op), amount).transactionSuccess();
 	}
 
 	@Deprecated
@@ -492,7 +486,7 @@ public class Econ {
 	}
 
 	private static void createAccount(OfflinePlayer op) {
-		if(!econ.createPlayerAccount(op, getWorld(op))) {
+		if(!economy.createPlayerAccount(op, getWorld(op))) {
 			FactionsPlugin.getInstance().getLogger().warning("FAILED TO CREATE ECONOMY ACCOUNT " + op.getName() + '/' + op.getUniqueId());
 		}
 	}

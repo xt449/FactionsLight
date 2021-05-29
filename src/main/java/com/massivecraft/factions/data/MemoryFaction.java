@@ -5,7 +5,7 @@ import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
@@ -1167,8 +1167,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	// Persistance and entity management
 	// ----------------------------------------------//
 	public void remove() {
-		if(Econ.shouldBeUsed()) {
-			Econ.setBalance(this, 0);
+		if(VaultEconomy.shouldBeUsed()) {
+			VaultEconomy.setBalance(this, 0);
 		}
 
 		// Clean the board

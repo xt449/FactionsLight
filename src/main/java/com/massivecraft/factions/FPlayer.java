@@ -75,8 +75,6 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean isAdminBypassing();
 
-	boolean isVanished();
-
 	void setIsAdminBypassing(boolean val);
 
 	void setChatMode(ChatMode chatMode);
