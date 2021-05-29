@@ -490,15 +490,6 @@ public enum TL {
 	COMMAND_SETHOME_SETOTHER("&cYou have set the home for the %1$s&e faction."),
 	COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
-	COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
-	COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
-
-	COMMAND_VAULT_DESCRIPTION("/f vault <number> to open one of your Faction's vaults."),
-	COMMAND_VAULT_TOOHIGH("&cYou tried to open vault %d but your Faction only has %d vaults."),
-
-	COMMAND_SEECHUNK_DESCRIPTION("Show chunk boundaries"),
-	COMMAND_SEECHUNK_TOGGLE("&eSeechunk &d%1$s"),
-
 	COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
 	COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
 	COMMAND_SHOW_TOSHOW("to show faction information"),
@@ -563,7 +554,7 @@ public enum TL {
 	COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
 	COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
 	COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
-	COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, power or land."),
+	COMMAND_TOP_INVALID("Could not sort by %s. Try online, members, power or land."),
 
 	COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
 	COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
@@ -704,28 +695,6 @@ public enum TL {
 	CHAT_ALLIANCE("alliance chat"),
 	CHAT_TRUCE("truce chat"),
 	CHAT_PUBLIC("public chat"),
-
-	/**
-	 * Economy stuff
-	 */
-
-	ECON_OFF("no %s"), // no balance, no value, no refund, etc
-	ECON_FORMAT("###,###.###"),
-	ECON_DISABLED("Faction econ is disabled."),
-	ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
-	ECON_BALANCE("&6%s's&e balance is &d%s&e."),
-	ECON_NOPERM("&d%s&e lacks permission to control &d%s's&e money."),
-	ECON_CANTAFFORD_TRANSFER("&d%s<b> can't afford to transfer &d%s<b> to %s<b>."),
-	ECON_CANTAFFORD_AMOUNT("&d%s&e can't afford &d%s&e %s."),
-	ECON_TRANSFER_UNABLE("Unable to transfer %s<b> to &d%s<b> from &d%s<b>."),
-	ECON_TRANSFER_NOINVOKER("&d%s&e was transferred from &d%s&e to &d%s&e."),
-	ECON_TRANSFER_GAVE("&d%s&e &dgave %s&e to &d%s&e."),
-	ECON_TRANSFER_TOOK("&d%s&e &dtook %s&e from &d%s&e."),
-	ECON_TRANSFER_TRANSFER("&d%s&e transferred &d%s&e from &d%s&e to &d%s&e."),
-	ECON_GAIN_SUCCESS("&d%s&e gained &d%s&e %s."),
-	ECON_GAIN_FAILURE("&d%s&e would have gained &d%s&e %s, but the deposit failed."),
-	ECON_LOST_SUCCESS("&d%s&e lost &d%s&e %s."),
-	ECON_LOST_FAILURE("&d%s&e can't afford &d%s&e %s."),
 
 	/**
 	 * Relations

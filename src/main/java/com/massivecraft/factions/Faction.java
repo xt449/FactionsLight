@@ -36,10 +36,6 @@ public interface Faction extends EconomyParticipator {
 
 	void clearWarps();
 
-	int getMaxVaults();
-
-	void setMaxVaults(int value);
-
 	void addAnnouncement(FPlayer fPlayer, String msg);
 
 	void sendUnreadAnnouncements(FPlayer fPlayer);
@@ -152,10 +148,6 @@ public interface Faction extends EconomyParticipator {
 	int getLandRounded();
 
 	int getLandRoundedInWorld(String worldName);
-
-	int getTNTBank();
-
-	void setTNTBank(int amount);
 
 	// -------------------------------
 	// Relation and relation colors

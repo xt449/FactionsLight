@@ -22,7 +22,6 @@ permissions:
       factions.save: true
       factions.modifypower: true
       factions.ahome: true
-      factions.setmaxvaults: true
       factions.updates: true
       factions.debug: true
   factions.*:
@@ -39,7 +38,6 @@ permissions:
       factions.setpermanentpower: true
       factions.powerboost: true
       factions.sethome.any: true
-      factions.money.*: true
       factions.join.any: true
       factions.join.others: true
       factions.admin.any: true
@@ -85,7 +83,6 @@ permissions:
       factions.list: true
       factions.map: true
       factions.mod: true
-      factions.money.kit.standard: true
       factions.noboom: true
       factions.open: true
       factions.owner: true
@@ -104,14 +101,11 @@ permissions:
       factions.unclaimall: true
       factions.scoreboard: true
       factions.showinvites: true
-      factions.seechunk: true
       factions.monitorlogins: true
       factions.top: true
       factions.togglealliancechat: true
-      factions.vault: true
       factions.mapheight: true
       factions.ban: true
-      factions.fly: true
       factions.coleader: true
       factions.near: true
       factions.permissions: true
@@ -177,41 +171,6 @@ permissions:
     description: give or revoke moderator rights
   factions.mod.any:
     description: give or revoke moderator rights for any player in any faction
-  factions.money.balance:
-    description: show your factions current money balance
-  factions.money.balance.any:
-    description: show money balance for factions other than your own
-  factions.money.deposit:
-    description: deposit money into a faction bank
-  factions.money.withdraw:
-    description: withdraw money from your faction bank
-  factions.money.withdraw.any:
-    description: withdraw money from your factions other than your own
-  factions.money.f2f:
-    description: transfer money from faction to faction
-  factions.money.f2p:
-    description: transfer money from faction to player
-  factions.money.p2f:
-    description: transfer money from player to faction
-  factions.money.kit.standard:
-    children:
-      factions.money.balance: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.withdraw: true
-      factions.money.f2f: true
-      factions.money.f2p: true
-      factions.money.p2f: true
-  factions.money.*:
-    children:
-      factions.money.kit.standard: true
-      factions.money.balance.any: true
-      factions.money.deposit: true
-      factions.money.withdraw: true
-      factions.money.withdraw.any: true
-      factions.money.f2f: true
-      factions.money.f2p: true
-      factions.money.p2f: true
   factions.noboom:
     description: toggle explosions (peaceful factions only)
   factions.open:
@@ -268,8 +227,6 @@ permissions:
     description: ability to toggle scoreboards
   factions.showinvites:
     description: show pending invites to your faction
-  factions.seechunk:
-    description: see the chunk you stand in
   factions.setwarp:
     description: set a warp for your faction
   factions.warp:
@@ -294,18 +251,10 @@ permissions:
     description: Ability to send players to their faction home.
   factions.autoleavebypass:
     description: Bypass autoleave.
-  factions.vault:
-    description: Access faction vault.
-  factions.setmaxvault:
-    description: Set a faction's max vaults.
   factions.mapheight:
     description: Set your /f map height.
   factions.ban:
     description: Ban players from Factions
-  factions.fly:
-    description: Allow use of /f fly
-  factions.fly.auto:
-    description: Allow use of /f fly auto
   factions.coleader:
     description: Allow use of /f coleader <target>
   factions.near:
@@ -316,16 +265,6 @@ permissions:
     description: Use /f perms
   factions.debug:
     description: Use /f debug
-  factions.tnt.info:
-    description: Get TNT information
-  factions.tnt.deposit:
-    description: Deposit to TNT bank
-  factions.tnt.withdraw:
-    description: Withdraw from TNT bank
-  factions.tnt.fill:
-    description: Use TNT fill command
-  factions.tnt.siphon:
-    description: Use TNT siphon command
   factions.coords:
     description: Send coordinates to your teammates
   factions.listclaims:

@@ -304,7 +304,6 @@ public class MainConfig {
 					this.add("<a>Founded: <i>{create-date}");
 					this.add("<a>This faction is permanent, remaining even with no members.'");
 					this.add("<a>Land value: <i>{land-value} {land-refund}");
-					this.add("<a>Balance: <i>{faction-balance}");
 					this.add("<a>Bans: <i>{faction-bancount}");
 					this.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list} ");
 					this.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
@@ -410,7 +409,6 @@ public class MainConfig {
 					this.add("&6Last Seen: &f{lastSeen}");
 					this.add("&6Power: &f{player-power}");
 					this.add("&6Rank: &f{group}");
-					this.add("&6Balance: &a${balance}");
 				}
 			};
 
@@ -1956,7 +1954,6 @@ public class MainConfig {
 		private boolean factionLeave = true;
 		private boolean landClaims = true;
 		private boolean landUnclaims = true;
-		private boolean moneyTransactions = true;
 		private boolean playerCommands = true;
 
 		public boolean isFactionCreate() {
@@ -1985,10 +1982,6 @@ public class MainConfig {
 
 		public boolean isLandUnclaims() {
 			return landUnclaims;
-		}
-
-		public boolean isMoneyTransactions() {
-			return moneyTransactions;
 		}
 
 		public boolean isPlayerCommands() {
@@ -2134,8 +2127,6 @@ public class MainConfig {
 					this.add("{faction}");
 					this.add("&3Your Power");
 					this.add("{power}");
-					this.add("&aBalance");
-					this.add("${balance}");
 				}
 			};
 			private boolean factionlessEnabled = false;
@@ -2281,20 +2272,6 @@ public class MainConfig {
 		}
 	}
 
-	public class PlayerVaults {
-		@Comment("The %s is for the faction id")
-		private String vaultPrefix = "faction-%s";
-		private int defaultMaxVaults = 0;
-
-		public String getVaultPrefix() {
-			return vaultPrefix;
-		}
-
-		public int getDefaultMaxVaults() {
-			return defaultMaxVaults;
-		}
-	}
-
 	public class WorldGuard {
 		private boolean checking = false;
 		private boolean buildPriority = false;
@@ -2356,10 +2333,6 @@ public class MainConfig {
 	private LWC lwc = new LWC();
 	@Comment("Paper features, when accessible.")
 	private Paper paper = new Paper();
-	@Comment("PlayerVaults faction vault settings.\n" +
-			"Enable faction-owned vaults!\n" +
-			"https://www.spigotmc.org/resources/playervaultsx.51204/")
-	private PlayerVaults playerVaults = new PlayerVaults();
 	@Comment("WorldGuard settings")
 	private WorldGuard worldGuard = new WorldGuard();
 	private WorldBorder worldBorder = new WorldBorder();
@@ -2406,10 +2379,6 @@ public class MainConfig {
 
 	public Paper paper() {
 		return paper;
-	}
-
-	public PlayerVaults playerVaults() {
-		return playerVaults;
 	}
 
 	public WorldGuard worldGuard() {

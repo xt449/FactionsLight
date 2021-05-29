@@ -46,9 +46,6 @@ public class DynmapConfig {
 						+ "<br>\n"
 						+ "</div>";
 
-		@Comment("Enable the %money% macro. Only do this if you know your economy manager is thread-safe.")
-		private final boolean descriptionMoney = false;
-
 		@Comment("Allow players in faction to see one another on Dynmap (only relevant if Dynmap has 'player-info-protected' enabled)")
 		private final boolean visibilityByFaction = true;
 
@@ -81,10 +78,6 @@ public class DynmapConfig {
 
 		public String getDescription() {
 			return description;
-		}
-
-		public boolean isDescriptionMoney() {
-			return descriptionMoney;
 		}
 
 		public boolean isVisibilityByFaction() {

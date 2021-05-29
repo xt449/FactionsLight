@@ -49,7 +49,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
 	protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
 	private long lastDeath;
-	protected int maxVaults;
 	protected Role defaultRole;
 	protected Map<Permissible, Map<PermissibleAction, Boolean>> permissions = new HashMap<>();
 	protected Map<Permissible, Map<PermissibleAction, Boolean>> permissionsOffline = new HashMap<>();
@@ -57,7 +56,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	protected double dtr;
 	protected long lastDTRUpdateTime;
 	protected long frozenDTRUntilTime;
-	protected int tntBank;
 	protected transient OfflinePlayer offlinePlayer;
 
 	public HashMap<String, List<String>> getAnnouncements() {
@@ -121,14 +119,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 	public void clearWarps() {
 		warps.clear();
-	}
-
-	public int getMaxVaults() {
-		return this.maxVaults;
-	}
-
-	public void setMaxVaults(int value) {
-		this.maxVaults = value;
 	}
 
 	public Set<String> getInvites() {
@@ -551,7 +541,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		this.permanent = false;
 		this.powerBoost = 0.0;
 		this.foundedDate = System.currentTimeMillis();
-		this.maxVaults = FactionsPlugin.getInstance().conf().playerVaults().getDefaultMaxVaults();
 		this.defaultRole = FactionsPlugin.getInstance().conf().factions().other().getDefaultRole();
 		this.dtr = FactionsPlugin.getInstance().conf().factions().landRaidControl().dtr().getStartingDTR();
 
@@ -798,14 +787,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 	public int getLandRoundedInWorld(String worldName) {
 		return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
-	}
-
-	public int getTNTBank() {
-		return this.tntBank;
-	}
-
-	public void setTNTBank(int amount) {
-		this.tntBank = amount;
 	}
 
 	// -------------------------------
