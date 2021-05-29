@@ -847,9 +847,6 @@ public class MainConfig {
 			private boolean mustBeInClaimedTerritory = true;
 			private boolean teleportToOnDeath = true;
 			private boolean teleportCommandEnabled = true;
-			private boolean teleportCommandEssentialsIntegration = true;
-			private boolean teleportCommandSmokeEffectEnabled = true;
-			private float teleportCommandSmokeEffectThickness = 3f;
 			private boolean teleportAllowedFromEnemyTerritory = true;
 			private boolean teleportAllowedFromDifferentWorld = true;
 			private double teleportAllowedEnemyDistance = 32.0;
@@ -869,18 +866,6 @@ public class MainConfig {
 
 			public boolean isTeleportCommandEnabled() {
 				return teleportCommandEnabled;
-			}
-
-			public boolean isTeleportCommandEssentialsIntegration() {
-				return teleportCommandEssentialsIntegration;
-			}
-
-			public boolean isTeleportCommandSmokeEffectEnabled() {
-				return teleportCommandSmokeEffectEnabled;
-			}
-
-			public float getTeleportCommandSmokeEffectThickness() {
-				return teleportCommandSmokeEffectThickness;
 			}
 
 			public boolean isTeleportAllowedFromEnemyTerritory() {
