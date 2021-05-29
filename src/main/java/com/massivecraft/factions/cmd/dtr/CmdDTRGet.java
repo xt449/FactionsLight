@@ -29,11 +29,6 @@ public class CmdDTRGet extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostDTR(), TL.COMMAND_DTR_TOSHOW, TL.COMMAND_DTR_FORSHOW)) {
-			return;
-		}
-
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
 		context.msg(TL.COMMAND_DTR_DTR, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()), DTRControl.round(dtr.getMaxDTR(target)));
 	}

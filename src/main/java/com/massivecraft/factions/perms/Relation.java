@@ -131,18 +131,6 @@ public enum Relation implements Permissible {
 		}
 	}
 
-	public double getRelationCost() {
-		if(isEnemy()) {
-			return FactionsPlugin.getInstance().conf().economy().getCostEnemy();
-		} else if(isAlly()) {
-			return FactionsPlugin.getInstance().conf().economy().getCostAlly();
-		} else if(isTruce()) {
-			return FactionsPlugin.getInstance().conf().economy().getCostTruce();
-		} else {
-			return FactionsPlugin.getInstance().conf().economy().getCostNeutral();
-		}
-	}
-
 	/**
 	 * Gets this enum name, in lower case, for fastest possible access for
 	 * {@link com.massivecraft.factions.integration.permcontext.Contexts#TERRITORY_RELATION}

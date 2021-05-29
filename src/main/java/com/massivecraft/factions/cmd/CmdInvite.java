@@ -36,11 +36,6 @@ public class CmdInvite extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostInvite(), TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
-			return;
-		}
-
 		if(context.faction.isBanned(target)) {
 			context.msg(TL.COMMAND_INVITE_BANNED, target.getName());
 			return;

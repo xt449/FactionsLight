@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
@@ -88,20 +87,6 @@ public class CmdHelp extends FCommand {
 		pageLines.add(plugin.txt().parse(TL.COMMAND_HELP_HOME.toString()));
 		pageLines.add(FCmdRoot.getInstance().cmdSethome.getUsageTemplate(context, true));
 		helpPages.add(pageLines);
-
-		if(VaultEconomy.isSetup() && FactionsPlugin.getInstance().conf().economy().isEnabled() && FactionsPlugin.getInstance().conf().economy().isBankEnabled()) {
-			pageLines = new ArrayList<>();
-			pageLines.add("");
-			pageLines.add(plugin.txt().parse(TL.COMMAND_HELP_BANK_1.toString()));
-			pageLines.add(plugin.txt().parse(TL.COMMAND_HELP_BANK_2.toString()));
-			pageLines.add(plugin.txt().parse(TL.COMMAND_HELP_BANK_3.toString()));
-			pageLines.add("");
-			pageLines.add(FCmdRoot.getInstance().cmdMoney.getUsageTemplate(context, true));
-			pageLines.add("");
-			pageLines.add("");
-			pageLines.add("");
-			helpPages.add(pageLines);
-		}
 
 		pageLines = new ArrayList<>();
 		pageLines.add(FCmdRoot.getInstance().cmdClaim.getUsageTemplate(context, true));

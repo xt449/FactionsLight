@@ -64,11 +64,6 @@ public abstract class FRelationCommand extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
-			return;
-		}
-
 		// try to set the new relation
 		context.faction.setRelationWish(them, targetRelation);
 		Relation currentRelation = context.faction.getRelationTo(them, true);

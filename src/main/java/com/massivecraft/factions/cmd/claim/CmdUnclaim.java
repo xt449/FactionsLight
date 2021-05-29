@@ -8,7 +8,6 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.LandUnclaimEvent;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
@@ -143,20 +142,6 @@ public class CmdUnclaim extends FCommand {
 		Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
 		if(unclaimEvent.isCancelled()) {
 			return false;
-		}
-
-		if(VaultEconomy.shouldBeUsed()) {
-			double refund = VaultEconomy.calculateClaimRefund(context.faction.getLandRounded());
-
-			if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysLandCosts()) {
-				if(!VaultEconomy.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-					return false;
-				}
-			} else {
-				if(!VaultEconomy.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-					return false;
-				}
-			}
 		}
 
 		Board.getInstance().removeAt(target);

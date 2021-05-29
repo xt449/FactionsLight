@@ -3,7 +3,6 @@ package com.massivecraft.factions.integration.dynmap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.config.file.DynmapConfig;
 import com.massivecraft.factions.data.MemoryBoard;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -604,15 +603,6 @@ public class EngineDynmap {
 		description = ChatColor.stripColor(description);
 		description = escapeHtml(description);
 		ret = ret.replace("%description%", description);
-
-		// Money
-
-		String money = "unavailable";
-		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && dynmapConf.dynmap().isDescriptionMoney()) {
-			money = String.format("%.2f", VaultEconomy.getBalance(faction));
-		}
-		ret = ret.replace("%money%", money);
-
 
 		// Players
 		Set<FPlayer> playersList = faction.getFPlayers();

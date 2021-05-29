@@ -3,7 +3,6 @@ package com.massivecraft.factions.gui;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -102,9 +101,7 @@ public class WarpGUI extends GUI<Integer> {
 		if(warps.size() > index) {
 			String warp = warps.get(index);
 			if(!faction.hasWarpPassword(warp)) {
-				if(transact()) {
-					doWarmup(warp);
-				}
+				doWarmup(warp);
 			} else {
 				HashMap<Object, Object> sessionData = new HashMap<>();
 				sessionData.put("warp", warp);
@@ -192,10 +189,7 @@ public class WarpGUI extends GUI<Integer> {
 		public Prompt acceptInput(ConversationContext context, String input) {
 			String warp = (String) context.getSessionData("warp");
 			if(faction.isWarpPassword(warp, input)) {
-				// Valid Password, make em pay
-				if(transact()) {
-					doWarmup(warp);
-				}
+				doWarmup(warp);
 			} else {
 				// Invalid Password
 				user.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
@@ -229,23 +223,4 @@ public class WarpGUI extends GUI<Integer> {
 			}
 		}, FactionsPlugin.getInstance().conf().commands().warp().getDelay());
 	}
-
-	private boolean transact() {
-		if(!user.isAdminBypassing()) {
-			return true;
-		}
-
-		double cost = FactionsPlugin.getInstance().conf().economy().getCostWarp();
-
-		if(!VaultEconomy.shouldBeUsed() || this.user == null || cost == 0.0 || user.isAdminBypassing()) {
-			return true;
-		}
-
-		if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysCosts() && user.hasFaction() && user.getFaction().hasAccess(user, PermissibleAction.ECONOMY)) {
-			return VaultEconomy.modifyMoney(user.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
-		} else {
-			return VaultEconomy.modifyMoney(user, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
-		}
-	}
-
 }

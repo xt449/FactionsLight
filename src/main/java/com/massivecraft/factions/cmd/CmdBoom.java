@@ -28,11 +28,6 @@ public class CmdBoom extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostNoBoom(), TL.COMMAND_BOOM_TOTOGGLE, TL.COMMAND_BOOM_FORTOGGLE)) {
-			return;
-		}
-
 		context.faction.setPeacefulExplosionsEnabled(context.argAsBool(0, !context.faction.getPeacefulExplosionsEnabled()));
 
 		String enabled = context.faction.noExplosionsInTerritory() ? TL.GENERIC_DISABLED.toString() : TL.GENERIC_ENABLED.toString();

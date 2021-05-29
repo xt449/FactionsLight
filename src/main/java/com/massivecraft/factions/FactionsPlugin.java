@@ -292,7 +292,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				VaultEconomy.setup();
 				vaultPermission = new VaultPermission();
 				cmdBase.done();
 				getLogger().removeHandler(handler);

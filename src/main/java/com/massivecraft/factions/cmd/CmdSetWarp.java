@@ -38,10 +38,6 @@ public class CmdSetWarp extends FCommand {
 			return;
 		}
 
-		if(!transact(context.fPlayer, context)) {
-			return;
-		}
-
 		String warp = context.argAsString(0);
 		String password = context.argAsString(1);
 
@@ -51,10 +47,6 @@ public class CmdSetWarp extends FCommand {
 			context.faction.setWarpPassword(warp, password);
 		}
 		context.fPlayer.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
-	}
-
-	private boolean transact(FPlayer player, CommandContext context) {
-		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostSetWarp(), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
 	}
 
 	@Override

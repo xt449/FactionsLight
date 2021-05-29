@@ -70,7 +70,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 					}
 				}
 
-				fplayer.leave(false);
+				fplayer.leave();
 				iterator.remove();  // go ahead and remove this list's link to the FPlayer object
 				if(FactionsPlugin.getInstance().conf().factions().other().isAutoLeaveDeleteFPlayerData()) {
 					fplayer.remove();

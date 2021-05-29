@@ -649,7 +649,7 @@ public class FactionsPlayerListener extends AbstractListener {
 				badGuy.getFaction().promoteNewLeader();
 			}
 
-			badGuy.leave(false);
+			badGuy.leave();
 			badGuy.remove();
 		}
 	}

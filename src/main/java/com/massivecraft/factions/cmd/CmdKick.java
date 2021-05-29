@@ -85,20 +85,10 @@ public class CmdKick extends FCommand {
 			}
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostKick(), TL.COMMAND_KICK_TOKICK.toString())) {
-			return;
-		}
-
 		// trigger the leave event (cancellable) [reason:kicked]
 		FPlayerLeaveEvent event = new FPlayerLeaveEvent(toKick, toKick.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if(event.isCancelled()) {
-			return;
-		}
-
-		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostKick(), TL.COMMAND_KICK_TOKICK.toString(), TL.COMMAND_KICK_FORKICK.toString())) {
 			return;
 		}
 

@@ -81,11 +81,6 @@ public class CmdOwner extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostOwner(), TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
-			return;
-		}
-
 		context.faction.setPlayerAsOwner(target, flocation);
 
 		context.msg(TL.COMMAND_OWNER_ADDED, playerName);

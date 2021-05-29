@@ -72,11 +72,6 @@ public class CmdJoin extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(samePlayer && !context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostJoin(), TL.COMMAND_JOIN_TOJOIN.toString())) {
-			return;
-		}
-
 		// Check for ban
 		if(!context.fPlayer.isAdminBypassing() && faction.isBanned(context.fPlayer)) {
 			context.fPlayer.msg(TL.COMMAND_JOIN_BANNED, faction.getTag(context.fPlayer));
@@ -87,11 +82,6 @@ public class CmdJoin extends FCommand {
 		FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
 		Bukkit.getServer().getPluginManager().callEvent(joinEvent);
 		if(joinEvent.isCancelled()) {
-			return;
-		}
-
-		// then make 'em pay (if applicable)
-		if(samePlayer && !context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostJoin(), TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
 			return;
 		}
 

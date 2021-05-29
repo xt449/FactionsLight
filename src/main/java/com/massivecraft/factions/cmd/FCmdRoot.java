@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.claim.*;
-import com.massivecraft.factions.cmd.money.CmdMoney;
 import com.massivecraft.factions.cmd.relations.CmdRelationAlly;
 import com.massivecraft.factions.cmd.relations.CmdRelationEnemy;
 import com.massivecraft.factions.cmd.relations.CmdRelationNeutral;
@@ -56,7 +55,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public CmdLock cmdLock = new CmdLock();
 	public CmdMap cmdMap = new CmdMap();
 	public CmdMod cmdMod = new CmdMod();
-	public CmdMoney cmdMoney = new CmdMoney();
 	public CmdOpen cmdOpen = new CmdOpen();
 	public CmdOwner cmdOwner = new CmdOwner();
 	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
@@ -151,7 +149,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdLock);
 		this.addSubCommand(this.cmdMap);
 		this.addSubCommand(this.cmdMod);
-		this.addSubCommand(this.cmdMoney);
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdOwner);
 		this.addSubCommand(this.cmdOwnerList);

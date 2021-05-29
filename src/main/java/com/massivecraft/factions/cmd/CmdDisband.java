@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
@@ -78,19 +77,6 @@ public class CmdDisband extends FCommand {
 		if(FactionsPlugin.getInstance().conf().logging().isFactionDisband()) {
 			//TODO: Format this correctly and translate.
 			FactionsPlugin.getInstance().log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (context.player == null ? "console command" : context.fPlayer.getName()) + ".");
-		}
-
-		if(VaultEconomy.shouldBeUsed() && context.player != null) {
-			//Give all the faction's money to the disbander
-			double amount = VaultEconomy.getBalance(faction);
-			VaultEconomy.transferMoney(context.fPlayer, faction, context.fPlayer, amount, false);
-
-			if(amount > 0.0) {
-				String amountString = VaultEconomy.moneyString(amount);
-				context.msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
-				//TODO: Format this correctly and translate
-				FactionsPlugin.getInstance().log(context.fPlayer.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
-			}
 		}
 
 		Factions.getInstance().removeFaction(faction.getId());

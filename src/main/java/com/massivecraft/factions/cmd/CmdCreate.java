@@ -46,19 +46,9 @@ public class CmdCreate extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE.toString())) {
-			return;
-		}
-
 		FactionAttemptCreateEvent attemptEvent = new FactionAttemptCreateEvent(context.player, tag);
 		Bukkit.getServer().getPluginManager().callEvent(attemptEvent);
 		if(attemptEvent.isCancelled()) {
-			return;
-		}
-
-		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostCreate(), TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
 			return;
 		}
 

@@ -65,11 +65,6 @@ public class CmdShow extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostShow(), TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
-			return;
-		}
-
 		List<String> show = FactionsPlugin.getInstance().conf().commands().show().getFormat();
 		if(show == null || show.isEmpty()) {
 			show = defaults;

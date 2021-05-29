@@ -64,10 +64,6 @@ public class CmdWarpOther extends FCommand {
 				if(tpEvent.isCancelled()) {
 					return;
 				}
-				// Check transaction AFTER password check.
-				if(!transact(context.fPlayer, context)) {
-					return;
-				}
 				final FPlayer fPlayer = context.fPlayer;
 				final UUID uuid = context.fPlayer.getPlayer().getUniqueId();
 				context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
@@ -84,10 +80,6 @@ public class CmdWarpOther extends FCommand {
 				context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName);
 			}
 		}
-	}
-
-	private boolean transact(FPlayer player, CommandContext context) {
-		return player.isAdminBypassing() || context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostWarp(), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 	}
 
 	@Override

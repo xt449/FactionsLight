@@ -6,7 +6,6 @@ import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.integration.VaultEconomy;
 import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
@@ -734,9 +733,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 	// -------------------------------
 
 	@Override
-	public void leave(boolean makePay) {
+	public void leave() {
 		Faction myFaction = this.getFaction();
-		boolean econMakePay = makePay && VaultEconomy.shouldBeUsed() && !this.isAdminBypassing();
 
 		if(myFaction == null) {
 			resetFactionData();
@@ -750,32 +748,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 			return;
 		}
 
-		if(makePay && !FactionsPlugin.getInstance().getLandRaidControl().canLeaveFaction(this)) {
-			return;
-		}
-
-		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		if(econMakePay && !VaultEconomy.hasAtLeast(this, FactionsPlugin.getInstance().conf().economy().getCostLeave(), TL.LEAVE_TOLEAVE.toString())) {
-			return;
-		}
-
 		FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this, myFaction, FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
 		Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
 		if(leaveEvent.isCancelled()) {
 			return;
-		}
-
-		// then make 'em pay (if applicable)
-		if(econMakePay && !VaultEconomy.modifyMoney(this, -FactionsPlugin.getInstance().conf().economy().getCostLeave(), TL.LEAVE_TOLEAVE.toString(), TL.LEAVE_FORLEAVE.toString())) {
-			return;
-		}
-
-		// Am I the last one in the faction?
-		if(myFaction.getFPlayers().size() == 1) {
-			// Transfer all money
-			if(VaultEconomy.shouldBeUsed()) {
-				VaultEconomy.transferMoney(this, myFaction, this, VaultEconomy.getBalance(myFaction));
-			}
 		}
 
 		if(myFaction.isNormal()) {
@@ -929,43 +905,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 			return false;
 		}
 
-		// if economy is enabled and they're not on the bypass list, make sure they can pay
-		boolean mustPay = VaultEconomy.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
-		double cost = 0.0;
-		EconomyParticipator payee = null;
-		if(mustPay) {
-			cost = VaultEconomy.calculateClaimCost(ownedLand, currentFaction.isNormal());
-
-			if(FactionsPlugin.getInstance().conf().economy().getClaimUnconnectedFee() != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
-				cost += FactionsPlugin.getInstance().conf().economy().getClaimUnconnectedFee();
-			}
-
-			if(FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysLandCosts() && this.hasFaction() && this.getFaction().hasAccess(this, PermissibleAction.ECONOMY)) {
-				payee = this.getFaction();
-			} else {
-				payee = this;
-			}
-
-			if(!VaultEconomy.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
-				return false;
-			}
-		}
-
 		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
 		Bukkit.getServer().getPluginManager().callEvent(claimEvent);
 		if(claimEvent.isCancelled()) {
 			return false;
-		}
-
-		// then make 'em pay (if applicable)
-		if(mustPay && !VaultEconomy.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
-			return false;
-		}
-
-		// Was an over claim
-		if(mustPay && currentFaction.isNormal() && currentFaction.hasLandInflation()) {
-			// Give them money for over claiming.
-			VaultEconomy.modifyMoney(payee, FactionsPlugin.getInstance().conf().economy().getOverclaimRewardMultiplier(), TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
 		}
 
 		if(LWC.getEnabled() && forFaction.isNormal() && FactionsPlugin.getInstance().conf().lwc().isResetLocksOnCapture()) {

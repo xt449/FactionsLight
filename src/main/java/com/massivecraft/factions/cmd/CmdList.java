@@ -28,11 +28,6 @@ public class CmdList extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostList(), "to list the factions", "for listing the factions")) {
-			return;
-		}
-
 		ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
 		factionList.remove(Factions.getInstance().getWilderness());
 		factionList.remove(Factions.getInstance().getSafeZone());

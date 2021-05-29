@@ -41,20 +41,10 @@ public class CmdTag extends FCommand {
 			return;
 		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if(!context.canAffordCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE.toString())) {
-			return;
-		}
-
 		// trigger the faction rename event (cancellable)
 		FactionRenameEvent renameEvent = new FactionRenameEvent(context.fPlayer, tag);
 		Bukkit.getServer().getPluginManager().callEvent(renameEvent);
 		if(renameEvent.isCancelled()) {
-			return;
-		}
-
-		// then make 'em pay (if applicable)
-		if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostTag(), TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
 			return;
 		}
 

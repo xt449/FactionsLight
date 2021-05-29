@@ -47,13 +47,7 @@ public class CmdStuck extends FCommand {
 				return;
 			}
 
-			// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-			if(!context.payForCommand(FactionsPlugin.getInstance().conf().economy().getCostStuck(), TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
-				return;
-			}
-
 			final int id = new BukkitRunnable() {
-
 				@Override
 				public void run() {
 					if(!FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
