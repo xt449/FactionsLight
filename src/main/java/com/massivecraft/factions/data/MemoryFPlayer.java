@@ -65,7 +65,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected boolean isAdminBypassing = false;
 	protected int kills, deaths;
 	protected boolean willAutoLeave = true;
-	protected int mapHeight = 8; // default to old value
 	protected boolean isFlying = false;
 	protected boolean isAutoFlying = false;
 	protected boolean flyTrailsState = false;
@@ -97,7 +96,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.powerBoost = 0.0;
 		this.kills = 0;
 		this.deaths = 0;
-		this.mapHeight = FactionsPlugin.getInstance().conf().map().getHeight();
 
 		if(!FactionsPlugin.getInstance().conf().factions().other().getNewPlayerStartingFactionID().equals("0") && Factions.getInstance().isValidFactionId(FactionsPlugin.getInstance().conf().factions().other().getNewPlayerStartingFactionID())) {
 			this.factionId = FactionsPlugin.getInstance().conf().factions().other().getNewPlayerStartingFactionID();
@@ -123,7 +121,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.isAdminBypassing = other.isAdminBypassing;
 		this.kills = other.kills;
 		this.deaths = other.deaths;
-		this.mapHeight = other.mapHeight;
 	}
 
 	@Override
@@ -1029,20 +1026,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		for(FancyMessage msg : messages) {
 			msg.send(player);
 		}
-	}
-
-	@Override
-	public int getMapHeight() {
-		if(this.mapHeight < 1) {
-			this.mapHeight = FactionsPlugin.getInstance().conf().map().getHeight();
-		}
-
-		return this.mapHeight;
-	}
-
-	@Override
-	public void setMapHeight(int height) {
-		this.mapHeight = Math.min(height, (FactionsPlugin.getInstance().conf().map().getHeight() * 2));
 	}
 
 	@Override

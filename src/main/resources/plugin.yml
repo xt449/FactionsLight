@@ -104,7 +104,6 @@ permissions:
       factions.monitorlogins: true
       factions.top: true
       factions.togglealliancechat: true
-      factions.mapheight: true
       factions.ban: true
       factions.coleader: true
       factions.near: true
@@ -251,8 +250,6 @@ permissions:
     description: Ability to send players to their faction home.
   factions.autoleavebypass:
     description: Bypass autoleave.
-  factions.mapheight:
-    description: Set your /f map height.
   factions.ban:
     description: Ban players from Factions
   factions.coleader:

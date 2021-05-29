@@ -265,6 +265,8 @@ public abstract class MemoryBoard extends Board {
 	// Map generation
 	//----------------------------------------------//
 
+	private final int mapHeight = 18;
+
 	/**
 	 * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
 	 * of decreasing z
@@ -280,7 +282,7 @@ public abstract class MemoryBoard extends Board {
 
 		int halfWidth = FactionsPlugin.getInstance().conf().map().getWidth() / 2;
 		// Use player's value for height
-		int halfHeight = fplayer.getMapHeight() / 2;
+		int halfHeight = mapHeight / 2;
 		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;

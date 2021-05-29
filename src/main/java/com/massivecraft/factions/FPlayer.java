@@ -229,10 +229,6 @@ public interface FPlayer extends EconomyParticipator {
 
 	void sendFancyMessage(List<FancyMessage> message);
 
-	int getMapHeight();
-
-	void setMapHeight(int height);
-
 	boolean isOnlineAndVisibleTo(Player me);
 
 	void remove();
