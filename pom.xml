@@ -136,13 +136,6 @@
         </dependency>
 
         <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>commodore</artifactId>
-            <version>1.3</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.5.1</version>
@@ -177,10 +170,6 @@
                         <relocation>
                             <pattern>net.amoebaman.util</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.net.amoebaman.util</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>me.lucko.commodore</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.me.lucko.commodore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.typesafe</pattern>
