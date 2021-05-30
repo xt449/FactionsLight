@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
@@ -28,12 +27,6 @@ public class CmdSetWarp extends FCommand {
 	public void perform(CommandContext context) {
 		if(!(context.fPlayer.getRelationToLocation() == Relation.MEMBER)) {
 			context.fPlayer.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
-			return;
-		}
-
-		int maxWarps = FactionsPlugin.getInstance().conf().commands().warp().getMaxWarps();
-		if(maxWarps <= context.faction.getWarps().size()) {
-			context.fPlayer.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
 			return;
 		}
 

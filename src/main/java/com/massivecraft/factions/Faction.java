@@ -135,8 +135,6 @@ public interface Faction extends EconomyParticipator {
 
 	boolean hasAccess(FPlayer player, PermissibleAction permissibleAction);
 
-	boolean isLocked(boolean online, Permissible permissible, PermissibleAction permissibleAction);
-
 	boolean setPermission(boolean online, Permissible permissible, PermissibleAction permissibleAction, boolean value);
 
 	void checkPerms();

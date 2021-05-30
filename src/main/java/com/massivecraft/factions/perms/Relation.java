@@ -4,9 +4,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
-import java.util.Collections;
-import java.util.Set;
-
 public enum Relation implements Permissible {
 	MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
 	ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
@@ -16,7 +13,6 @@ public enum Relation implements Permissible {
 
 	public final int value;
 	public final String nicename;
-	private Set<String> justMyNameInASet;
 
 	Relation(final int value, final String nicename) {
 		this.value = value;
@@ -115,32 +111,5 @@ public enum Relation implements Permissible {
 			default:
 				return FactionsPlugin.getInstance().conf().colors().relations().getEnemy();
 		}
-	}
-
-	public int getMax() {
-		switch(this) {
-			case ALLY:
-				return FactionsPlugin.getInstance().conf().factions().maxRelations().getAlly();
-			case ENEMY:
-				return FactionsPlugin.getInstance().conf().factions().maxRelations().getEnemy();
-			case TRUCE:
-				return FactionsPlugin.getInstance().conf().factions().maxRelations().getTruce();
-			case NEUTRAL:
-			default:
-				return FactionsPlugin.getInstance().conf().factions().maxRelations().getNeutral();
-		}
-	}
-
-	/**
-	 * Gets this enum name, in lower case, for fastest possible access for
-	 * {@link com.massivecraft.factions.integration.permcontext.Contexts#TERRITORY_RELATION}
-	 *
-	 * @return an immutable set of just this name
-	 */
-	public Set<String> getNameInASet() {
-		if(this.justMyNameInASet == null) {
-			this.justMyNameInASet = Collections.singleton(this.name().toLowerCase());
-		}
-		return this.justMyNameInASet;
 	}
 }

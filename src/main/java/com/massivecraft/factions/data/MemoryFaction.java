@@ -339,9 +339,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		if(permInfo == null) { // Not valid lookup, like a role-only lookup of a relation
 			return false;
 		}
-		if(permInfo.isLocked()) { // Locked, so ignore the faction's setting
-			return permInfo.defaultAllowed();
-		}
 
 		Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);
 		if(accessMap != null && accessMap.containsKey(permissibleAction)) {
@@ -349,14 +346,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		}
 
 		return permInfo.defaultAllowed(); // Fall back on default if something went wrong
-	}
-
-	public boolean isLocked(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
-		DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
-		if(permInfo == null) { // Not valid lookup, like a role-only lookup of a relation
-			return false;
-		}
-		return permInfo.isLocked();
 	}
 
 	private DefaultPermissionsConfig.Permissions.PermissiblePermInfo getPermInfo(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
@@ -417,8 +406,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		DefaultPermissionsConfig.Permissions defaultPermissions = this.getDefaultPermissions(online);
 
 		DefaultPermissionsConfig.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(online, permissible, permissibleAction);
-		if(permInfo == null || permInfo.isLocked()) {
-			return false; // Locked, can't continue;
+		if(permInfo == null) {
+			return false;
 		}
 
 		Map<PermissibleAction, Boolean> accessMap = permissionsMap.get(permissible);

@@ -467,7 +467,6 @@ public enum TL {
 	COMMAND_SETDEFAULTROLE_INVALIDROLE("Couldn't find matching role for %1$s"),
 
 	COMMAND_SETFWARP_NOTCLAIMED("&eYou can only set warps in your faction territory."),
-	COMMAND_SETFWARP_LIMIT("&eYour Faction already has the max amount of warps set &6(%1$d)."),
 	COMMAND_SETFWARP_SET("&eSet warp &6%1$s&e and password &b'%2$s' &eto your location."),
 	COMMAND_SETFWARP_TOSET("to set warp"),
 	COMMAND_SETFWARP_FORSET("for setting warp"),
@@ -645,7 +644,6 @@ public enum TL {
 	GENERIC_SERVERADMIN("A server admin"),
 	GENERIC_DISABLED("disabled"),
 	GENERIC_ENABLED("enabled"),
-	GENERIC_INFINITY("∞"),
 	GENERIC_CONSOLEONLY("This command cannot be run as a player."),
 	GENERIC_PLAYERONLY("&cThis command can only be used by ingame players."),
 	GENERIC_MEMBERONLY("&cYou are not member of any faction."),
@@ -802,8 +800,6 @@ public enum TL {
 	PERM_SHORT_SETHOME("set home"),
 	PERM_SHORT_LISTCLAIMS("list claims"),
 	PERM_SHORT_SETWARP("set warps"),
-	PERM_SHORT_TNTDEPOSIT("deposit TNT"),
-	PERM_SHORT_TNTWITHDRAW("withdraw TNT"),
 	PERM_SHORT_WARP("use warps"),
 	PERM_SHORT_OWNER("set ownership"),
 

@@ -9,15 +9,10 @@ import com.massivecraft.factions.perms.Role;
 public class DefaultPermissionsConfig {
 	public static class Permissions {
 		public static class PermissiblePermInfo {
-			public boolean isLocked() {
-				return this.locked;
-			}
-
 			public boolean defaultAllowed() {
 				return this.value;
 			}
 
-			private final boolean locked = false;
 			@ConfigName("default")
 			private boolean value = false;
 		}
@@ -46,7 +41,7 @@ public class DefaultPermissionsConfig {
 			}
 		}
 
-		public class FullPermInfo extends FactionOnlyPermInfo {
+		public static class FullPermInfo extends FactionOnlyPermInfo {
 			protected PermissiblePermInfo ally = new PermissiblePermInfo();
 			protected PermissiblePermInfo truce = new PermissiblePermInfo();
 			protected PermissiblePermInfo neutral = new PermissiblePermInfo();
@@ -137,14 +132,6 @@ public class DefaultPermissionsConfig {
 			return this.territory;
 		}
 
-		public FactionOnlyPermInfo getTNTDeposit() {
-			return this.tntDeposit;
-		}
-
-		public FactionOnlyPermInfo getTNTWithdraw() {
-			return this.tntWithdraw;
-		}
-
 		public FactionOnlyPermInfo getOwner() {
 			return this.owner;
 		}
@@ -167,10 +154,6 @@ public class DefaultPermissionsConfig {
 
 		public FullPermInfo getWarp() {
 			return this.warp;
-		}
-
-		public FullPermInfo getFly() {
-			return this.fly;
 		}
 
 		@Comment("Can ban others from the faction")
@@ -305,22 +288,6 @@ public class DefaultPermissionsConfig {
 				this.moderator.value = true;
 			}
 		};
-		@Comment("Can deposit TNT into the bank")
-		private final FactionOnlyPermInfo tntDeposit = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-			}
-		};
-		@Comment("Can withdraw TNT from the bank")
-		private final FactionOnlyPermInfo tntWithdraw = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-			}
-		};
 		@Comment("Can created owned areas with /f owner")
 		private final FactionOnlyPermInfo owner = new FactionOnlyPermInfo();
 		@Comment("Can interact with plates")
@@ -355,16 +322,6 @@ public class DefaultPermissionsConfig {
 				this.moderator.value = true;
 				this.normal.value = true;
 				this.recruit.value = true;
-			}
-		};
-		@Comment("Can fly in faction territory")
-		private final FullPermInfo fly = new FullPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-				this.ally.value = true;
 			}
 		};
 	}

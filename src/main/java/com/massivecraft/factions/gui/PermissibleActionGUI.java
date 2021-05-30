@@ -55,12 +55,8 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		toParse = toParse.replace("{action}", actionName);
 
 		boolean access = user.getFaction().hasAccess(online, permissible, action);
-		String extra = "";
-		if(user.getFaction().isLocked(online, permissible, action)) {
-			extra = locked;
-		}
 
-		toParse = toParse.replace("{action-access}", (access ? allow : deny) + extra);
+		toParse = toParse.replace("{action-access}", (access ? allow : deny));
 		toParse = toParse.replace("{action-access-color}", access ? ChatColor.GREEN.toString() : ChatColor.DARK_RED.toString());
 		toParse = toParse.replace("{action-desc}", action.getDescription());
 

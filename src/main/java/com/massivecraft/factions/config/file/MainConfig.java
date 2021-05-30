@@ -350,44 +350,12 @@ public class MainConfig {
 			}
 		}
 
-		public class TNT {
-			private boolean enable = false;
-			@Comment("Maximum storage. Set to -1 (or lower) to disable")
-			private int maxStorage = -1;
-			private int maxRadius = 5;
-
-			public int getMaxRadius() {
-				return maxRadius;
-			}
-
-			public int getMaxStorage() {
-				return maxStorage;
-			}
-
-			public boolean isAboveMaxStorage(int amount) {
-				if(maxStorage < 0) {
-					return false;
-				}
-				return amount > maxStorage;
-			}
-
-			public boolean isEnable() {
-				return enable;
-			}
-		}
-
 		public class Warp {
 			@Comment("Warmup seconds before command executes. Set to 0 for no warmup.")
 			private int delay = 0;
-			@Comment("What should be the maximum amount of warps that a Faction can set?")
-			private int maxWarps = 5;
 
 			public int getDelay() {
 				return delay;
-			}
-
-			public int getMaxWarps() {
-				return maxWarps;
 			}
 		}
 
@@ -882,34 +850,6 @@ public class MainConfig {
 
 			public boolean isTeleportIgnoreEnemiesIfInOwnTerritory() {
 				return teleportIgnoreEnemiesIfInOwnTerritory;
-			}
-		}
-
-		public class MaxRelations {
-			private boolean enabled = false;
-			private int ally = 10;
-			private int truce = 10;
-			private int neutral = -1;
-			private int enemy = 10;
-
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			public int getAlly() {
-				return ally;
-			}
-
-			public int getTruce() {
-				return truce;
-			}
-
-			public int getNeutral() {
-				return neutral;
-			}
-
-			public int getEnemy() {
-				return enemy;
 			}
 		}
 
@@ -1840,12 +1780,6 @@ public class MainConfig {
 
 		private Chat chat = new Chat();
 		private Homes homes = new Homes();
-		@Comment("Limits factions to having a max number of each relation.\n" +
-				"Setting to 0 means none allowed. -1 for disabled.\n" +
-				"This will have no effect on default or existing relations, only when relations are changed.\n" +
-				"It is advised that you set the default relation to -1 so they can always go back to that.\n" +
-				"Otherwise Factions could be stuck with not being able to unenemy other Factions.")
-		private MaxRelations maxRelations = new MaxRelations();
 		private PVP pvp = new PVP();
 		private SpecialCase specialCase = new SpecialCase();
 		private Claims claims = new Claims();
@@ -1879,10 +1813,6 @@ public class MainConfig {
 
 		public Homes homes() {
 			return homes;
-		}
-
-		public MaxRelations maxRelations() {
-			return maxRelations;
 		}
 
 		public PVP pvp() {

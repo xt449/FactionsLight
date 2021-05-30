@@ -53,10 +53,6 @@ public abstract class FRelationCommand extends FCommand {
 			return;
 		}
 
-		if(hasMaxRelations(them, targetRelation, context)) {
-			// We message them down there with the count.
-			return;
-		}
 		Relation oldRelation = context.faction.getRelationTo(them, true);
 		FactionRelationWishEvent wishEvent = new FactionRelationWishEvent(context.fPlayer, context.faction, them, oldRelation, targetRelation);
 		Bukkit.getPluginManager().callEvent(wishEvent);
@@ -96,23 +92,6 @@ public abstract class FRelationCommand extends FCommand {
 
 		FTeamWrapper.updatePrefixes(context.faction);
 		FTeamWrapper.updatePrefixes(them);
-	}
-
-	private boolean hasMaxRelations(Faction them, Relation targetRelation, CommandContext context) {
-		if(FactionsPlugin.getInstance().conf().factions().maxRelations().isEnabled()) {
-			int max = targetRelation.getMax();
-			if(max != -1) {
-				if(context.faction.getRelationCount(targetRelation) >= max) {
-					context.msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
-					return true;
-				}
-				if(them.getRelationCount(targetRelation) >= max) {
-					context.msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	@Override
