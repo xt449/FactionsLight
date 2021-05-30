@@ -12,9 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class CmdHome extends FCommand {
 

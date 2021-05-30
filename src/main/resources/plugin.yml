@@ -1,12 +1,10 @@
-name: ${project.name}
+name: Factions
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, CmdrKittens, xt449]
 softdepend: [LuckPerms]
 api-version: '1.16'
 website: https://www.spigotmc.org/resources/factionsuuid.1035/
-libraries:
-  - io.papermc:paperlib:1.0.6
 commands:
   factions:
     description: Reference command for Factions.

@@ -105,7 +105,7 @@
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
             <version>1.0.6</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -169,59 +169,34 @@
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <minimizeJar>true</minimizeJar>
-                    <artifactSet>
-                        <excludes>
-                            <exclude>com.mojang:brigadier</exclude>
-                        </excludes>
-                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>mkremins.fanciful</pattern>
-                            <shadedPattern>moss.factions.shade.mkremins.fanciful</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.google</pattern>
-                            <shadedPattern>moss.factions.shade.com.google</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.darkblade12</pattern>
-                            <shadedPattern>moss.factions.shade.com.darkblade12</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.amoebaman.util</pattern>
-                            <shadedPattern>moss.factions.shade.net.amoebaman.util</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.amoebaman.util</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>me.lucko.commodore</pattern>
-                            <shadedPattern>moss.factions.shade.me.lucko.commodore</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.me.lucko.commodore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.typesafe</pattern>
-                            <shadedPattern>moss.factions.shade.com.typesafe</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>ninja.leaping</pattern>
-                            <shadedPattern>moss.factions.shade.ninja.leaping</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.typesafe</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.http</pattern>
-                            <shadedPattern>moss.factions.shade.org.apache.http</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.apache.commons.codec</pattern>
-                            <shadedPattern>moss.factions.shade.org.apache.commons.codec</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.apache.commons.logging</pattern>
-                            <shadedPattern>moss.factions.shade.org.apache.commons.logging</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.apache.http</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.kitteh</pattern>
-                            <shadedPattern>moss.factions.shade.org.kitteh</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.kitteh</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.papermc.lib</pattern>
-                            <shadedPattern>moss.factions.shade.io.paperlib</shadedPattern>
+                            <shadedPattern>com.massivecraft.factions.shade.io.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
