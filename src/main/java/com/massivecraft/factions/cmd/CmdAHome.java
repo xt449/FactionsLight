@@ -2,10 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -37,7 +37,7 @@ public class CmdAHome extends FCommand {
 				if(tpEvent.isCancelled()) {
 					return;
 				}
-				FactionsPlugin.getInstance().teleport(target.getPlayer(), destination).thenAccept(success -> {
+				PaperLib.teleportAsync(target.getPlayer(), destination).thenAccept(success -> {
 					if(success) {
 						context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
 						target.msg(TL.COMMAND_AHOME_TARGET);

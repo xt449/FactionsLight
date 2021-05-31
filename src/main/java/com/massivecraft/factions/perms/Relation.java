@@ -101,15 +101,15 @@ public enum Relation implements Permissible {
 	public ChatColor getColor() {
 		switch(this) {
 			case MEMBER:
-				return FactionsPlugin.getInstance().conf().colors().relations().getMember();
+				return FactionsPlugin.getInstance().configMain.colors().relations().member();
 			case ALLY:
-				return FactionsPlugin.getInstance().conf().colors().relations().getAlly();
+				return FactionsPlugin.getInstance().configMain.colors().relations().ally();
 			case NEUTRAL:
-				return FactionsPlugin.getInstance().conf().colors().relations().getNeutral();
+				return FactionsPlugin.getInstance().configMain.colors().relations().neutral();
 			case TRUCE:
-				return FactionsPlugin.getInstance().conf().colors().relations().getTruce();
+				return FactionsPlugin.getInstance().configMain.colors().relations().truce();
 			default:
-				return FactionsPlugin.getInstance().conf().colors().relations().getEnemy();
+				return FactionsPlugin.getInstance().configMain.colors().relations().enemy();
 		}
 	}
 }

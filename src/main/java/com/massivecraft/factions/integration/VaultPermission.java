@@ -23,14 +23,6 @@ public class VaultPermission {
 		}
 	}
 
-	public String getName() {
-		return permission == null ? "nope" : permission.getName();
-	}
-
-	public Object getPermission() {
-		return permission;
-	}
-
 	public String getPrimaryGroup(OfflinePlayer player) {
 		return permission == null || !permission.hasGroupSupport() ? " " : permission.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
 	}

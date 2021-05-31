@@ -2,7 +2,7 @@ package com.massivecraft.factions.landraidcontrol;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CommandContext;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.event.DTRLossEvent;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
@@ -19,8 +19,8 @@ public class DTRControl implements LandRaidControl {
 		return BigDecimal.valueOf(dtr).setScale(conf().getDecimalDigits(), RoundingMode.UP).toPlainString();
 	}
 
-	private static MainConfig.Factions.LandRaidControl.DTR conf() {
-		return plugin.conf().factions().landRaidControl().dtr();
+	private static MainConfiguration.Factions.LandRaidControl.DTR conf() {
+		return plugin.configMain.factions().landRaidControl().dtr();
 	}
 
 	public DTRControl() {
@@ -73,7 +73,7 @@ public class DTRControl implements LandRaidControl {
 	public boolean canKick(FPlayer toKick, CommandContext context) {
 		if(toKick.getFaction().isNormal()) {
 			Faction faction = toKick.getFaction();
-			if(!FactionsPlugin.getInstance().conf().commands().kick().isAllowKickInEnemyTerritory() &&
+			if(!FactionsPlugin.getInstance().configMain.commands().kick().isAllowKickInEnemyTerritory() &&
 					Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
 				context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
 				return false;

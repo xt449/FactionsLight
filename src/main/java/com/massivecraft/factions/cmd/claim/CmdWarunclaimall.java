@@ -40,7 +40,7 @@ public class CmdWarunclaimall extends FCommand {
 			Board.getInstance().unclaimAllInWorld(id, world);
 		}
 
-		if(FactionsPlugin.getInstance().conf().logging().isLandUnclaims()) {
+		if(FactionsPlugin.getInstance().configMain.logging().isLandUnclaims()) {
 			FactionsPlugin.getInstance().log(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()));
 		}
 	}

@@ -5,10 +5,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.ChatColor;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,15 +20,14 @@ public abstract class FCommand {
 		INVISIBLE // Invisible commands are invisible to everyone, even those who can use the command.
 	}
 
-	public FactionsPlugin plugin;
-	public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
+	public final FactionsPlugin plugin;
 
 	// Command Aliases
-	public List<String> aliases;
+	public final List<String> aliases;
 
 	// Information on the args
-	public List<String> requiredArgs;
-	public LinkedHashMap<String, String> optionalArgs;
+	public final List<String> requiredArgs;
+	public final LinkedHashMap<String, String> optionalArgs;
 
 	// Requirements to execute this command
 	public CommandRequirements requirements;
@@ -102,7 +99,7 @@ public abstract class FCommand {
 			if(context.sender != null) {
 				// Get the to many string slice
 				List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
-				context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
+				context.msg(TL.GENERIC_ARGS_TOOMANY, String.join(" ", theToMany));
 				context.sender.sendMessage(this.getUsageTemplate(context));
 			}
 			return false;
@@ -113,7 +110,7 @@ public abstract class FCommand {
 	/*
 		Subcommands
 	 */
-	public List<FCommand> subCommands;
+	public final List<FCommand> subCommands;
 
 	public void addSubCommand(FCommand subCommand) {
 		this.subCommands.add(subCommand);
@@ -122,8 +119,8 @@ public abstract class FCommand {
 	/*
 		Help
 	 */
-	public List<String> helpLong;
-	public CommandVisibility visibility;
+	public final List<String> helpLong;
+	public final CommandVisibility visibility;
 
 	private String helpShort;
 
@@ -146,7 +143,7 @@ public abstract class FCommand {
 	 */
 	public List<String> getToolTips(FPlayer player) {
 		List<String> lines = new ArrayList<>();
-		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getPlayer()) {
+		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
 		}
 		return lines;
@@ -154,7 +151,7 @@ public abstract class FCommand {
 
 	public List<String> getToolTips(Faction faction) {
 		List<String> lines = new ArrayList<>();
-		for(String s : FactionsPlugin.getInstance().conf().commands().toolTips().getFaction()) {
+		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().faction()) {
 			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));
 		}
 		return lines;
@@ -165,15 +162,13 @@ public abstract class FCommand {
  */
 	public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
 		StringBuilder ret = new StringBuilder();
-		ret.append(FactionsPlugin.getInstance().txt().parseTags("<c>"));
-		ret.append('/');
+		ret.append(ChatColor.DARK_AQUA).append('/');
 
 		for(FCommand fc : context.commandChain) {
-			ret.append(TextUtil.implode(fc.aliases, ","));
-			ret.append(' ');
+			ret.append(String.join(",", fc.aliases)).append(' ');
 		}
 
-		ret.append(TextUtil.implode(this.aliases, ","));
+		ret.append(String.join(",", this.aliases));
 
 		List<String> args = new ArrayList<>();
 
@@ -192,13 +187,11 @@ public abstract class FCommand {
 		}
 
 		if(args.size() > 0) {
-			ret.append(FactionsPlugin.getInstance().txt().parseTags("<p> "));
-			ret.append(TextUtil.implode(args, " "));
+			ret.append(ChatColor.AQUA).append(' ').append(String.join(" ", args));
 		}
 
 		if(addShortHelp) {
-			ret.append(FactionsPlugin.getInstance().txt().parseTags(" <i>"));
-			ret.append(this.getHelpShort());
+			ret.append(' ').append(ChatColor.YELLOW).append(this.getHelpShort());
 		}
 
 		return ret.toString();

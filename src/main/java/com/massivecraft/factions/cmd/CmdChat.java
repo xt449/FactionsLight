@@ -23,7 +23,7 @@ public class CmdChat extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(!FactionsPlugin.getInstance().conf().factions().chat().isFactionOnlyChat()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().chat().isFactionOnlyChat()) {
 			context.msg(TL.COMMAND_CHAT_DISABLED.toString());
 			return;
 		}

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class Factions {
-	protected static Factions instance = getFactionsImpl();
+	protected static final Factions instance = getFactionsImpl();
 
 	public abstract Faction getFactionById(String id);
 

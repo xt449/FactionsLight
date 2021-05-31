@@ -1,7 +1,10 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -83,16 +86,8 @@ public class FLocation implements Serializable {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
 	public long getZ() {
 		return z;
-	}
-
-	public void setZ(int z) {
-		this.z = z;
 	}
 
 	public String getCoordString() {
@@ -128,24 +123,8 @@ public class FLocation implements Serializable {
 		return blockVal >> 4;   // ">> 4" == "/ 16"
 	}
 
-	public static int blockToRegion(int blockVal) {    // 1 region is 512x512 blocks
-		return blockVal >> 9;   // ">> 9" == "/ 512"
-	}
-
-	public static int chunkToRegion(int chunkVal) {    // 1 region is 32x32 chunks
-		return chunkVal >> 5;   // ">> 5" == "/ 32"
-	}
-
 	public static int chunkToBlock(int chunkVal) {
 		return chunkVal << 4;   // "<< 4" == "* 16"
-	}
-
-	public static int regionToBlock(int regionVal) {
-		return regionVal << 9;   // "<< 9" == "* 512"
-	}
-
-	public static int regionToChunk(int regionVal) {
-		return regionVal << 5;   // "<< 5" == "* 32"
 	}
 
 	//----------------------------------------------//
@@ -174,37 +153,6 @@ public class FLocation implements Serializable {
 		}
 		Chunk chunk = loc.getChunk();
 		return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;
-	}
-
-	/**
-	 * Checks if the chunk represented by this FLocation is outside the world border
-	 *
-	 * @param buffer the number of chunks from the border that will be treated as "outside"
-	 * @return whether this location is outside of the border
-	 */
-	public boolean isOutsideWorldBorder(int buffer) {
-		if(!worldBorderSupport) {
-			return false;
-		}
-
-		WorldBorder border = getWorld().getWorldBorder();
-
-		Location center = border.getCenter();
-		double size = border.getSize();
-
-		int bufferBlocks = buffer << 4;
-
-		double borderMinX = (center.getX() - size / 2.0D) + bufferBlocks;
-		double borderMinZ = (center.getZ() - size / 2.0D) + bufferBlocks;
-		double borderMaxX = (center.getX() + size / 2.0D) - bufferBlocks;
-		double borderMaxZ = (center.getZ() + size / 2.0D) - bufferBlocks;
-
-		int chunkMinX = this.x << 4;
-		int chunkMaxX = chunkMinX | 15;
-		int chunkMinZ = this.z << 4;
-		int chunkMaxZ = chunkMinZ | 15;
-
-		return (chunkMinX >= borderMaxX) || (chunkMinZ >= borderMaxZ) || (chunkMaxX <= borderMinX) || (chunkMaxZ <= borderMinZ);
 	}
 
 	//----------------------------------------------//

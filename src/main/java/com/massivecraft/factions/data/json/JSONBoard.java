@@ -1,7 +1,6 @@
 package com.massivecraft.factions.data.json;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.MemoryBoard;
@@ -68,7 +67,7 @@ public class JSONBoard extends MemoryBoard {
 	}
 
 	public void forceSave(boolean sync) {
-		DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(dumpAsSaveFormat()), sync);
+		DiscUtil.writeCatch(file, FactionsPlugin.getInstance().gson.toJson(dumpAsSaveFormat()), sync);
 	}
 
 	public int load() {
@@ -81,7 +80,7 @@ public class JSONBoard extends MemoryBoard {
 		try {
 			Type type = new TypeToken<Map<String, Map<String, String>>>() {
 			}.getType();
-			Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().getGson().fromJson(DiscUtil.read(file), type);
+			Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
 		} catch(Exception e) {
 			FactionsPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to load the board from disk.", e);
@@ -89,12 +88,5 @@ public class JSONBoard extends MemoryBoard {
 		}
 
 		return flocationIds.size();
-	}
-
-	@Override
-	public void convertFrom(MemoryBoard old) {
-		this.flocationIds = old.flocationIds;
-		forceSave();
-		Board.instance = this;
 	}
 }

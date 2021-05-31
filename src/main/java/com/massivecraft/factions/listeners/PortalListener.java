@@ -1,4 +1,4 @@
-package com.massivecraft.factions.listeners.versionspecific;
+package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.Relation;
@@ -15,7 +15,7 @@ import org.bukkit.event.world.PortalCreateEvent;
   to create at the target destination.
  */
 public class PortalListener implements Listener {
-	public FactionsPlugin plugin;
+	public final FactionsPlugin plugin;
 
 	public PortalListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
@@ -25,7 +25,7 @@ public class PortalListener implements Listener {
 	public void onPortalCreate(PortalCreateEvent event) {
 		Entity entity = event.getEntity();
 
-		if(!FactionsPlugin.getInstance().conf().factions().portals().isLimit()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().portals().isLimit()) {
 			return; // Don't do anything if they don't want us to.
 		}
 
@@ -49,7 +49,7 @@ public class PortalListener implements Listener {
 				return;
 			}
 
-			String mininumRelation = FactionsPlugin.getInstance().conf().factions().portals().getMinimumRelation();
+			String mininumRelation = FactionsPlugin.getInstance().configMain.factions().portals().getMinimumRelation();
 
 			// Don't let people portal into nether bases if server owners don't want that.
 			if(!fPlayer.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {

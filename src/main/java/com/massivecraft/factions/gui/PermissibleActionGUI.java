@@ -10,21 +10,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.Backable {
 	private static final SimpleItem backItem = SimpleItem.builder().setMaterial(Material.ARROW).setName(TL.GUI_BUTTON_BACK.toString()).build();
 	private static final SimpleItem base;
-	private static final String locked;
 	private static final String allow;
 	private static final String deny;
 	private static final String allowLower;
 	private static final String denyLower;
 
 	static {
-		base = SimpleItem.builder().setLore(FactionsPlugin.getInstance().conf().commands().perms().getGuiLore()).setName("&8[{action-access-color}{action}&8]").build();
-		locked = ' ' + TL.GUI_PERMS_ACTION_LOCKED.toString();
+		base = SimpleItem.builder().setLore(FactionsPlugin.getInstance().configMain.commands().perms().getGuiLore()).setName("&8[{action-access-color}{action}&8]").build();
 		allow = TL.GUI_PERMS_ACTION_ALLOW.toString();
 		allowLower = allow.toLowerCase();
 		deny = TL.GUI_PERMS_ACTION_DENY.toString();
@@ -43,33 +42,21 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 
 	@Override
 	protected String getName() {
-		String bit = FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ?
-				TL.GUI_PERMS_ACTION_ONLINEOFFLINEBIT.format(online ? TL.GUI_PERMS_ONLINE.toString() : TL.GUI_PERMS_OFFLINE)
-				: "";
-		return TL.GUI_PERMS_ACTION_NAME.format(permissible.name().toLowerCase(), bit);
+		return TL.GUI_PERMS_ACTION_NAME.format(permissible.name().toLowerCase());
 	}
 
 	@Override
 	protected String parse(String toParse, PermissibleAction action) {
-		String actionName = action.getShortDescription().substring(0, 1).toUpperCase() + action.getShortDescription().substring(1);
+		String actionName = action.descriptionShort.substring(0, 1).toUpperCase() + action.descriptionShort.substring(1);
 		toParse = toParse.replace("{action}", actionName);
 
 		boolean access = user.getFaction().hasAccess(online, permissible, action);
 
 		toParse = toParse.replace("{action-access}", (access ? allow : deny));
 		toParse = toParse.replace("{action-access-color}", access ? ChatColor.GREEN.toString() : ChatColor.DARK_RED.toString());
-		toParse = toParse.replace("{action-desc}", action.getDescription());
+		toParse = toParse.replace("{action-desc}", action.description);
 
 		return toParse;
-	}
-
-	@Override
-	public void click(int slot, ClickType clickType) {
-		if(FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() && permissible instanceof Relation && slot == this.back + 4) {
-			new PermissibleActionGUI(!online, user, permissible).open();
-		} else {
-			super.click(slot, clickType);
-		}
 	}
 
 	@Override
@@ -85,8 +72,8 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		if(user.getFaction().setPermission(online, permissible, action, access)) {
 			// Reload item to reparse placeholders
 			buildItem(action);
-			user.msg(TL.COMMAND_PERM_SET, action.getShortDescription(), access ? allowLower : denyLower, permissible.name());
-			FactionsPlugin.getInstance().log(TL.COMMAND_PERM_SET.format(action.getShortDescription(), access ? "Allow" : "Deny", permissible.name()) + " for faction " + user.getTag());
+			user.msg(TL.COMMAND_PERM_SET, action.descriptionShort, access ? allowLower : denyLower, permissible.name());
+			FactionsPlugin.getInstance().log(TL.COMMAND_PERM_SET.format(action.description, access ? "Allow" : "Deny", permissible.name()) + " for faction " + user.getTag());
 		} else {
 			user.msg(TL.COMMAND_PERM_INVALID_SET);
 		}
@@ -97,7 +84,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		Map<Integer, PermissibleAction> map = new HashMap<>();
 		int i = 0;
 		for(PermissibleAction action : PermissibleAction.values()) {
-			if(this.permissible instanceof Relation && action.isFactionOnly()) {
+			if(this.permissible instanceof Relation) {
 				continue;
 			}
 			map.put(i++, action);
@@ -110,19 +97,14 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		SimpleItem item = new SimpleItem(base);
 
 		item.setEnchant(user.getFaction().hasAccess(online, permissible, permissibleAction));
-		Material material = permissibleAction.getMaterial();
+		Material material = permissibleAction.material;
 		item.setMaterial(material == Material.AIR ? Material.STONE : material);
 		return item;
 	}
 
 	@Override
 	protected Map<Integer, SimpleItem> createDummyItems() {
-		Map<Integer, SimpleItem> map = new HashMap<>();
-		map.put(this.back = ((PermissibleAction.values().length / 9) + 1) * 9, backItem);
-		if(FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() && permissible instanceof Relation) {
-			map.put(this.back + 4, PermissibleRelationGUI.offlineSwitch);
-		}
-		return map;
+		return Collections.singletonMap(this.back = ((PermissibleAction.values().length / 9) + 1) * 9, backItem);
 	}
 
 	// For dummy items only parseDefault is called, but we want to provide the relation placeholders, so: Override

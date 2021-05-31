@@ -27,11 +27,6 @@ public class FactionAttemptCreateEvent extends Event implements Cancellable {
 		return FPlayers.getInstance().getByPlayer(sender);
 	}
 
-	@Deprecated
-	public String getFactionTag() {
-		return factionTag;
-	}
-
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;

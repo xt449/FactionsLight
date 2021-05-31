@@ -1,7 +1,6 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -53,10 +52,6 @@ public class FScoreboard {
 
 	public static FScoreboard get(FPlayer fplayer) {
 		return fscoreboards.get(fplayer);
-	}
-
-	public static FScoreboard get(Player player) {
-		return fscoreboards.get(FPlayers.getInstance().getByPlayer(player));
 	}
 
 	private FScoreboard(FPlayer fplayer) {
@@ -135,7 +130,7 @@ public class FScoreboard {
 					updateObjective();
 				}
 			}
-		}.runTaskLater(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().conf().scoreboard().info().getExpiration() * 20L);
+		}.runTaskLater(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().configMain.scoreboard().info().getExpiration() * 20L);
 	}
 
 	private void updateObjective() {

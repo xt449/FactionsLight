@@ -167,6 +167,4 @@ public abstract class MemoryFactions extends Factions {
 	public Faction getWarZone() {
 		return factions.get("-2");
 	}
-
-	public abstract void convertFrom(MemoryFactions old);
 }

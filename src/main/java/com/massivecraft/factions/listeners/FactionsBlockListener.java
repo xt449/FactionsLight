@@ -1,7 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class FactionsBlockListener implements Listener {
 
-	public FactionsPlugin plugin;
+	public final FactionsPlugin plugin;
 
 	public FactionsBlockListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
@@ -44,7 +44,7 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		Faction targetFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
-		if(targetFaction.isNormal() && !targetFaction.isPeaceful() && FactionsPlugin.getInstance().conf().factions().specialCase().getIgnoreBuildMaterials().contains(event.getBlock().getType())) {
+		if(targetFaction.isNormal() && !targetFaction.isPeaceful() && FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(event.getBlock().getType())) {
 			return;
 		}
 
@@ -54,40 +54,12 @@ public class FactionsBlockListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onBlockFromTo(BlockFromToEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
-			return;
-		}
-
-		if(!FactionsPlugin.getInstance().conf().exploits().isLiquidFlow()) {
-			return;
-		}
-		if(event.getBlock().isLiquid()) {
-			if(event.getToBlock().isEmpty()) {
-				Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-				Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
-				if(from == to) {
-					// not concerned with inter-faction events
-					return;
-				}
-				// from faction != to faction
-				if(to.isNormal()) {
-					if(from.isNormal() && from.getRelationTo(to).isAlly()) {
-						return;
-					}
-					event.setCancelled(true);
-				}
-			}
-		}
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
 			return;
 		}
 
-		if(FactionsPlugin.getInstance().conf().factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
+		if(FactionsPlugin.getInstance().configMain.factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
 				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
 			return;
 		}
@@ -103,7 +75,7 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		if(FactionsPlugin.getInstance().conf().factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
+		if(FactionsPlugin.getInstance().configMain.factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
 				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
 			return;
 		}
@@ -119,7 +91,7 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().protection().isPistonProtectionThroughDenyBuild()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
 			return;
 		}
 
@@ -142,7 +114,7 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		// if not a sticky piston, retraction should be fine
-		if(!event.isSticky() || !FactionsPlugin.getInstance().conf().factions().protection().isPistonProtectionThroughDenyBuild()) {
+		if(!event.isSticky() || !FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
 			return;
 		}
 
@@ -170,7 +142,7 @@ public class FactionsBlockListener implements Listener {
 				.distinct()
 				.collect(Collectors.toList());
 
-		boolean disableOverall = FactionsPlugin.getInstance().conf().factions().other().isDisablePistonsInTerritory();
+		boolean disableOverall = FactionsPlugin.getInstance().configMain.factions().other().isDisablePistonsInTerritory();
 		for(Faction otherFaction : factions) {
 			if(pistonFaction == otherFaction) {
 				continue;
@@ -179,11 +151,11 @@ public class FactionsBlockListener implements Listener {
 			if(disableOverall && otherFaction.isNormal()) {
 				return false;
 			}
-			if(otherFaction.isWilderness() && FactionsPlugin.getInstance().conf().factions().protection().isWildernessDenyBuild() && !FactionsPlugin.getInstance().conf().factions().protection().getWorldsNoWildernessProtection().contains(world)) {
+			if(otherFaction.isWilderness() && FactionsPlugin.getInstance().configMain.factions().protection().isWildernessDenyBuild() && !FactionsPlugin.getInstance().configMain.factions().protection().getWorldsNoWildernessProtection().contains(world)) {
 				return false;
-			} else if(otherFaction.isSafeZone() && FactionsPlugin.getInstance().conf().factions().protection().isSafeZoneDenyBuild()) {
+			} else if(otherFaction.isSafeZone() && FactionsPlugin.getInstance().configMain.factions().protection().isSafeZoneDenyBuild()) {
 				return false;
-			} else if(otherFaction.isWarZone() && FactionsPlugin.getInstance().conf().factions().protection().isWarZoneDenyBuild()) {
+			} else if(otherFaction.isWarZone() && FactionsPlugin.getInstance().configMain.factions().protection().isWarZoneDenyBuild()) {
 				return false;
 			}
 			Relation rel = pistonFaction.getRelationTo(otherFaction);
@@ -222,7 +194,7 @@ public class FactionsBlockListener implements Listener {
 
 	public static boolean playerCanBuildDestroyBlock(Player player, Location location, PermissibleAction permissibleAction, boolean justCheck) {
 		String name = player.getName();
-		MainConfig conf = FactionsPlugin.getInstance().conf();
+		MainConfiguration conf = FactionsPlugin.getInstance().configMain;
 		if(conf.factions().protection().getPlayersWhoBypassAllProtection().contains(name)) {
 			return true;
 		}
@@ -236,7 +208,7 @@ public class FactionsBlockListener implements Listener {
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
 		if(otherFaction.isWilderness()) {
-			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player, location)) {
+			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player)) {
 				return true;
 			}
 
@@ -245,12 +217,12 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WILDERNESS, permissibleAction.getShortDescription());
+				me.msg(TL.PERM_DENIED_WILDERNESS, permissibleAction.descriptionShort);
 			}
 
 			return false;
 		} else if(otherFaction.isSafeZone()) {
-			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player, location)) {
+			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player)) {
 				return true;
 			}
 
@@ -259,12 +231,12 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_SAFEZONE, permissibleAction.getShortDescription());
+				me.msg(TL.PERM_DENIED_SAFEZONE, permissibleAction.descriptionShort);
 			}
 
 			return false;
 		} else if(otherFaction.isWarZone()) {
-			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player, location)) {
+			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player)) {
 				return true;
 			}
 
@@ -273,7 +245,7 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WARZONE, permissibleAction.getShortDescription());
+				me.msg(TL.PERM_DENIED_WARZONE, permissibleAction.descriptionShort);
 			}
 
 			return false;
@@ -289,10 +261,10 @@ public class FactionsBlockListener implements Listener {
 		if(!otherFaction.hasAccess(me, permissibleAction)) {
 			if(pain && permissibleAction != PermissibleAction.FROSTWALK) {
 				player.damage(conf.factions().other().getActionDeniedPainAmount());
-				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
+				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
 				return true;
 			} else if(!justCheck) {
-				me.msg(TL.PERM_DENIED_TERRITORY, permissibleAction.getShortDescription(), otherFaction.getTag(myFaction));
+				me.msg(TL.PERM_DENIED_TERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
 			}
 			return false;
 		}
@@ -303,12 +275,12 @@ public class FactionsBlockListener implements Listener {
 				player.damage(conf.factions().other().getActionDeniedPainAmount());
 
 				if(!conf.factions().ownedArea().isDenyBuild()) {
-					me.msg(TL.PERM_DENIED_PAINOWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
+					me.msg(TL.PERM_DENIED_PAINOWNED, permissibleAction.descriptionShort, otherFaction.getOwnerListString(loc));
 				}
 			}
 			if(conf.factions().ownedArea().isDenyBuild()) {
 				if(!justCheck) {
-					me.msg(TL.PERM_DENIED_OWNED, permissibleAction.getShortDescription(), otherFaction.getOwnerListString(loc));
+					me.msg(TL.PERM_DENIED_OWNED, permissibleAction.descriptionShort, otherFaction.getOwnerListString(loc));
 				}
 
 				return false;

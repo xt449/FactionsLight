@@ -13,7 +13,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -35,7 +34,7 @@ public class Worldguard7 implements IWorldguard {
 	// Returns:
 	//	True: Player can build in the region.
 	//	False: Player can not build in the region.
-	public boolean playerCanBuild(Player player, Location loc) {
+	public boolean playerCanBuild(Player player) {
 		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionQuery query = container.createQuery();
@@ -64,9 +63,5 @@ public class Worldguard7 implements IWorldguard {
 		ApplicableRegionSet set = regions.getApplicableRegions(region);
 
 		return set.size() > 0;
-	}
-
-	public String getVersion() {
-		return WorldGuardPlugin.inst().getDescription().getVersion();
 	}
 }

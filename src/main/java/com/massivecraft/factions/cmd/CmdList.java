@@ -35,7 +35,7 @@ public class CmdList extends FCommand {
 
 		// remove exempt factions
 		if(!context.sender.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())) {
-			List<String> exemptFactions = FactionsPlugin.getInstance().conf().commands().show().getExempt();
+			List<String> exemptFactions = FactionsPlugin.getInstance().configMain.commands().show().getExempt();
 			factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
 		}
 
@@ -64,8 +64,8 @@ public class CmdList extends FCommand {
 		}
 
 
-		String header = plugin.conf().commands().list().getHeader();
-		String footer = plugin.conf().commands().list().getFooter();
+		String header = plugin.configMain.commands().list().getHeader();
+		String footer = plugin.configMain.commands().list().getFooter();
 
 		if(!header.isEmpty()) {
 			header = header.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
@@ -74,10 +74,10 @@ public class CmdList extends FCommand {
 
 		for(Faction faction : factionList.subList(start, end)) {
 			if(faction.isWilderness()) {
-				lines.add(plugin.txt().parse(Tag.parsePlain(faction, plugin.conf().commands().list().getFactionlessEntry())));
+				lines.add(plugin.txt().parse(Tag.parsePlain(faction, plugin.configMain.commands().list().getFactionlessEntry())));
 				continue;
 			}
-			lines.add(plugin.txt().parse(Tag.parsePlain(faction, context.fPlayer, plugin.conf().commands().list().getEntry())));
+			lines.add(plugin.txt().parse(Tag.parsePlain(faction, context.fPlayer, plugin.configMain.commands().list().getEntry())));
 		}
 
 		if(!footer.isEmpty()) {

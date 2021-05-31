@@ -74,7 +74,7 @@ public class CmdDisband extends FCommand {
 				fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, faction.getTag(fplayer));
 			}
 		}
-		if(FactionsPlugin.getInstance().conf().logging().isFactionDisband()) {
+		if(FactionsPlugin.getInstance().configMain.logging().isFactionDisband()) {
 			//TODO: Format this correctly and translate.
 			FactionsPlugin.getInstance().log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (context.player == null ? "console command" : context.fPlayer.getName()) + ".");
 		}

@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.ChatMode;
@@ -24,7 +23,7 @@ import java.util.List;
  * necessary.
  */
 
-public interface FPlayer extends EconomyParticipator {
+public interface FPlayer extends RelationParticipator {
 	void login();
 
 	void logout();
@@ -93,8 +92,6 @@ public interface FPlayer extends EconomyParticipator {
 
 	void setShowScoreboard(boolean show);
 
-	void resetFactionData(boolean doSpoutUpdate);
-
 	void resetFactionData();
 
 	long getLastLoginTime();
@@ -127,20 +124,10 @@ public interface FPlayer extends EconomyParticipator {
 
 	String getNameAndTag();
 
-	// Colored concatenations:
-	// These are used in information messages
-
-	String getNameAndTitle(Faction faction);
-
-	String getNameAndTitle(FPlayer fplayer);
-
 	// Chat Tag:
 	// These are injected into the format of global chat messages.
 
 	String getChatTag();
-
-	// Colored Chat Tag
-	String getChatTag(Faction faction);
 
 	String getChatTag(FPlayer fplayer);
 
@@ -156,27 +143,21 @@ public interface FPlayer extends EconomyParticipator {
 	Relation getRelationToLocation();
 
 	//----------------------------------------------//
-	// Health
-	//----------------------------------------------//
-	void heal(int amnt);
-
-
-	//----------------------------------------------//
 	// Power
 	//----------------------------------------------//
 	double getPower();
 
 	void alterPower(double delta);
 
-	double getPowerMax();
-
 	double getPowerMin();
+
+	double getPowerMax();
 
 	int getPowerRounded();
 
-	int getPowerMaxRounded();
-
 	int getPowerMinRounded();
+
+	int getPowerMaxRounded();
 
 	void updatePower();
 
@@ -189,15 +170,9 @@ public interface FPlayer extends EconomyParticipator {
 	//----------------------------------------------//
 	boolean isInOwnTerritory();
 
-	boolean isInOthersTerritory();
-
-	boolean isInAllyTerritory();
-
-	boolean isInNeutralTerritory();
-
 	boolean isInEnemyTerritory();
 
-	void sendFactionHereMessage(Faction from);
+	void sendFactionHereMessage();
 
 	// -------------------------------
 	// Actions
@@ -206,8 +181,6 @@ public interface FPlayer extends EconomyParticipator {
 	void leave();
 
 	boolean canClaimForFaction(Faction forFaction);
-
-	boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure);
 
 	boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure);
 
@@ -225,8 +198,6 @@ public interface FPlayer extends EconomyParticipator {
 
 	void sendMessage(List<String> messages);
 
-	void sendFancyMessage(FancyMessage message);
-
 	void sendFancyMessage(List<FancyMessage> message);
 
 	boolean isOnlineAndVisibleTo(Player me);
@@ -243,13 +214,10 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean isWarmingUp();
 
-	WarmUpUtil.Warmup getWarmupType();
-
 	void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
 
 	void stopWarmup();
 
 	void clearWarmup();
 
-	void setOfflinePlayer(Player player);
 }

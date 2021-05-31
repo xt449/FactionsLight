@@ -7,9 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 
 public abstract class FPlayers {
-	protected static FPlayers instance = getFPlayersImpl();
-
-	public abstract void clean();
+	protected static final FPlayers instance = getFPlayersImpl();
 
 	public static FPlayers getInstance() {
 		return instance;

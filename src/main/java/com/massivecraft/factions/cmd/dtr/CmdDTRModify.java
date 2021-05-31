@@ -33,7 +33,7 @@ public class CmdDTRModify extends FCommand {
 		}
 
 		DTRControl dtr = (DTRControl) FactionsPlugin.getInstance().getLandRaidControl();
-		target.setDTR(Math.max(Math.min(target.getDTR() + amount, dtr.getMaxDTR(target)), FactionsPlugin.getInstance().conf().factions().landRaidControl().dtr().getMinDTR()));
+		target.setDTR(Math.max(Math.min(target.getDTR() + amount, dtr.getMaxDTR(target)), FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getMinDTR()));
 		context.msg(TL.COMMAND_DTR_MODIFY_DONE, target.describeTo(context.fPlayer, false), DTRControl.round(target.getDTR()));
 	}
 

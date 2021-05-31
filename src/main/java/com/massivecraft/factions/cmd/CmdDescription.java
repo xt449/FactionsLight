@@ -6,7 +6,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.TextUtil;
 
 public class CmdDescription extends FCommand {
 
@@ -28,9 +27,9 @@ public class CmdDescription extends FCommand {
 	public void perform(CommandContext context) {
 		// since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
 		// And replace all the % because it messes with string formatting and this is easy way around that.
-		context.faction.setDescription(TextUtil.implode(context.args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2"));
+		context.faction.setDescription(String.join(" ", context.args).replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2"));
 
-		if(!FactionsPlugin.getInstance().conf().factions().chat().isBroadcastDescriptionChanges()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().chat().isBroadcastDescriptionChanges()) {
 			context.fPlayer.msg(TL.COMMAND_DESCRIPTION_CHANGED, context.faction.describeTo(context.fPlayer));
 			context.fPlayer.sendMessage(context.faction.getDescription());
 			return;

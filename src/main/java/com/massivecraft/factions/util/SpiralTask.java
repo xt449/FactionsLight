@@ -82,19 +82,6 @@ public abstract class SpiralTask implements Runnable {
 	}
 
 	/*
-	 * Returns current chunk X and Z values.
-	 */
-	public final int getX() {
-		return x;
-	}
-
-	public final int getZ() {
-		return z;
-	}
-
-
-
-	/*
 	 * Below are the guts of the class, which you normally wouldn't need to mess with.
 	 */
 

@@ -22,7 +22,7 @@ public abstract class MemoryBoard extends Board {
 	public static class MemoryBoardMap extends HashMap<FLocation, String> {
 		private static final long serialVersionUID = -6689617828610585368L;
 
-		Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+		final Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 
 		@Override
 		public String put(FLocation floc, String factionId) {
@@ -74,7 +74,7 @@ public abstract class MemoryBoard extends Board {
 
 	private final char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
-	public MemoryBoardMap flocationIds = new MemoryBoardMap();
+	public final MemoryBoardMap flocationIds = new MemoryBoardMap();
 
 	//----------------------------------------------//
 	// Get and Set
@@ -161,7 +161,7 @@ public abstract class MemoryBoard extends Board {
 	}
 
 	public void clean(String factionId) {
-		if(LWC.getEnabled() && FactionsPlugin.getInstance().conf().lwc().isResetLocksOnUnclaim()) {
+		if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
 			for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
 				if(entry.getValue().equals(factionId)) {
 					LWC.clearAllLocks(entry.getKey());
@@ -229,7 +229,7 @@ public abstract class MemoryBoard extends Board {
 		while(iter.hasNext()) {
 			Entry<FLocation, String> entry = iter.next();
 			if(!Factions.getInstance().isValidFactionId(entry.getValue())) {
-				if(LWC.getEnabled() && FactionsPlugin.getInstance().conf().lwc().isResetLocksOnUnclaim()) {
+				if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
 					LWC.clearAllLocks(entry.getKey());
 				}
 				FactionsPlugin.getInstance().log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
@@ -280,14 +280,14 @@ public abstract class MemoryBoard extends Board {
 		// Get the compass
 		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.getInstance().txt().parse("<a>"));
 
-		int halfWidth = FactionsPlugin.getInstance().conf().map().getWidth() / 2;
+		int halfWidth = FactionsPlugin.getInstance().configMain.map().getWidth() / 2;
 		// Use player's value for height
 		int halfHeight = mapHeight / 2;
 		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
 
-		if(FactionsPlugin.getInstance().conf().map().isShowFactionKey()) {
+		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
 			height--;
 		}
 
@@ -310,15 +310,15 @@ public abstract class MemoryBoard extends Board {
 					Faction factionHere = getFactionAt(flocationHere);
 					Relation relation = fplayer.getRelationTo(factionHere);
 					if(factionHere.isWilderness()) {
-						row.then("-").color(FactionsPlugin.getInstance().conf().colors().factions().getWilderness());
+						row.then("-").color(FactionsPlugin.getInstance().configMain.colors().factions().wilderness());
 					} else if(factionHere.isSafeZone()) {
-						row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getSafezone());
+						row.then("+").color(FactionsPlugin.getInstance().configMain.colors().factions().safezone());
 					} else if(factionHere.isWarZone()) {
-						row.then("+").color(FactionsPlugin.getInstance().conf().colors().factions().getWarzone());
+						row.then("+").color(FactionsPlugin.getInstance().configMain.colors().factions().warzone());
 					} else if(factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
-							(FactionsPlugin.getInstance().conf().map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
-							(FactionsPlugin.getInstance().conf().map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||
-							FactionsPlugin.getInstance().conf().map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
+							(FactionsPlugin.getInstance().configMain.map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
+							(FactionsPlugin.getInstance().configMain.map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||
+							FactionsPlugin.getInstance().configMain.map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
 						if(!fList.containsKey(factionHere.getTag())) {
 							fList.put(factionHere.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
 						}
@@ -333,7 +333,7 @@ public abstract class MemoryBoard extends Board {
 		}
 
 		// Add the faction key
-		if(FactionsPlugin.getInstance().conf().map().isShowFactionKey()) {
+		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
 			FancyMessage fRow = new FancyMessage("");
 			for(String key : fList.keySet()) {
 				final Relation relation = fplayer.getRelationTo(Factions.getInstance().getByTag(key));
@@ -344,6 +344,4 @@ public abstract class MemoryBoard extends Board {
 
 		return ret;
 	}
-
-	public abstract void convertFrom(MemoryBoard old);
 }

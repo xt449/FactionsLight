@@ -7,6 +7,7 @@ import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -35,19 +36,19 @@ public class CmdHome extends FCommand {
 
 		if(targetFaction != context.faction && context.fPlayer.isAdminBypassing()) {
 			if(targetFaction.hasHome()) {
-				FactionsPlugin.getInstance().teleport(context.player, targetFaction.getHome());
+				PaperLib.teleportAsync(context.player, targetFaction.getHome());
 			} else {
 				context.fPlayer.msg(TL.COMMAND_HOME_NOHOME.toString());
 			}
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isEnabled()) {
 			context.fPlayer.msg(TL.COMMAND_HOME_DISABLED);
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportCommandEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isTeleportCommandEnabled()) {
 			context.fPlayer.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
 			return;
 		}
@@ -71,12 +72,12 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportAllowedFromEnemyTerritory() && context.fPlayer.isInEnemyTerritory()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isTeleportAllowedFromEnemyTerritory() && context.fPlayer.isInEnemyTerritory()) {
 			context.fPlayer.msg(TL.COMMAND_HOME_INENEMY);
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isTeleportAllowedFromDifferentWorld() && context.player.getWorld().getUID() != targetFaction.getHome().getWorld().getUID()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isTeleportAllowedFromDifferentWorld() && context.player.getWorld().getUID() != targetFaction.getHome().getWorld().getUID()) {
 			context.fPlayer.msg(TL.COMMAND_HOME_WRONGWORLD);
 			return;
 		}
@@ -85,9 +86,9 @@ public class CmdHome extends FCommand {
 		final Location loc = context.player.getLocation().clone();
 
 		// if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
-		if(FactionsPlugin.getInstance().conf().factions().homes().getTeleportAllowedEnemyDistance() > 0 &&
+		if(FactionsPlugin.getInstance().configMain.factions().homes().getTeleportAllowedEnemyDistance() > 0 &&
 				!faction.isSafeZone() &&
-				(!context.fPlayer.isInOwnTerritory() || !FactionsPlugin.getInstance().conf().factions().homes().isTeleportIgnoreEnemiesIfInOwnTerritory())) {
+				(!context.fPlayer.isInOwnTerritory() || !FactionsPlugin.getInstance().configMain.factions().homes().isTeleportIgnoreEnemiesIfInOwnTerritory())) {
 			World w = loc.getWorld();
 			double x = loc.getX();
 			double y = loc.getY();
@@ -106,14 +107,14 @@ public class CmdHome extends FCommand {
 				double dx = Math.abs(x - l.getX());
 				double dy = Math.abs(y - l.getY());
 				double dz = Math.abs(z - l.getZ());
-				double max = FactionsPlugin.getInstance().conf().factions().homes().getTeleportAllowedEnemyDistance();
+				double max = FactionsPlugin.getInstance().configMain.factions().homes().getTeleportAllowedEnemyDistance();
 
 				// box-shaped distance check
 				if(dx > max || dy > max || dz > max) {
 					continue;
 				}
 
-				context.fPlayer.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(FactionsPlugin.getInstance().conf().factions().homes().getTeleportAllowedEnemyDistance()));
+				context.fPlayer.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(FactionsPlugin.getInstance().configMain.factions().homes().getTeleportAllowedEnemyDistance()));
 				return;
 			}
 		}
@@ -125,9 +126,7 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
-			FactionsPlugin.getInstance().teleport(context.player, destination);
-		}, this.plugin.conf().commands().home().getDelay());
+		context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> PaperLib.teleportAsync(context.player, destination), this.plugin.configMain.commands().home().getDelay());
 	}
 
 	@Override

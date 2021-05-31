@@ -1,0 +1,44 @@
+dynmap:
+  description: "<div class: \"infowindow\">\n<span style: \"font-weight: bold; font-size: 150%;\">%name%</span><br>\n<span style: \"font-style: italic; font-size: 110%;\">%description%</span><br><br>\n<span style: \"font-weight: bold;\">Leader:</span> %players.leader%<br>\n<span style: \"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n<span style: \"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n<span style: \"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n<span style: \"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n</br>\n<span style: \"font-weight: bold;\">Bank:</span> %money%<br>\n<br>\n</div>"
+    # Enable the %money% macro. Only do this if you know your economy manager is thread-safe.
+    descriptionMoney: false
+    enabled: true
+    # Per-faction overrides
+    factionStyles:
+      -1:
+         fillColor: "#FF00FF"
+         fillOpacity: 0.35
+         homeMarker: greenflag
+         lineColor: "#FF00FF"
+         lineOpacity: 0.8
+         lineWeight: 3
+         styleBoost: false
+      -2:
+         fillColor: "#FF0000"
+         fillOpacity: 0.35
+         homeMarker: greenflag
+         lineColor: "#FF0000"
+         lineOpacity: 0.8
+         lineWeight: 3
+         styleBoost: false
+
+    # To hide all factions in a world, use 'world:worldnamehere'
+    hiddenFactions: []
+    layerMinimumZoom: 0
+    layerName: Factions
+    layerPriority: 2
+    layerVisible: true
+    # Allow players in faction to see one another on Dynmap (only relevant if Dynmap has 'player-info-protected' enabled)
+    visibilityByFaction: true
+    # If not empty, *only* listed factions (by name or ID) will be shown.
+    # To show all factions in a world, use 'world:worldnamehere'
+    visibleFactions: []
+
+style:
+  fillColor: "#00FF00"
+  fillOpacity: 0.35
+  homeMarker: greenflag
+  lineColor: "#00FF00"
+  lineOpacity: 0.8
+  lineWeight: 3
+  styleBoost: false

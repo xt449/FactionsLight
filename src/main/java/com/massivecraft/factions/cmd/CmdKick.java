@@ -34,19 +34,19 @@ public class CmdKick extends FCommand {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
 			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
 				String s = player.getName();
-				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
+				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
 			}
 			if(context.fPlayer.getRole().isAtLeast(Role.COLEADER)) {
 				// For both coleader and admin, add mods.
 				for(FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
 					String s = player.getName();
-					msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
+					msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
 				}
 				if(context.fPlayer.getRole() == Role.ADMIN) {
 					// Only add coleader to this for the leader.
 					for(FPlayer player : context.faction.getFPlayersWhereRole(Role.COLEADER)) {
 						String s = player.getName();
-						msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().conf().getCommandBase().get(0) + " kick " + s);
+						msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
 					}
 				}
 			}
@@ -98,7 +98,7 @@ public class CmdKick extends FCommand {
 			context.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(context.fPlayer), toKickFaction.describeTo(context.fPlayer));
 		}
 
-		if(FactionsPlugin.getInstance().conf().logging().isFactionKick()) {
+		if(FactionsPlugin.getInstance().configMain.logging().isFactionKick()) {
 			FactionsPlugin.getInstance().log((context.player == null ? "A console command" : context.fPlayer.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
 		}
 

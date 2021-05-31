@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util.material;
+package com.massivecraft.factions.util;
 
 import org.bukkit.Material;
 

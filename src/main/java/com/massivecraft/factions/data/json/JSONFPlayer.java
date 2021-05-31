@@ -7,10 +7,6 @@ import com.massivecraft.factions.landraidcontrol.PowerControl;
 
 public class JSONFPlayer extends MemoryFPlayer {
 
-	public JSONFPlayer(MemoryFPlayer arg0) {
-		super(arg0);
-	}
-
 	public JSONFPlayer(String id) {
 		super(id);
 	}
@@ -24,6 +20,6 @@ public class JSONFPlayer extends MemoryFPlayer {
 		return this.hasFaction() ||
 				(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl &&
 						(this.getPowerRounded() != this.getPowerMaxRounded() &&
-								this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().conf().factions().landRaidControl().power().getPlayerStarting())));
+								this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting())));
 	}
 }

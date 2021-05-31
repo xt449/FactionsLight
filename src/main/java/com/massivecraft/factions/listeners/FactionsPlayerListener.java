@@ -1,7 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.MemoryFPlayer;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -30,7 +30,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +67,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		me.setLastStoodAt(new FLocation(player.getLocation()));
 
 		me.login(); // set kills / deaths
-		me.setOfflinePlayer(player);
 
 		if(me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
 			me.setSpyingChat(false);
@@ -96,7 +94,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			}
 		}.runTaskLater(FactionsPlugin.getInstance(), 33L); // Don't ask me why.
 
-		if(FactionsPlugin.getInstance().conf().scoreboard().constant().isEnabled()) {
+		if(FactionsPlugin.getInstance().configMain.scoreboard().constant().isEnabled()) {
 			FScoreboard.init(me);
 			FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar());
 			FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
@@ -127,10 +125,10 @@ public class FactionsPlayerListener extends AbstractListener {
 		me.logout(); // cache kills / deaths
 
 		// if player is waiting for fstuck teleport but leaves, remove
-		if(FactionsPlugin.getInstance().getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
+		if(FactionsPlugin.getInstance().stuckMap.containsKey(me.getPlayer().getUniqueId())) {
 			FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
-			FactionsPlugin.getInstance().getStuckMap().remove(me.getPlayer().getUniqueId());
-			FactionsPlugin.getInstance().getTimers().remove(me.getPlayer().getUniqueId());
+			FactionsPlugin.getInstance().stuckMap.remove(me.getPlayer().getUniqueId());
+			FactionsPlugin.getInstance().timers.remove(me.getPlayer().getUniqueId());
 		}
 
 		Faction myFaction = me.getFaction();
@@ -147,8 +145,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 
 		FScoreboard.remove(me, event.getPlayer());
-
-		me.setOfflinePlayer(null);
 	}
 
 	// Holds the next time a player can have a map shown.
@@ -219,20 +215,20 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
 				me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
-				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().conf().commands().map().getCooldown());
+				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().configMain.commands().map().getCooldown());
 			}
 		} else {
 			Faction myFaction = me.getFaction();
 			String ownersTo = myFaction.getOwnerListString(to);
 
 			if(changedFaction) {
-				me.sendFactionHereMessage(factionFrom);
-				if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageOnBorder() && myFaction == factionTo && !ownersTo.isEmpty()) {
+				me.sendFactionHereMessage();
+				if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageOnBorder() && myFaction == factionTo && !ownersTo.isEmpty()) {
 					me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
 				}
-			} else if(FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageInsideTerritory() && myFaction == factionTo && !myFaction.isWilderness()) {
+			} else if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageInsideTerritory() && myFaction == factionTo && !myFaction.isWilderness()) {
 				String ownersFrom = myFaction.getOwnerListString(from);
-				if(FactionsPlugin.getInstance().conf().factions().ownedArea().isMessageByChunk() || !ownersFrom.equals(ownersTo)) {
+				if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageByChunk() || !ownersFrom.equals(ownersTo)) {
 					if(!ownersTo.isEmpty()) {
 						me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
 					} else if(!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {
@@ -267,7 +263,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			case MINECART_CHEST:
 			case MINECART_FURNACE:
 			case MINECART_HOPPER:
-				if(!FactionsPlugin.getInstance().conf().factions().protection().getEntityInteractExceptions().contains(event.getRightClicked().getType().name()) &&
+				if(!FactionsPlugin.getInstance().configMain.factions().protection().getEntityInteractExceptions().contains(event.getRightClicked().getType().name()) &&
 						!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
 					event.setCancelled(true);
 				}
@@ -304,20 +300,6 @@ public class FactionsPlayerListener extends AbstractListener {
 			if(block.getType().name().endsWith("_PLATE")) {
 				return;
 			}
-			if(FactionsPlugin.getInstance().conf().exploits().isInteractionSpam()) {
-				String name = player.getName();
-				InteractAttemptSpam attempt = interactSpammers.get(name);
-				if(attempt == null) {
-					attempt = new InteractAttemptSpam();
-					interactSpammers.put(name, attempt);
-				}
-				int count = attempt.increment();
-				if(count >= 10) {
-					FPlayer me = FPlayers.getInstance().getByPlayer(player);
-					me.msg(TL.PLAYER_OUCH);
-					player.damage(NumberConversions.floor((double) count / 10));
-				}
-			}
 			return;
 		}
 
@@ -340,7 +322,7 @@ public class FactionsPlayerListener extends AbstractListener {
 					ohNo = true;
 			}
 			if(ohNo &&
-					!FactionsPlugin.getInstance().conf().factions().specialCase().getIgnoreBuildMaterials().contains(item.getType()) &&
+					!FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(item.getType()) &&
 					!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()).getLocation(), PermissibleAction.BUILD, false)) {
 				event.setCancelled(true);
 			}
@@ -374,7 +356,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	public boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
 		String name = player.getName();
-		MainConfig.Factions facConf = FactionsPlugin.getInstance().conf().factions();
+		MainConfiguration.Factions facConf = FactionsPlugin.getInstance().configMain.factions();
 		if(facConf.protection().getPlayersWhoBypassAllProtection().contains(name)) {
 			return true;
 		}
@@ -463,7 +445,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
 
 		Location home = me.getFaction().getHome();
-		MainConfig.Factions facConf = FactionsPlugin.getInstance().conf().factions();
+		MainConfiguration.Factions facConf = FactionsPlugin.getInstance().configMain.factions();
 		if(facConf.homes().isEnabled() &&
 				facConf.homes().isTeleportToOnDeath() &&
 				home != null &&
@@ -520,7 +502,7 @@ public class FactionsPlayerListener extends AbstractListener {
 	}
 
 	public static boolean preventCommand(String fullCmd, Player player) {
-		MainConfig.Factions.Protection protection = FactionsPlugin.getInstance().conf().factions().protection();
+		MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
 		if((protection.getTerritoryNeutralDenyCommands().isEmpty() &&
 				protection.getTerritoryEnemyDenyCommands().isEmpty() &&
 				protection.getPermanentFactionMemberDenyCommands().isEmpty() &&
@@ -644,7 +626,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 
 		// if player was banned (not just kicked), get rid of their stored info
-		if(FactionsPlugin.getInstance().conf().factions().other().isRemovePlayerDataWhenBanned() && event.getReason().equals("Banned by admin.")) {
+		if(FactionsPlugin.getInstance().configMain.factions().other().isRemovePlayerDataWhenBanned() && event.getReason().equals("Banned by admin.")) {
 			if(badGuy.getRole() == Role.ADMIN) {
 				badGuy.getFaction().promoteNewLeader();
 			}
@@ -671,9 +653,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 
 		if(FactionsPlayerListener.preventCommand(event.getMessage(), event.getPlayer())) {
-			if(plugin.logPlayerCommands()) {
-				plugin.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-			}
 			event.setCancelled(true);
 		}
 	}

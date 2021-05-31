@@ -1,8 +1,7 @@
 package com.massivecraft.factions.perms;
 
-import com.massivecraft.factions.config.file.DefaultPermissionsConfig;
+import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.material.MaterialHelper;
 import org.bukkit.Material;
 
 import java.util.HashMap;
@@ -10,57 +9,40 @@ import java.util.Map;
 import java.util.function.Function;
 
 public enum PermissibleAction {
-	BUILD(DefaultPermissionsConfig.Permissions::getBuild, TL.PERM_BUILD, TL.PERM_SHORT_BUILD, "STONE"),
-	DESTROY(DefaultPermissionsConfig.Permissions::getDestroy, TL.PERM_DESTROY, TL.PERM_SHORT_DESTROY, "WOODEN_PICKAXE"),
-	PAINBUILD(DefaultPermissionsConfig.Permissions::getPainBuild, TL.PERM_PAINBUILD, TL.PERM_SHORT_PAINBUILD, "WOODEN_SWORD"),
-	ITEM(DefaultPermissionsConfig.Permissions::getItem, TL.PERM_ITEM, TL.PERM_SHORT_ITEM, "ITEM_FRAME"),
-	CONTAINER(DefaultPermissionsConfig.Permissions::getContainer, TL.PERM_CONTAINER, TL.PERM_SHORT_CONTAINER, "CHEST_MINECART"),
-	BUTTON(DefaultPermissionsConfig.Permissions::getButton, TL.PERM_BUTTON, TL.PERM_SHORT_BUTTON, "STONE_BUTTON"),
-	DOOR(DefaultPermissionsConfig.Permissions::getDoor, TL.PERM_DOOR, TL.PERM_SHORT_DOOR, "IRON_DOOR"),
-	LEVER(DefaultPermissionsConfig.Permissions::getLever, TL.PERM_LEVER, TL.PERM_SHORT_LEVER, "LEVER"),
-	PLATE(DefaultPermissionsConfig.Permissions::getPlate, TL.PERM_PLATE, TL.PERM_SHORT_PLATE, "STONE_PRESSURE_PLATE"),
-	FROSTWALK(DefaultPermissionsConfig.Permissions::getFrostWalk, TL.PERM_FROSTWALK, TL.PERM_SHORT_FROSTWALK, "ICE"),
-	INVITE(true, DefaultPermissionsConfig.Permissions::getInvite, TL.PERM_INVITE, TL.PERM_SHORT_INVITE, "FISHING_ROD"),
-	KICK(true, DefaultPermissionsConfig.Permissions::getKick, TL.PERM_KICK, TL.PERM_SHORT_KICK, "LEATHER_BOOTS"),
-	BAN(true, DefaultPermissionsConfig.Permissions::getBan, TL.PERM_BAN, TL.PERM_SHORT_BAN, "BARRIER"),
-	PROMOTE(true, DefaultPermissionsConfig.Permissions::getPromote, TL.PERM_PROMOTE, TL.PERM_SHORT_PROMOTE, "ANVIL"),
-	DISBAND(true, DefaultPermissionsConfig.Permissions::getDisband, TL.PERM_DISBAND, TL.PERM_SHORT_DISBAND, "BONE"),
-	ECONOMY(true, DefaultPermissionsConfig.Permissions::getEconomy, TL.PERM_ECONOMY, TL.PERM_SHORT_ECONOMY, "GOLD_INGOT"),
-	TERRITORY(true, DefaultPermissionsConfig.Permissions::getTerritory, TL.PERM_TERRITORY, TL.PERM_SHORT_TERRITORY, "GRASS_BLOCK"),
-	OWNER(true, DefaultPermissionsConfig.Permissions::getOwner, TL.PERM_OWNER, TL.PERM_SHORT_OWNER, "FENCE_GATE"),
-	HOME(DefaultPermissionsConfig.Permissions::getHome, TL.PERM_HOME, TL.PERM_SHORT_HOME, "TORCH"),
-	SETHOME(true, DefaultPermissionsConfig.Permissions::getSetHome, TL.PERM_SETHOME, TL.PERM_SHORT_SETHOME, "COMPASS"),
-	LISTCLAIMS(true, DefaultPermissionsConfig.Permissions::getListClaims, TL.PERM_LISTCLAIMS, TL.PERM_SHORT_LISTCLAIMS, "MAP"),
-	SETWARP(true, DefaultPermissionsConfig.Permissions::getSetWarp, TL.PERM_SETWARP, TL.PERM_SHORT_SETWARP, "END_PORTAL_FRAME"),
-	WARP(DefaultPermissionsConfig.Permissions::getWarp, TL.PERM_WARP, TL.PERM_SHORT_WARP, "ENDER_PEARL"),
+	BUILD(DefaultPermissionsConfiguration.Permissions::getBuild, TL.PERM_BUILD, TL.PERM_SHORT_BUILD, Material.STONE),
+	DESTROY(DefaultPermissionsConfiguration.Permissions::getDestroy, TL.PERM_DESTROY, TL.PERM_SHORT_DESTROY, Material.WOODEN_PICKAXE),
+	PAINBUILD(DefaultPermissionsConfiguration.Permissions::getPainBuild, TL.PERM_PAINBUILD, TL.PERM_SHORT_PAINBUILD, Material.WOODEN_SWORD),
+	ITEM(DefaultPermissionsConfiguration.Permissions::getItem, TL.PERM_ITEM, TL.PERM_SHORT_ITEM, Material.ITEM_FRAME),
+	CONTAINER(DefaultPermissionsConfiguration.Permissions::getContainer, TL.PERM_CONTAINER, TL.PERM_SHORT_CONTAINER, Material.CHEST_MINECART),
+	BUTTON(DefaultPermissionsConfiguration.Permissions::getButton, TL.PERM_BUTTON, TL.PERM_SHORT_BUTTON, Material.STONE_BUTTON),
+	DOOR(DefaultPermissionsConfiguration.Permissions::getDoor, TL.PERM_DOOR, TL.PERM_SHORT_DOOR, Material.IRON_DOOR),
+	LEVER(DefaultPermissionsConfiguration.Permissions::getLever, TL.PERM_LEVER, TL.PERM_SHORT_LEVER, Material.LEVER),
+	PLATE(DefaultPermissionsConfiguration.Permissions::getPlate, TL.PERM_PLATE, TL.PERM_SHORT_PLATE, Material.STONE_PRESSURE_PLATE),
+	FROSTWALK(DefaultPermissionsConfiguration.Permissions::getFrostWalk, TL.PERM_FROSTWALK, TL.PERM_SHORT_FROSTWALK, Material.ICE),
+	INVITE(DefaultPermissionsConfiguration.Permissions::getInvite, TL.PERM_INVITE, TL.PERM_SHORT_INVITE, Material.FISHING_ROD),
+	KICK(DefaultPermissionsConfiguration.Permissions::getKick, TL.PERM_KICK, TL.PERM_SHORT_KICK, Material.LEATHER_BOOTS),
+	BAN(DefaultPermissionsConfiguration.Permissions::getBan, TL.PERM_BAN, TL.PERM_SHORT_BAN, Material.BARRIER),
+	PROMOTE(DefaultPermissionsConfiguration.Permissions::getPromote, TL.PERM_PROMOTE, TL.PERM_SHORT_PROMOTE, Material.ANVIL),
+	DISBAND(DefaultPermissionsConfiguration.Permissions::getDisband, TL.PERM_DISBAND, TL.PERM_SHORT_DISBAND, Material.BONE),
+	TERRITORY(DefaultPermissionsConfiguration.Permissions::getTerritory, TL.PERM_TERRITORY, TL.PERM_SHORT_TERRITORY, Material.GRASS_BLOCK),
+	OWNER(DefaultPermissionsConfiguration.Permissions::getOwner, TL.PERM_OWNER, TL.PERM_SHORT_OWNER, Material.OAK_FENCE_GATE),
+	HOME(DefaultPermissionsConfiguration.Permissions::getHome, TL.PERM_HOME, TL.PERM_SHORT_HOME, Material.TORCH),
+	SETHOME(DefaultPermissionsConfiguration.Permissions::getSetHome, TL.PERM_SETHOME, TL.PERM_SHORT_SETHOME, Material.COMPASS),
+	LISTCLAIMS(DefaultPermissionsConfiguration.Permissions::getListClaims, TL.PERM_LISTCLAIMS, TL.PERM_SHORT_LISTCLAIMS, Material.MAP),
+	SETWARP(DefaultPermissionsConfiguration.Permissions::getSetWarp, TL.PERM_SETWARP, TL.PERM_SHORT_SETWARP, Material.END_PORTAL_FRAME),
+	WARP(DefaultPermissionsConfiguration.Permissions::getWarp, TL.PERM_WARP, TL.PERM_SHORT_WARP, Material.ENDER_PEARL),
 	;
 
-	private final boolean factionOnly;
-	private final String materialName;
-	private final TL desc;
-	private final TL shortDesc;
-	private Material material;
-	private Function<DefaultPermissionsConfig.Permissions, DefaultPermissionsConfig.Permissions.FullPermInfo> fullFunction;
-	private Function<DefaultPermissionsConfig.Permissions, DefaultPermissionsConfig.Permissions.FactionOnlyPermInfo> factionOnlyFunction;
+	public final String description;
+	public final String descriptionShort;
+	public final Material material;
+	private final Function<DefaultPermissionsConfiguration.Permissions, DefaultPermissionsConfiguration.Permissions.FactionOnlyPermInfo> function;
 
-	PermissibleAction(Function<DefaultPermissionsConfig.Permissions, DefaultPermissionsConfig.Permissions.FullPermInfo> fullFunction, TL desc, TL shortDesc, String materialName) {
-		this.factionOnly = false;
-		this.fullFunction = fullFunction;
-		this.desc = desc;
-		this.shortDesc = shortDesc;
-		this.materialName = materialName;
-	}
-
-	PermissibleAction(boolean factionOnly, Function<DefaultPermissionsConfig.Permissions, DefaultPermissionsConfig.Permissions.FactionOnlyPermInfo> factionOnlyFunction, TL desc, TL shortDesc, String materialName) {
-		this.factionOnly = factionOnly;
-		if(this.factionOnly) {
-			this.factionOnlyFunction = factionOnlyFunction;
-		} else {
-			throw new AssertionError("May only set factionOnly actions in this constructor");
-		}
-		this.desc = desc;
-		this.shortDesc = shortDesc;
-		this.materialName = materialName;
+	PermissibleAction(Function<DefaultPermissionsConfiguration.Permissions, DefaultPermissionsConfiguration.Permissions.FactionOnlyPermInfo> function, TL description, TL descriptionShort, Material material) {
+		this.function = function;
+		this.description = description.toString();
+		this.descriptionShort = descriptionShort.toString();
+		this.material = material;
 	}
 
 	private static final Map<String, PermissibleAction> map = new HashMap<>();
@@ -71,23 +53,8 @@ public enum PermissibleAction {
 		}
 	}
 
-	public boolean isFactionOnly() {
-		return this.factionOnly;
-	}
-
-	public DefaultPermissionsConfig.Permissions.FullPermInfo getFullPerm(DefaultPermissionsConfig.Permissions permissions) {
-		return this.fullFunction.apply(permissions);
-	}
-
-	public DefaultPermissionsConfig.Permissions.FactionOnlyPermInfo getFactionOnly(DefaultPermissionsConfig.Permissions permissions) {
-		return this.factionOnlyFunction.apply(permissions);
-	}
-
-	public Material getMaterial() {
-		if(this.material == null) {
-			this.material = MaterialHelper.get(this.materialName, Material.STONE);
-		}
-		return this.material;
+	public DefaultPermissionsConfiguration.Permissions.FactionOnlyPermInfo getPermInfo(DefaultPermissionsConfiguration.Permissions permissions) {
+		return this.function.apply(permissions);
 	}
 
 	/**
@@ -98,14 +65,6 @@ public enum PermissibleAction {
 	 */
 	public static PermissibleAction fromString(String check) {
 		return check == null ? null : map.get(check.toLowerCase());
-	}
-
-	public String getDescription() {
-		return this.desc.toString();
-	}
-
-	public String getShortDescription() {
-		return this.shortDesc.toString();
 	}
 
 	@Override

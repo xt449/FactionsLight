@@ -1,7 +1,7 @@
 package com.massivecraft.factions.integration.dynmap;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.config.file.DynmapConfig;
+import com.massivecraft.factions.configuration.DynMapConfiguration;
 
 public class DynmapStyle {
 	public static final String DEFAULT_LINE_COLOR = "#00FF00";
@@ -25,8 +25,8 @@ public class DynmapStyle {
 		return defaultStyle;
 	}
 
-	private static DynmapConfig.Style styleConf() {
-		return FactionsPlugin.getInstance().getConfigManager().getDynmapConfig().style();
+	private static DynMapConfiguration.Style styleConf() {
+		return FactionsPlugin.getInstance().configDynMap.style();
 	}
 
 	// -------------------------------------------- //

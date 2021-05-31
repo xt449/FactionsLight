@@ -1,9 +1,7 @@
 package com.massivecraft.factions.data.json;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.MemoryFPlayer;
 import com.massivecraft.factions.data.MemoryFPlayers;
@@ -18,27 +16,11 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 public class JSONFPlayers extends MemoryFPlayers {
-	public Gson getGson() {
-		return FactionsPlugin.getInstance().getGson();
-	}
-
-	public void setGson(Gson gson) {
-		// NOOP
-	}
 
 	private final File file;
 
 	public JSONFPlayers() {
-		if(FactionsPlugin.getInstance().getServerUUID() == null) {
-			FactionsPlugin.getInstance().grumpException(new RuntimeException());
-		}
 		file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/players.json");
-	}
-
-	public void convertFrom(MemoryFPlayers old) {
-		old.fPlayers.forEach((id, faction) -> this.fPlayers.put(id, new JSONFPlayer((MemoryFPlayer) faction)));
-		forceSave();
-		FPlayers.instance = this;
 	}
 
 	public void forceSave() {
@@ -57,7 +39,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 	}
 
 	private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
-		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
+		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(data), sync);
 	}
 
 	public int load() {
@@ -80,7 +62,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 			return null;
 		}
 
-		Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
+		Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
 		}.getType());
 		Set<String> list = new HashSet<>();
 		Set<String> invalidList = new HashSet<>();

@@ -1,11 +1,9 @@
-package com.massivecraft.factions.config.file;
+package com.massivecraft.factions.configuration;
 
-import com.massivecraft.factions.config.annotation.Comment;
-import com.massivecraft.factions.config.annotation.DefinedType;
-import com.massivecraft.factions.config.annotation.WipeOnReload;
+import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +11,12 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings({"FieldCanBeLocal", "InnerClassMayBeStatic"})
-public class DynmapConfig {
+public class DynMapConfiguration extends AbstractConfiguration {
+
+	public DynMapConfiguration(Plugin plugin) {
+		super(plugin, "dynmap.yml");
+	}
+
 	public class Dynmap {
 		// Should the dynmap integration be used?
 		private final boolean enabled = true;
@@ -31,30 +34,27 @@ public class DynmapConfig {
 		private final int layerMinimumZoom = 0;
 
 		// Format for popup - substitute values for macros
-		private final String description =
-				"<div class=\"infowindow\">\n"
-						+ "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n"
-						+ "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>"
-						+ "<br>\n"
-						+ "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n"
-						+ "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n"
-						+ "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n"
-						+ "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n"
-						+ "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n"
-						+ "</br>\n"
-						+ "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n"
-						+ "<br>\n"
-						+ "</div>";
+		private final String description = "<div class=\"infowindow\">\n"
+				+ "<span style=\"font-weight: bold; font-size: 150%;\">%name%</span><br>\n"
+				+ "<span style=\"font-style: italic; font-size: 110%;\">%description%</span><br>"
+				+ "<br>\n"
+				+ "<span style=\"font-weight: bold;\">Leader:</span> %players.leader%<br>\n"
+				+ "<span style=\"font-weight: bold;\">Admins:</span> %players.admins.count%<br>\n"
+				+ "<span style=\"font-weight: bold;\">Moderators:</span> %players.moderators.count%<br>\n"
+				+ "<span style=\"font-weight: bold;\">Members:</span> %players.normals.count%<br>\n"
+				+ "<span style=\"font-weight: bold;\">TOTAL:</span> %players.count%<br>\n"
+				+ "</br>\n"
+				+ "<span style=\"font-weight: bold;\">Bank:</span> %money%<br>\n"
+				+ "<br>\n"
+				+ "</div>";
 
-		@Comment("Allow players in faction to see one another on Dynmap (only relevant if Dynmap has 'player-info-protected' enabled)")
+		private final boolean descriptionMoney = false;
+
 		private final boolean visibilityByFaction = true;
 
-		@Comment("If not empty, *only* listed factions (by name or ID) will be shown.\n" +
-				"To show all factions in a world, use 'world:worldnamehere'")
 		private final Set<String> visibleFactions = new HashSet<>();
 
-		@Comment("To hide all factions in a world, use 'world:worldnamehere'")
-		private final Set<String> hiddenFactions = new HashSet<>();
+		private final Set<String> hiddenFactions = new HashSet<String>();
 
 		public boolean isEnabled() {
 			return enabled;
@@ -80,6 +80,10 @@ public class DynmapConfig {
 			return description;
 		}
 
+		public boolean isDescriptionMoney() {
+			return descriptionMoney;
+		}
+
 		public boolean isVisibilityByFaction() {
 			return visibilityByFaction;
 		}
@@ -92,32 +96,63 @@ public class DynmapConfig {
 			return hiddenFactions;
 		}
 
-		@Comment("Per-faction overrides")
-		@DefinedType
 		private final Map<String, Style> factionStyles = new HashMap<String, Style>() {
 			{
-				this.put("-1", new DynmapConfig.Style("#FF00FF", "#FF00FF"));
-				this.put("-2", new DynmapConfig.Style("#FF0000", "#FF0000"));
+				this.put("-1", new DynMapConfiguration.Style("#FF00FF", "#FF00FF"));
+				this.put("-2", new DynMapConfiguration.Style("#FF0000", "#FF0000"));
 			}
 		};
 
-		@WipeOnReload
+		private final transient TypeToken<Map<String, Style>> factionStylesToken = new TypeToken<Map<String, Style>>() {
+		};
+
 		private transient Map<String, DynmapStyle> styles;
 
 		public Map<String, DynmapStyle> getFactionStyles() {
 			if(styles == null) {
 				styles = new HashMap<>();
-				for(Map.Entry<String, Style> e : factionStyles.entrySet()) {
+				Map<String, ? extends Object> mappy = factionStyles;
+				for(Map.Entry<String, ? extends Object> e : mappy.entrySet()) {
 					String faction = e.getKey();
-					Style style = e.getValue();
-					styles.put(faction, new DynmapStyle()
-							.setLineColor(style.getLineColor())
-							.setLineOpacity(style.getLineOpacity())
-							.setLineWeight(style.getLineWeight())
-							.setFillColor(style.getFillColor())
-							.setFillOpacity(style.getFillOpacity())
-							.setHomeMarker(style.getHomeMarker())
-							.setBoost(style.isStyleBoost()));
+					Object s = e.getValue();
+					if(s instanceof Style) {
+						Style style = (Style) s;
+						styles.put(faction, new DynmapStyle()
+								.setLineColor(style.getLineColor())
+								.setLineOpacity(style.getLineOpacity())
+								.setLineWeight(style.getLineWeight())
+								.setFillColor(style.getFillColor())
+								.setFillOpacity(style.getFillOpacity())
+								.setHomeMarker(style.getHomeMarker())
+								.setBoost(style.isStyleBoost()));
+					} else if(s instanceof Map) {
+						DynmapStyle style = new DynmapStyle();
+						Map<String, Object> map = (Map<String, Object>) s;
+						if(map.containsKey("homeMarker")) {
+							style.setHomeMarker(map.get("homeMarker").toString());
+						}
+						if(map.containsKey("fillOpacity")) {
+							style.setFillOpacity(getDouble(map.get("fillOpacity").toString()));
+						}
+						if(map.containsKey("lineWeight")) {
+							style.setLineWeight(getInt(map.get("lineWeight").toString()));
+						}
+						if(map.containsKey("lineColor")) {
+							style.setLineColor(map.get("lineColor").toString());
+						}
+						if(map.containsKey("styleBoost")) {
+							style.setBoost(Boolean.parseBoolean(map.get("styleBoost").toString()));
+						}
+						if(map.containsKey("fillColor")) {
+							style.setFillColor(map.get("fillColor").toString());
+						}
+						if(map.containsKey("lineOpacity")) {
+							style.setLineOpacity(getDouble(map.get("lineOpacity").toString()));
+						}
+						styles.put(faction, style);
+					} else {
+						// Panic!
+					}
 				}
 			}
 			return styles;
@@ -140,7 +175,6 @@ public class DynmapConfig {
 		}
 	}
 
-	@ConfigSerializable
 	public class Style {
 		// Region Style
 		@Setting

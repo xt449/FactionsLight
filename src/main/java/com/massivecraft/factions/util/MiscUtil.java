@@ -62,7 +62,7 @@ public class MiscUtil {
 	}
 
 	/// TODO create tag whitelist!!
-	public static HashSet<String> substanceChars = new HashSet<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"));
+	public static final HashSet<String> substanceChars = new HashSet<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"));
 
 	public static String getComparisonString(String str) {
 		StringBuilder ret = new StringBuilder();
@@ -81,19 +81,19 @@ public class MiscUtil {
 	public static ArrayList<String> validateTag(String str) {
 		ArrayList<String> errors = new ArrayList<>();
 
-		for(String blacklistItem : FactionsPlugin.getInstance().conf().factions().other().getNameBlacklist()) {
+		for(String blacklistItem : FactionsPlugin.getInstance().configMain.factions().other().getNameBlacklist()) {
 			if(str.toLowerCase().contains(blacklistItem.toLowerCase())) {
 				errors.add(FactionsPlugin.getInstance().txt().parse(TL.GENERIC_FACTIONTAG_BLACKLIST.toString()));
 				break;
 			}
 		}
 
-		if(getComparisonString(str).length() < FactionsPlugin.getInstance().conf().factions().other().getTagLengthMin()) {
-			errors.add(FactionsPlugin.getInstance().txt().parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), FactionsPlugin.getInstance().conf().factions().other().getTagLengthMin()));
+		if(getComparisonString(str).length() < FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMin()) {
+			errors.add(FactionsPlugin.getInstance().txt().parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMin()));
 		}
 
-		if(str.length() > FactionsPlugin.getInstance().conf().factions().other().getTagLengthMax()) {
-			errors.add(FactionsPlugin.getInstance().txt().parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), FactionsPlugin.getInstance().conf().factions().other().getTagLengthMax()));
+		if(str.length() > FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMax()) {
+			errors.add(FactionsPlugin.getInstance().txt().parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMax()));
 		}
 
 		List<String> badChars = null;

@@ -102,24 +102,8 @@ public class SimpleItem {
 		this.lore = lore;
 	}
 
-	public Material getMaterial() {
-		return material;
-	}
-
 	public void setMaterial(Material material) {
 		this.material = material;
-	}
-
-	public DyeColor getColor() {
-		return color;
-	}
-
-	public void setColor(DyeColor color) {
-		this.color = color;
-	}
-
-	public boolean isEnchant() {
-		return enchant;
 	}
 
 	public void setEnchant(boolean enchant) {

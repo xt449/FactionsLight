@@ -1,7 +1,7 @@
 package com.massivecraft.factions.integration.dynmap;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.config.file.DynmapConfig;
+import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.data.MemoryBoard;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
@@ -41,7 +41,7 @@ public class EngineDynmap {
 	// -------------------------------------------- //
 
 	private static final EngineDynmap instance = new EngineDynmap();
-	private final DynmapConfig dynmapConf = FactionsPlugin.getInstance().getConfigManager().getDynmapConfig();
+	private final DynMapConfiguration config = FactionsPlugin.getInstance().configDynMap;
 
 	public static EngineDynmap getInstance() {
 		return instance;
@@ -50,21 +50,12 @@ public class EngineDynmap {
 	public DynmapAPI dynmapApi;
 	public MarkerAPI markerApi;
 	public MarkerSet markerset;
-	private boolean enabled;
-
-	public boolean isRunning() {
-		return enabled;
-	}
-
-	public String getVersion() {
-		return this.dynmapApi == null ? null : this.dynmapApi.getDynmapVersion();
-	}
 
 	public void init(Plugin dynmap) {
 		this.dynmapApi = (DynmapAPI) dynmap;
 
 		// Should we even use dynmap?
-		if(!dynmapConf.dynmap().isEnabled()) {
+		if(!config.dynmap().isEnabled()) {
 			if(this.markerset != null) {
 				this.markerset.deleteMarkerSet();
 				this.markerset = null;
@@ -93,7 +84,6 @@ public class EngineDynmap {
 			updatePlayersets(playerSets);
 		}, 100L, 100L);
 
-		this.enabled = true;
 		FactionsPlugin.getInstance().getLogger().info("Enabled Dynmap integration");
 	}
 
@@ -119,10 +109,10 @@ public class EngineDynmap {
 	// Thread Safe / Asynchronous: Yes
 	public TempMarkerSet createLayer() {
 		TempMarkerSet ret = new TempMarkerSet();
-		ret.label = dynmapConf.dynmap().getLayerName();
-		ret.minimumZoom = dynmapConf.dynmap().getLayerMinimumZoom();
-		ret.priority = dynmapConf.dynmap().getLayerPriority();
-		ret.hideByDefault = !dynmapConf.dynmap().isLayerVisible();
+		ret.label = config.dynmap().getLayerName();
+		ret.minimumZoom = config.dynmap().getLayerMinimumZoom();
+		ret.priority = config.dynmap().getLayerPriority();
+		ret.hideByDefault = !config.dynmap().isLayerVisible();
 		return ret;
 	}
 
@@ -518,7 +508,7 @@ public class EngineDynmap {
 
 	// Thread Safe / Asynchronous: Yes
 	public Map<String, Set<String>> createPlayersets() {
-		if(!dynmapConf.dynmap().isVisibilityByFaction()) {
+		if(!config.dynmap().isVisibilityByFaction()) {
 			return null;
 		}
 
@@ -590,7 +580,7 @@ public class EngineDynmap {
 
 	// Thread Safe / Asynchronous: Yes
 	private String getDescription(Faction faction) {
-		String ret = "<div class=\"regioninfo\">" + dynmapConf.dynmap().getDescription() + "</div>";
+		String ret = "<div class=\"regioninfo\">" + config.dynmap().getDescription() + "</div>";
 
 		// Name
 		String name = faction.getTag();
@@ -689,8 +679,8 @@ public class EngineDynmap {
 			return false;
 		}
 
-		Set<String> visible = dynmapConf.dynmap().getVisibleFactions();
-		Set<String> hidden = dynmapConf.dynmap().getHiddenFactions();
+		Set<String> visible = config.dynmap().getVisibleFactions();
+		Set<String> hidden = config.dynmap().getHiddenFactions();
 
 		if(!visible.isEmpty() && !visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world)) {
 			return false;
@@ -703,12 +693,12 @@ public class EngineDynmap {
 	public DynmapStyle getStyle(Faction faction) {
 		DynmapStyle ret;
 
-		ret = dynmapConf.dynmap().getFactionStyles().get(faction.getId());
+		ret = config.dynmap().getFactionStyles().get(faction.getId());
 		if(ret != null) {
 			return ret;
 		}
 
-		ret = dynmapConf.dynmap().getFactionStyles().get(faction.getTag());
+		ret = config.dynmap().getFactionStyles().get(faction.getTag());
 		if(ret != null) {
 			return ret;
 		}

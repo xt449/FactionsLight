@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.config.ConfigManager;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
+import com.massivecraft.factions.configuration.DynMapConfiguration;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.SaveTask;
 import com.massivecraft.factions.integration.ClipPlaceholderAPIManager;
 import com.massivecraft.factions.integration.IWorldguard;
@@ -13,22 +14,17 @@ import com.massivecraft.factions.integration.IntegrationManager;
 import com.massivecraft.factions.integration.VaultPermission;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.listeners.versionspecific.PortalListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.factions.util.particle.ParticleProvider;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -36,15 +32,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
@@ -56,7 +48,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		return instance;
 	}
 
-	private final ConfigManager configManager = new ConfigManager(this);
+	// Configurations
+	public final MainConfiguration configMain = new MainConfiguration(this);
+	public final DefaultPermissionsConfiguration configDefaultPermissions = new DefaultPermissionsConfiguration(this);
+	public final DynMapConfiguration configDynMap = new DynMapConfiguration(this);
 
 	private Integer saveTask = null;
 	private boolean autoSave = true;
@@ -75,20 +70,16 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		return worldUtil;
 	}
 
-	public void grumpException(RuntimeException e) {
-		this.grumpyExceptions.add(e);
-	}
-
 	private PermUtil permUtil;
 
 	// Persist related
-	private Gson gson;
+	public final Gson gson = getGsonBuilder().create();
 
 	// holds f stuck start times
-	private final Map<UUID, Long> timers = new HashMap<>();
+	public final Map<UUID, Long> timers = new HashMap<>();
 
 	//holds f stuck taskids
-	private final Map<UUID, Integer> stuckMap = new HashMap<>();
+	public final Map<UUID, Integer> stuckMap = new HashMap<>();
 
 	// Persistence related
 	private boolean locked = false;
@@ -96,18 +87,13 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private Integer autoLeaveTask = null;
 
 	private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-	private boolean mvdwPlaceholderAPIManager = false;
 	private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-	private ParticleProvider particleProvider;
 	private IWorldguard worldguard;
 	private LandRaidControl landRaidControl;
 
-	private final Pattern factionsVersionPattern = Pattern.compile("b(\\d{1,4})");
-	private UUID serverUUID;
 	private String startupLog;
 	private String startupExceptionLog;
-	private final List<RuntimeException> grumpyExceptions = new ArrayList<>();
 	private VaultPermission vaultPermission;
 	public final boolean likesCats = Arrays.stream(FactionsPlugin.class.getDeclaredMethods()).anyMatch(m -> m.isSynthetic() && m.getName().startsWith("loadCon") && m.getName().endsWith("0"));
 
@@ -150,31 +136,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		getLogger().info("=== Starting up! ===");
 		long timeEnableStart = System.currentTimeMillis();
 
-		if(!this.grumpyExceptions.isEmpty()) {
-			this.grumpyExceptions.forEach(e -> getLogger().log(Level.WARNING, "Found issue with plugin touching FactionsUUID before it starts up!", e));
-		}
-
-		// Ensure basefolder exists!
-		this.getDataFolder().mkdirs();
-
-		byte[] m = Bukkit.getMotd().getBytes(StandardCharsets.UTF_8);
-		if(m.length == 0) {
-			m = new byte[] {0x6b, 0x69, 0x74, 0x74, 0x65, 0x6e};
-		}
-		int u = intOr("%%__USER__%%", 987654321), n = intOr("%%__NONCE__%%", 1234567890), x = 0, p = Math.min(Bukkit.getMaxPlayers(), 65535);
-		long ms = (0x4fac & 0xffffL);
-		if(n != 1234567890) {
-			ms += (n & 0xffffffffL) << 32;
-			x = 4;
-		}
-		for(int i = 0; x < 6; i++, x++) {
-			if(i == m.length) {
-				i = 0;
-			}
-			ms += ((m[i] & 0xFFL) << (8 + (8 * (6 - x))));
-		}
-		this.serverUUID = new UUID(ms, ((0xaf & 0xffL) << 56) + ((0xac & 0xffL) << 48) + (u & 0xffffffffL) + ((p & 0xffffL) << 32));
-
 		getLogger().info("");
 		getLogger().info("Patriam Factions UUID!");
 		getLogger().info("Version " + this.getDescription().getVersion());
@@ -182,19 +143,17 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		getLogger().info("Need support? https://factions.support/help/");
 		getLogger().info("");
 
-		this.getLogger().info("Server UUID " + this.serverUUID);
+		// Ensure data folder exists!
+		this.getDataFolder().mkdirs();
 
 		loadLang();
-		this.gson = this.getGsonBuilder().create();
 
-		// Load Conf from disk
-		this.configManager.startup();
+		// Load Configurations
+		configMain.initialize();
+		configDefaultPermissions.initialize();
+		configDynMap.initialize();
 
-		if(this.conf().data().json().useEfficientStorage()) {
-			getLogger().info("Using space efficient (less readable) storage.");
-		}
-
-		this.landRaidControl = LandRaidControl.getByName(this.conf().factions().landRaidControl().getSystem());
+		this.landRaidControl = LandRaidControl.getByName(configMain.factions().landRaidControl().getSystem());
 
 		File dataFolder = new File(this.getDataFolder(), "data");
 		if(!dataFolder.exists()) {
@@ -205,9 +164,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		this.permUtil = new PermUtil(this);
 		this.persist = new Persist(this);
 		this.worldUtil = new WorldUtil(this);
-
-		this.txt = new TextUtil();
-		initTXT();
 
 		// attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
 		// reference command will be used to prevent "unknown command" console messages
@@ -221,8 +177,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		// Register recurring tasks
-		if(saveTask == null && this.conf().factions().other().getSaveToFileEveryXMinutes() > 0.0) {
-			long saveTicks = (long) (20 * 60 * this.conf().factions().other().getSaveToFileEveryXMinutes()); // Approximately every 30 min by default
+		if(saveTask == null && configMain.factions().other().getSaveToFileEveryXMinutes() > 0.0) {
+			long saveTicks = (long) (20 * 60 * configMain.factions().other().getSaveToFileEveryXMinutes()); // Approximately every 30 min by default
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 
@@ -232,7 +188,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
 			if(faction == null) {
 				log("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId());
-				fPlayer.resetFactionData(false);
+				fPlayer.resetFactionData();
 				continue;
 			}
 			faction.addFPlayer(fPlayer);
@@ -254,15 +210,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
 		startAutoLeaveTask(false);
 
-		// Run before initializing listeners to handle reloads properly.
-		particleProvider = new ParticleProvider();
-		// End run before registering event handlers.
-
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
-		getServer().getPluginManager().registerEvents(new FactionsExploitListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 		getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
 		getServer().getPluginManager().registerEvents(new PortalListener(this), this);
@@ -367,21 +318,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 	}
 
-	private int getBuildNumber(String version) {
-		Matcher factionsVersionMatcher = factionsVersionPattern.matcher(version);
-		if(factionsVersionMatcher.find()) {
-			try {
-				return Integer.parseInt(factionsVersionMatcher.group(1));
-			} catch(NumberFormatException ignored) { // HOW
-			}
-		}
-		return -1;
-	}
-
-	public UUID getServerUUID() {
-		return this.serverUUID;
-	}
-
 	public String getStartupLog() {
 		return this.startupLog;
 	}
@@ -394,59 +330,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		return permUtil;
 	}
 
-	public Gson getGson() {
-		return gson;
-	}
-
-	public ParticleProvider getParticleProvider() {
-		return particleProvider;
-	}
-
-	// -------------------------------------------- //
-	// LANG AND TAGS
-	// -------------------------------------------- //
-
-	// These are not supposed to be used directly.
-	// They are loaded and used through the TextUtil instance for the plugin.
-	private final Map<String, String> rawTags = new LinkedHashMap<>();
-
-	private void addRawTags() {
-		this.rawTags.put("l", "<green>"); // logo
-		this.rawTags.put("a", "<gold>"); // art
-		this.rawTags.put("n", "<silver>"); // notice
-		this.rawTags.put("i", "<yellow>"); // info
-		this.rawTags.put("g", "<lime>"); // good
-		this.rawTags.put("b", "<rose>"); // bad
-		this.rawTags.put("h", "<pink>"); // highligh
-		this.rawTags.put("c", "<aqua>"); // command
-		this.rawTags.put("p", "<teal>"); // parameter
-	}
-
-	private void initTXT() {
-		this.addRawTags();
-
-		Type type = new TypeToken<Map<String, String>>() {
-		}.getType();
-
-		Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-		if(tagsFromFile != null) {
-			this.rawTags.putAll(tagsFromFile);
-		}
-		this.persist.save(this.rawTags, "tags");
-
-		for(Map.Entry<String, String> rawTag : this.rawTags.entrySet()) {
-			this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
-		}
-	}
-
-	public Map<UUID, Integer> getStuckMap() {
-		return this.stuckMap;
-	}
-
-	public Map<UUID, Long> getTimers() {
-		return this.timers;
-	}
-
 	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
@@ -455,11 +338,11 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	}
 
 	public void log(String str, Object... args) {
-		log(Level.INFO, this.txt.parse(str, args));
+		log(Level.INFO, TextUtil.parse(str, args));
 	}
 
 	public void log(Level level, String str, Object... args) {
-		log(level, this.txt.parse(str, args));
+		log(level, TextUtil.parse(str, args));
 	}
 
 	public void log(Level level, String msg) {
@@ -483,14 +366,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		this.autoSave = val;
 	}
 
-	public ConfigManager getConfigManager() {
-		return this.configManager;
-	}
-
-	public MainConfig conf() {
-		return this.configManager.getMainConfig();
-	}
-
 	public LandRaidControl getLandRaidControl() {
 		return this.landRaidControl;
 	}
@@ -506,17 +381,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 	}
 
-	public void setupOtherPlaceholderAPI() {
-		this.mvdwPlaceholderAPIManager = true;
-		getLogger().info("Found MVdWPlaceholderAPI.");
-	}
-
 	public boolean isClipPlaceholderAPIHooked() {
 		return this.clipPlaceholderAPIManager != null;
-	}
-
-	public boolean isMVdWPlaceholderAPIHooked() {
-		return this.mvdwPlaceholderAPIManager;
 	}
 
 	private GsonBuilder getGsonBuilder() {
@@ -527,10 +393,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}.getType();
 
 		GsonBuilder builder = new GsonBuilder();
-
-		if(!this.conf().data().json().useEfficientStorage()) {
-			builder.setPrettyPrinting();
-		}
 
 		return builder
 				.disableHtmlEscaping()
@@ -570,14 +432,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			this.getServer().getScheduler().cancelTask(autoLeaveTask);
 		}
 
-		if(this.conf().factions().other().getAutoLeaveRoutineRunsEveryXMinutes() > 0.0) {
-			long ticks = (long) (20 * 60 * this.conf().factions().other().getAutoLeaveRoutineRunsEveryXMinutes());
+		if(configMain.factions().other().getAutoLeaveRoutineRunsEveryXMinutes() > 0.0) {
+			long ticks = (long) (20 * 60 * configMain.factions().other().getAutoLeaveRoutineRunsEveryXMinutes());
 			autoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
 		}
-	}
-
-	public boolean logPlayerCommands() {
-		return this.conf().logging().isPlayerCommands();
 	}
 
 	// -------------------------------------------- //
@@ -609,7 +467,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	@Override
 	public boolean isAnotherPluginHandlingChat() {
-		return this.conf().factions().chat().isTagHandledByAnotherPlugin() || !this.pluginsHandlingChat.isEmpty();
+		return configMain.factions().chat().isTagHandledByAnotherPlugin() || !this.pluginsHandlingChat.isEmpty();
 	}
 
 	// Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
@@ -633,9 +491,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	}
 
 	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
-
 	// TODO: GET THIS BACK AND WORKING
-
 	public boolean isFactionsCommand(String check) {
 		return !(check == null || check.isEmpty()); //&& this.handleCommand(null, check, true);
 	}
@@ -661,7 +517,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		// if listener isn't set, or config option is disabled, give back uncolored tag
-		if(listener == null || !this.conf().factions().chat().isTagRelationColored()) {
+		if(listener == null || !configMain.factions().chat().isTagRelationColored()) {
 			tag = me.getChatTag().trim();
 		} else {
 			FPlayer you = FPlayers.getInstance().getByPlayer(listener);
@@ -728,23 +584,5 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	public String getPrimaryGroup(OfflinePlayer player) {
 		return this.vaultPermission.getPrimaryGroup(player);
-	}
-
-	public void debug(Level level, String s) {
-		if(conf().getaVeryFriendlyFactionsConfig().isDebug()) {
-			getLogger().log(level, s);
-		}
-	}
-
-	public void debug(String s) {
-		debug(Level.INFO, s);
-	}
-
-	public CompletableFuture<Boolean> teleport(Player player, Location location) {
-		if(this.conf().paper().isAsyncTeleport()) {
-			return PaperLib.teleportAsync(player, location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-		} else {
-			return CompletableFuture.completedFuture(player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN));
-		}
 	}
 }

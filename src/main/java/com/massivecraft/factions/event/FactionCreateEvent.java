@@ -28,11 +28,6 @@ public class FactionCreateEvent extends Event {
 		return FPlayers.getInstance().getByPlayer(sender);
 	}
 
-	@Deprecated
-	public String getFactionTag() {
-		return factionTag;
-	}
-
 	public Faction getFaction() {
 		return this.faction;
 	}

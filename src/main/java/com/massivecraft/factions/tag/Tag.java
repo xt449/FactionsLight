@@ -56,21 +56,9 @@ public interface Tag {
 	}
 
 	static boolean isMinimalShow() {
-		return FactionsPlugin.getInstance().conf().commands().show().isMinimal();
+		return FactionsPlugin.getInstance().configMain.commands().show().isMinimal();
 	}
 
-	/**
-	 * Gets the Tag's string representation.
-	 *
-	 * @return tag
-	 */
-	String getTag();
-
-	/**
-	 * Gets if the Tag can be found in the given String.
-	 *
-	 * @param test string to test
-	 * @return true if the tag is found in this string
-	 */
-	boolean foundInString(String test);
+	@Override
+	String toString();
 }

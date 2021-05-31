@@ -119,12 +119,12 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return "";
 			case "faction_dtr_frozen":
 				if((fPlayer.hasFaction() || territory) && FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-					return FactionTag.DTR_FROZEN.replace(FactionTag.DTR_FROZEN.getTag(), faction);
+					return FactionTag.DTR_FROZEN.replace(FactionTag.DTR_FROZEN.toString(), faction);
 				}
 				return "";
 			case "faction_dtr_frozen_time":
 				if((fPlayer.hasFaction() || territory) && FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-					return FactionTag.DTR_FROZEN_TIME.replace(FactionTag.DTR_FROZEN_TIME.getTag(), faction);
+					return FactionTag.DTR_FROZEN_TIME.replace(FactionTag.DTR_FROZEN_TIME.toString(), faction);
 				}
 				return "";
 			case "faction_maxclaims":
@@ -138,7 +138,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 			case "faction_joining":
 				return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
 			case "faction_peaceful":
-				return faction.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getNeutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
+				return faction.isPeaceful() ? FactionsPlugin.getInstance().configMain.colors().relations().neutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
 			case "faction_powerboost":
 				double powerBoost = faction.getPowerBoost();
 				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";

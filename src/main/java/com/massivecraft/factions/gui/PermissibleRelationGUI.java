@@ -1,7 +1,6 @@
 package com.massivecraft.factions.gui;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
@@ -16,7 +15,6 @@ import java.util.Map;
 
 public class PermissibleRelationGUI extends GUI<Permissible> {
 	private static final Map<Permissible, SimpleItem> items;
-	public static SimpleItem offlineSwitch = SimpleItem.builder().setName(TL.GUI_PERMS_TOGGLE.toString()).setMaterial(Material.LEVER).build();
 
 	static {
 		items = new LinkedHashMap<>();
@@ -66,17 +64,14 @@ public class PermissibleRelationGUI extends GUI<Permissible> {
 	private final boolean online;
 
 	public PermissibleRelationGUI(boolean online, FPlayer user) {
-		super(user, FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ? 2 : 1);
+		super(user, 1);
 		this.online = online;
 		build();
 	}
 
 	@Override
 	protected String getName() {
-		String bit = FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ?
-				TL.GUI_PERMS_RELATION_ONLINEOFFLINEBIT.format(online ? TL.GUI_PERMS_ONLINE.toString() : TL.GUI_PERMS_OFFLINE)
-				: "";
-		return TL.GUI_PERMS_RELATION_NAME.format(bit);
+		return TL.GUI_PERMS_RELATION_NAME.format();
 	}
 
 	@Override
@@ -87,15 +82,6 @@ public class PermissibleRelationGUI extends GUI<Permissible> {
 		toParse = toParse.replace("{relation-color}", permissible.getColor().toString());
 		toParse = toParse.replace("{relation}", name);
 		return toParse;
-	}
-
-	@Override
-	public void click(int slot, ClickType clickType) {
-		if(FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() && slot == 13) {
-			new PermissibleRelationGUI(!online, user).open();
-		} else {
-			super.click(slot, clickType);
-		}
 	}
 
 	@Override
@@ -126,6 +112,6 @@ public class PermissibleRelationGUI extends GUI<Permissible> {
 
 	@Override
 	protected Map<Integer, SimpleItem> createDummyItems() {
-		return FactionsPlugin.getInstance().conf().factions().other().isSeparateOfflinePerms() ? Collections.singletonMap(13, offlineSwitch) : Collections.emptyMap();
+		return Collections.emptyMap();
 	}
 }

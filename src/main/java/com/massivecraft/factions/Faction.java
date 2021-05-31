@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
@@ -8,15 +7,13 @@ import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface Faction extends EconomyParticipator {
-	Map<String, List<String>> getAnnouncements();
+public interface Faction extends RelationParticipator {
 
 	Map<String, LazyLocation> getWarps();
 
@@ -114,9 +111,6 @@ public interface Faction extends EconomyParticipator {
 
 	boolean isNormal();
 
-	@Deprecated
-	boolean isNone();
-
 	boolean isWilderness();
 
 	boolean isSafeZone();
@@ -204,14 +198,9 @@ public interface Faction extends EconomyParticipator {
 	// FPlayers
 	// -------------------------------
 
-	// maintain the reference list of FPlayers in this faction
-	void refreshFPlayers();
-
 	boolean addFPlayer(FPlayer fplayer);
 
 	boolean removeFPlayer(FPlayer fplayer);
-
-	int getSize();
 
 	Set<FPlayer> getFPlayers();
 
@@ -241,8 +230,6 @@ public interface Faction extends EconomyParticipator {
 
 	void sendMessage(String message);
 
-	void sendMessage(List<String> messages);
-
 	// ----------------------------------------------//
 	// Ownership of specific claims
 	// ----------------------------------------------//
@@ -265,8 +252,6 @@ public interface Faction extends EconomyParticipator {
 
 	void removePlayerAsOwner(FPlayer player, FLocation loc);
 
-	Set<String> getOwnerList(FLocation loc);
-
 	String getOwnerListString(FLocation loc);
 
 	boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
@@ -280,5 +265,4 @@ public interface Faction extends EconomyParticipator {
 
 	void setId(String id);
 
-	OfflinePlayer getOfflinePlayer();
 }

@@ -26,7 +26,7 @@ public class CmdClaimFill extends FCommand {
 		this.aliases.add("cf");
 
 		// Args
-		this.optionalArgs.put("limit", String.valueOf(FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims()));
+		this.optionalArgs.put("limit", String.valueOf(FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims()));
 		this.optionalArgs.put("faction", "you");
 
 		this.requirements = new CommandRequirements.Builder(Permission.CLAIM_FILL)
@@ -37,10 +37,10 @@ public class CmdClaimFill extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// Args
-		final int limit = context.argAsInt(0, FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims());
+		final int limit = context.argAsInt(0, FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims());
 
-		if(limit > FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims()) {
-			context.msg(TL.COMMAND_CLAIMFILL_ABOVEMAX, FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxClaims());
+		if(limit > FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims()) {
+			context.msg(TL.COMMAND_CLAIMFILL_ABOVEMAX, FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims());
 			return;
 		}
 
@@ -65,7 +65,7 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-		final double distance = FactionsPlugin.getInstance().conf().factions().claims().getFillClaimMaxDistance();
+		final double distance = FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxDistance();
 		long startX = loc.getX();
 		long startZ = loc.getZ();
 
@@ -98,7 +98,7 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-		final int limFail = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit();
+		final int limFail = FactionsPlugin.getInstance().configMain.factions().claims().getRadiusClaimFailureLimit();
 		int fails = 0;
 		for(FLocation currentLocation : toClaim) {
 			if(!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {

@@ -27,17 +27,12 @@ public enum GeneralTag implements Tag {
 	}
 
 	@Override
-	public String getTag() {
+	public String toString() {
 		return this.tag;
 	}
 
-	@Override
-	public boolean foundInString(String test) {
-		return test != null && test.contains(this.tag);
-	}
-
 	public String replace(String text) {
-		if(!this.foundInString(text)) {
+		if(!text.contains(this.tag)) {
 			return text;
 		}
 		String result = this.supplier.get();

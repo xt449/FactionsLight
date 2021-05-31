@@ -1,12 +1,9 @@
 package com.massivecraft.factions.data.json;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.data.MemoryFaction;
 import com.massivecraft.factions.data.MemoryFactions;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.UUIDFetcher;
@@ -18,24 +15,10 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
-	public Gson getGson() {
-		return FactionsPlugin.getInstance().getGson();
-	}
 
 	private final File file;
 
-	public File getFile() {
-		return file;
-	}
-
-	// -------------------------------------------- //
-	// CONSTRUCTORS
-	// -------------------------------------------- //
-
 	public JSONFactions() {
-		if(FactionsPlugin.getInstance().getServerUUID() == null) {
-			FactionsPlugin.getInstance().grumpException(new RuntimeException());
-		}
 		this.file = new File(FactionsPlugin.getInstance().getDataFolder(), "data/factions.json");
 		this.nextId = 1;
 	}
@@ -54,7 +37,7 @@ public class JSONFactions extends MemoryFactions {
 	}
 
 	private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
-		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
+		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(entities), sync);
 	}
 
 	public int load() {
@@ -78,7 +61,7 @@ public class JSONFactions extends MemoryFactions {
 			return null;
 		}
 
-		Map<String, JSONFaction> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
+		Map<String, JSONFaction> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
 		}.getType());
 
 		this.nextId = 1;
@@ -234,13 +217,5 @@ public class JSONFactions extends MemoryFactions {
 	@Override
 	public Faction generateFactionObject(String id) {
 		return new JSONFaction(id);
-	}
-
-	@Override
-	public void convertFrom(MemoryFactions old) {
-		old.factions.forEach((tag, faction) -> this.factions.put(tag, new JSONFaction((MemoryFaction) faction)));
-		this.nextId = old.nextId;
-		forceSave();
-		Factions.instance = this;
 	}
 }

@@ -18,12 +18,12 @@ public class FInfoSidebar extends FSidebarProvider {
 
 	@Override
 	public String getTitle(FPlayer fplayer) {
-		return replaceTags(this.faction, fplayer, FactionsPlugin.getInstance().conf().scoreboard().info().getTitle());
+		return replaceTags(this.faction, fplayer, FactionsPlugin.getInstance().configMain.scoreboard().info().getTitle());
 	}
 
 	@Override
 	public List<String> getLines(FPlayer fplayer) {
-		List<String> lines = new ArrayList<>(FactionsPlugin.getInstance().conf().scoreboard().info().getContent());
+		List<String> lines = new ArrayList<>(FactionsPlugin.getInstance().configMain.scoreboard().info().getContent());
 
 		ListIterator<String> it = lines.listIterator();
 		while(it.hasNext()) {

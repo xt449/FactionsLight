@@ -5,8 +5,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 public class CmdHelp extends FCommand {
@@ -24,33 +22,7 @@ public class CmdHelp extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(FactionsPlugin.getInstance().conf().commands().help().isUseOldHelp()) {
-			if(helpPages == null) {
-				updateHelp(context);
-			}
-
-			int page = context.argAsInt(0, 1);
-			context.sendMessage(plugin.txt().titleize("Factions Help (" + page + "/" + helpPages.size() + ")"));
-
-			page -= 1;
-
-			if(page < 0 || page >= helpPages.size()) {
-				context.msg(TL.COMMAND_HELP_404.format(String.valueOf(page)));
-				return;
-			}
-			context.sendMessage(helpPages.get(page));
-			return;
-		}
-		Map<String, List<String>> help = FactionsPlugin.getInstance().conf().commands().help().getEntries();
-		String pageArg = context.argAsString(0, "1");
-		List<String> page = help.get(pageArg);
-		if(page == null || page.isEmpty()) {
-			context.msg(TL.COMMAND_HELP_404.format(pageArg));
-			return;
-		}
-		for(String helpLine : page) {
-			context.sendMessage(FactionsPlugin.getInstance().txt().parse(helpLine));
-		}
+		// TODO - redo help
 	}
 
 	//----------------------------------------------//

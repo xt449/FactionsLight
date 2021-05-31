@@ -3,7 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.RelationParticipator;
 import com.massivecraft.factions.perms.Relation;
 import org.bukkit.ChatColor;
 
@@ -99,15 +99,15 @@ public class RelationUtil {
 		Faction thatFaction = getFaction(that);
 		if(thatFaction != null) {
 			if(thatFaction.isPeaceful() && thatFaction != getFaction(me)) {
-				return FactionsPlugin.getInstance().conf().colors().relations().getPeaceful();
+				return FactionsPlugin.getInstance().configMain.colors().relations().peaceful();
 			}
 
 			if(thatFaction.isSafeZone() && thatFaction != getFaction(me)) {
-				return FactionsPlugin.getInstance().conf().colors().factions().getSafezone();
+				return FactionsPlugin.getInstance().configMain.colors().factions().safezone();
 			}
 
 			if(thatFaction.isWarZone() && thatFaction != getFaction(me)) {
-				return FactionsPlugin.getInstance().conf().colors().factions().getWarzone();
+				return FactionsPlugin.getInstance().configMain.colors().factions().warzone();
 			}
 		}
 

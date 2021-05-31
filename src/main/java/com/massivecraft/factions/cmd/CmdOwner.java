@@ -30,13 +30,13 @@ public class CmdOwner extends FCommand {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled()) {
 			context.msg(TL.COMMAND_OWNER_DISABLED);
 			return;
 		}
 
-		if(!hasBypass && FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction() > 0 && context.faction.getCountOfClaimsWithOwners() >= FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction()) {
-			context.msg(TL.COMMAND_OWNER_LIMIT, FactionsPlugin.getInstance().conf().factions().ownedArea().getLimitPerFaction());
+		if(!hasBypass && FactionsPlugin.getInstance().configMain.factions().ownedArea().getLimitPerFaction() > 0 && context.faction.getCountOfClaimsWithOwners() >= FactionsPlugin.getInstance().configMain.factions().ownedArea().getLimitPerFaction()) {
+			context.msg(TL.COMMAND_OWNER_LIMIT, FactionsPlugin.getInstance().configMain.factions().ownedArea().getLimitPerFaction());
 			return;
 		}
 

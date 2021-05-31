@@ -52,7 +52,7 @@ public class FPromoteCommand extends FCommand {
 			return;
 		}
 
-		if(promotion == Role.COLEADER && !FactionsPlugin.getInstance().conf().factions().other().isAllowMultipleColeaders()) {
+		if(promotion == Role.COLEADER && !FactionsPlugin.getInstance().configMain.factions().other().isAllowMultipleColeaders()) {
 			if(!target.getFaction().getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
 				context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 				return;

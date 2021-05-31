@@ -20,14 +20,14 @@ public class CmdSethome extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isEnabled()) {
 			context.msg(TL.COMMAND_SETHOME_DISABLED);
 			return;
 		}
 
 		// Can the player set the faction home HERE?
 		if(!Permission.BYPASS.has(context.player) &&
-				FactionsPlugin.getInstance().conf().factions().homes().isMustBeInClaimedTerritory() &&
+				FactionsPlugin.getInstance().configMain.factions().homes().isMustBeInClaimedTerritory() &&
 				Board.getInstance().getFactionAt(new FLocation(context.player)) != context.faction) {
 			context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
 			return;

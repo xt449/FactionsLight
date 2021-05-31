@@ -8,6 +8,7 @@ import com.massivecraft.factions.event.FPlayerTeleportEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.util.TL;
+import io.papermc.lib.PaperLib;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,11 +33,11 @@ public class CmdStuck extends FCommand {
 		final Location sentAt = player.getLocation();
 		final FLocation chunk = context.fPlayer.getLastStoodAt();
 		// TODO handle delay 0
-		final long delay = FactionsPlugin.getInstance().conf().commands().stuck().getDelay();
-		final int radius = FactionsPlugin.getInstance().conf().commands().stuck().getRadius();
+		final long delay = FactionsPlugin.getInstance().configMain.commands().stuck().getDelay();
+		final int radius = FactionsPlugin.getInstance().configMain.commands().stuck().getRadius();
 
-		if(FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
-			long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+		if(FactionsPlugin.getInstance().stuckMap.containsKey(player.getUniqueId())) {
+			long wait = FactionsPlugin.getInstance().timers.get(player.getUniqueId()) - System.currentTimeMillis();
 			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
 			context.msg(TL.COMMAND_STUCK_EXISTS, time);
 		} else {
@@ -50,7 +51,7 @@ public class CmdStuck extends FCommand {
 			final int id = new BukkitRunnable() {
 				@Override
 				public void run() {
-					if(!FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
+					if(!FactionsPlugin.getInstance().stuckMap.containsKey(player.getUniqueId())) {
 						return;
 					}
 
@@ -58,8 +59,8 @@ public class CmdStuck extends FCommand {
 					final World world = chunk.getWorld();
 					if(world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
 						context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
-						FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
-						FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+						FactionsPlugin.getInstance().timers.remove(player.getUniqueId());
+						FactionsPlugin.getInstance().stuckMap.remove(player.getUniqueId());
 						return;
 					}
 
@@ -67,14 +68,11 @@ public class CmdStuck extends FCommand {
 					// spiral task to find nearest wilderness chunk
 					new SpiralTask(new FLocation(context.player), radius * 2) {
 
-						final int buffer = FactionsPlugin.getInstance().conf().worldBorder().getBuffer();
+						final int buffer = 0;
 
 						@Override
 						public boolean work() {
 							FLocation chunk = currentFLocation();
-							if(chunk.isOutsideWorldBorder(buffer)) {
-								return true;
-							}
 
 							Faction faction = board.getFactionAt(chunk);
 							if(faction.isWilderness()) {
@@ -83,9 +81,9 @@ public class CmdStuck extends FCommand {
 								int y = world.getHighestBlockYAt(cx, cz);
 								Location tp = new Location(world, cx, y, cz);
 								context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
-								FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
-								FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
-								FactionsPlugin.getInstance().teleport(player, tp);
+								FactionsPlugin.getInstance().timers.remove(player.getUniqueId());
+								FactionsPlugin.getInstance().stuckMap.remove(player.getUniqueId());
+								PaperLib.teleportAsync(player, tp);
 								this.stop();
 								return false;
 							}
@@ -95,11 +93,11 @@ public class CmdStuck extends FCommand {
 				}
 			}.runTaskLater(FactionsPlugin.getInstance(), delay * 20).getTaskId();
 
-			FactionsPlugin.getInstance().getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
-			long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+			FactionsPlugin.getInstance().timers.put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
+			long wait = FactionsPlugin.getInstance().timers.get(player.getUniqueId()) - System.currentTimeMillis();
 			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
 			context.msg(TL.COMMAND_STUCK_START, time);
-			FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), id);
+			FactionsPlugin.getInstance().stuckMap.put(player.getUniqueId(), id);
 		}
 	}
 

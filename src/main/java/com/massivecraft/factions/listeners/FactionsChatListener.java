@@ -4,7 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.ChatMode;
@@ -20,7 +20,7 @@ import java.util.logging.Level;
 
 public class FactionsChatListener implements Listener {
 
-	public FactionsPlugin plugin;
+	public final FactionsPlugin plugin;
 
 	public FactionsChatListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
@@ -29,15 +29,11 @@ public class FactionsChatListener implements Listener {
 	// this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
-			return;
-		}
-
 		Player talkingPlayer = event.getPlayer();
 		String msg = event.getMessage();
 		FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
 		ChatMode chat = me.getChatMode();
-		MainConfig.Factions.Chat chatConf = FactionsPlugin.getInstance().conf().factions().chat();
+		MainConfiguration.Factions.Chat chatConf = FactionsPlugin.getInstance().configMain.factions().chat();
 		//Is it a MOD chat
 		if(chat == ChatMode.MOD) {
 			Faction myFaction = me.getFaction();
@@ -131,7 +127,7 @@ public class FactionsChatListener implements Listener {
 		String msg = event.getMessage();
 		String eventFormat = event.getFormat();
 		FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
-		MainConfig.Factions.Chat chatConf = FactionsPlugin.getInstance().conf().factions().chat();
+		MainConfiguration.Factions.Chat chatConf = FactionsPlugin.getInstance().configMain.factions().chat();
 		int InsertIndex = chatConf.getTagInsertIndex();
 
 		boolean padBefore = chatConf.isTagPadBefore();

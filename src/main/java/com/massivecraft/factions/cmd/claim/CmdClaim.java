@@ -28,6 +28,11 @@ public class CmdClaim extends FCommand {
 
 	@Override
 	public void perform(final CommandContext context) {
+		if(!plugin.worldUtil().isEnabled(context.player.getWorld())) {
+			context.sender.sendMessage(TL.GENERIC_DISABLEDWORLD.toString());
+			return;
+		}
+
 		// Read and validate input
 		int radius = context.argAsInt(0, 1); // Default to 1
 		final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
@@ -49,7 +54,7 @@ public class CmdClaim extends FCommand {
 
 			new SpiralTask(new FLocation(context.player), radius) {
 				private int failCount = 0;
-				private final int limit = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit() - 1;
+				private final int limit = FactionsPlugin.getInstance().configMain.factions().claims().getRadiusClaimFailureLimit() - 1;
 
 				@Override
 				public boolean work() {

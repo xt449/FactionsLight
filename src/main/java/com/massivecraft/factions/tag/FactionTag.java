@@ -40,7 +40,7 @@ public enum FactionTag implements Tag {
 	}),
 	DTR("dtr", (fac) -> {
 		if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
-			int dtr = fac.getLandRounded() >= fac.getPowerRounded() ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / FactionsPlugin.getInstance().conf().factions().landRaidControl().power().getLossPerDeath());
+			int dtr = fac.getLandRounded() >= fac.getPowerRounded() ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getLossPerDeath());
 			return TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE.format(dtr);
 		} else {
 			return DTRControl.round(fac.getDTR());
@@ -54,10 +54,10 @@ public enum FactionTag implements Tag {
 	}),
 	DTR_FROZEN("dtr-frozen-status", (fac -> TL.DTR_FROZEN_STATUS_MESSAGE.format(fac.isFrozenDTR() ? TL.DTR_FROZEN_STATUS_TRUE.toString() : TL.DTR_FROZEN_STATUS_FALSE.toString()))),
 	DTR_FROZEN_TIME("dtr-frozen-time", (fac -> TL.DTR_FROZEN_TIME_MESSAGE.format(fac.isFrozenDTR() ?
-			DurationFormatUtils.formatDuration(fac.getFrozenDTRUntilTime() - System.currentTimeMillis(), FactionsPlugin.getInstance().conf().factions().landRaidControl().dtr().getFreezeTimeFormat()) :
+			DurationFormatUtils.formatDuration(fac.getFrozenDTRUntilTime() - System.currentTimeMillis(), FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getFreezeTimeFormat()) :
 			TL.DTR_FROZEN_TIME_NOTFROZEN.toString()))),
 	MAX_CHUNKS("max-chunks", (fac -> String.valueOf(FactionsPlugin.getInstance().getLandRaidControl().getLandLimit(fac)))),
-	PEACEFUL("peaceful", (fac) -> fac.isPeaceful() ? FactionsPlugin.getInstance().conf().colors().relations().getPeaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
+	PEACEFUL("peaceful", (fac) -> fac.isPeaceful() ? FactionsPlugin.getInstance().configMain.colors().relations().peaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
 	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
 	DESCRIPTION("description", Faction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),
@@ -123,17 +123,12 @@ public enum FactionTag implements Tag {
 	}
 
 	@Override
-	public String getTag() {
+	public String toString() {
 		return this.tag;
 	}
 
-	@Override
-	public boolean foundInString(String test) {
-		return test != null && test.contains(this.tag);
-	}
-
 	public String replace(String text, Faction faction, FPlayer player) {
-		if(!this.foundInString(text)) {
+		if(!text.contains(this.tag)) {
 			return text;
 		}
 		String result = this.function == null ? this.biFunction.apply(faction, player) : this.function.apply(faction);

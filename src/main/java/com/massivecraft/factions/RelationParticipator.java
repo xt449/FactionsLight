@@ -1,6 +1,7 @@
-package com.massivecraft.factions.iface;
+package com.massivecraft.factions;
 
 import com.massivecraft.factions.perms.Relation;
+import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
 public interface RelationParticipator {
@@ -14,4 +15,8 @@ public interface RelationParticipator {
 	Relation getRelationTo(RelationParticipator that, boolean ignorePeaceful);
 
 	ChatColor getColorTo(RelationParticipator to);
+
+	void msg(String str, Object... args);
+
+	void msg(TL translation, Object... args);
 }

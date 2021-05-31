@@ -4,7 +4,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.TextUtil;
 
 public class CmdTitle extends FCommand {
 
@@ -28,7 +27,7 @@ public class CmdTitle extends FCommand {
 		}
 
 		context.args.remove(0);
-		String title = TextUtil.implode(context.args, " ");
+		String title = String.join(" ", context.args);
 
 		title = title.replaceAll(",", "");
 

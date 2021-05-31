@@ -1,7 +1,7 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.config.file.MainConfig;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.tag.Tag;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -31,7 +31,7 @@ public class FTeamWrapper {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().scoreboard().constant().isPrefixes() && !FactionsPlugin.getInstance().conf().scoreboard().constant().isSuffixes()) {
+		if(!FactionsPlugin.getInstance().configMain.scoreboard().constant().isPrefixes() && !FactionsPlugin.getInstance().configMain.scoreboard().constant().isSuffixes()) {
 			return;
 		}
 
@@ -56,7 +56,7 @@ public class FTeamWrapper {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().scoreboard().constant().isPrefixes() && !FactionsPlugin.getInstance().conf().scoreboard().constant().isSuffixes()) {
+		if(!FactionsPlugin.getInstance().configMain.scoreboard().constant().isPrefixes() && !FactionsPlugin.getInstance().configMain.scoreboard().constant().isSuffixes()) {
 			return;
 		}
 
@@ -158,7 +158,7 @@ public class FTeamWrapper {
 	}
 
 	private void updatePrefixesAndSuffixes() {
-		if(FactionsPlugin.getInstance().conf().scoreboard().constant().isPrefixes() || FactionsPlugin.getInstance().conf().scoreboard().constant().isSuffixes()) {
+		if(FactionsPlugin.getInstance().configMain.scoreboard().constant().isPrefixes() || FactionsPlugin.getInstance().configMain.scoreboard().constant().isSuffixes()) {
 			for(FScoreboard fboard : teams.keySet()) {
 				updatePrefixAndSuffix(fboard);
 			}
@@ -166,7 +166,7 @@ public class FTeamWrapper {
 	}
 
 	private void updatePrefixAndSuffix(FScoreboard fboard) {
-		MainConfig.Scoreboard.Constant conf = FactionsPlugin.getInstance().conf().scoreboard().constant();
+		MainConfiguration.Scoreboard.Constant conf = FactionsPlugin.getInstance().configMain.scoreboard().constant();
 		if(conf.isPrefixes()) {
 			Team team = teams.get(fboard);
 			String prefix = this.apply(conf.getPrefixTemplate(), fboard.getFPlayer(), conf.getPrefixLength());

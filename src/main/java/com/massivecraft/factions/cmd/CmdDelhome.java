@@ -19,7 +19,7 @@ public class CmdDelhome extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		if(!FactionsPlugin.getInstance().conf().factions().homes().isEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().homes().isEnabled()) {
 			context.msg(TL.COMMAND_SETHOME_DISABLED);
 			return;
 		}

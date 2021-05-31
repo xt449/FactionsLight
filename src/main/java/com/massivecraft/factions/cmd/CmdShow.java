@@ -13,17 +13,16 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdShow extends FCommand {
 
-	List<String> defaults = new ArrayList<>();
+	final List<String> defaults = new ArrayList<>();
 
 	public CmdShow() {
 		this.aliases.add("show");
@@ -60,12 +59,12 @@ public class CmdShow extends FCommand {
 		}
 
 		if(context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
-				&& FactionsPlugin.getInstance().conf().commands().show().getExempt().contains(faction.getTag())) {
+				&& FactionsPlugin.getInstance().configMain.commands().show().getExempt().contains(faction.getTag())) {
 			context.msg(TL.COMMAND_SHOW_EXEMPT);
 			return;
 		}
 
-		List<String> show = FactionsPlugin.getInstance().conf().commands().show().getFormat();
+		List<String> show = FactionsPlugin.getInstance().configMain.commands().show().getFormat();
 		if(show == null || show.isEmpty()) {
 			show = defaults;
 		}
@@ -74,10 +73,10 @@ public class CmdShow extends FCommand {
 			String tag = faction.getTag(context.fPlayer);
 			// send header and that's all
 			String header = show.get(0);
-			if(FactionTag.HEADER.foundInString(header)) {
+			if(header.contains(FactionTag.HEADER.toString())) {
 				context.msg(plugin.txt().titleize(tag));
 			} else {
-				String message = header.replace(FactionTag.FACTION.getTag(), tag);
+				String message = header.replace(FactionTag.FACTION.toString(), tag);
 				message = Tag.parsePlain(faction, context.fPlayer, message);
 				context.msg(plugin.txt().parse(message));
 			}
@@ -112,15 +111,11 @@ public class CmdShow extends FCommand {
 	}
 
 	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
-		this.sendMessages(messageList, recipient, faction, player, null);
-	}
-
-	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
 		FancyTag tag;
 		for(String parsed : messageList) {
 			if((tag = FancyTag.getMatch(parsed)) != null) {
 				if(player != null) {
-					List<FancyMessage> fancy = FancyTag.parse(parsed, faction, player, groupMap);
+					List<FancyMessage> fancy = FancyTag.parse(parsed, faction, player);
 					if(fancy != null) {
 						for(FancyMessage fancyMessage : fancy) {
 							fancyMessage.send(recipient);
@@ -128,7 +123,7 @@ public class CmdShow extends FCommand {
 					}
 				} else {
 					StringBuilder builder = new StringBuilder();
-					builder.append(parsed.replace(tag.getTag(), ""));
+					builder.append(parsed.replace(tag.toString(), ""));
 					switch(tag) {
 						case ONLINE_LIST:
 							this.onOffLineMessage(builder, recipient, faction, true);
@@ -178,7 +173,7 @@ public class CmdShow extends FCommand {
 	}
 
 	private boolean groupPresent() {
-		for(String line : FactionsPlugin.getInstance().conf().commands().toolTips().getPlayer()) {
+		for(String line : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
 			if(line.contains("{group}")) {
 				return true;
 			}
@@ -190,22 +185,16 @@ public class CmdShow extends FCommand {
 		private final List<String> messageList;
 		private final FPlayer sender;
 		private final Faction faction;
-		private final Set<OfflinePlayer> players;
 
 		private GroupGetter(List<String> messageList, FPlayer sender, Faction faction) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;
-			this.players = faction.getFPlayers().stream().map(fp -> Bukkit.getOfflinePlayer(UUID.fromString(fp.getId()))).collect(Collectors.toSet());
 		}
 
 		@Override
 		public void run() {
-			Map<UUID, String> map = new HashMap<>();
-			for(OfflinePlayer player : this.players) {
-				map.put(player.getUniqueId(), FactionsPlugin.getInstance().getPrimaryGroup(player));
-			}
-			new Sender(this.messageList, this.sender, this.faction, map).runTask(FactionsPlugin.getInstance());
+			new Sender(this.messageList, this.sender, this.faction).runTask(FactionsPlugin.getInstance());
 		}
 	}
 
@@ -213,20 +202,18 @@ public class CmdShow extends FCommand {
 		private final List<String> messageList;
 		private final FPlayer sender;
 		private final Faction faction;
-		private final Map<UUID, String> map;
 
-		private Sender(List<String> messageList, FPlayer sender, Faction faction, Map<UUID, String> map) {
+		private Sender(List<String> messageList, FPlayer sender, Faction faction) {
 			this.messageList = messageList;
 			this.sender = sender;
 			this.faction = faction;
-			this.map = map;
 		}
 
 		@Override
 		public void run() {
 			Player player = Bukkit.getPlayerExact(sender.getName());
 			if(player != null) {
-				CmdShow.this.sendMessages(messageList, player, faction, sender, map);
+				CmdShow.this.sendMessages(messageList, player, faction, sender);
 			}
 		}
 	}

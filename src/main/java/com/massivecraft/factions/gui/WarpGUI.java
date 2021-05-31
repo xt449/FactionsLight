@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.WarmUpUtil;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -215,12 +216,12 @@ public class WarpGUI extends GUI<Integer> {
 					user.msg(TL.COMMAND_FWARP_NOACCESS, faction.getTag(user));
 					return;
 				}
-				FactionsPlugin.getInstance().teleport(player, faction.getWarp(warp).getLocation()).thenAccept(success -> {
+				PaperLib.teleportAsync(player, faction.getWarp(warp).getLocation()).thenAccept(success -> {
 					if(success) {
 						user.msg(TL.COMMAND_FWARP_WARPED, warp);
 					}
 				});
 			}
-		}, FactionsPlugin.getInstance().conf().commands().warp().getDelay());
+		}, FactionsPlugin.getInstance().configMain.commands().warp().getDelay());
 	}
 }

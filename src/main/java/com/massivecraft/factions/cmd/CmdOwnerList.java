@@ -27,7 +27,7 @@ public class CmdOwnerList extends FCommand {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().conf().factions().ownedArea().isEnabled()) {
+		if(!FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled()) {
 			context.msg(TL.COMMAND_OWNERLIST_DISABLED);
 			return;
 		}

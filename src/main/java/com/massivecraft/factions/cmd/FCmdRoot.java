@@ -12,6 +12,7 @@ import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,91 +31,91 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
 	public CmdAutoHelp cmdAutoHelp = new CmdAutoHelp();
 
-	public CmdAdmin cmdAdmin = new CmdAdmin();
-	public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
-	public CmdBoom cmdBoom = new CmdBoom();
-	public CmdBypass cmdBypass = new CmdBypass();
-	public CmdChat cmdChat = new CmdChat();
-	public CmdChatSpy cmdChatSpy = new CmdChatSpy();
-	public CmdClaim cmdClaim = new CmdClaim();
-	public CmdCoords cmdCoords = new CmdCoords();
-	public CmdCreate cmdCreate = new CmdCreate();
-	public CmdDeinvite cmdDeinvite = new CmdDeinvite();
-	public CmdDescription cmdDescription = new CmdDescription();
-	public CmdDisband cmdDisband = new CmdDisband();
-	public CmdHelp cmdHelp = new CmdHelp();
-	public CmdHome cmdHome = new CmdHome();
-	public CmdInvite cmdInvite = new CmdInvite();
-	public CmdJoin cmdJoin = new CmdJoin();
-	public CmdKick cmdKick = new CmdKick();
-	public CmdLeave cmdLeave = new CmdLeave();
-	public CmdList cmdList = new CmdList();
-	public CmdLock cmdLock = new CmdLock();
-	public CmdMap cmdMap = new CmdMap();
-	public CmdMod cmdMod = new CmdMod();
-	public CmdOpen cmdOpen = new CmdOpen();
-	public CmdOwner cmdOwner = new CmdOwner();
-	public CmdOwnerList cmdOwnerList = new CmdOwnerList();
-	public CmdPeaceful cmdPeaceful = new CmdPeaceful();
-	public CmdPermanent cmdPermanent = new CmdPermanent();
-	public CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
-	public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
-	public CmdPower cmdPower = new CmdPower();
-	public CmdDTR cmdDTR = new CmdDTR();
-	public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
-	public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
-	public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
-	public CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
-	public CmdReload cmdReload = new CmdReload();
-	public CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
-	public CmdSaveAll cmdSaveAll = new CmdSaveAll();
-	public CmdSethome cmdSethome = new CmdSethome();
-	public CmdDelhome cmdDelhome = new CmdDelhome();
-	public CmdShow cmdShow = new CmdShow();
-	public CmdStatus cmdStatus = new CmdStatus();
-	public CmdStuck cmdStuck = new CmdStuck();
-	public CmdTag cmdTag = new CmdTag();
-	public CmdTitle cmdTitle = new CmdTitle();
-	public CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
-	public CmdUnclaim cmdUnclaim = new CmdUnclaim();
-	public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
-	public CmdVersion cmdVersion = new CmdVersion();
-	public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
-	public CmdSB cmdSB = new CmdSB();
-	public CmdShowInvites cmdShowInvites = new CmdShowInvites();
-	public CmdAnnounce cmdAnnounce = new CmdAnnounce();
-	public CmdWarp cmdWarp = new CmdWarp();
-	public CmdWarpOther cmdWarpOther = new CmdWarpOther();
-	public CmdSetWarp cmdSetWarp = new CmdSetWarp();
-	public CmdDelWarp cmdDelWarp = new CmdDelWarp();
-	public CmdModifyPower cmdModifyPower = new CmdModifyPower();
-	public CmdLogins cmdLogins = new CmdLogins();
-	public CmdClaimLine cmdClaimLine = new CmdClaimLine();
-	public CmdClaimFill cmdClaimFill = new CmdClaimFill();
-	public CmdTop cmdTop = new CmdTop();
-	public CmdAHome cmdAHome = new CmdAHome();
-	public CmdPerm cmdPerm = new CmdPerm();
-	public CmdPromote cmdPromote = new CmdPromote();
-	public CmdDemote cmdDemote = new CmdDemote();
-	public CmdSetDefaultRole cmdSetDefaultRole = new CmdSetDefaultRole();
-	public CmdClaimAt cmdClaimAt = new CmdClaimAt();
-	public CmdBan cmdban = new CmdBan();
-	public CmdUnban cmdUnban = new CmdUnban();
-	public CmdBanlist cmdbanlist = new CmdBanlist();
-	public CmdColeader cmdColeader = new CmdColeader();
-	public CmdDebug cmdDebug = new CmdDebug();
-	public CmdListClaims cmdListClaims = new CmdListClaims();
+	public final CmdAdmin cmdAdmin = new CmdAdmin();
+	public final CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
+	public final CmdBoom cmdBoom = new CmdBoom();
+	public final CmdBypass cmdBypass = new CmdBypass();
+	public final CmdChat cmdChat = new CmdChat();
+	public final CmdChatSpy cmdChatSpy = new CmdChatSpy();
+	public final CmdClaim cmdClaim = new CmdClaim();
+	public final CmdCoords cmdCoords = new CmdCoords();
+	public final CmdCreate cmdCreate = new CmdCreate();
+	public final CmdDeinvite cmdDeinvite = new CmdDeinvite();
+	public final CmdDescription cmdDescription = new CmdDescription();
+	public final CmdDisband cmdDisband = new CmdDisband();
+	public final CmdHelp cmdHelp = new CmdHelp();
+	public final CmdHome cmdHome = new CmdHome();
+	public final CmdInvite cmdInvite = new CmdInvite();
+	public final CmdJoin cmdJoin = new CmdJoin();
+	public final CmdKick cmdKick = new CmdKick();
+	public final CmdLeave cmdLeave = new CmdLeave();
+	public final CmdList cmdList = new CmdList();
+	public final CmdLock cmdLock = new CmdLock();
+	public final CmdMap cmdMap = new CmdMap();
+	public final CmdMod cmdMod = new CmdMod();
+	public final CmdOpen cmdOpen = new CmdOpen();
+	public final CmdOwner cmdOwner = new CmdOwner();
+	public final CmdOwnerList cmdOwnerList = new CmdOwnerList();
+	public final CmdPeaceful cmdPeaceful = new CmdPeaceful();
+	public final CmdPermanent cmdPermanent = new CmdPermanent();
+	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
+	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
+	public final CmdPower cmdPower = new CmdPower();
+	public final CmdDTR cmdDTR = new CmdDTR();
+	public final CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
+	public final CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
+	public final CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
+	public final CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
+	public final CmdReload cmdReload = new CmdReload();
+	public final CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
+	public final CmdSaveAll cmdSaveAll = new CmdSaveAll();
+	public final CmdSethome cmdSethome = new CmdSethome();
+	public final CmdDelhome cmdDelhome = new CmdDelhome();
+	public final CmdShow cmdShow = new CmdShow();
+	public final CmdStatus cmdStatus = new CmdStatus();
+	public final CmdStuck cmdStuck = new CmdStuck();
+	public final CmdTag cmdTag = new CmdTag();
+	public final CmdTitle cmdTitle = new CmdTitle();
+	public final CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
+	public final CmdUnclaim cmdUnclaim = new CmdUnclaim();
+	public final CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
+	public final CmdVersion cmdVersion = new CmdVersion();
+	public final CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
+	public final CmdSB cmdSB = new CmdSB();
+	public final CmdShowInvites cmdShowInvites = new CmdShowInvites();
+	public final CmdAnnounce cmdAnnounce = new CmdAnnounce();
+	public final CmdWarp cmdWarp = new CmdWarp();
+	public final CmdWarpOther cmdWarpOther = new CmdWarpOther();
+	public final CmdSetWarp cmdSetWarp = new CmdSetWarp();
+	public final CmdDelWarp cmdDelWarp = new CmdDelWarp();
+	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
+	public final CmdLogins cmdLogins = new CmdLogins();
+	public final CmdClaimLine cmdClaimLine = new CmdClaimLine();
+	public final CmdClaimFill cmdClaimFill = new CmdClaimFill();
+	public final CmdTop cmdTop = new CmdTop();
+	public final CmdAHome cmdAHome = new CmdAHome();
+	public final CmdPerm cmdPerm = new CmdPerm();
+	public final CmdPromote cmdPromote = new CmdPromote();
+	public final CmdDemote cmdDemote = new CmdDemote();
+	public final CmdSetDefaultRole cmdSetDefaultRole = new CmdSetDefaultRole();
+	public final CmdClaimAt cmdClaimAt = new CmdClaimAt();
+	public final CmdBan cmdban = new CmdBan();
+	public final CmdUnban cmdUnban = new CmdUnban();
+	public final CmdBanlist cmdbanlist = new CmdBanlist();
+	public final CmdColeader cmdColeader = new CmdColeader();
+	public final CmdDebug cmdDebug = new CmdDebug();
+	public final CmdListClaims cmdListClaims = new CmdListClaims();
 
 	public FCmdRoot() {
 		super();
 
 		cmdBase = this;
 
-		this.aliases.addAll(FactionsPlugin.getInstance().conf().getCommandBase());
+		this.aliases.addAll(FactionsPlugin.getInstance().configMain.getCommandBase());
 		this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
 		this.setHelpShort("The faction base command");
-		this.helpLong.add(FactionsPlugin.getInstance().txt().parseTags("<i>This command contains all faction stuff."));
+		this.helpLong.add(ChatColor.YELLOW + "This command contains all faction stuff.");
 
 		this.addSubCommand(this.cmdAdmin);
 		this.addSubCommand(this.cmdAutoClaim);
@@ -212,11 +213,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(!plugin.worldUtil().isEnabled(sender)) {
-			sender.sendMessage(TL.GENERIC_DISABLEDWORLD.toString());
-			return false;
-		}
-
 		this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label));
 		return true;
 	}

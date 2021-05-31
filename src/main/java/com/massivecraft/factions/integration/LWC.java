@@ -26,15 +26,11 @@ public class LWC {
 		}
 
 		lwc = ((LWCPlugin) plugin).getLWC();
-		FactionsPlugin.getInstance().log("Successfully hooked into LWC!" + (FactionsPlugin.getInstance().conf().lwc().isEnabled() ? "" : " Integration is currently disabled (\"lwc.integration\")."));
+		FactionsPlugin.getInstance().log("Successfully hooked into LWC!" + (FactionsPlugin.getInstance().configMain.lwc().isEnabled() ? "" : " Integration is currently disabled (\"lwc.integration\")."));
 	}
 
 	public static boolean getEnabled() {
-		return lwc != null && FactionsPlugin.getInstance().conf().lwc().isEnabled();
-	}
-
-	public static Plugin getLWC() {
-		return lwc == null ? null : lwc.getPlugin();
+		return lwc != null && FactionsPlugin.getInstance().configMain.lwc().isEnabled();
 	}
 
 	public static void clearOtherLocks(FLocation flocation, Faction faction) {
