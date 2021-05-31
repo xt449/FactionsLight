@@ -8,10 +8,7 @@ import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.SaveTask;
-import com.massivecraft.factions.integration.ClipPlaceholderAPIManager;
-import com.massivecraft.factions.integration.IWorldguard;
-import com.massivecraft.factions.integration.IntegrationManager;
-import com.massivecraft.factions.integration.VaultPermission;
+import com.massivecraft.factions.integration.*;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.perms.Permissible;
@@ -79,16 +76,15 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	private Integer autoLeaveTask = null;
 
-	private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-	private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-	private IWorldguard worldguard;
 	private LandRaidControl landRaidControl;
 
 	private String startupLog;
 	private String startupExceptionLog;
-	private VaultPermission vaultPermission;
-	public final boolean likesCats = Arrays.stream(FactionsPlugin.class.getDeclaredMethods()).anyMatch(m -> m.isSynthetic() && m.getName().startsWith("loadCon") && m.getName().endsWith("0"));
+
+	private PlaceholderAPIIntegration placeholderAPI;
+	private Worldguard7Integration worldguard;
+	private VaultPermissionIntegration vaultPermission;
+	private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	public FactionsPlugin() {
 		instance = this;
@@ -223,7 +219,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				vaultPermission = new VaultPermission();
+				vaultPermission = new VaultPermissionIntegration();
 				cmdBase.done();
 				getLogger().removeHandler(handler);
 				startupLog = startupBuilder.toString();
@@ -235,7 +231,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		this.loadSuccessful = true;
 	}
 
-	public void setWorldGuard(IWorldguard wg) {
+	public void setWorldGuard(Worldguard7Integration wg) {
 		this.worldguard = wg;
 	}
 
@@ -354,19 +350,19 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		return this.landRaidControl;
 	}
 
-	public IWorldguard getWorldguard() {
+	public Worldguard7Integration getWorldguard() {
 		return this.worldguard;
 	}
 
 	public void setupPlaceholderAPI() {
-		this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
-		if(this.clipPlaceholderAPIManager.register()) {
+		this.placeholderAPI = new PlaceholderAPIIntegration();
+		if(this.placeholderAPI.register()) {
 			getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
 		}
 	}
 
 	public boolean isClipPlaceholderAPIHooked() {
-		return this.clipPlaceholderAPIManager != null;
+		return this.placeholderAPI != null;
 	}
 
 	private GsonBuilder getGsonBuilder() {

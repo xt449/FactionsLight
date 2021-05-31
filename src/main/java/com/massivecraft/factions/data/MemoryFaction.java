@@ -3,7 +3,7 @@ package com.massivecraft.factions.data;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
-import com.massivecraft.factions.integration.LWC;
+import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.perms.Permissible;
@@ -888,8 +888,8 @@ public abstract class MemoryFaction implements Faction {
 	}
 
 	public void clearClaimOwnership(FLocation loc) {
-		if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
-			LWC.clearAllLocks(loc);
+		if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
+			LWCIntegration.clearAllLocks(loc);
 		}
 		claimOwnership.remove(loc);
 	}
@@ -911,8 +911,8 @@ public abstract class MemoryFaction implements Faction {
 			ownerData.removeIf(s -> s.equals(player.getId()));
 
 			if(ownerData.isEmpty()) {
-				if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
-					LWC.clearAllLocks(entry.getKey());
+				if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
+					LWCIntegration.clearAllLocks(entry.getKey());
 				}
 				claimOwnership.remove(entry.getKey());
 			}

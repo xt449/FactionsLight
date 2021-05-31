@@ -16,7 +16,7 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class Worldguard7 implements IWorldguard {
+public class Worldguard7Integration {
 
 	// PVP Flag check
 	// Returns:

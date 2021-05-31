@@ -3,7 +3,7 @@ package com.massivecraft.factions.data;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.LWC;
+import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.TL;
@@ -162,10 +162,10 @@ public abstract class MemoryBoard extends Board {
 	}
 
 	public void clean(String factionId) {
-		if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
+		if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
 			for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
 				if(entry.getValue().equals(factionId)) {
-					LWC.clearAllLocks(entry.getKey());
+					LWCIntegration.clearAllLocks(entry.getKey());
 				}
 			}
 		}
@@ -230,8 +230,8 @@ public abstract class MemoryBoard extends Board {
 		while(iter.hasNext()) {
 			Entry<FLocation, String> entry = iter.next();
 			if(!Factions.getInstance().isValidFactionId(entry.getValue())) {
-				if(LWC.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
-					LWC.clearAllLocks(entry.getKey());
+				if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
+					LWCIntegration.clearAllLocks(entry.getKey());
 				}
 				FactionsPlugin.getInstance().log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
 				iter.remove();

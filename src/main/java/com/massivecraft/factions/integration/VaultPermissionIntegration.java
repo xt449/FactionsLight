@@ -6,10 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-public class VaultPermission {
+public class VaultPermissionIntegration {
 	private Permission permission = null;
 
-	public VaultPermission() {
+	public VaultPermissionIntegration() {
 		try {
 			RegisteredServiceProvider<Permission> rsp = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
 			if(rsp != null) {

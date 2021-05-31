@@ -16,12 +16,11 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class IntegrationManager implements Listener {
-	@SuppressWarnings("Convert2MethodRef")
 	private enum Integration {
 		DYNMAP("dynmap", EngineDynmap.getInstance()::init),
-		LWC("LWC", com.massivecraft.factions.integration.LWC::setup),
+		LWC("LWC", LWCIntegration::setup),
 		PLACEHOLDERAPI("PlaceholderAPI", (p) -> FactionsPlugin.getInstance().setupPlaceholderAPI()),
-		SENTINEL("Sentinel", (p) -> Sentinel.init(p)), // RESIST THE URGE TO REPLACE WITH LAMBDA REFERENCE
+		SENTINEL("Sentinel", SentinelIntegration::init),
 		WORLDGUARD("WorldGuard", (plugin) -> {
 			FactionsPlugin f = FactionsPlugin.getInstance();
 			if(!f.configMain.worldGuard().isChecking() && !f.configMain.worldGuard().isBuildPriority()) {
@@ -30,7 +29,7 @@ public class IntegrationManager implements Listener {
 
 			String version = plugin.getDescription().getVersion();
 			if(version.startsWith("7")) {
-				f.setWorldGuard(new Worldguard7());
+				f.setWorldGuard(new Worldguard7Integration());
 				f.getLogger().info("Found support for WorldGuard version " + version);
 			} else {
 				f.log(Level.WARNING, "Found WorldGuard but couldn't support this version: " + version);

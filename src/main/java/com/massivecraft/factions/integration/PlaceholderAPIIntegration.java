@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements Relational {
+public class PlaceholderAPIIntegration extends PlaceholderExpansion implements Relational {
 
 	// Identifier for this expansion
 	@Override

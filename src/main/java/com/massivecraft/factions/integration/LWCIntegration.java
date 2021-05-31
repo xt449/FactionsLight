@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LWC {
+public class LWCIntegration {
 	private static com.griefcraft.lwc.LWC lwc;
 
 	public static void setup(Plugin plugin) {

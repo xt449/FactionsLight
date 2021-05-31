@@ -12,23 +12,12 @@ import java.util.function.Function;
 import java.util.logging.Level;
 
 public class MiscUtil {
-	private static final Map<String, EntityType> entityTypeMap;
 	public static final Function<String, EntityType> ENTITY_TYPE_FUNCTION;
-	private static final Map<String, CreatureSpawnEvent.SpawnReason> spawnReasonMap;
 	public static final Function<String, CreatureSpawnEvent.SpawnReason> SPAWN_REASON_FUNCTION;
 
 	static {
-		entityTypeMap = new HashMap<>();
-		for(EntityType entityType : EntityType.values()) {
-			entityTypeMap.put(entityType.name(), entityType);
-		}
-		ENTITY_TYPE_FUNCTION = (string) -> string == null ? null : entityTypeMap.get(string.toUpperCase());
-
-		spawnReasonMap = new HashMap<>();
-		for(CreatureSpawnEvent.SpawnReason reason : CreatureSpawnEvent.SpawnReason.values()) {
-			spawnReasonMap.put(reason.name(), reason);
-		}
-		SPAWN_REASON_FUNCTION = (string) -> string == null ? null : spawnReasonMap.get(string.toUpperCase());
+		ENTITY_TYPE_FUNCTION = (string) -> string == null ? null : EntityType.valueOf(string.toUpperCase());
+		SPAWN_REASON_FUNCTION = (string) -> string == null ? null : CreatureSpawnEvent.SpawnReason.valueOf(string.toUpperCase());
 	}
 
 	public static <Type> Set<Type> typeSetFromStringSet(Set<String> stringSet, Function<String, Type> function) {
@@ -96,19 +85,9 @@ public class MiscUtil {
 			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMax()));
 		}
 
-		List<String> badChars = null;
-		for(char c : str.toCharArray()) {
-			if(!substanceChars.contains(String.valueOf(c))) {
-				if(badChars == null) {
-					badChars = new ArrayList<>();
-				}
-				badChars.add(Character.toString(c));
-			}
+		if(!str.matches("^\\w+$")) {
+			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), str));
 		}
-		if(badChars != null) {
-			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), String.join("", badChars)));
-		}
-
 		return errors;
 	}
 

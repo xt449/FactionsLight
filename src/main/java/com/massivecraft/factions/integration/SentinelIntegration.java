@@ -5,16 +5,15 @@ import com.massivecraft.factions.perms.Relation;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.mcmonkey.sentinel.SentinelIntegration;
 import org.mcmonkey.sentinel.SentinelPlugin;
 
 import java.util.logging.Level;
 
-public class Sentinel extends SentinelIntegration {
+public class SentinelIntegration extends org.mcmonkey.sentinel.SentinelIntegration {
 	public static void init(Plugin plugin) {
 		FactionsPlugin.getInstance().getLogger().info("Disregarding any whining from Sentinel and trying to integrate anyway!");
 		try {
-			((SentinelPlugin) plugin).registerIntegration(new Sentinel());
+			((SentinelPlugin) plugin).registerIntegration(new SentinelIntegration());
 		} catch(Exception e) {
 			FactionsPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load Sentinel integration", e);
 			return;

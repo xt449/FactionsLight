@@ -61,7 +61,7 @@ commands:
     # You can use any variable here
     entry: '&6{faction-relation-color}{faction} &e{online} /: members online, &6Land / Power / Maxpower: &e{chunks}/{power}/{maxPower}'
     # You can use any variables here
-    factionlessEntry: &eFactionless&e: factionless online
+    factionlessEntry: '&eFactionless&e: factionless online'
     # You can only use: pagenumber and: pagecount in the footer.
     # Blank entry results in nothing being displayed.
     footer: 
@@ -146,16 +146,16 @@ commands:
 
   factions:
     chat:
-      allianceChatFormat: &d%s:&f %s
+      allianceChatFormat: '&d%s:&f %s'
       alwaysShowChatTag: true
       broadcastDescriptionChanges: false
       broadcastTagChanges: false
-      factionChatFormat: %s:&f %s
+      factionChatFormat: '%s:&f %s'
       # Allow for players to chat only within their faction, with allies, etc.
       # Set to false to only allow public chats through this plugin.
       factionOnlyChat: true
-      modChatFormat: &c%s:&f %s
-      tagFormat: %s&f
+      modChatFormat: '&c%s:&f %s'
+      tagFormat: '%s&f'
       # If true, disables adding of faction tag so another plugin can manage this
       tagHandledByAnotherPlugin: false
       tagInsertAfterString: 
@@ -165,7 +165,7 @@ commands:
       tagPadBefore: false
       tagRelationColored: true
       tagReplaceString: [FACTION]
-      truceChatFormat: &5%s:&f %s
+      truceChatFormat: '&5%s:&f %s'
 
   claims:
     # Should we allow Factions to over claim if they are raidable?
@@ -462,27 +462,27 @@ commands:
     preventSpawningInSafezone:
       - OCELOT_BABY
       - OCELOT_BABY
-      - REINFORCEMENTS,
+      - REINFORCEMENTS
       - VILLAGE_DEFENSE
       - DISPENSE_EGG
       - ENDER_PEARL
-      - EXPLOSION,
-      - TRAP,
+      - EXPLOSION
+      - TRAP
       - SILVERFISH_BLOCK
-      - NATURAL,
-      - BREEDING,
-      - INFECTION,
+      - NATURAL
+      - BREEDING
+      - INFECTION
       - BUILD_WITHER
-      - MOUNT,
+      - MOUNT
       - BUILD_SNOWMAN
-      - DROWNED,
-      - EGG,
-      - CURED,
-      - LIGHTNING,
-      - RAID,
-      - SPAWNER,
+      - DROWNED
+      - EGG
+      - CURED
+      - LIGHTNING
+      - RAID
+      - SPAWNER
       - SLIME_SPLIT
-      - PATROL,
+      - PATROL
       - BUILD_IRONGOLEM
       - NETHER_PORTAL
       - VILLAGE_INVASION
@@ -605,7 +605,7 @@ scoreboard:
     # If 0, will use a sane default for your Minecraft version (16 for pre-1.13, 32 for 1.13+).
     suffixLength: 0
     # Takes: relationcolor,: faction, player-specific tags, &-prefixed color codes
-    suffixTemplate: : relationcolor[{faction}]
+    suffixTemplate: '{relationcolor}[{faction}]'
     # If true, show suffixes on nametags and in tab list if scoreboard is enabled
     suffixes: false
     # Can use any placeholders, but does not update once set

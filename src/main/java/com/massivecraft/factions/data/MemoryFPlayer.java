@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
-import com.massivecraft.factions.integration.LWC;
+import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.perms.PermissibleAction;
@@ -774,8 +774,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 			return false;
 		}
 
-		if(LWC.getEnabled() && forFaction.isNormal() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnCapture()) {
-			LWC.clearOtherLocks(flocation, this.getFaction());
+		if(LWCIntegration.getEnabled() && forFaction.isNormal() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnCapture()) {
+			LWCIntegration.clearOtherLocks(flocation, this.getFaction());
 		}
 
 		// announce success

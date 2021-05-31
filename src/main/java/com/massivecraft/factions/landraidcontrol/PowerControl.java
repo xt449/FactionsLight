@@ -60,11 +60,6 @@ public class PowerControl implements LandRaidControl {
 			context.msg(TL.COMMAND_KICK_NEGATIVEPOWER);
 			return false;
 		}
-		if(!FactionsPlugin.getInstance().configMain.commands().kick().isAllowKickInEnemyTerritory() &&
-				Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(toKick.getFaction()) == Relation.ENEMY) {
-			context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
-			return false;
-		}
 		return true;
 	}
 

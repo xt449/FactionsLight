@@ -73,11 +73,6 @@ public class DTRControl implements LandRaidControl {
 	public boolean canKick(FPlayer toKick, CommandContext context) {
 		if(toKick.getFaction().isNormal()) {
 			Faction faction = toKick.getFaction();
-			if(!FactionsPlugin.getInstance().configMain.commands().kick().isAllowKickInEnemyTerritory() &&
-					Board.getInstance().getFactionAt(toKick.getLastStoodAt()).getRelationTo(faction) == Relation.ENEMY) {
-				context.msg(TL.COMMAND_KICK_ENEMYTERRITORY);
-				return false;
-			}
 			if(faction.isFrozenDTR() && conf().getFreezeKickPenalty() > 0) {
 				faction.setDTR(Math.min(conf().getMinDTR(), faction.getDTR() - conf().getFreezeKickPenalty()));
 				context.msg(TL.DTR_KICK_PENALTY);
