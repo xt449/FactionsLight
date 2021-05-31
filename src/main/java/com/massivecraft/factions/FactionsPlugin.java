@@ -57,14 +57,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private boolean autoSave = true;
 	private boolean loadSuccessful = false;
 
-	// Some utils
-	private Persist persist;
-	private TextUtil txt;
 	private WorldUtil worldUtil;
-
-	public TextUtil txt() {
-		return txt;
-	}
 
 	public WorldUtil worldUtil() {
 		return worldUtil;
@@ -162,7 +155,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 		// Create Utility Instances
 		this.permUtil = new PermUtil(this);
-		this.persist = new Persist(this);
 		this.worldUtil = new WorldUtil(this);
 
 		// attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
@@ -241,14 +233,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 		getLogger().info("=== Ready to go after " + (System.currentTimeMillis() - timeEnableStart) + "ms! ===");
 		this.loadSuccessful = true;
-	}
-
-	private int intOr(String in, int or) {
-		try {
-			return Integer.parseInt(in);
-		} catch(NumberFormatException ignored) {
-			return or;
-		}
 	}
 
 	public void setWorldGuard(IWorldguard wg) {

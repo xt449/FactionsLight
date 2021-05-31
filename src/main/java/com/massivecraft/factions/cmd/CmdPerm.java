@@ -56,7 +56,6 @@ public class CmdPerm extends FCommand {
 
 		boolean allRelations = context.argAsString(0).equalsIgnoreCase("all");
 		boolean allActions = context.argAsString(1).equalsIgnoreCase("all");
-		boolean online = true;
 
 		if(allRelations) {
 			permissibles.addAll(context.faction.getPermissions().keySet());
@@ -100,7 +99,7 @@ public class CmdPerm extends FCommand {
 
 		for(Permissible permissible : permissibles) {
 			for(PermissibleAction permissibleAction : permissibleActions) {
-				context.fPlayer.getFaction().setPermission(true, permissible, permissibleAction, access);
+				context.fPlayer.getFaction().setPermission(permissible, permissibleAction, access);
 			}
 		}
 

@@ -7,6 +7,7 @@ import com.massivecraft.factions.integration.LWC;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -275,10 +276,10 @@ public abstract class MemoryBoard extends Board {
 		Faction faction = fplayer.getFaction();
 		ArrayList<FancyMessage> ret = new ArrayList<>();
 		Faction factionLoc = getFactionAt(flocation);
-		ret.add(new FancyMessage(FactionsPlugin.getInstance().txt().titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+		ret.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
 
 		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, FactionsPlugin.getInstance().txt().parse("<a>"));
+		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, TextUtil.parse("<a>"));
 
 		int halfWidth = FactionsPlugin.getInstance().configMain.map().getWidth() / 2;
 		// Use player's value for height

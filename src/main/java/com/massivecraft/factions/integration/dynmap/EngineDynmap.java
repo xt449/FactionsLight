@@ -92,14 +92,14 @@ public class EngineDynmap {
 		// Get DynmapAPI
 		this.dynmapApi = (DynmapAPI) Bukkit.getPluginManager().getPlugin("dynmap");
 		if(this.dynmapApi == null) {
-			severe("Could not retrieve the DynmapAPI.");
+			logSevere("Could not retrieve the DynmapAPI.");
 			return false;
 		}
 
 		// Get MarkerAPI
 		this.markerApi = this.dynmapApi.getMarkerAPI();
 		if(this.markerApi == null) {
-			severe("Could not retrieve the MarkerAPI.");
+			logSevere("Could not retrieve the MarkerAPI.");
 			return false;
 		}
 
@@ -122,7 +122,7 @@ public class EngineDynmap {
 		if(this.markerset == null) {
 			this.markerset = temp.create(this.markerApi, FACTIONS_MARKERSET);
 			if(this.markerset == null) {
-				severe("Could not create the Faction Markerset/Layer");
+				logSevere("Could not create the Faction Markerset/Layer");
 				return false;
 			}
 		} else {
@@ -186,7 +186,7 @@ public class EngineDynmap {
 			if(marker == null) {
 				marker = temp.create(this.markerApi, this.markerset, markerId);
 				if(marker == null) {
-					EngineDynmap.severe("Could not get/create the home marker " + markerId);
+					EngineDynmap.logSevere("Could not get/create the home marker " + markerId);
 				}
 			} else {
 				temp.update(this.markerApi, marker);
@@ -454,7 +454,7 @@ public class EngineDynmap {
 			if(marker == null) {
 				marker = temp.create(this.markerset, markerId);
 				if(marker == null) {
-					severe("Could not get/create the area marker " + markerId);
+					logSevere("Could not get/create the area marker " + markerId);
 				}
 			} else {
 				temp.update(marker);
@@ -565,7 +565,7 @@ public class EngineDynmap {
 				);
 			}
 			if(set == null) {
-				severe("Could not get/create the player set " + setId);
+				logSevere("Could not get/create the player set " + setId);
 				continue;
 			}
 
@@ -707,13 +707,13 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	public static void info(String msg) {
+	public static void logInfo(String msg) {
 		String message = DYNMAP_INTEGRATION + msg;
 		System.out.println(message);
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	public static void severe(String msg) {
+	public static void logSevere(String msg) {
 		String message = DYNMAP_INTEGRATION + ChatColor.RED + msg;
 		System.out.println(message);
 	}

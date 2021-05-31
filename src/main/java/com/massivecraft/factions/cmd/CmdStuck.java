@@ -68,8 +68,6 @@ public class CmdStuck extends FCommand {
 					// spiral task to find nearest wilderness chunk
 					new SpiralTask(new FLocation(context.player), radius * 2) {
 
-						final int buffer = 0;
-
 						@Override
 						public boolean work() {
 							FLocation chunk = currentFLocation();

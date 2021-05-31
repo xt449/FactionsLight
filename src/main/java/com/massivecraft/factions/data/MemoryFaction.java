@@ -12,10 +12,7 @@ import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,11 +36,11 @@ public abstract class MemoryFaction implements Faction {
 	protected long foundedDate;
 	protected transient long lastPlayerLoggedOffTime;
 	protected double powerBoost;
-	protected Map<String, Relation> relationWish = new HashMap<>();
-	protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
-	protected transient Set<FPlayer> fplayers = new HashSet<>();
-	protected Set<String> invites = new HashSet<>();
-	protected HashMap<String, List<String>> announcements = new HashMap<>();
+	protected final Map<String, Relation> relationWish = new HashMap<>();
+	protected final Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
+	protected final transient Set<FPlayer> fplayers = new HashSet<>();
+	protected final Set<String> invites = new HashSet<>();
+	protected final HashMap<String, List<String>> announcements = new HashMap<>();
 	protected final ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
 	protected final ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
 	private long lastDeath;
@@ -318,7 +315,7 @@ public abstract class MemoryFaction implements Faction {
 	// -------------------------------------------- //
 
 
-	public boolean hasAccess(boolean online, Permissible permissible, PermissibleAction permissibleAction) {
+	public boolean hasAccess(Permissible permissible, PermissibleAction permissibleAction) {
 		if(permissible == null || permissibleAction == null) {
 			return false; // Fail in a safe way
 		}
@@ -370,10 +367,10 @@ public abstract class MemoryFaction implements Faction {
 			online = this.hasPlayersOnline();
 		}
 
-		return this.hasAccess(online, perm, permissibleAction);
+		return this.hasAccess(perm, permissibleAction);
 	}
 
-	public boolean setPermission(boolean online, Permissible permissible, PermissibleAction permissibleAction, boolean value) {
+	public boolean setPermission(Permissible permissible, PermissibleAction permissibleAction, boolean value) {
 		Map<Permissible, Map<PermissibleAction, Boolean>> permissionsMap = this.getPermissionsMap();
 
 		DefaultPermissionsConfiguration.Permissions.PermissiblePermInfo permInfo = this.getPermInfo(permissible, permissibleAction);
@@ -861,7 +858,7 @@ public abstract class MemoryFaction implements Faction {
 	// Messages
 	// ----------------------------------------------//
 	public void msg(String message, Object... args) {
-		message = FactionsPlugin.getInstance().txt().parse(message, args);
+		message = TextUtil.parse(message, args);
 
 		for(FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
 			fplayer.sendMessage(message);

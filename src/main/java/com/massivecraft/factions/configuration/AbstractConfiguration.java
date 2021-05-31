@@ -17,7 +17,7 @@ public abstract class AbstractConfiguration {
 	protected final Plugin plugin;
 	protected YamlConfiguration config;
 
-	protected String header = null;
+	protected final String header = null;
 
 	protected AbstractConfiguration(Plugin plugin, String filePath) {
 		this.plugin = plugin;

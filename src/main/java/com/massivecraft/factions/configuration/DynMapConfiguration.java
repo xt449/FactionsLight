@@ -1,6 +1,5 @@
 package com.massivecraft.factions.configuration;
 
-import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import ninja.leaping.configurate.objectmapping.Setting;
 import org.bukkit.plugin.Plugin;
@@ -48,13 +47,11 @@ public class DynMapConfiguration extends AbstractConfiguration {
 				+ "<br>\n"
 				+ "</div>";
 
-		private final boolean descriptionMoney = false;
-
 		private final boolean visibilityByFaction = true;
 
 		private final Set<String> visibleFactions = new HashSet<>();
 
-		private final Set<String> hiddenFactions = new HashSet<String>();
+		private final Set<String> hiddenFactions = new HashSet<>();
 
 		public boolean isEnabled() {
 			return enabled;
@@ -80,10 +77,6 @@ public class DynMapConfiguration extends AbstractConfiguration {
 			return description;
 		}
 
-		public boolean isDescriptionMoney() {
-			return descriptionMoney;
-		}
-
 		public boolean isVisibilityByFaction() {
 			return visibilityByFaction;
 		}
@@ -103,16 +96,12 @@ public class DynMapConfiguration extends AbstractConfiguration {
 			}
 		};
 
-		private final transient TypeToken<Map<String, Style>> factionStylesToken = new TypeToken<Map<String, Style>>() {
-		};
-
 		private transient Map<String, DynmapStyle> styles;
 
 		public Map<String, DynmapStyle> getFactionStyles() {
 			if(styles == null) {
 				styles = new HashMap<>();
-				Map<String, ? extends Object> mappy = factionStyles;
-				for(Map.Entry<String, ? extends Object> e : mappy.entrySet()) {
+				for(Map.Entry<String, ?> e : ((Map<String, ?>) factionStyles).entrySet()) {
 					String faction = e.getKey();
 					Object s = e.getValue();
 					if(s instanceof Style) {
@@ -150,9 +139,8 @@ public class DynMapConfiguration extends AbstractConfiguration {
 							style.setLineOpacity(getDouble(map.get("lineOpacity").toString()));
 						}
 						styles.put(faction, style);
-					} else {
-						// Panic!
-					}
+					}  // Panic!
+
 				}
 			}
 			return styles;

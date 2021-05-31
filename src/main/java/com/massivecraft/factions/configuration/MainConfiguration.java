@@ -733,7 +733,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public Set<Material> getIgnoreBuildMaterials() {
 				if(ignoreBuildMaterialsMat == null) {
 					ignoreBuildMaterialsMat = new HashSet<>();
-					ignoreBuildMaterials.forEach(m -> ignoreBuildMaterialsMat.add(MaterialHelper.get(m)));
+					ignoreBuildMaterials.forEach(m -> ignoreBuildMaterialsMat.add(MaterialHelper.getMaterial(m)));
 					ignoreBuildMaterialsMat.remove(Material.AIR);
 					ignoreBuildMaterials = Collections.unmodifiableSet(ignoreBuildMaterials);
 				}
@@ -1115,7 +1115,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public Set<Material> getTerritoryDenyUsageMaterials() {
 				if(territoryDenyUsageMaterialsMat == null) {
 					territoryDenyUsageMaterialsMat = new HashSet<>();
-					territoryDenyUsageMaterials.forEach(m -> territoryDenyUsageMaterialsMat.add(MaterialHelper.get(m)));
+					territoryDenyUsageMaterials.forEach(m -> territoryDenyUsageMaterialsMat.add(MaterialHelper.getMaterial(m)));
 					territoryDenyUsageMaterialsMat.remove(Material.AIR);
 					territoryDenyUsageMaterialsMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsMat);
 				}
@@ -1125,7 +1125,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public Set<Material> getTerritoryDenyUsageMaterialsWhenOffline() {
 				if(territoryDenyUsageMaterialsWhenOfflineMat == null) {
 					territoryDenyUsageMaterialsWhenOfflineMat = new HashSet<>();
-					territoryDenyUsageMaterialsWhenOffline.forEach(m -> territoryDenyUsageMaterialsWhenOfflineMat.add(MaterialHelper.get(m)));
+					territoryDenyUsageMaterialsWhenOffline.forEach(m -> territoryDenyUsageMaterialsWhenOfflineMat.add(MaterialHelper.getMaterial(m)));
 					territoryDenyUsageMaterialsWhenOfflineMat.remove(Material.AIR);
 					territoryDenyUsageMaterialsWhenOfflineMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsWhenOfflineMat);
 				}
@@ -1135,7 +1135,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public Set<Material> getContainerExceptions() {
 				if(containerExceptionsMat == null) {
 					containerExceptionsMat = new HashSet<>();
-					containerExceptions.forEach(m -> containerExceptionsMat.add(MaterialHelper.get(m)));
+					containerExceptions.forEach(m -> containerExceptionsMat.add(MaterialHelper.getMaterial(m)));
 					containerExceptionsMat.remove(Material.AIR);
 					containerExceptionsMat = Collections.unmodifiableSet(containerExceptionsMat);
 				}
@@ -1145,7 +1145,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public Set<Material> getBreakExceptions() {
 				if(breakExceptionsMat == null) {
 					breakExceptionsMat = new HashSet<>();
-					breakExceptions.forEach(m -> breakExceptionsMat.add(MaterialHelper.get(m)));
+					breakExceptions.forEach(m -> breakExceptionsMat.add(MaterialHelper.getMaterial(m)));
 					breakExceptionsMat.remove(Material.AIR);
 					breakExceptionsMat = Collections.unmodifiableSet(breakExceptionsMat);
 				}

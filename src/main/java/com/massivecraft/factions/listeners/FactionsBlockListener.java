@@ -159,7 +159,7 @@ public class FactionsBlockListener implements Listener {
 				return false;
 			}
 			Relation rel = pistonFaction.getRelationTo(otherFaction);
-			if(!otherFaction.hasAccess(otherFaction.hasPlayersOnline(), rel, PermissibleAction.BUILD)) {
+			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
 				return false;
 			}
 		}

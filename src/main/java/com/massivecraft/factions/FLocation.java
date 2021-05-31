@@ -16,7 +16,6 @@ import java.util.Set;
 
 public class FLocation implements Serializable {
 	private static final long serialVersionUID = -8292915234027387983L;
-	private static final boolean worldBorderSupport;
 	private String worldName = "world";
 	private int x = 0;
 	private int z = 0;
@@ -29,7 +28,6 @@ public class FLocation implements Serializable {
 		} catch(ClassNotFoundException ignored) {
 		}
 
-		worldBorderSupport = worldBorderClassPresent;
 	}
 
 	//----------------------------------------------//
@@ -78,10 +76,6 @@ public class FLocation implements Serializable {
 		return Bukkit.getWorld(worldName);
 	}
 
-	public void setWorldName(String worldName) {
-		this.worldName = worldName;
-	}
-
 	public long getX() {
 		return x;
 	}
@@ -101,17 +95,6 @@ public class FLocation implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + this.getWorldName() + "," + this.getCoordString() + "]";
-	}
-
-	public static FLocation fromString(String string) {
-		int index = string.indexOf(',');
-		int start = 1;
-		String worldName = string.substring(start, index);
-		start = index + 1;
-		index = string.indexOf(',', start);
-		int x = Integer.parseInt(string.substring(start, index));
-		int y = Integer.parseInt(string.substring(index + 1, string.length() - 1));
-		return new FLocation(worldName, x, y);
 	}
 
 	//----------------------------------------------//

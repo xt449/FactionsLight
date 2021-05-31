@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,20 +70,20 @@ public class CmdList extends FCommand {
 
 		if(!header.isEmpty()) {
 			header = header.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
-			lines.add(plugin.txt().parse(header));
+			lines.add(TextUtil.parse(header));
 		}
 
 		for(Faction faction : factionList.subList(start, end)) {
 			if(faction.isWilderness()) {
-				lines.add(plugin.txt().parse(Tag.parsePlain(faction, plugin.configMain.commands().list().getFactionlessEntry())));
+				lines.add(TextUtil.parse(Tag.parsePlain(faction, plugin.configMain.commands().list().getFactionlessEntry())));
 				continue;
 			}
-			lines.add(plugin.txt().parse(Tag.parsePlain(faction, context.fPlayer, plugin.configMain.commands().list().getEntry())));
+			lines.add(TextUtil.parse(Tag.parsePlain(faction, context.fPlayer, plugin.configMain.commands().list().getEntry())));
 		}
 
 		if(!footer.isEmpty()) {
 			footer = footer.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
-			lines.add(plugin.txt().parse(footer));
+			lines.add(TextUtil.parse(footer));
 		}
 
 		context.sendMessage(lines);

@@ -6,6 +6,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
@@ -19,7 +20,7 @@ public enum FancyTag implements Tag {
 	TRUCES_LIST("truces-list", (target, fme, prefix) -> processRelation(prefix, target, fme, Relation.TRUCE)),
 	ONLINE_LIST("online-list", (target, fme, prefix) -> {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
-		FancyMessage currentOnline = FactionsPlugin.getInstance().txt().parseFancy(prefix);
+		FancyMessage currentOnline = TextUtil.parseFancy(prefix);
 		boolean firstOnline = true;
 		for(FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
 			if(fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
@@ -39,7 +40,7 @@ public enum FancyTag implements Tag {
 	}),
 	OFFLINE_LIST("offline-list", (target, fme, prefix) -> {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
-		FancyMessage currentOffline = FactionsPlugin.getInstance().txt().parseFancy(prefix);
+		FancyMessage currentOffline = TextUtil.parseFancy(prefix);
 		boolean firstOffline = true;
 		for(FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
 			String name = p.getNameAndTitle();
@@ -64,7 +65,7 @@ public enum FancyTag implements Tag {
 
 	private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
 		List<FancyMessage> fancyMessages = new ArrayList<>();
-		FancyMessage message = FactionsPlugin.getInstance().txt().parseFancy(prefix);
+		FancyMessage message = TextUtil.parseFancy(prefix);
 		boolean first = true;
 		for(Faction otherFaction : Factions.getInstance().getAllFactions()) {
 			if(otherFaction == faction) {
@@ -92,10 +93,6 @@ public enum FancyTag implements Tag {
 			}
 		}
 		return Collections.emptyList(); // We really shouldn't be here.
-	}
-
-	public static boolean anyMatch(String text) {
-		return getMatch(text) != null;
 	}
 
 	public static FancyTag getMatch(String text) {

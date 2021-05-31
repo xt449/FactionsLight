@@ -17,6 +17,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatMessageType;
@@ -675,10 +676,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 		if(plugin.configMain.worldGuard().isChecking() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
-			denyReason = plugin.txt().parse(TL.CLAIM_PROTECTED.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
 		} else if(plugin.configMain.factions().claims().getWorldsNoClaiming().contains(flocation.getWorldName())) {
 			// Cannot claim in this world
-			denyReason = plugin.txt().parse(TL.CLAIM_DISABLED.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_DISABLED.toString());
 		} else if(this.isAdminBypassing()) {
 			// Admin bypass
 			return true;
@@ -690,57 +691,57 @@ public abstract class MemoryFPlayer implements FPlayer {
 			return true;
 		} else if(!forFaction.hasAccess(this, PermissibleAction.TERRITORY)) {
 			// Lacking perms to territory claim
-			denyReason = plugin.txt().parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
+			denyReason = TextUtil.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
 		} else if(forFaction == currentFaction) {
 			// Already owned by this faction, nitwit
-			denyReason = plugin.txt().parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
+			denyReason = TextUtil.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
 		} else if(forFaction.getFPlayers().size() < plugin.configMain.factions().claims().getRequireMinFactionMembers()) {
 			// Need more members in order to claim land
-			denyReason = plugin.txt().parse(TL.CLAIM_MEMBERS.toString(), plugin.configMain.factions().claims().getRequireMinFactionMembers());
+			denyReason = TextUtil.parse(TL.CLAIM_MEMBERS.toString(), plugin.configMain.factions().claims().getRequireMinFactionMembers());
 		} else if(currentFaction.isSafeZone()) {
 			// Cannot claim safezone
-			denyReason = plugin.txt().parse(TL.CLAIM_SAFEZONE.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_SAFEZONE.toString());
 		} else if(currentFaction.isWarZone()) {
 			// Cannot claim warzone
-			denyReason = plugin.txt().parse(TL.CLAIM_WARZONE.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_WARZONE.toString());
 		} else if(plugin.getLandRaidControl() instanceof PowerControl && ownedLand >= forFaction.getPowerRounded()) {
 			// Already own at least as much land as power
-			denyReason = plugin.txt().parse(TL.CLAIM_POWER.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_POWER.toString());
 		} else if(plugin.getLandRaidControl() instanceof DTRControl && ownedLand >= plugin.getLandRaidControl().getLandLimit(forFaction)) {
 			// Already own at least as much land as land limit (DTR)
-			denyReason = plugin.txt().parse(TL.CLAIM_DTR_LAND.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_DTR_LAND.toString());
 		} else if(plugin.configMain.factions().claims().getLandsMax() != 0 && ownedLand >= plugin.configMain.factions().claims().getLandsMax() && forFaction.isNormal()) {
 			// Land limit reached
-			denyReason = plugin.txt().parse(TL.CLAIM_LIMIT.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_LIMIT.toString());
 		} else if(currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
 			// // Can't claim ally
-			denyReason = plugin.txt().parse(TL.CLAIM_ALLY.toString());
+			denyReason = TextUtil.parse(TL.CLAIM_ALLY.toString());
 		} else if(plugin.configMain.factions().claims().isMustBeConnected() && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!plugin.configMain.factions().claims().isCanBeUnconnectedIfOwnedByOtherFaction() || !currentFaction.isNormal())) {
 			// Must be contiguous/connected
 			if(plugin.configMain.factions().claims().isCanBeUnconnectedIfOwnedByOtherFaction()) {
-				denyReason = plugin.txt().parse(TL.CLAIM_CONTIGIOUS.toString());
+				denyReason = TextUtil.parse(TL.CLAIM_CONTIGIOUS.toString());
 			} else {
-				denyReason = plugin.txt().parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
+				denyReason = TextUtil.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
 			}
 		} else if(!(currentFaction.isNormal() && plugin.configMain.factions().claims().isAllowOverClaimAndIgnoringBuffer() && currentFaction.hasLandInflation()) && factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
 			// Too close to buffer
-			denyReason = plugin.txt().parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
+			denyReason = TextUtil.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
 		} else if(currentFaction.isNormal()) {
 			if(myFaction.isPeaceful()) {
 				// Cannot claim as peaceful
-				denyReason = plugin.txt().parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
+				denyReason = TextUtil.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
 			} else if(currentFaction.isPeaceful()) {
 				// Cannot claim from peaceful
-				denyReason = plugin.txt().parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
+				denyReason = TextUtil.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
 			} else if(!currentFaction.hasLandInflation()) {
 				// Cannot claim other faction (perhaps based on power/land ratio)
 				// TODO more messages WARN current faction most importantly
-				denyReason = plugin.txt().parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
+				denyReason = TextUtil.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
 			} else if(currentFaction.hasLandInflation() && !plugin.configMain.factions().claims().isAllowOverClaim()) {
 				// deny over claim when it normally would be allowed.
-				denyReason = plugin.txt().parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
+				denyReason = TextUtil.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
 			} else if(!Board.getInstance().isBorderLocation(flocation)) {
-				denyReason = plugin.txt().parse(TL.CLAIM_BORDER.toString());
+				denyReason = TextUtil.parse(TL.CLAIM_BORDER.toString());
 			}
 		}
 		// TODO: Add more else if statements.
@@ -801,7 +802,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	@Override
 	public void msg(String str, Object... args) {
-		this.sendMessage(FactionsPlugin.getInstance().txt().parse(str, args));
+		this.sendMessage(TextUtil.parse(str, args));
 	}
 
 	@Override
@@ -818,13 +819,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public boolean isOnline() {
 		Player player = this.getPlayer();
 		return player != null && FactionsPlugin.getInstance().worldUtil().isEnabled(player.getWorld());
-	}
-
-	// make sure target player should be able to detect that this player is online
-	@Override
-	public boolean isOnlineAndVisibleTo(Player player) {
-		Player target = this.getPlayer();
-		return target != null && player.canSee(target) && FactionsPlugin.getInstance().worldUtil().isEnabled(player.getWorld());
 	}
 
 	@Override

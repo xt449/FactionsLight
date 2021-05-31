@@ -275,26 +275,4 @@ public abstract class AbstractListener implements Listener {
 		return true;
 	}
 
-	private static boolean isDupeMaterial(Material material) {
-		if(material.name().toUpperCase().contains("SIGN")) {
-			return true;
-		}
-
-		switch(material) {
-			case CHEST:
-			case TRAPPED_CHEST:
-			case DARK_OAK_DOOR:
-			case ACACIA_DOOR:
-			case BIRCH_DOOR:
-			case JUNGLE_DOOR:
-			case OAK_DOOR:
-			case SPRUCE_DOOR:
-			case IRON_DOOR:
-				return true;
-			default:
-				break;
-		}
-
-		return false;
-	}
 }

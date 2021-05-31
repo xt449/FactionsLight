@@ -1,8 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -46,11 +50,11 @@ public class CommandContext {
 	// -------------------------------------------- //
 
 	public void msg(String str, Object... args) {
-		sender.sendMessage(FactionsPlugin.getInstance().txt().parse(str, args));
+		sender.sendMessage(TextUtil.parse(str, args));
 	}
 
 	public void msg(TL translation, Object... args) {
-		sender.sendMessage(FactionsPlugin.getInstance().txt().parse(translation.toString(), args));
+		sender.sendMessage(TextUtil.parse(translation.toString(), args));
 	}
 
 	public void sendMessage(String msg) {
@@ -358,7 +362,7 @@ public class CommandContext {
 	*/
 	public boolean canIAdministerYou(FPlayer i, FPlayer you) {
 		if(!i.getFaction().equals(you.getFaction())) {
-			i.sendMessage(FactionsPlugin.getInstance().txt().parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
+			i.sendMessage(TextUtil.parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
 			return false;
 		}
 
@@ -366,7 +370,7 @@ public class CommandContext {
 			return true;
 		}
 
-		i.sendMessage(FactionsPlugin.getInstance().txt().parse("%s <b>has a higher rank than you.", you.describeTo(i, true)));
+		i.sendMessage(TextUtil.parse("%s <b>has a higher rank than you.", you.describeTo(i, true)));
 
 		return false;
 	}

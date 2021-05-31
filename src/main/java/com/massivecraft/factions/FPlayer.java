@@ -200,8 +200,6 @@ public interface FPlayer extends RelationParticipator {
 
 	void sendFancyMessage(List<FancyMessage> message);
 
-	boolean isOnlineAndVisibleTo(Player me);
-
 	void remove();
 
 	boolean isOffline();

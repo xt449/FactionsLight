@@ -12,7 +12,7 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 	}
 
 	public static class Permissions {
-		public class PermissiblePermInfo {
+		public static class PermissiblePermInfo {
 			public boolean isLocked() {
 				return this.locked;
 			}
@@ -26,11 +26,11 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			private boolean value = false;
 		}
 
-		public class FactionOnlyPermInfo {
-			protected PermissiblePermInfo coleader = new PermissiblePermInfo();
-			protected PermissiblePermInfo moderator = new PermissiblePermInfo();
-			protected PermissiblePermInfo normal = new PermissiblePermInfo();
-			protected PermissiblePermInfo recruit = new PermissiblePermInfo();
+		public static class FactionOnlyPermInfo {
+			protected final PermissiblePermInfo coleader = new PermissiblePermInfo();
+			protected final PermissiblePermInfo moderator = new PermissiblePermInfo();
+			protected final PermissiblePermInfo normal = new PermissiblePermInfo();
+			protected final PermissiblePermInfo recruit = new PermissiblePermInfo();
 
 			public PermissiblePermInfo get(Permissible permissible) {
 				if(permissible instanceof Role) {
@@ -50,11 +50,11 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			}
 		}
 
-		public class FullPermInfo extends FactionOnlyPermInfo {
-			protected PermissiblePermInfo ally = new PermissiblePermInfo();
-			protected PermissiblePermInfo truce = new PermissiblePermInfo();
-			protected PermissiblePermInfo neutral = new PermissiblePermInfo();
-			protected PermissiblePermInfo enemy = new PermissiblePermInfo();
+		public static class FullPermInfo extends FactionOnlyPermInfo {
+			protected final PermissiblePermInfo ally = new PermissiblePermInfo();
+			protected final PermissiblePermInfo truce = new PermissiblePermInfo();
+			protected final PermissiblePermInfo neutral = new PermissiblePermInfo();
+			protected final PermissiblePermInfo enemy = new PermissiblePermInfo();
 
 			public PermissiblePermInfo get(Permissible permissible) {
 				if(permissible instanceof Relation) {
@@ -133,20 +133,8 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			return this.listClaims;
 		}
 
-		public FactionOnlyPermInfo getEconomy() {
-			return this.economy;
-		}
-
 		public FactionOnlyPermInfo getTerritory() {
 			return this.territory;
-		}
-
-		public FactionOnlyPermInfo getTNTDeposit() {
-			return this.tntDeposit;
-		}
-
-		public FactionOnlyPermInfo getTNTWithdraw() {
-			return this.tntWithdraw;
 		}
 
 		public FactionOnlyPermInfo getOwner() {
@@ -171,10 +159,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 
 		public FullPermInfo getWarp() {
 			return this.warp;
-		}
-
-		public FullPermInfo getFly() {
-			return this.fly;
 		}
 
 		private final FactionOnlyPermInfo ban = new FactionOnlyPermInfo() {
@@ -296,29 +280,7 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			}
 		};
 
-		private final FactionOnlyPermInfo economy = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-			}
-		};
-
 		private final FactionOnlyPermInfo territory = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-			}
-		};
-
-		private final FactionOnlyPermInfo tntDeposit = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-			}
-		};
-
-		private final FactionOnlyPermInfo tntWithdraw = new FactionOnlyPermInfo() {
 			{
 				this.coleader.value = true;
 				this.moderator.value = true;
@@ -361,15 +323,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			}
 		};
 
-		private final FullPermInfo fly = new FullPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-				this.ally.value = true;
-			}
-		};
 	}
 
 	private final Permissions permissions = new Permissions();

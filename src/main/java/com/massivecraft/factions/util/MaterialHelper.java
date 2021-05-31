@@ -4,15 +4,8 @@ import org.bukkit.Material;
 
 public abstract class MaterialHelper {
 
-	public static Material get(String name) {
+	public static Material getMaterial(String name) {
 		return Material.valueOf(name.toUpperCase());
 	}
 
-	public static Material get(String name, Material defaultMaterial) {
-		try {
-			return Material.valueOf(name.toUpperCase());
-		} catch(IllegalArgumentException ignored) {
-			return defaultMaterial;
-		}
-	}
 }

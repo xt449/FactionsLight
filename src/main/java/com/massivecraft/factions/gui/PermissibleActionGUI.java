@@ -50,7 +50,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		String actionName = action.descriptionShort.substring(0, 1).toUpperCase() + action.descriptionShort.substring(1);
 		toParse = toParse.replace("{action}", actionName);
 
-		boolean access = user.getFaction().hasAccess(online, permissible, action);
+		boolean access = user.getFaction().hasAccess(permissible, action);
 
 		toParse = toParse.replace("{action-access}", (access ? allow : deny));
 		toParse = toParse.replace("{action-access-color}", access ? ChatColor.GREEN.toString() : ChatColor.DARK_RED.toString());
@@ -69,7 +69,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 		} else {
 			return;
 		}
-		if(user.getFaction().setPermission(online, permissible, action, access)) {
+		if(user.getFaction().setPermission(permissible, action, access)) {
 			// Reload item to reparse placeholders
 			buildItem(action);
 			user.msg(TL.COMMAND_PERM_SET, action.descriptionShort, access ? allowLower : denyLower, permissible.name());
@@ -96,7 +96,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 	protected SimpleItem getItem(PermissibleAction permissibleAction) {
 		SimpleItem item = new SimpleItem(base);
 
-		item.setEnchant(user.getFaction().hasAccess(online, permissible, permissibleAction));
+		item.setEnchant(user.getFaction().hasAccess(permissible, permissibleAction));
 		Material material = permissibleAction.material;
 		item.setMaterial(material == Material.AIR ? Material.STONE : material);
 		return item;

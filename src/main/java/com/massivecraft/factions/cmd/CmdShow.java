@@ -11,6 +11,7 @@ import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -74,11 +75,11 @@ public class CmdShow extends FCommand {
 			// send header and that's all
 			String header = show.get(0);
 			if(header.contains(FactionTag.HEADER.toString())) {
-				context.msg(plugin.txt().titleize(tag));
+				context.msg(TextUtil.titleize(tag));
 			} else {
 				String message = header.replace(FactionTag.FACTION.toString(), tag);
 				message = Tag.parsePlain(faction, context.fPlayer, message);
-				context.msg(plugin.txt().parse(message));
+				context.msg(TextUtil.parse(message));
 			}
 			return; // we only show header for non-normal factions
 		}
@@ -145,7 +146,7 @@ public class CmdShow extends FCommand {
 					}
 				}
 			} else {
-				recipient.sendMessage(FactionsPlugin.getInstance().txt().parse(parsed));
+				recipient.sendMessage(TextUtil.parse(parsed));
 			}
 		}
 	}
@@ -157,7 +158,7 @@ public class CmdShow extends FCommand {
 			builder.append(first ? name : ", " + name);
 			first = false;
 		}
-		recipient.sendMessage(FactionsPlugin.getInstance().txt().parse(builder.toString()));
+		recipient.sendMessage(TextUtil.parse(builder.toString()));
 	}
 
 	private void relationMessage(StringBuilder builder, CommandSender recipient, Faction faction, Relation relation) {
@@ -169,7 +170,7 @@ public class CmdShow extends FCommand {
 				first = false;
 			}
 		}
-		recipient.sendMessage(FactionsPlugin.getInstance().txt().parse(builder.toString()));
+		recipient.sendMessage(TextUtil.parse(builder.toString()));
 	}
 
 	private boolean groupPresent() {

@@ -125,11 +125,11 @@ public interface Faction extends RelationParticipator {
 
 	int getDeaths();
 
-	boolean hasAccess(boolean online, Permissible permissible, PermissibleAction permissibleAction);
+	boolean hasAccess(Permissible permissible, PermissibleAction permissibleAction);
 
 	boolean hasAccess(FPlayer player, PermissibleAction permissibleAction);
 
-	boolean setPermission(boolean online, Permissible permissible, PermissibleAction permissibleAction, boolean value);
+	boolean setPermission(Permissible permissible, PermissibleAction permissibleAction, boolean value);
 
 	void checkPerms();
 

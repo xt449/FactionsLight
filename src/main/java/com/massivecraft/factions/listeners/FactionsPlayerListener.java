@@ -32,7 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -330,27 +329,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
-		}
-	}
-
-
-	// for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
-	private final Map<String, InteractAttemptSpam> interactSpammers = new HashMap<>();
-
-	private static class InteractAttemptSpam {
-		private int attempts = 0;
-		private long lastAttempt = System.currentTimeMillis();
-
-		// returns the current attempt count
-		public int increment() {
-			long Now = System.currentTimeMillis();
-			if(Now > lastAttempt + 2000) {
-				attempts = 1;
-			} else {
-				attempts++;
-			}
-			lastAttempt = Now;
-			return attempts;
 		}
 	}
 
