@@ -1207,12 +1207,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient String defaultRole;
 			private transient Role defaultRoleRole;
 			private transient boolean disablePistonsInTerritory;
-			private transient List<String> nameBlacklist = new ArrayList<String>() {
-				{
-					this.add("blockedwordhere");
-					this.add("anotherblockedthinghere");
-				}
-			};
+			private transient List<String> nameBlacklist;
 
 			public List<String> getNameBlacklist() {
 				return Collections.unmodifiableList(this.nameBlacklist);
@@ -1436,11 +1431,7 @@ public class MainConfiguration extends AbstractConfiguration {
 	public static class RestrictWorlds {
 		private transient boolean restrictWorlds;
 		private transient boolean whitelist;;
-		private transient Set<String> worldList = new HashSet<String>() {
-			{
-				this.add("exampleWorld");
-			}
-		};
+		private transient Set<String> worldList;
 
 		public boolean isRestrictWorlds() {
 			return restrictWorlds;
@@ -1464,21 +1455,9 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient boolean suffixes;
 			private transient String suffixTemplate;
 
-			private transient List<String> content = new ArrayList<String>() {
-				{
-					this.add("&6Your Faction");
-					this.add("{faction}");
-					this.add("&3Your Power");
-					this.add("{power}");
-				}
-			};
+			private transient List<String> content;
 			private transient boolean factionlessEnabled;
-			private transient List<String> factionlessContent = new ArrayList<String>() {
-				{
-					this.add("Make a new Faction");
-					this.add("Use /f create");
-				}
-			};
+			private transient List<String> factionlessContent;
 			private transient String factionlessTitle;
 
 			public boolean isEnabled() {
@@ -1533,18 +1512,7 @@ public class MainConfiguration extends AbstractConfiguration {
 		public static class Info {
 			private transient int expiration;
 			private transient boolean enabled;
-			private transient List<String> content = new ArrayList<String>() {
-				{
-					this.add("&6Power");
-					this.add("{power}");
-					this.add("&3Members");
-					this.add("{online}/{members}");
-					this.add("&4Leader");
-					this.add("{leader}");
-					this.add("&bTerritory");
-					this.add("{chunks}");
-				}
-			};
+			private transient List<String> content;
 			private transient String title;
 
 			public int getExpiration() {
@@ -1607,11 +1575,6 @@ public class MainConfiguration extends AbstractConfiguration {
 		}
 	}
 
-	private List<String> commandBase = new ArrayList<String>() {
-		{
-			this.add("f");
-		}
-	};
 	private transient Colors colors = new Colors();
 	private transient Commands commands = new Commands();
 	private transient Factions factions = new Factions();
@@ -1621,10 +1584,6 @@ public class MainConfiguration extends AbstractConfiguration {
 	private transient Scoreboard scoreboard = new Scoreboard();
 	private transient LWC lwc = new LWC();
 	private transient WorldGuard worldGuard = new WorldGuard();
-
-	public List<String> getCommandBase() {
-		return commandBase == null ? (commandBase = Collections.singletonList("f")) : commandBase;
-	}
 
 	public Colors colors() {
 		return colors;
