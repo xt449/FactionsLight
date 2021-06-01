@@ -19,7 +19,7 @@ public class IntegrationManager implements Listener {
 		DYNMAP("dynmap", DynMapIntegration.getInstance()::init),
 		LWC("LWC", LWCIntegration::setup),
 		PLACEHOLDERAPI("PlaceholderAPI", (p) -> FactionsPlugin.getInstance().setupPlaceholderAPI()),
-		SENTINEL("Sentinel", plugin -> SentinelIntegration.init(plugin)), // resist
+		@SuppressWarnings("Convert2MethodRef") SENTINEL("Sentinel", plugin -> SentinelIntegration.init(plugin)), // resist
 		WORLDGUARD("WorldGuard", (plugin) -> {
 			FactionsPlugin f = FactionsPlugin.getInstance();
 			if(!f.configMain.worldGuard().isChecking() && !f.configMain.worldGuard().isBuildPriority()) {

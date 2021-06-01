@@ -189,10 +189,6 @@ public class MemoryFaction implements Faction {
 	}
 
 	public void setTag(String str) {
-		FactionsPlugin.getInstance().configMain.factions().limits();
-		if(false) {
-			str = str.toUpperCase();
-		}
 		this.tag = str;
 	}
 
@@ -572,9 +568,9 @@ public class MemoryFaction implements Faction {
 		return Board.getInstance().getFactionCoordCount(this);
 	}
 
-	public int getLandRoundedInWorld(String worldName) {
-		return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
-	}
+//	public int getLandRoundedInWorld(String worldName) {
+//		return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
+//	}
 
 	// -------------------------------
 	// FPlayers

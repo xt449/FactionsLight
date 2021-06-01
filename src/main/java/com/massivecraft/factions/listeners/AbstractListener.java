@@ -3,23 +3,16 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Listener;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 public abstract class AbstractListener implements Listener {
-	public boolean playerCanInteractHere(Player player, Location location) {
-		return canInteractHere(player, location);
-	}
+//	public boolean playerCanInteractHere(Player player, Location location) {
+//		return canInteractHere(player, location);
+//	}
 
 	public static boolean canInteractHere(Player player, Location location) {
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
@@ -54,24 +47,23 @@ public abstract class AbstractListener implements Listener {
 		return true;
 	}
 
-	protected void handleExplosion(Location loc, Entity boomer, Cancellable event, List<Block> blockList) {
-		if(!FactionsPlugin.getInstance().configMain.restrictWorlds().isEnabled(loc.getWorld())) {
-			return;
-		}
+//	protected static void handleExplosion(Location loc, Entity boomer, Cancellable event, List<Block> blockList) {
+//		if(!FactionsPlugin.getInstance().configMain.restrictWorlds().isEnabled(loc.getWorld())) {
+//			return;
+//		}
+//
+////		if(explosionDisallowed(boomer, new FLocation(loc))) {
+////			event.setCancelled(true);
+////			return;
+////		}
+//
+//		List<Chunk> chunks = blockList.stream().map(Block::getChunk).distinct().collect(Collectors.toList());
+//		if(chunks.removeIf(chunk -> explosionDisallowed(boomer, new FLocation(chunk)))) {
+//			blockList.removeIf(block -> !chunks.contains(block.getChunk()));
+//		}
+//	}
 
-		if(explosionDisallowed(boomer, new FLocation(loc))) {
-			event.setCancelled(true);
-			return;
-		}
-
-		List<Chunk> chunks = blockList.stream().map(Block::getChunk).distinct().collect(Collectors.toList());
-		if(chunks.removeIf(chunk -> explosionDisallowed(boomer, new FLocation(chunk)))) {
-			blockList.removeIf(block -> !chunks.contains(block.getChunk()));
-		}
-	}
-
-	public static boolean explosionDisallowed(Entity boomer, FLocation location) {
-		return false;
+//	public static boolean explosionDisallowed(Entity boomer, FLocation location) {
 //		Faction faction = Board.getInstance().getFactionAt(location);
 //		boolean online = faction.hasPlayersOnline();
 ////		if(faction.noExplosionsInTerritory() || (faction.isPeaceful() && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisableBoom())) {
@@ -95,13 +87,13 @@ public abstract class AbstractListener implements Listener {
 //		} else
 //			return (faction.isWilderness() && commandBlacklist.isWildernessBlockOtherExplosions() && !commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
 //					(faction.isNormal() && (online ? commandBlacklist.isTerritoryBlockOtherExplosions() : commandBlacklist.isTerritoryBlockOtherExplosionsWhenOffline()));
-	}
+//	}
 
-	public boolean canPlayerUseBlock(Player player, Material material, Location location, boolean justCheck) {
-		return canUseBlock(player, material, location, justCheck);
-	}
+//	public boolean canPlayerUseBlock(Player player, Material material, Location location, boolean justCheck) {
+//		return canUseBlock(player, material, location, justCheck);
+//	}
 
-	public static boolean canUseBlock(Player player, Material material, Location location, boolean justCheck) {
+	public static boolean canUseBlock(Player player, Material material, Location location) {
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
@@ -238,5 +230,4 @@ public abstract class AbstractListener implements Listener {
 
 		return true;
 	}
-
 }

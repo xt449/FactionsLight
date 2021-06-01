@@ -93,7 +93,7 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 
 	private transient final FactionOnlyPermInfo listClaims = new FactionOnlyPermInfo();
 	private transient final FactionOnlyPermInfo territory = new FactionOnlyPermInfo();
-	private transient final FactionOnlyPermInfo owner = new FactionOnlyPermInfo();
+//	private transient final FactionOnlyPermInfo owner = new FactionOnlyPermInfo();
 
 	private transient final FullPermInfo plate = new FullPermInfo();
 
@@ -156,9 +156,9 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 		return this.territory;
 	}
 
-	public FactionOnlyPermInfo getOwner() {
-		return this.owner;
-	}
+//	public FactionOnlyPermInfo getOwner() {
+//		return this.owner;
+//	}
 
 	public FullPermInfo getPlate() {
 		return this.plate;

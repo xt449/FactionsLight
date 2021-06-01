@@ -82,12 +82,6 @@ public enum TL {
 	COMMAND_BANLIST_NOFACTION("&4You are not in a Faction."),
 	COMMAND_BANLIST_INVALID("We couldn't find a Faction by the name %s"),
 
-	COMMAND_BOOM_PEACEFULONLY("&cThis command is only usable by factions which are specifically designated as peaceful."),
-	COMMAND_BOOM_TOTOGGLE("to toggle explosions"),
-	COMMAND_BOOM_FORTOGGLE("for toggling explosions"),
-	COMMAND_BOOM_ENABLED("%1$s&e has %2$s explosions in your faction's territory."),
-	COMMAND_BOOM_DESCRIPTION("Toggle explosions (peaceful factions only)"),
-
 	COMMAND_BYPASS_ENABLE("&eYou have enabled admin bypass mode. You will be able to build or destroy anywhere."),
 	COMMAND_BYPASS_ENABLELOG(" has ENABLED admin bypass mode."),
 	COMMAND_BYPASS_DISABLE("&eYou have disabled admin bypass mode."),
@@ -140,7 +134,6 @@ public enum TL {
 	COMMAND_COLEADER_PROMOTES("%1$s&e was promoted to coleader in your faction."),
 	COMMAND_COLEADER_PROMOTED("&eYou have promoted %1$s&e to coleader."),
 	COMMAND_COLEADER_DESCRIPTION("Give or revoke coleader rights"),
-	COMMAND_COLEADER_ALREADY_COLEADER("The faction already has a coleader. There can only be 1."),
 
 	COMMAND_CONVERT_BACKEND_RUNNING("Already running that backend."),
 	COMMAND_CONVERT_BACKEND_INVALID("Invalid backend"),

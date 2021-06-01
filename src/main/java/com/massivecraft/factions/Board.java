@@ -42,12 +42,12 @@ public abstract class Board {
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	public abstract boolean isBorderLocation(FLocation flocation);
+//	public abstract boolean isBorderLocation(FLocation flocation);
 
 	// Is this coord connected to any coord claimed by the specified faction?
-	public abstract boolean isConnectedLocation(FLocation flocation, Faction faction);
+//	public abstract boolean isConnectedLocation(FLocation flocation, Faction faction);
 
-	public abstract boolean hasFactionWithin(FLocation flocation, Faction faction, int radius);
+//	public abstract boolean hasFactionWithin(FLocation flocation, Faction faction, int radius);
 
 	//----------------------------------------------//
 	// Cleaner. Remove orphaned foreign keys
@@ -63,7 +63,7 @@ public abstract class Board {
 
 	public abstract int getFactionCoordCount(Faction faction);
 
-	public abstract int getFactionCoordCountInWorld(Faction faction, String worldName);
+//	public abstract int getFactionCoordCountInWorld(Faction faction, String worldName);
 
 	//----------------------------------------------//
 	// Map generation

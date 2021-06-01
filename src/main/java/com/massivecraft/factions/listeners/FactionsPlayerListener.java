@@ -25,7 +25,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
@@ -91,17 +90,6 @@ public class FactionsPlayerListener extends AbstractListener {
 			FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
 		}
 
-		Faction myFaction = me.getFaction();
-		if(!myFaction.isWilderness()) {
-			for(FPlayer other : myFaction.getFPlayersWhereOnline(true)) {
-				if(other != me && other.isMonitoringJoins()) {
-					other.msg(TL.FACTION_LOGIN, me.getName());
-				}
-			}
-		}
-
-		// If they have the permission, don't let them autoleave. Bad inverted setter :\
-		me.setAutoLeave(!me.getPlayer().hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
 		me.setTakeFallDamage(true);
 	}
 
@@ -125,14 +113,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		Faction myFaction = me.getFaction();
 		if(!myFaction.isWilderness()) {
 			myFaction.memberLoggedOff();
-		}
-
-		if(!myFaction.isWilderness()) {
-			for(FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
-				if(player != me && player.isMonitoringJoins()) {
-					player.msg(TL.FACTION_LOGOUT, me.getName());
-				}
-			}
 		}
 
 		FScoreboard.remove(me, event.getPlayer());
@@ -174,7 +154,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		// Did we change "host"(faction)?
 		Faction factionFrom = Board.getInstance().getFactionAt(from);
 		Faction factionTo = Board.getInstance().getFactionAt(to);
-		boolean changedFaction = (factionFrom != factionTo);
 
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
@@ -240,7 +219,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			}
 		}
 
-		if(!canPlayerUseBlock(player, block.getType(), block.getLocation(), false)) {
+		if(!canUseBlock(player, block.getType(), block.getLocation())) {
 			event.setCancelled(true);
 			if(block.getType().name().endsWith("_PLATE")) {
 				return;

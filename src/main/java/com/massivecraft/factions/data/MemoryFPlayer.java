@@ -49,11 +49,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected long lastLoginTime;
 	protected String id;
 	protected String name;
-	protected boolean monitorJoins;
 	protected boolean showScoreboard = true;
 	protected boolean isAdminBypassing = false;
 	protected int kills, deaths;
-	protected boolean willAutoLeave = true;
 
 	protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	protected transient boolean mapAutoUpdating;
@@ -125,16 +123,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	}
 
 	@Override
-	public void setMonitorJoins(boolean monitor) {
-		this.monitorJoins = monitor;
-	}
-
-	@Override
-	public boolean isMonitoringJoins() {
-		return this.monitorJoins;
-	}
-
-	@Override
 	public Role getRole() {
 		// Hack to fix null roles..
 		if(role == null) {
@@ -158,16 +146,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 //	public void setPowerBoost(double powerBoost) {
 //		this.powerBoost = powerBoost;
 //	}
-
-	@Override
-	public boolean willAutoLeave() {
-		return this.willAutoLeave;
-	}
-
-	@Override
-	public void setAutoLeave(boolean willLeave) {
-		this.willAutoLeave = willLeave;
-	}
 
 	@Override
 	public long getLastFrostwalkerMessage() {
@@ -619,7 +597,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
 		FactionsPlugin plugin = FactionsPlugin.getInstance();
 		String denyReason = null;
-		Faction myFaction = getFaction();
 		Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 
 		if(plugin.configMain.worldGuard().isChecking() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {

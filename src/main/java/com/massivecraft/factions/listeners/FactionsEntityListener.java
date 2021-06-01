@@ -6,13 +6,17 @@ import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
-import org.bukkit.entity.minecart.ExplosiveMinecart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -96,10 +100,10 @@ public class FactionsEntityListener extends AbstractListener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onEntityExplode(EntityExplodeEvent event) {
-		this.handleExplosion(event.getLocation(), event.getEntity(), event, event.blockList());
-	}
+//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+//	public void onEntityExplode(EntityExplodeEvent event) {
+//		handleExplosion(event.getLocation(), event.getEntity(), event, event.blockList());
+//	}
 
 	// mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -175,16 +179,16 @@ public class FactionsEntityListener extends AbstractListener {
 			damager = (Entity) projectile.getShooter();
 		}
 
-		if(damager instanceof TNTPrimed || damager instanceof Creeper || damager instanceof ExplosiveMinecart) {
-			switch(damagee.getType()) {
-				case ITEM_FRAME:
-				case ARMOR_STAND:
-				case PAINTING:
-					if(explosionDisallowed(damager, new FLocation(damagee.getLocation()))) {
-						return false;
-					}
-			}
-		}
+//		if(damager instanceof TNTPrimed || damager instanceof Creeper || damager instanceof ExplosiveMinecart) {
+//			switch(damagee.getType()) {
+//				case ITEM_FRAME:
+//				case ARMOR_STAND:
+//				case PAINTING:
+//					if(explosionDisallowed(damager, new FLocation(damagee.getLocation()))) {
+//						return false;
+//					}
+//			}
+//		}
 
 		if(damager instanceof Player) {
 			Player player = (Player) damager;
@@ -197,7 +201,7 @@ public class FactionsEntityListener extends AbstractListener {
 					material = Material.ARMOR_STAND;
 					break;
 			}
-			if(material != null && !canUseBlock(player, material, damagee.getLocation(), false)) {
+			if(material != null && !canUseBlock(player, material, damagee.getLocation())) {
 				return false;
 			}
 		}

@@ -98,7 +98,7 @@ public interface Faction extends RelationParticipator {
 
 	int getLandRounded();
 
-	int getLandRoundedInWorld(String worldName);
+//	int getLandRoundedInWorld(String worldName);
 
 	// -------------------------------
 	// Relation and relation colors

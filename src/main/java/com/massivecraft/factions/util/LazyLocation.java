@@ -11,6 +11,7 @@ import java.io.Serializable;
  * yet when an object of this class is created, only when the Location is first accessed.
  */
 
+@Deprecated
 public class LazyLocation implements Serializable {
 	private static final long serialVersionUID = -6049901271320963314L;
 	private transient Location location = null;

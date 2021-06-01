@@ -1,11 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Permission;
-import com.massivecraft.factions.util.TL;
-
 //public class CmdPeaceful extends FCommand {
 //
 //	public CmdPeaceful() {

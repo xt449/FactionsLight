@@ -4,7 +4,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 
 public class OneEightPlusListener extends AbstractListener {
@@ -20,13 +19,13 @@ public class OneEightPlusListener extends AbstractListener {
 			return;
 		}
 
-		if(!canPlayerUseBlock(event.getPlayer(), Material.ARMOR_STAND, event.getRightClicked().getLocation(), false)) {
+		if(!canUseBlock(event.getPlayer(), Material.ARMOR_STAND, event.getRightClicked().getLocation())) {
 			event.setCancelled(true);
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onBlockExplode(BlockExplodeEvent event) {
-		this.handleExplosion(event.getBlock().getLocation(), null, event, event.blockList());
-	}
+//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+//	public void onBlockExplode(BlockExplodeEvent event) {
+//		handleExplosion(event.getBlock().getLocation(), null, event, event.blockList());
+//	}
 }

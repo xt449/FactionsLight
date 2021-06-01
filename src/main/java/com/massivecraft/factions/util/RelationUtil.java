@@ -72,7 +72,7 @@ public class RelationUtil {
 			return Relation.MEMBER;
 		}
 
-		if(!ignorePeaceful && (fme.getCombatSetting() == Setting.PREVENT_ALL| fthat.getCombatSetting() == Setting.PREVENT_ALL)) {
+		if(!ignorePeaceful && (fme.getCombatSetting() == Setting.PREVENT_ALL | fthat.getCombatSetting() == Setting.PREVENT_ALL)) {
 			return Relation.NEUTRAL;
 		}
 

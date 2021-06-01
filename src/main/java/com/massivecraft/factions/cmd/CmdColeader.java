@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.TL;
@@ -71,13 +70,6 @@ public class CmdColeader extends FCommand {
 			target.setRole(Role.MODERATOR);
 			targetFaction.msg(TL.COMMAND_COLEADER_REVOKED, target.describeTo(targetFaction, true));
 			context.msg(TL.COMMAND_COLEADER_REVOKES, target.describeTo(context.fPlayer, true));
-			return;
-		}
-
-		// Check to see if we should allow multiple coleaders or not.
-		FactionsPlugin.getInstance().configMain.factions().limits();
-		if(!true && !targetFaction.getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
-			context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 			return;
 		}
 

@@ -34,17 +34,9 @@ public interface FPlayer extends RelationParticipator {
 
 	void setFaction(Faction faction);
 
-	boolean willAutoLeave();
-
-	void setAutoLeave(boolean autoLeave);
-
 	long getLastFrostwalkerMessage();
 
 	void setLastFrostwalkerMessage();
-
-	void setMonitorJoins(boolean monitor);
-
-	boolean isMonitoringJoins();
 
 	Role getRole();
 

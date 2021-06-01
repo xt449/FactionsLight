@@ -3,12 +3,9 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
-import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,9 +16,6 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.world.PortalCreateEvent;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class FactionsBlockListener implements Listener {
 
@@ -125,29 +119,28 @@ public class FactionsBlockListener implements Listener {
 //		}
 //	}
 
-	private boolean canPistonMoveBlock(Faction pistonFaction, List<Block> blocks, BlockFace direction) {
-		String world = blocks.get(0).getWorld().getName();
-		List<Faction> factions = (direction == null ? blocks.stream() : blocks.stream().map(b -> b.getRelative(direction)))
-				.map(Block::getLocation)
-				.map(FLocation::new)
-				.distinct()
-				.map(Board.getInstance()::getFactionAt)
-				.distinct()
-				.collect(Collectors.toList());
-
-		FactionsPlugin.getInstance().configMain.factions().limits();
-		for(Faction otherFaction : factions) {
-			if(pistonFaction == otherFaction) {
-				continue;
-			}
-			// Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
-			Relation rel = pistonFaction.getRelationTo(otherFaction);
-			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	private boolean canPistonMoveBlock(Faction pistonFaction, List<Block> blocks, BlockFace direction) {
+//		List<Faction> factions = (direction == null ? blocks.stream() : blocks.stream().map(b -> b.getRelative(direction)))
+//				.map(Block::getLocation)
+//				.map(FLocation::new)
+//				.distinct()
+//				.map(Board.getInstance()::getFactionAt)
+//				.distinct()
+//				.collect(Collectors.toList());
+//
+//		FactionsPlugin.getInstance().configMain.factions().limits();
+//		for(Faction otherFaction : factions) {
+//			if(pistonFaction == otherFaction) {
+//				continue;
+//			}
+//			// Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
+//			Relation rel = pistonFaction.getRelationTo(otherFaction);
+//			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFrostWalker(EntityBlockFormEvent event) {

@@ -137,23 +137,23 @@ public abstract class MemoryBoard extends Board {
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
-	public boolean isBorderLocation(FLocation flocation) {
-		Faction faction = getFactionAt(flocation);
-		FLocation a = flocation.getRelative(1, 0);
-		FLocation b = flocation.getRelative(-1, 0);
-		FLocation c = flocation.getRelative(0, 1);
-		FLocation d = flocation.getRelative(0, -1);
-		return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
-	}
+//	public boolean isBorderLocation(FLocation flocation) {
+//		Faction faction = getFactionAt(flocation);
+//		FLocation a = flocation.getRelative(1, 0);
+//		FLocation b = flocation.getRelative(-1, 0);
+//		FLocation c = flocation.getRelative(0, 1);
+//		FLocation d = flocation.getRelative(0, -1);
+//		return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
+//	}
 
 	// Is this coord connected to any coord claimed by the specified faction?
-	public boolean isConnectedLocation(FLocation flocation, Faction faction) {
-		FLocation a = flocation.getRelative(1, 0);
-		FLocation b = flocation.getRelative(-1, 0);
-		FLocation c = flocation.getRelative(0, 1);
-		FLocation d = flocation.getRelative(0, -1);
-		return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
-	}
+//	public boolean isConnectedLocation(FLocation flocation, Faction faction) {
+//		FLocation a = flocation.getRelative(1, 0);
+//		FLocation b = flocation.getRelative(-1, 0);
+//		FLocation c = flocation.getRelative(0, 1);
+//		FLocation d = flocation.getRelative(0, -1);
+//		return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
+//	}
 
 	/**
 	 * Checks if there is another faction within a given radius other than Wilderness. Used for HCF feature that
@@ -164,29 +164,27 @@ public abstract class MemoryBoard extends Board {
 	 * @param radius    - chunk radius to check.
 	 * @return true if another Faction is within the radius, otherwise false.
 	 */
-	public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
-		for(int x = -radius; x <= radius; x++) {
-			for(int z = -radius; z <= radius; z++) {
-				if(x == 0 && z == 0) {
-					continue;
-				}
-
-				FLocation relative = flocation.getRelative(x, z);
-				Faction other = getFactionAt(relative);
-
-				if(other.isNormal() && other != faction) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
+//	public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
+//		for(int x = -radius; x <= radius; x++) {
+//			for(int z = -radius; z <= radius; z++) {
+//				if(x == 0 && z == 0) {
+//					continue;
+//				}
+//
+//				FLocation relative = flocation.getRelative(x, z);
+//				Faction other = getFactionAt(relative);
+//
+//				if(other.isNormal() && other != faction) {
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	//----------------------------------------------//
 	// Cleaner. Remove orphaned foreign keys
 	//----------------------------------------------//
-
 	public void clean() {
 		Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
 		while(iter.hasNext()) {
@@ -213,16 +211,16 @@ public abstract class MemoryBoard extends Board {
 		return getFactionCoordCount(faction.getId());
 	}
 
-	public int getFactionCoordCountInWorld(Faction faction, String worldName) {
-		String factionId = faction.getId();
-		int ret = 0;
-		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
-			if(entry.getValue().equals(factionId) && entry.getKey().getWorldName().equals(worldName)) {
-				ret += 1;
-			}
-		}
-		return ret;
-	}
+//	public int getFactionCoordCountInWorld(Faction faction, String worldName) {
+//		String factionId = faction.getId();
+//		int ret = 0;
+//		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+//			if(entry.getValue().equals(factionId) && entry.getKey().getWorldName().equals(worldName)) {
+//				ret += 1;
+//			}
+//		}
+//		return ret;
+//	}
 
 	//----------------------------------------------//
 	// Map generation

@@ -4,34 +4,14 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 
 public class MiscUtil {
-	public static final Function<String, EntityType> ENTITY_TYPE_FUNCTION;
-	public static final Function<String, CreatureSpawnEvent.SpawnReason> SPAWN_REASON_FUNCTION;
-
-	static {
-		ENTITY_TYPE_FUNCTION = (string) -> string == null ? null : EntityType.valueOf(string.toUpperCase());
-		SPAWN_REASON_FUNCTION = (string) -> string == null ? null : CreatureSpawnEvent.SpawnReason.valueOf(string.toUpperCase());
-	}
-
-	public static <Type> Set<Type> typeSetFromStringSet(Set<String> stringSet, Function<String, Type> function) {
-		Set<Type> typeSet = new HashSet<>();
-		for(String string : stringSet) {
-			if(string != null) {
-				Type item = function.apply(string);
-				if(item != null) {
-					typeSet.add(item);
-				}
-			}
-		}
-		return Collections.unmodifiableSet(typeSet);
-	}
 
 	// Inclusive range
 	public static long[] range(long start, long end) {
