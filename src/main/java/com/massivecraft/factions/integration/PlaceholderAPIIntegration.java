@@ -87,10 +87,10 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 				return fPlayer.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fPlayer.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
 			case "player_group":
 				return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
-			case "player_power":
-				return String.valueOf(fPlayer.getPowerRounded());
-			case "player_maxpower":
-				return String.valueOf(fPlayer.getPowerMaxRounded());
+//			case "player_power":
+//				return String.valueOf(fPlayer.getPowerRounded());
+//			case "player_maxpower":
+//				return String.valueOf(fPlayer.getPowerMaxRounded());
 			case "player_kills":
 				return String.valueOf(fPlayer.getKills());
 			case "player_deaths":
@@ -106,29 +106,6 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 				return (fPlayer.hasFaction() || territory) ? Tag.parsePlain(fPlayer, TL.PLACEHOLDER_CUSTOM_FACTION.toString()) : "";
 			case "faction_only_space":
 				return (fPlayer.hasFaction() || territory) ? " " : "";
-			case "faction_power":
-				return String.valueOf(faction.getPowerRounded());
-			case "faction_powermax":
-				return String.valueOf(faction.getPowerMaxRounded());
-			case "faction_dtr":
-				return (fPlayer.hasFaction() || territory) ? DTRControl.round(faction.getDTR()) : "";
-			case "faction_dtrmax":
-				if((fPlayer.hasFaction() || territory) && FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-					return DTRControl.round(((DTRControl) FactionsPlugin.getInstance().getLandRaidControl()).getMaxDTR(faction));
-				}
-				return "";
-			case "faction_dtr_frozen":
-				if((fPlayer.hasFaction() || territory) && FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-					return FactionTag.DTR_FROZEN.replace(FactionTag.DTR_FROZEN.toString(), faction);
-				}
-				return "";
-			case "faction_dtr_frozen_time":
-				if((fPlayer.hasFaction() || territory) && FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-					return FactionTag.DTR_FROZEN_TIME.replace(FactionTag.DTR_FROZEN_TIME.toString(), faction);
-				}
-				return "";
-			case "faction_maxclaims":
-				return (fPlayer.hasFaction() || territory) ? String.valueOf(FactionsPlugin.getInstance().getLandRaidControl().getLandLimit(faction)) : "";
 			case "faction_description":
 				return faction.getDescription();
 			case "faction_claims":
@@ -139,25 +116,14 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 				return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
 			case "faction_peaceful":
 				return faction.isPeaceful() ? FactionsPlugin.getInstance().configMain.colors().relations().neutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
-			case "faction_powerboost":
-				double powerBoost = faction.getPowerBoost();
-				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
 			case "faction_warps":
 				return String.valueOf(faction.getWarps().size());
-			case "faction_raidable":
-				boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(faction);
-				return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-			case "faction_home_world":
-				return faction.hasHome() ? faction.getHome().getWorld().getName() : "";
-			case "faction_home_x":
-				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockX()) : "";
-			case "faction_home_y":
-				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockY()) : "";
-			case "faction_home_z":
-				return faction.hasHome() ? String.valueOf(faction.getHome().getBlockZ()) : "";
+//			case "faction_raidable":
+//				boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(faction);
+//				return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
 			case "faction_allies":
 				return String.valueOf(faction.getRelationCount(Relation.ALLY));
 			case "faction_allies_players":

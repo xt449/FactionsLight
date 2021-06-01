@@ -39,12 +39,9 @@ public class CmdHelp extends FCommand {
 		pageLines.add(FCmdRoot.getInstance().cmdHelp.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdList.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdShow.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdPower.getUsageTemplate(context, true));
+//		pageLines.add(FCmdRoot.getInstance().cmdPower.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdJoin.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdLeave.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdChat.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdToggleAllianceChat.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdHome.getUsageTemplate(context, true));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_NEXTCREATE.toString()));
 		helpPages.add(pageLines);
 
@@ -56,8 +53,6 @@ public class CmdHelp extends FCommand {
 		pageLines.add(FCmdRoot.getInstance().cmdOpen.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdInvite.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdDeinvite.getUsageTemplate(context, true));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_HOME.toString()));
-		pageLines.add(FCmdRoot.getInstance().cmdSethome.getUsageTemplate(context, true));
 		helpPages.add(pageLines);
 
 		pageLines = new ArrayList<>();
@@ -135,10 +130,9 @@ public class CmdHelp extends FCommand {
 
 		pageLines = new ArrayList<>();
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_MOAR_2.toString()));
-		pageLines.add(FCmdRoot.getInstance().cmdChatSpy.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdPermanent.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdPermanentPower.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdPowerBoost.getUsageTemplate(context, true));
+//		pageLines.add(FCmdRoot.getInstance().cmdPermanentPower.getUsageTemplate(context, true));
+//		pageLines.add(FCmdRoot.getInstance().cmdPowerBoost.getUsageTemplate(context, true));
 		helpPages.add(pageLines);
 
 		pageLines = new ArrayList<>();

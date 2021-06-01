@@ -35,8 +35,8 @@ public class CmdClaimLine extends FCommand {
 		// Args
 		Integer amount = context.argAsInt(0, 1); // Default to 1
 
-		if(amount > FactionsPlugin.getInstance().configMain.factions().claims().getLineClaimLimit()) {
-			context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, FactionsPlugin.getInstance().configMain.factions().claims().getLineClaimLimit());
+		if(amount > 25) {
+			context.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, 25);
 			return;
 		}
 

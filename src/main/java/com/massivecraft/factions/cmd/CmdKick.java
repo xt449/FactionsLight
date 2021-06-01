@@ -34,19 +34,19 @@ public class CmdKick extends FCommand {
 			FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
 			for(FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
 				String s = player.getName();
-				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
+				msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/f kick " + s);
 			}
 			if(context.fPlayer.getRole().isAtLeast(Role.COLEADER)) {
 				// For both coleader and admin, add mods.
 				for(FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
 					String s = player.getName();
-					msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
+					msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/f kick " + s);
 				}
 				if(context.fPlayer.getRole() == Role.ADMIN) {
 					// Only add coleader to this for the leader.
 					for(FPlayer player : context.faction.getFPlayersWhereRole(Role.COLEADER)) {
 						String s = player.getName();
-						msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " kick " + s);
+						msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/f kick " + s);
 					}
 				}
 			}
@@ -80,9 +80,9 @@ public class CmdKick extends FCommand {
 				return;
 			}
 
-			if(!FactionsPlugin.getInstance().getLandRaidControl().canKick(toKick, context)) {
-				return;
-			}
+//			if(!FactionsPlugin.getInstance().getLandRaidControl().canKick(toKick, context)) {
+//				return;
+//			}
 		}
 
 		// trigger the leave event (cancellable) [reason:kicked]

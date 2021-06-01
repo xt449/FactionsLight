@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class PermissibleActionGUI extends GUI<PermissibleAction> implements GUI.
 	private static final String denyLower;
 
 	static {
-		base = SimpleItem.builder().setLore(FactionsPlugin.getInstance().configMain.commands().perms().getGuiLore()).setName("&8[{action-access-color}{action}&8]").build();
+		base = SimpleItem.builder().setLore(Arrays.asList(FactionsPlugin.getInstance().configMain.commands().perms().guiLore().split("\n"))).setName("&8[{action-access-color}{action}&8]").build();
 		allow = TL.GUI_PERMS_ACTION_ALLOW.toString();
 		allowLower = allow.toLowerCase();
 		deny = TL.GUI_PERMS_ACTION_DENY.toString();

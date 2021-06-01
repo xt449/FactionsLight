@@ -140,27 +140,27 @@ public class EngineDynmap {
 		Map<String, TempMarker> ret = new HashMap<>();
 
 		// Loop current factions
-		for(Faction faction : Factions.getInstance().getAllFactions()) {
-			Location ps = faction.getHome();
-			if(ps == null) {
-				continue;
-			}
-
-			DynmapStyle style = getStyle(faction);
-
-			String markerId = FACTIONS_HOME_ + faction.getId();
-
-			TempMarker temp = new TempMarker();
-			temp.label = ChatColor.stripColor(faction.getTag());
-			temp.world = ps.getWorld().toString();
-			temp.x = ps.getX();
-			temp.y = ps.getY();
-			temp.z = ps.getZ();
-			temp.iconName = style.getHomeMarker();
-			temp.description = getDescription(faction);
-
-			ret.put(markerId, temp);
-		}
+//		for(Faction faction : Factions.getInstance().getAllFactions()) {
+//			Location ps = faction.getHome(); // TODO
+//			if(ps == null) {
+//				continue;
+//			}
+//
+//			DynmapStyle style = getStyle(faction);
+//
+//			String markerId = FACTIONS_HOME_ + faction.getId();
+//
+//			TempMarker temp = new TempMarker();
+//			temp.label = ChatColor.stripColor(faction.getTag());
+//			temp.world = ps.getWorld().toString();
+//			temp.x = ps.getX();
+//			temp.y = ps.getY();
+//			temp.z = ps.getZ();
+//			temp.iconName = style.getHomeMarker();
+//			temp.description = getDescription(faction);
+//
+//			ret.put(markerId, temp);
+//		}
 
 		return ret;
 	}

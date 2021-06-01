@@ -17,22 +17,6 @@ public interface FactionsAPI {
 		return 5;
 	}
 
-	boolean isAnotherPluginHandlingChat();
-
-	void setHandlingChat(Plugin plugin, boolean handling);
-
-	boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event);
-
-	boolean isPlayerFactionChatting(Player player);
-
-	String getPlayerFactionTag(Player player);
-
-	String getPlayerFactionTagRelation(Player speaker, Player listener);
-
-	String getPlayerTitle(Player player);
-
-	Set<String> getFactionTags();
-
 	Set<String> getPlayersInFaction(String factionTag);
 
 	Set<String> getOnlinePlayersInFaction(String factionTag);

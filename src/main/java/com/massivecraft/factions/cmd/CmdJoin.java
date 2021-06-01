@@ -60,9 +60,9 @@ public class CmdJoin extends FCommand {
 			return;
 		}
 
-		if(!FactionsPlugin.getInstance().getLandRaidControl().canJoinFaction(faction, fplayer, context)) {
-			return;
-		}
+//		if(!FactionsPlugin.getInstance().getLandRaidControl().canJoinFaction(faction, fplayer, context)) {
+//			return;
+//		}
 
 		if(!(faction.getOpen() || faction.isInvited(fplayer) || context.fPlayer.isAdminBypassing() || Permission.JOIN_ANY.has(context.sender, false))) {
 			context.msg(TL.COMMAND_JOIN_REQUIRESINVITATION);

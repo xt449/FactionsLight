@@ -7,10 +7,7 @@ import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public abstract class FCommand {
@@ -142,19 +139,21 @@ public abstract class FCommand {
 		Common Logic
 	 */
 	public List<String> getToolTips(FPlayer player) {
-		List<String> lines = new ArrayList<>();
-		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
-			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
-		}
-		return lines;
+//		List<String> lines = new ArrayList<>();
+//		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
+//			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
+//		}
+//		return lines;
+		return Collections.singletonList(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, FactionsPlugin.getInstance().configMain.commands().toolTips().player())));
 	}
 
 	public List<String> getToolTips(Faction faction) {
-		List<String> lines = new ArrayList<>();
-		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().faction()) {
-			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));
-		}
-		return lines;
+//		List<String> lines = new ArrayList<>();
+//		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().faction()) {
+//			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));
+//		}
+//		return lines;
+		return Collections.singletonList(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, FactionsPlugin.getInstance().configMain.commands().toolTips().faction())));
 	}
 
 	/*

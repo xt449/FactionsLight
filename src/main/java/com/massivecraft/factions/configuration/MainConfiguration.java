@@ -35,6 +35,54 @@ public class MainConfiguration extends AbstractConfiguration {
 		colors.factions.wilderness = ChatColor.valueOf(config.getString("colors.factions.wilderness"));
 		colors.factions.safezone = ChatColor.valueOf(config.getString("colors.factions.safezone"));
 		colors.factions.warzone = ChatColor.valueOf(config.getString("colors.factions.warzone"));
+
+		// Commands:
+		//// CommandPost:
+		commands.commandPost.cooldown = config.getInt("commands.commandPost.cooldown");
+		commands.commandPost.delay = config.getInt("commands.commandPost.delay");
+		commands.commandPost.mustBeInClaimedTerritory = config.getBoolean("commands.commandPost.mustBeInClaimedTerritory");
+		commands.commandPost.teleportAllowedFromEnemyTerritory = config.getBoolean("commands.commandPost.teleportAllowedFromEnemyTerritory");
+		commands.commandPost.teleportAllowedFromDifferentWorld = config.getBoolean("commands.commandPost.teleportAllowedFromDifferentWorld");
+		commands.commandPost.teleportIgnoreEnemiesIfInFriendlyTerritory = config.getBoolean("commands.commandPost.teleportIgnoreEnemiesIfInFriendlyTerritory");
+		commands.commandPost.teleportAllowedEnemyDistance = config.getDouble("commands.commandPost.teleportAllowedEnemyDistance");
+		//// List:
+		commands.list.cooldown = config.getInt("commands.list.cooldown");
+		commands.list.delay = config.getInt("commands.list.delay");
+		commands.list.header = config.getString("commands.list.header");
+		commands.list.footer = config.getString("commands.list.footer");
+		commands.list.entry = config.getString("commands.list.entry");
+		commands.list.factionlessEntry = config.getString("commands.list.factionlessEntry");
+		//// Map:
+		commands.map.cooldown = config.getInt("commands.map.cooldown");
+		commands.map.delay = config.getInt("commands.map.delay");
+		//// Perms:
+		commands.perms.cooldown = config.getInt("commands.perms.cooldown");
+		commands.perms.delay = config.getInt("commands.perms.delay");
+		commands.perms.guiLore = config.getString("commands.perms.guiLore");
+		//// Show:
+		commands.show.cooldown = config.getInt("commands.show.cooldown");
+		commands.show.delay = config.getInt("commands.show.delay");
+		commands.show.minimal = config.getBoolean("commands.show.minimal");
+		commands.show.format = config.getString("commands.show.format");
+		commands.show.exempt = config.getStringList("commands.show.exempt");
+		//// Stuck:
+		commands.stuck.cooldown = config.getInt("commands.stuck.cooldown");
+		commands.stuck.delay = config.getInt("commands.stuck.delay");
+		commands.stuck.radius = config.getInt("commands.stuck.radius");
+		//// ToolTips:
+		commands.toolTips.faction = config.getString("commands.toolTips.faction");
+		commands.toolTips.player = config.getString("commands.toolTips.player");
+
+		// Factions:
+		//// LandRaidControl: TODO
+		//// Prefix:
+		factions.prefixes.admin = config.getString("factions.prefixes.admin");
+		factions.prefixes.coleader = config.getString("factions.prefixes.coleader");
+		factions.prefixes.mod = config.getString("factions.prefixes.mod");
+		factions.prefixes.normal = config.getString("factions.prefixes.normal");
+		factions.prefixes.recruit = config.getString("factions.prefixes.recruit");
+		//// Chat:
+
 	}
 
 	public static class Colors {
@@ -95,370 +143,355 @@ public class MainConfiguration extends AbstractConfiguration {
 
 	public static class Commands {
 
-		public static class Home {
-			private transient int delay;
-			private transient int cooldown;
+		public static abstract class CommandConfiguration {
+			protected transient int cooldown;
+			protected transient int delay;
 
-			public int getDelay() {
-				return delay;
-			}
-			public int getCooldown() {
+			public int cooldown() {
 				return cooldown;
+			}
+			public int delay() {
+				return delay;
 			}
 		}
 
-		public static class ListCmd {
+		public static class CommandPost extends CommandConfiguration {
+			private transient boolean mustBeInClaimedTerritory;
+			private transient boolean teleportAllowedFromEnemyTerritory;
+			private transient boolean teleportAllowedFromDifferentWorld;
+			private transient boolean teleportIgnoreEnemiesIfInFriendlyTerritory;
+			private transient double teleportAllowedEnemyDistance;
+
+			public boolean isMustBeInClaimedTerritory() {
+				return mustBeInClaimedTerritory;
+			}
+			public boolean isTeleportAllowedFromEnemyTerritory() {
+				return teleportAllowedFromEnemyTerritory;
+			}
+			public boolean isTeleportAllowedFromDifferentWorld() {
+				return teleportAllowedFromDifferentWorld;
+			}
+			public boolean isTeleportIgnoreEnemiesIfInFriendlyTerritory() {
+				return teleportIgnoreEnemiesIfInFriendlyTerritory;
+			}
+			public double getTeleportAllowedEnemyDistance() {
+				return teleportAllowedEnemyDistance;
+			}
+		}
+
+		public static class List extends CommandConfiguration {
 			private transient String header;
 			private transient String footer;
-			private transient String factionlessEntry;
 			private transient String entry;
+			private transient String factionlessEntry;
 
-			public String getHeader() {
+			public String header() {
 				return header;
 			}
-
-			public String getFooter() {
+			public String footer() {
 				return footer;
 			}
-
-			public String getFactionlessEntry() {
-				return factionlessEntry;
-			}
-
-			public String getEntry() {
+			public String entry() {
 				return entry;
 			}
-		}
-
-		public static class MapCmd {
-			private transient int delay;
-			private transient int cooldown;
-
-			public int getDelay() {
-				return delay;
-			}
-			public int getCooldown() {
-				return cooldown;
+			public String factionlessEntry() {
+				return factionlessEntry;
 			}
 		}
 
-		public static class Perms {
-			private transient List<String> guiLore;
+		public static class Map extends CommandConfiguration {
+		}
 
-			public List<String> getGuiLore() {
-				return Collections.unmodifiableList(guiLore);
+		public static class Perms extends CommandConfiguration {
+			private transient String guiLore;
+
+			public String guiLore() {
+				return guiLore;
 			}
 		}
 
-		public static class Show {
-			private transient List<String> format;
+		public static class Show extends CommandConfiguration {
 			private transient boolean minimal;
-			private transient List<String> exempt;
+			private transient String format;
+			private transient java.util.List<String> exempt;
 
-			public List<String> getFormat() {
-				return Collections.unmodifiableList(format);
-			}
-
-			public boolean isMinimal() {
+			public boolean minimal() {
 				return minimal;
 			}
-
-			public List<String> getExempt() {
+			public String format() {
+				return format;
+			}
+			public java.util.List<String> exempt() {
 				return Collections.unmodifiableList(exempt);
 			}
 		}
 
-		public static class Stuck {
-			private transient int delay;
+		public static class Stuck extends CommandConfiguration {
 			private transient int radius;
 
-			public int getDelay() {
-				return delay;
-			}
-
-			public int getRadius() {
+			public int radius() {
 				return radius;
 			}
 		}
 
-		public static class Warp {
-			private transient int delay;
-
-			public int getDelay() {
-				return delay;
-			}
-		}
-
 		public static class ToolTips {
-			private transient List<String> faction;
-			private transient List<String> player;
+			private transient String faction;
+			private transient String player;
 
-			public List<String> faction() {
-				return Collections.unmodifiableList(faction);
+			public String faction() {
+				return faction;
 			}
-
-			public List<String> player() {
-				return Collections.unmodifiableList(player);
+			public String player() {
+				return player;
 			}
 		}
 
-		private transient Home home = new Home();
-		private transient ListCmd list = new ListCmd();
-		private transient MapCmd map = new MapCmd();
-		private transient Perms perms = new Perms();
-		private transient Show show = new Show();
-		private transient Stuck stuck = new Stuck();
-		private transient ToolTips toolTips = new ToolTips();
-		private transient Warp warp = new Warp();
+		private final transient CommandPost commandPost = new CommandPost();
+		private final transient List list = new List();
+		private final transient Map map = new Map();
+		private final transient Perms perms = new Perms();
+		private final transient Show show = new Show();
+		private final transient Stuck stuck = new Stuck();
+		private final transient ToolTips toolTips = new ToolTips();
 
-		public Home home() {
-			return home;
+		public CommandPost commandPost() {
+			return commandPost;
 		}
-
-		public ListCmd list() {
+		public List list() {
 			return list;
 		}
-
-		public MapCmd map() {
+		public Map map() {
 			return map;
 		}
-
 		public Perms perms() {
 			return perms;
 		}
-
 		public Show show() {
 			return show;
 		}
-
 		public Stuck stuck() {
 			return stuck;
 		}
-
 		public ToolTips toolTips() {
 			return toolTips;
-		}
-
-		public Warp warp() {
-			return warp;
 		}
 	}
 
 	public static class Factions {
-		public static class LandRaidControl {
-			public static class DTR {
-				private transient double startingDTR;
-				private transient double maxDTR;
-				private transient double minDTR;
-				private transient double perPlayer;
-				private transient double regainPerMinutePerPlayer;
-				private transient double regainPerMinuteMaxRate;
-				private transient double lossPerDeath;
-				private transient int freezeTime;
-				private transient boolean freezePreventsJoin;;
-				private transient boolean freezePreventsLeave;;
-				private transient boolean freezePreventsDisband;;
-				private transient double freezeKickPenalty;
-				private transient String freezeTimeFormat;
-				private transient int landPerPlayer;
-				private transient int landStarting;
-				private transient int decimalDigits;
-				private Map<String, Number> worldDeathModifiers;
+//		public static class LandRaidControl {
+//			public static class DTR {
+//				private transient double startingDTR;
+//				private transient double maxDTR;
+//				private transient double minDTR;
+//				private transient double perPlayer;
+//				private transient double regainPerMinutePerPlayer;
+//				private transient double regainPerMinuteMaxRate;
+//				private transient double lossPerDeath;
+//				private transient int freezeTime;
+//				private transient boolean freezePreventsJoin;
+//				private transient boolean freezePreventsLeave;
+//				private transient boolean freezePreventsDisband;
+//				private transient double freezeKickPenalty;
+//				private transient String freezeTimeFormat;
+//				private transient int landPerPlayer;
+//				private transient int landStarting;
+//				private transient int decimalDigits;
+//				private transient Map<String, Double> worldDeathModifiers;
+//
+//				public int getDecimalDigits() {
+//					return decimalDigits;
+//				}
+//
+//				public int getLandPerPlayer() {
+//					return landPerPlayer;
+//				}
+//
+//				public int getLandStarting() {
+//					return landStarting;
+//				}
+//
+//				public int getFreezeTime() {
+//					return freezeTime;
+//				}
+//
+//				public String getFreezeTimeFormat() {
+//					return freezeTimeFormat;
+//				}
+//
+//				public boolean isFreezePreventsJoin() {
+//					return freezePreventsJoin;
+//				}
+//
+//				public boolean isFreezePreventsLeave() {
+//					return freezePreventsLeave;
+//				}
+//
+//				public boolean isFreezePreventsDisband() {
+//					return freezePreventsDisband;
+//				}
+//
+//				public double getFreezeKickPenalty() {
+//					return freezeKickPenalty;
+//				}
+//
+//				public double getMinDTR() {
+//					return minDTR;
+//				}
+//
+//				public double getPerPlayer() {
+//					return perPlayer;
+//				}
+//
+//				public double getRegainPerMinutePerPlayer() {
+//					return regainPerMinutePerPlayer;
+//				}
+//
+//				public double getRegainPerMinuteMaxRate() {
+//					return regainPerMinuteMaxRate;
+//				}
+//
+//				public double getMaxDTR() {
+//					return maxDTR;
+//				}
+//
+//				public double getStartingDTR() {
+//					return startingDTR;
+//				}
+//
+//				/**
+//				 * Not used directly by the plugin, as it uses the helper method.
+//				 *
+//				 * @return loss per death
+//				 * @see #getLossPerDeath(World)
+//				 */
+//				public double getLossPerDeathBase() {
+//					return this.lossPerDeath;
+//				}
+//
+//				public double getLossPerDeath(World world) {
+//					if(this.worldDeathModifiers == null) {
+//						this.worldDeathModifiers = new HashMap<>();
+//					}
+//					return this.lossPerDeath * this.worldDeathModifiers.getOrDefault(world.getName(), 1D);
+//				}
+//			}
+//
+//			public static class Power {
+//				private transient double playerMin;
+//				private transient double playerMax;
+//				private transient double playerStarting;
+//				private transient double powerPerMinute;
+//				private transient double lossPerDeath;
+//				private transient boolean regenOffline;
+//				private transient double offlineLossPerDay;
+//				private transient double offlineLossLimit;
+//				private transient double factionMax;
+//				private transient boolean respawnHomeFromNoPowerLossWorlds;
+//				private transient Set<String> worldsNoPowerLoss;
+//				private transient boolean peacefulMembersDisablePowerLoss;
+//				private transient boolean warZonePowerLoss;
+//				private transient boolean wildernessPowerLoss;
+//				private transient boolean canLeaveWithNegativePower;
+//				private transient boolean raidability;
+//				private transient boolean raidabilityOnEqualLandAndPower;
+//				private transient int powerFreeze;
+//				private transient double vampirism;
+//
+//				public boolean isRaidability() {
+//					return raidability;
+//				}
+//
+//				public boolean isRaidabilityOnEqualLandAndPower() {
+//					return raidabilityOnEqualLandAndPower;
+//				}
+//
+//				public int getPowerFreeze() {
+//					return powerFreeze;
+//				}
+//
+//				public boolean canLeaveWithNegativePower() {
+//					return canLeaveWithNegativePower;
+//				}
+//
+//				public boolean isWarZonePowerLoss() {
+//					return warZonePowerLoss;
+//				}
+//
+//				public boolean isWildernessPowerLoss() {
+//					return wildernessPowerLoss;
+//				}
+//
+//				public double getPlayerMin() {
+//					return playerMin;
+//				}
+//
+//				public double getPlayerMax() {
+//					return playerMax;
+//				}
+//
+//				public double getPlayerStarting() {
+//					return playerStarting;
+//				}
+//
+//				public double getPowerPerMinute() {
+//					return powerPerMinute;
+//				}
+//
+//				public double getLossPerDeath() {
+//					return lossPerDeath;
+//				}
+//
+//				public boolean isRegenOffline() {
+//					return regenOffline;
+//				}
+//
+//				public double getOfflineLossPerDay() {
+//					return offlineLossPerDay;
+//				}
+//
+//				public double getOfflineLossLimit() {
+//					return offlineLossLimit;
+//				}
+//
+//				public double getFactionMax() {
+//					return factionMax;
+//				}
+//
+//				public boolean isRespawnHomeFromNoPowerLossWorlds() {
+//					return respawnHomeFromNoPowerLossWorlds;
+//				}
+//
+//				public Set<String> getWorldsNoPowerLoss() {
+//					return Collections.unmodifiableSet(worldsNoPowerLoss);
+//				}
+//
+//				public boolean isPeacefulMembersDisablePowerLoss() {
+//					return peacefulMembersDisablePowerLoss;
+//				}
+//
+//				public double getVampirism() {
+//					return vampirism;
+//				}
+//			}
+//
+//			private transient String system;
+//			private transient DTR dtr = new DTR();
+//			private transient Power power = new Power();
+//
+//			public String getSystem() {
+//				return system;
+//			}
+//
+//			public DTR dtr() {
+//				return this.dtr;
+//			}
+//
+//			public Power power() {
+//				return power;
+//			}
+//		}
 
-				public int getDecimalDigits() {
-					return decimalDigits;
-				}
-
-				public int getLandPerPlayer() {
-					return landPerPlayer;
-				}
-
-				public int getLandStarting() {
-					return landStarting;
-				}
-
-				public int getFreezeTime() {
-					return freezeTime;
-				}
-
-				public String getFreezeTimeFormat() {
-					return freezeTimeFormat;
-				}
-
-				public boolean isFreezePreventsJoin() {
-					return freezePreventsJoin;
-				}
-
-				public boolean isFreezePreventsLeave() {
-					return freezePreventsLeave;
-				}
-
-				public boolean isFreezePreventsDisband() {
-					return freezePreventsDisband;
-				}
-
-				public double getFreezeKickPenalty() {
-					return freezeKickPenalty;
-				}
-
-				public double getMinDTR() {
-					return minDTR;
-				}
-
-				public double getPerPlayer() {
-					return perPlayer;
-				}
-
-				public double getRegainPerMinutePerPlayer() {
-					return regainPerMinutePerPlayer;
-				}
-
-				public double getRegainPerMinuteMaxRate() {
-					return regainPerMinuteMaxRate;
-				}
-
-				public double getMaxDTR() {
-					return maxDTR;
-				}
-
-				public double getStartingDTR() {
-					return startingDTR;
-				}
-
-				/**
-				 * Not used directly by the plugin, as it uses the helper method.
-				 *
-				 * @return loss per death
-				 * @see #getLossPerDeath(World)
-				 */
-				public double getLossPerDeathBase() {
-					return this.lossPerDeath;
-				}
-
-				public double getLossPerDeath(World world) {
-					if(this.worldDeathModifiers == null) {
-						this.worldDeathModifiers = new HashMap<>();
-					}
-					return this.lossPerDeath * this.worldDeathModifiers.getOrDefault(world.getName(), 1D).doubleValue();
-				}
-			}
-
-			public static class Power {
-				private transient double playerMin;
-				private transient double playerMax;
-				private transient double playerStarting;
-				private transient double powerPerMinute;
-				private transient double lossPerDeath;
-				private transient boolean regenOffline;
-				private transient double offlineLossPerDay;
-				private transient double offlineLossLimit;
-				private transient double factionMax;
-				private transient boolean respawnHomeFromNoPowerLossWorlds;;
-				private transient Set<String> worldsNoPowerLoss;
-				private transient boolean peacefulMembersDisablePowerLoss;;
-				private transient boolean warZonePowerLoss;;
-				private transient boolean wildernessPowerLoss;;
-				private transient boolean canLeaveWithNegativePower;;
-				private transient boolean raidability;
-				private transient boolean raidabilityOnEqualLandAndPower;;
-				private transient int powerFreeze;
-				private transient double vampirism;
-
-				public boolean isRaidability() {
-					return raidability;
-				}
-
-				public boolean isRaidabilityOnEqualLandAndPower() {
-					return raidabilityOnEqualLandAndPower;
-				}
-
-				public int getPowerFreeze() {
-					return powerFreeze;
-				}
-
-				public boolean canLeaveWithNegativePower() {
-					return canLeaveWithNegativePower;
-				}
-
-				public boolean isWarZonePowerLoss() {
-					return warZonePowerLoss;
-				}
-
-				public boolean isWildernessPowerLoss() {
-					return wildernessPowerLoss;
-				}
-
-				public double getPlayerMin() {
-					return playerMin;
-				}
-
-				public double getPlayerMax() {
-					return playerMax;
-				}
-
-				public double getPlayerStarting() {
-					return playerStarting;
-				}
-
-				public double getPowerPerMinute() {
-					return powerPerMinute;
-				}
-
-				public double getLossPerDeath() {
-					return lossPerDeath;
-				}
-
-				public boolean isRegenOffline() {
-					return regenOffline;
-				}
-
-				public double getOfflineLossPerDay() {
-					return offlineLossPerDay;
-				}
-
-				public double getOfflineLossLimit() {
-					return offlineLossLimit;
-				}
-
-				public double getFactionMax() {
-					return factionMax;
-				}
-
-				public boolean isRespawnHomeFromNoPowerLossWorlds() {
-					return respawnHomeFromNoPowerLossWorlds;
-				}
-
-				public Set<String> getWorldsNoPowerLoss() {
-					return Collections.unmodifiableSet(worldsNoPowerLoss);
-				}
-
-				public boolean isPeacefulMembersDisablePowerLoss() {
-					return peacefulMembersDisablePowerLoss;
-				}
-
-				public double getVampirism() {
-					return vampirism;
-				}
-			}
-
-			private transient String system;
-			private transient DTR dtr = new DTR();
-			private transient Power power = new Power();
-
-			public String getSystem() {
-				return system;
-			}
-
-			public DTR dtr() {
-				return this.dtr;
-			}
-
-			public Power power() {
-				return power;
-			}
-		}
-
-		public static class Prefix {
+		public static class Prefixes {
 			private transient String admin;
 			private transient String coleader;
 			private transient String mod;
@@ -468,153 +501,17 @@ public class MainConfiguration extends AbstractConfiguration {
 			public String admin() {
 				return admin;
 			}
-
 			public String coleader() {
 				return coleader;
 			}
-
 			public String mod() {
 				return mod;
 			}
-
 			public String normal() {
 				return normal;
 			}
-
 			public String recruit() {
 				return recruit;
-			}
-		}
-
-		public static class Chat {
-			private transient boolean factionOnlyChat;;
-			// Configuration on the Faction tag in chat messages.
-			private transient boolean tagHandledByAnotherPlugin;
-			private transient boolean tagRelationColored;;
-			private transient String tagReplaceString;
-			private transient String tagInsertAfterString;
-			private transient String tagInsertBeforeString;
-			private transient int tagInsertIndex;
-			private transient boolean tagPadBefore;
-			private transient boolean tagPadAfter;;
-			private transient String tagFormat;
-			private transient boolean alwaysShowChatTag;;
-			private transient String factionChatFormat;
-			private transient String allianceChatFormat;
-			private transient String truceChatFormat;
-			private transient String modChatFormat;
-			private transient boolean broadcastDescriptionChanges;
-			private transient boolean broadcastTagChanges;
-
-			public boolean isFactionOnlyChat() {
-				return factionOnlyChat;
-			}
-
-			public boolean isTagHandledByAnotherPlugin() {
-				return tagHandledByAnotherPlugin;
-			}
-
-			public boolean isTagRelationColored() {
-				return tagRelationColored;
-			}
-
-			public String getTagReplaceString() {
-				return tagReplaceString;
-			}
-
-			public String getTagInsertAfterString() {
-				return tagInsertAfterString;
-			}
-
-			public String getTagInsertBeforeString() {
-				return tagInsertBeforeString;
-			}
-
-			public int getTagInsertIndex() {
-				return tagInsertIndex;
-			}
-
-			public boolean isTagPadBefore() {
-				return tagPadBefore;
-			}
-
-			public boolean isTagPadAfter() {
-				return tagPadAfter;
-			}
-
-			public String getTagFormat() {
-				return tagFormat;
-			}
-
-			public boolean isAlwaysShowChatTag() {
-				return alwaysShowChatTag;
-			}
-
-			public String getFactionChatFormat() {
-				return factionChatFormat;
-			}
-
-			public String getAllianceChatFormat() {
-				return allianceChatFormat;
-			}
-
-			public String getTruceChatFormat() {
-				return truceChatFormat;
-			}
-
-			public String getModChatFormat() {
-				return modChatFormat;
-			}
-
-			public boolean isBroadcastDescriptionChanges() {
-				return broadcastDescriptionChanges;
-			}
-
-			public boolean isBroadcastTagChanges() {
-				return broadcastTagChanges;
-			}
-		}
-
-		public static class Homes {
-			private transient boolean enabled;;
-			private transient boolean mustBeInClaimedTerritory;;
-			private transient boolean teleportToOnDeath;;
-			private transient boolean teleportCommandEnabled;;
-			private transient boolean teleportAllowedFromEnemyTerritory;;
-			private transient boolean teleportAllowedFromDifferentWorld;;
-			private transient double teleportAllowedEnemyDistance;
-			private transient boolean teleportIgnoreEnemiesIfInOwnTerritory;;
-
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			public boolean isMustBeInClaimedTerritory() {
-				return mustBeInClaimedTerritory;
-			}
-
-			public boolean isTeleportToOnDeath() {
-				return teleportToOnDeath;
-			}
-
-			public boolean isTeleportCommandEnabled() {
-				return teleportCommandEnabled;
-			}
-
-			public boolean isTeleportAllowedFromEnemyTerritory() {
-				return teleportAllowedFromEnemyTerritory;
-			}
-
-			public boolean isTeleportAllowedFromDifferentWorld() {
-				return teleportAllowedFromDifferentWorld;
-			}
-
-			public double getTeleportAllowedEnemyDistance() {
-				return teleportAllowedEnemyDistance;
-			}
-
-			public boolean isTeleportIgnoreEnemiesIfInOwnTerritory() {
-				return teleportIgnoreEnemiesIfInOwnTerritory;
 			}
 		}
 
@@ -622,42 +519,36 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient boolean disablePVPBetweenNeutralFactions;
 			private transient boolean disablePVPForFactionlessPlayers;
 			private transient boolean enablePVPAgainstFactionlessInAttackersLand;
-			private transient boolean disablePeacefulPVPInWarzone;;
+			private transient boolean disablePeacefulPVPInWarzone;
 			private transient int noPVPDamageToOthersForXSecondsAfterLogin;
 			private transient Set<String> worldsIgnorePvP;
 
 			public boolean isDisablePVPBetweenNeutralFactions() {
 				return disablePVPBetweenNeutralFactions;
 			}
-
 			public boolean isDisablePVPForFactionlessPlayers() {
 				return disablePVPForFactionlessPlayers;
 			}
-
 			public boolean isDisablePeacefulPVPInWarzone() {
 				return disablePeacefulPVPInWarzone;
 			}
-
 			public boolean isEnablePVPAgainstFactionlessInAttackersLand() {
 				return enablePVPAgainstFactionlessInAttackersLand;
 			}
-
 			public int getNoPVPDamageToOthersForXSecondsAfterLogin() {
 				return noPVPDamageToOthersForXSecondsAfterLogin;
 			}
-
 			public Set<String> getWorldsIgnorePvP() {
 				return Collections.unmodifiableSet(worldsIgnorePvP);
 			}
 		}
 
 		public static class SpecialCase {
-			private transient boolean peacefulTerritoryDisablePVP;;
+			private transient boolean peacefulTerritoryDisablePVP;
 			private transient boolean peacefulTerritoryDisableMonsters;
 			private transient boolean peacefulTerritoryDisableBoom;
 			private transient boolean permanentFactionsDisableLeaderPromotion;
-			private Set<String> ignoreBuildMaterials;
-
+			private transient Set<String> ignoreBuildMaterials;
 			private transient Set<Material> ignoreBuildMaterialsMat;
 
 			public Set<Material> getIgnoreBuildMaterials() {
@@ -669,95 +560,51 @@ public class MainConfiguration extends AbstractConfiguration {
 				}
 				return ignoreBuildMaterialsMat;
 			}
-
 			public boolean isPeacefulTerritoryDisablePVP() {
 				return peacefulTerritoryDisablePVP;
 			}
-
 			public boolean isPeacefulTerritoryDisableMonsters() {
 				return peacefulTerritoryDisableMonsters;
 			}
-
 			public boolean isPeacefulTerritoryDisableBoom() {
 				return peacefulTerritoryDisableBoom;
 			}
-
 			public boolean isPermanentFactionsDisableLeaderPromotion() {
 				return permanentFactionsDisableLeaderPromotion;
 			}
 		}
 
-		public static class Portals {
-			private transient boolean limit;
-			private transient String minimumRelation;
-
-			public boolean isLimit() {
-				return limit;
-			}
-
-			public String getMinimumRelation() {
-				return minimumRelation;
-			}
-		}
-
 		public static class Claims {
 			private transient boolean mustBeConnected;
-			private transient boolean canBeUnconnectedIfOwnedByOtherFaction;;
+			private transient boolean canBeUnconnectedIfOwnedByOtherFaction;
 			private transient int requireMinFactionMembers;
-			private transient int landsMax;
-			private transient int lineClaimLimit;
-			private transient int fillClaimMaxClaims;
-			private transient int fillClaimMaxDistance;
 			private transient int radiusClaimFailureLimit;
 			private transient Set<String> worldsNoClaiming;
 			private transient int bufferZone;
-			private transient boolean allowOverClaim;;
+			private transient boolean allowOverClaim;
 			private transient boolean allowOverClaimIgnoringBuffer;
 
 			public boolean isAllowOverClaim() {
 				return allowOverClaim;
 			}
-
 			public boolean isAllowOverClaimAndIgnoringBuffer() {
 				return allowOverClaim && allowOverClaimIgnoringBuffer;
 			}
-
 			public int getBufferZone() {
 				return bufferZone;
 			}
-
 			public boolean isMustBeConnected() {
 				return mustBeConnected;
 			}
-
 			public boolean isCanBeUnconnectedIfOwnedByOtherFaction() {
 				return canBeUnconnectedIfOwnedByOtherFaction;
 			}
-
 			public int getRequireMinFactionMembers() {
 				return requireMinFactionMembers;
 			}
-
-			public int getLandsMax() {
-				return landsMax;
-			}
-
-			public int getFillClaimMaxClaims() {
-				return fillClaimMaxClaims;
-			}
-
-			public int getFillClaimMaxDistance() {
-				return fillClaimMaxDistance;
-			}
-
-			public int getLineClaimLimit() {
-				return lineClaimLimit;
-			}
-
 			public int getRadiusClaimFailureLimit() {
 				return radiusClaimFailureLimit;
 			}
-
 			public Set<String> getWorldsNoClaiming() {
 				return Collections.unmodifiableSet(worldsNoClaiming);
 			}
@@ -770,7 +617,6 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient Set<String> territoryAllyDenyCommands;
 			private transient Set<String> warzoneDenyCommands;
 			private transient Set<String> wildernessDenyCommands;
-
 			private transient boolean territoryBlockCreepers;
 			private transient boolean territoryBlockCreepersWhenOffline;
 			private transient boolean territoryBlockFireballs;
@@ -779,29 +625,25 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient boolean territoryBlockTNTWhenOffline;
 			private transient boolean territoryBlockOtherExplosions;
 			private transient boolean territoryBlockOtherExplosionsWhenOffline;
-			private transient boolean territoryDenyEndermanBlocks;;
-			private transient boolean territoryDenyEndermanBlocksWhenOffline;;
+			private transient boolean territoryDenyEndermanBlocks;
+			private transient boolean territoryDenyEndermanBlocksWhenOffline;
 			private transient boolean territoryBlockEntityDamageMatchingPerms;
-
-			private transient boolean safeZoneDenyBuild;;
-			private transient boolean safeZoneDenyUsage;;
-			private transient boolean safeZoneBlockTNT;;
-			private transient boolean safeZoneBlockOtherExplosions;;
+			private transient boolean safeZoneDenyBuild;
+			private transient boolean safeZoneDenyUsage;
+			private transient boolean safeZoneBlockTNT;
+			private transient boolean safeZoneBlockOtherExplosions;
 			private transient boolean safeZonePreventAllDamageToPlayers;
-			private transient boolean safeZoneDenyEndermanBlocks;;
+			private transient boolean safeZoneDenyEndermanBlocks;
 			private transient boolean safeZoneBlockAllEntityDamage;
-
 			private transient boolean peacefulBlockAllEntityDamage;
-
-			private transient boolean warZoneDenyBuild;;
-			private transient boolean warZoneDenyUsage;;
-			private transient boolean warZoneBlockCreepers;;
-			private transient boolean warZoneBlockFireballs;;
-			private transient boolean warZoneBlockTNT;;
-			private transient boolean warZoneBlockOtherExplosions;;
+			private transient boolean warZoneDenyBuild;
+			private transient boolean warZoneDenyUsage;
+			private transient boolean warZoneBlockCreepers;
+			private transient boolean warZoneBlockFireballs;
+			private transient boolean warZoneBlockTNT;
+			private transient boolean warZoneBlockOtherExplosions;
 			private transient boolean warZoneFriendlyFire;
-			private transient boolean warZoneDenyEndermanBlocks;;
-
+			private transient boolean warZoneDenyEndermanBlocks;
 			private transient boolean wildernessDenyBuild;
 			private transient boolean wildernessDenyUsage;
 			private transient boolean wildernessBlockCreepers;
@@ -809,9 +651,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient boolean wildernessBlockTNT;
 			private transient boolean wildernessBlockOtherExplosions;
 			private transient boolean wildernessDenyEndermanBlocks;
-
-			private transient boolean pistonProtectionThroughDenyBuild;;
-
+			private transient boolean pistonProtectionThroughDenyBuild;
 			private transient Set<String> territoryDenyUsageMaterials;
 			private transient Set<String> territoryDenyUsageMaterialsWhenOffline;
 			private transient Set<Material> territoryDenyUsageMaterialsMat;
@@ -824,179 +664,126 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient Set<String> playersWhoBypassAllProtection;
 			private transient Set<String> worldsNoWildernessProtection;
 
-			private Protection() {
-				protectUsage("FIRE_CHARGE");
-				protectUsage("FLINT_AND_STEEL");
-				protectUsage("BUCKET");
-				protectUsage("WATER_BUCKET");
-				protectUsage("LAVA_BUCKET");
-			}
-
-			private void protectUsage(String material) {
-				territoryDenyUsageMaterials.add(material);
-				territoryDenyUsageMaterialsWhenOffline.add(material);
-			}
-
 			public Set<String> getPermanentFactionMemberDenyCommands() {
 				return Collections.unmodifiableSet(permanentFactionMemberDenyCommands);
 			}
-
 			public Set<String> getTerritoryNeutralDenyCommands() {
 				return Collections.unmodifiableSet(territoryNeutralDenyCommands);
 			}
-
 			public Set<String> getTerritoryEnemyDenyCommands() {
 				return Collections.unmodifiableSet(territoryEnemyDenyCommands);
 			}
-
 			public Set<String> getTerritoryAllyDenyCommands() {
 				return Collections.unmodifiableSet(territoryAllyDenyCommands);
 			}
-
 			public Set<String> getWarzoneDenyCommands() {
 				return Collections.unmodifiableSet(warzoneDenyCommands);
 			}
-
 			public Set<String> getWildernessDenyCommands() {
 				return Collections.unmodifiableSet(wildernessDenyCommands);
 			}
-
 			public boolean isTerritoryBlockCreepers() {
 				return territoryBlockCreepers;
 			}
-
 			public boolean isTerritoryBlockCreepersWhenOffline() {
 				return territoryBlockCreepersWhenOffline;
 			}
-
 			public boolean isTerritoryBlockFireballs() {
 				return territoryBlockFireballs;
 			}
-
 			public boolean isTerritoryBlockFireballsWhenOffline() {
 				return territoryBlockFireballsWhenOffline;
 			}
-
 			public boolean isTerritoryBlockTNT() {
 				return territoryBlockTNT;
 			}
-
 			public boolean isTerritoryBlockTNTWhenOffline() {
 				return territoryBlockTNTWhenOffline;
 			}
-
 			public boolean isTerritoryDenyEndermanBlocks() {
 				return territoryDenyEndermanBlocks;
 			}
-
 			public boolean isTerritoryDenyEndermanBlocksWhenOffline() {
 				return territoryDenyEndermanBlocksWhenOffline;
 			}
-
 			public boolean isTerritoryBlockEntityDamageMatchingPerms() {
 				return territoryBlockEntityDamageMatchingPerms;
 			}
-
 			public boolean isSafeZoneDenyBuild() {
 				return safeZoneDenyBuild;
 			}
-
 			public boolean isSafeZoneDenyUsage() {
 				return safeZoneDenyUsage;
 			}
-
 			public boolean isSafeZoneBlockTNT() {
 				return safeZoneBlockTNT;
 			}
-
 			public boolean isSafeZonePreventAllDamageToPlayers() {
 				return safeZonePreventAllDamageToPlayers;
 			}
-
 			public boolean isSafeZoneDenyEndermanBlocks() {
 				return safeZoneDenyEndermanBlocks;
 			}
-
 			public boolean isSafeZoneBlockAllEntityDamage() {
 				return safeZoneBlockAllEntityDamage;
 			}
-
 			public boolean isPeacefulBlockAllEntityDamage() {
 				return peacefulBlockAllEntityDamage;
 			}
-
 			public boolean isWarZoneDenyBuild() {
 				return warZoneDenyBuild;
 			}
-
 			public boolean isWarZoneDenyUsage() {
 				return warZoneDenyUsage;
 			}
-
 			public boolean isWarZoneBlockCreepers() {
 				return warZoneBlockCreepers;
 			}
-
 			public boolean isWarZoneBlockFireballs() {
 				return warZoneBlockFireballs;
 			}
-
 			public boolean isWarZoneBlockTNT() {
 				return warZoneBlockTNT;
 			}
-
 			public boolean isWarZoneFriendlyFire() {
 				return warZoneFriendlyFire;
 			}
-
 			public boolean isWarZoneDenyEndermanBlocks() {
 				return warZoneDenyEndermanBlocks;
 			}
-
 			public boolean isWildernessDenyBuild() {
 				return wildernessDenyBuild;
 			}
-
 			public boolean isWildernessDenyUsage() {
 				return wildernessDenyUsage;
 			}
-
 			public boolean isWildernessBlockCreepers() {
 				return wildernessBlockCreepers;
 			}
-
 			public boolean isWildernessBlockFireballs() {
 				return wildernessBlockFireballs;
 			}
-
 			public boolean isWildernessBlockTNT() {
 				return wildernessBlockTNT;
 			}
-
 			public boolean isWildernessDenyEndermanBlocks() {
 				return wildernessDenyEndermanBlocks;
 			}
-
 			public boolean isPistonProtectionThroughDenyBuild() {
 				return pistonProtectionThroughDenyBuild;
 			}
-
 			public boolean isTerritoryBlockOtherExplosions() {
 				return territoryBlockOtherExplosions;
 			}
-
 			public boolean isTerritoryBlockOtherExplosionsWhenOffline() {
 				return territoryBlockOtherExplosionsWhenOffline;
 			}
-
 			public boolean isSafeZoneBlockOtherExplosions() {
 				return safeZoneBlockOtherExplosions;
 			}
-
 			public boolean isWarZoneBlockOtherExplosions() {
 				return warZoneBlockOtherExplosions;
 			}
-
 			public boolean isWildernessBlockOtherExplosions() {
 				return wildernessBlockOtherExplosions;
 			}
@@ -1130,16 +917,16 @@ public class MainConfiguration extends AbstractConfiguration {
 		}
 
 		public static class OwnedArea {
-			private transient boolean enabled;;
+			private transient boolean enabled;
 			private transient int limitPerFaction;
-			private transient boolean moderatorsBypass;;
-			private transient boolean denyBuild;;
+			private transient boolean moderatorsBypass;
+			private transient boolean denyBuild;
 			private transient boolean painBuild;
-			private transient boolean protectMaterials;;
-			private transient boolean denyUsage;;
+			private transient boolean protectMaterials;
+			private transient boolean denyUsage;
 
-			private transient boolean messageOnBorder;;
-			private transient boolean messageInsideTerritory;;
+			private transient boolean messageOnBorder;
+			private transient boolean messageInsideTerritory;
 			private transient boolean messageByChunk;
 
 			public boolean isEnabled() {
@@ -1199,8 +986,8 @@ public class MainConfiguration extends AbstractConfiguration {
 			private transient double autoLeaveAfterDaysOfInactivity;
 			private transient double autoLeaveRoutineRunsEveryXMinutes;
 			private transient int autoLeaveRoutineMaxMillisecondsPerTick;
-			private transient boolean removePlayerDataWhenBanned;;
-			private transient boolean autoLeaveDeleteFPlayerData;; // Let them just remove player from Faction.
+			private transient boolean removePlayerDataWhenBanned;
+			private transient boolean autoLeaveDeleteFPlayerData; // Let them just remove player from Faction.
 			private transient double considerFactionsReallyOfflineAfterXMinutes;
 			private transient int actionDeniedPainAmount;
 			private transient String defaultRelation;
@@ -1295,106 +1082,76 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-		private transient Chat chat = new Chat();
-		private transient Homes homes = new Homes();
 		private transient PVP pvp = new PVP();
 		private transient SpecialCase specialCase = new SpecialCase();
 		private transient Claims claims = new Claims();
-		private transient Portals portals = new Portals();
 		private transient Protection protection = new Protection();
 		private transient OwnedArea ownedArea = new OwnedArea();
-		private transient Prefix prefixes = new Prefix();
-		private transient LandRaidControl landRaidControl = new LandRaidControl();
+		private transient Prefixes prefixes = new Prefixes();
+//		private transient LandRaidControl landRaidControl = new LandRaidControl();
 		private transient Other other = new Other();
 		private transient Spawning spawning = new Spawning();
-
-		public Chat chat() {
-			return chat;
-		}
-
-		public Homes homes() {
-			return homes;
-		}
 
 		public PVP pvp() {
 			return pvp;
 		}
-
 		public SpecialCase specialCase() {
 			return specialCase;
 		}
-
 		public Claims claims() {
 			return claims;
 		}
-
-		public Portals portals() {
-			return portals;
-		}
-
 		public Protection protection() {
 			return protection;
 		}
-
 		public Other other() {
 			return other;
 		}
-
 		public OwnedArea ownedArea() {
 			return ownedArea;
 		}
-
-		public Prefix prefixes() {
+		public Prefixes prefixes() {
 			return prefixes;
 		}
-
-		public LandRaidControl landRaidControl() {
-			return landRaidControl;
-		}
-
+//		public LandRaidControl landRaidControl() {
+//			return landRaidControl;
+//		}
 		public Spawning spawning() {
 			return spawning;
 		}
 	}
 
 	public static class Logging {
-		private transient boolean factionCreate;;
-		private transient boolean factionDisband;;
-		private transient boolean factionJoin;;
-		private transient boolean factionKick;;
-		private transient boolean factionLeave;;
-		private transient boolean landClaims;;
-		private transient boolean landUnclaims;;
-		private transient boolean playerCommands;;
+		private transient boolean factionCreate;
+		private transient boolean factionDisband;
+		private transient boolean factionJoin;
+		private transient boolean factionKick;
+		private transient boolean factionLeave;
+		private transient boolean landClaims;
+		private transient boolean landUnclaims;
+		private transient boolean playerCommands;
 
 		public boolean isFactionCreate() {
 			return factionCreate;
 		}
-
 		public boolean isFactionDisband() {
 			return factionDisband;
 		}
-
 		public boolean isFactionJoin() {
 			return factionJoin;
 		}
-
 		public boolean isFactionKick() {
 			return factionKick;
 		}
-
 		public boolean isFactionLeave() {
 			return factionLeave;
 		}
-
 		public boolean isLandClaims() {
 			return landClaims;
 		}
-
 		public boolean isLandUnclaims() {
 			return landUnclaims;
 		}
-
 		public boolean isPlayerCommands() {
 			return playerCommands;
 		}
@@ -1402,27 +1159,23 @@ public class MainConfiguration extends AbstractConfiguration {
 
 	public static class MapSettings {
 		private transient int width;
-		private transient boolean showFactionKey;;
-		private transient boolean showNeutralFactionsOnMap;;
-		private transient boolean showEnemyFactions;;
-		private transient boolean showTruceFactions;;
+		private transient boolean showFactionKey;
+		private transient boolean showNeutralFactionsOnMap;
+		private transient boolean showEnemyFactions;
+		private transient boolean showTruceFactions;
 
 		public int getWidth() {
 			return width;
 		}
-
 		public boolean isShowFactionKey() {
 			return showFactionKey;
 		}
-
 		public boolean isShowNeutralFactionsOnMap() {
 			return showNeutralFactionsOnMap;
 		}
-
 		public boolean isShowEnemyFactions() {
 			return showEnemyFactions;
 		}
-
 		public boolean isShowTruceFactions() {
 			return showTruceFactions;
 		}
@@ -1430,17 +1183,15 @@ public class MainConfiguration extends AbstractConfiguration {
 
 	public static class RestrictWorlds {
 		private transient boolean restrictWorlds;
-		private transient boolean whitelist;;
+		private transient boolean whitelist;
 		private transient Set<String> worldList;
 
 		public boolean isRestrictWorlds() {
 			return restrictWorlds;
 		}
-
 		public boolean isWhitelist() {
 			return whitelist;
 		}
-
 		public Set<String> getWorldList() {
 			return Collections.unmodifiableSet(worldList);
 		}
@@ -1450,11 +1201,10 @@ public class MainConfiguration extends AbstractConfiguration {
 		public static class Constant {
 			private transient boolean enabled;
 			private transient String title;
-			private transient boolean prefixes;;
+			private transient boolean prefixes;
 			private transient String prefixTemplate;
 			private transient boolean suffixes;
 			private transient String suffixTemplate;
-
 			private transient List<String> content;
 			private transient boolean factionlessEnabled;
 			private transient List<String> factionlessContent;
@@ -1463,47 +1213,36 @@ public class MainConfiguration extends AbstractConfiguration {
 			public boolean isEnabled() {
 				return enabled;
 			}
-
 			public String getTitle() {
 				return title;
 			}
-
 			public boolean isPrefixes() {
 				return prefixes;
 			}
-
 			public int getPrefixLength() {
 				return 32;
 			}
-
 			public String getPrefixTemplate() {
 				return prefixTemplate;
 			}
-
 			public boolean isSuffixes() {
 				return suffixes;
 			}
-
 			public int getSuffixLength() {
 				return 32;
 			}
-
 			public String getSuffixTemplate() {
 				return suffixTemplate;
 			}
-
 			public List<String> getContent() {
 				return Collections.unmodifiableList(content);
 			}
-
 			public boolean isFactionlessEnabled() {
 				return factionlessEnabled;
 			}
-
 			public List<String> getFactionlessContent() {
 				return Collections.unmodifiableList(factionlessContent);
 			}
-
 			public String getFactionlessTitle() {
 				return factionlessTitle;
 			}
@@ -1518,15 +1257,12 @@ public class MainConfiguration extends AbstractConfiguration {
 			public int getExpiration() {
 				return expiration;
 			}
-
 			public boolean isEnabled() {
 				return enabled;
 			}
-
 			public List<String> getContent() {
 				return Collections.unmodifiableList(content);
 			}
-
 			public String getTitle() {
 				return title;
 			}
@@ -1538,25 +1274,22 @@ public class MainConfiguration extends AbstractConfiguration {
 		public Constant constant() {
 			return constant;
 		}
-
 		public Info info() {
 			return info;
 		}
 	}
 
 	public static class LWC {
-		private transient boolean enabled;;
+		private transient boolean enabled;
 		private transient boolean resetLocksOnUnclaim;
 		private transient boolean resetLocksOnCapture;
 
 		public boolean isEnabled() {
 			return enabled;
 		}
-
 		public boolean isResetLocksOnUnclaim() {
 			return resetLocksOnUnclaim;
 		}
-
 		public boolean isResetLocksOnCapture() {
 			return resetLocksOnCapture;
 		}
@@ -1569,7 +1302,6 @@ public class MainConfiguration extends AbstractConfiguration {
 		public boolean isChecking() {
 			return checking;
 		}
-
 		public boolean isBuildPriority() {
 			return buildPriority;
 		}
@@ -1588,35 +1320,27 @@ public class MainConfiguration extends AbstractConfiguration {
 	public Colors colors() {
 		return colors;
 	}
-
 	public Commands commands() {
 		return commands;
 	}
-
 	public Factions factions() {
 		return factions;
 	}
-
 	public Logging logging() {
 		return logging;
 	}
-
 	public MapSettings map() {
 		return map;
 	}
-
 	public RestrictWorlds restrictWorlds() {
 		return restrictWorlds;
 	}
-
 	public Scoreboard scoreboard() {
 		return scoreboard;
 	}
-
 	public WorldGuard worldGuard() {
 		return worldGuard;
 	}
-
 	public LWC lwc() {
 		return lwc;
 	}

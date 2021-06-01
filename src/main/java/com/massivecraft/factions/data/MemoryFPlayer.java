@@ -48,7 +48,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected String factionId;
 	protected Role role;
 	protected String title;
-	protected double power;
+//	protected double power;
 	protected double powerBoost;
 	protected long lastPowerUpdateTime;
 	protected long lastLoginTime;
@@ -77,7 +77,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public MemoryFPlayer(String id) {
 		this.id = id;
 		this.resetFactionData();
-		this.power = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting();
+//		this.power = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting();
 		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
@@ -165,15 +165,15 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.role = role;
 	}
 
-	@Override
-	public double getPowerBoost() {
-		return this.powerBoost;
-	}
-
-	@Override
-	public void setPowerBoost(double powerBoost) {
-		this.powerBoost = powerBoost;
-	}
+//	@Override
+//	public double getPowerBoost() {
+//		return this.powerBoost;
+//	}
+//
+//	@Override
+//	public void setPowerBoost(double powerBoost) {
+//		this.powerBoost = powerBoost;
+//	}
 
 	@Override
 	public boolean willAutoLeave() {
@@ -210,33 +210,33 @@ public abstract class MemoryFPlayer implements FPlayer {
 		}
 	}
 
-	@Override
-	public boolean isAutoSafeClaimEnabled() {
-		return autoSafeZoneEnabled;
-	}
-
-	@Override
-	public void setIsAutoSafeClaimEnabled(boolean enabled) {
-		this.autoSafeZoneEnabled = enabled;
-		if(enabled) {
-			this.autoClaimFor = null;
-			this.autoWarZoneEnabled = false;
-		}
-	}
-
-	@Override
-	public boolean isAutoWarClaimEnabled() {
-		return autoWarZoneEnabled;
-	}
-
-	@Override
-	public void setIsAutoWarClaimEnabled(boolean enabled) {
-		this.autoWarZoneEnabled = enabled;
-		if(enabled) {
-			this.autoClaimFor = null;
-			this.autoSafeZoneEnabled = false;
-		}
-	}
+//	@Override
+//	public boolean isAutoSafeClaimEnabled() {
+//		return autoSafeZoneEnabled;
+//	}
+//
+//	@Override
+//	public void setIsAutoSafeClaimEnabled(boolean enabled) {
+//		this.autoSafeZoneEnabled = enabled;
+//		if(enabled) {
+//			this.autoClaimFor = null;
+//			this.autoWarZoneEnabled = false;
+//		}
+//	}
+//
+//	@Override
+//	public boolean isAutoWarClaimEnabled() {
+//		return autoWarZoneEnabled;
+//	}
+//
+//	@Override
+//	public void setIsAutoWarClaimEnabled(boolean enabled) {
+//		this.autoWarZoneEnabled = enabled;
+//		if(enabled) {
+//			this.autoClaimFor = null;
+//			this.autoSafeZoneEnabled = false;
+//		}
+//	}
 
 	@Override
 	public boolean isAdminBypassing() {
@@ -248,38 +248,25 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.isAdminBypassing = val;
 	}
 
-	@Override
-	public void setChatMode(ChatMode chatMode) {
-		this.chatMode = chatMode;
-	}
-
-	@Override
-	public ChatMode getChatMode() {
-		if(this.chatMode == null || this.factionId.equals("0") || !FactionsPlugin.getInstance().configMain.factions().chat().isFactionOnlyChat()) {
-			this.chatMode = ChatMode.PUBLIC;
-		}
-		return chatMode;
-	}
-
-	@Override
-	public void setIgnoreAllianceChat(boolean ignore) {
-		this.ignoreAllianceChat = ignore;
-	}
-
-	@Override
-	public boolean isIgnoreAllianceChat() {
-		return ignoreAllianceChat;
-	}
-
-	@Override
-	public void setSpyingChat(boolean chatSpying) {
-		this.spyingChat = chatSpying;
-	}
-
-	@Override
-	public boolean isSpyingChat() {
-		return spyingChat;
-	}
+//	@Override
+//	public void setIgnoreAllianceChat(boolean ignore) {
+//		this.ignoreAllianceChat = ignore;
+//	}
+//
+//	@Override
+//	public boolean isIgnoreAllianceChat() {
+//		return ignoreAllianceChat;
+//	}
+//
+//	@Override
+//	public void setSpyingChat(boolean chatSpying) {
+//		this.spyingChat = chatSpying;
+//	}
+//
+//	@Override
+//	public boolean isSpyingChat() {
+//		return spyingChat;
+//	}
 
 	@Override
 	public void resetFactionData() {
@@ -412,19 +399,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		return this.getNameAndSomething(this.getTag());
 	}
 
-	// Chat Tag:
-	// These are injected into the format of global chat messages.
-
-	@Override
-	public String getChatTag() {
-		return this.hasFaction() ? String.format(FactionsPlugin.getInstance().configMain.factions().chat().getTagFormat(), this.getRole().getPrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
-	}
-
-	@Override
-	public String getChatTag(FPlayer fplayer) {
-		return this.hasFaction() ? this.getRelationTo(fplayer).getColor() + getChatTag() : TL.NOFACTION_PREFIX.toString();
-	}
-
 	@Override
 	public int getKills() {
 		return isOnline() ? getPlayer().getStatistic(Statistic.PLAYER_KILLS) : this.kills;
@@ -473,91 +447,92 @@ public abstract class MemoryFPlayer implements FPlayer {
 	//----------------------------------------------//
 	// Power
 	//----------------------------------------------//
-	@Override
-	public double getPower() {
-		this.updatePower();
-		return this.power;
-	}
 
-	@Override
-	public void alterPower(double delta) {
-		this.power += delta;
-		if(this.power > this.getPowerMax()) {
-			this.power = this.getPowerMax();
-		} else if(this.power < this.getPowerMin()) {
-			this.power = this.getPowerMin();
-		}
-	}
-
-	@Override
-	public double getPowerMax() {
-		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMax() + this.powerBoost;
-	}
-
-	@Override
-	public double getPowerMin() {
-		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMin() + this.powerBoost;
-	}
-
-	@Override
-	public int getPowerRounded() {
-		return (int) Math.round(this.getPower());
-	}
-
-	@Override
-	public int getPowerMaxRounded() {
-		return (int) Math.round(this.getPowerMax());
-	}
-
-	@Override
-	public int getPowerMinRounded() {
-		return (int) Math.round(this.getPowerMin());
-	}
-
-	@Override
-	public void updatePower() {
-		if(this.isOffline()) {
-			losePowerFromBeingOffline();
-			if(!FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().isRegenOffline()) {
-				return;
-			}
-		} else if(hasFaction() && getFaction().isPowerFrozen()) {
-			return; // Don't let power regen if faction power is frozen.
-		}
-		long now = System.currentTimeMillis();
-		long millisPassed = now - this.lastPowerUpdateTime;
-		this.lastPowerUpdateTime = now;
-
-		Player thisPlayer = this.getPlayer();
-		if(thisPlayer != null && thisPlayer.isDead()) {
-			return;  // don't let dead players regain power until they respawn
-		}
-
-		int millisPerMinute = 60 * 1000;
-		this.alterPower(millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPowerPerMinute() / millisPerMinute);
-	}
-
-	@Override
-	public void losePowerFromBeingOffline() {
-		long now = System.currentTimeMillis();
-		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() > 0.0 && this.power > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
-			long millisPassed = now - this.lastPowerUpdateTime;
-
-			double loss = millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() / (24 * 60 * 60 * 1000);
-			if(this.power - loss < FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
-				loss = this.power;
-			}
-			this.alterPower(-loss);
-		}
-		this.lastPowerUpdateTime = now;
-	}
-
-	@Override
-	public void onDeath() {
-		if(hasFaction()) {
-			getFaction().setLastDeath(System.currentTimeMillis());
-		}
-	}
+//	@Override
+//	public double getPower() {
+//		this.updatePower();
+//		return this.power;
+//	}
+//
+//	@Override
+//	public void alterPower(double delta) {
+//		this.power += delta;
+//		if(this.power > this.getPowerMax()) {
+//			this.power = this.getPowerMax();
+//		} else if(this.power < this.getPowerMin()) {
+//			this.power = this.getPowerMin();
+//		}
+//	}
+//
+//	@Override
+//	public double getPowerMax() {
+//		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMax() + this.powerBoost;
+//	}
+//
+//	@Override
+//	public double getPowerMin() {
+//		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMin() + this.powerBoost;
+//	}
+//
+//	@Override
+//	public int getPowerRounded() {
+//		return (int) Math.round(this.getPower());
+//	}
+//
+//	@Override
+//	public int getPowerMaxRounded() {
+//		return (int) Math.round(this.getPowerMax());
+//	}
+//
+//	@Override
+//	public int getPowerMinRounded() {
+//		return (int) Math.round(this.getPowerMin());
+//	}
+//
+//	@Override
+//	public void updatePower() {
+//		if(this.isOffline()) {
+//			losePowerFromBeingOffline();
+//			if(!FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().isRegenOffline()) {
+//				return;
+//			}
+//		} else if(hasFaction() && getFaction().isPowerFrozen()) {
+//			return; // Don't let power regen if faction power is frozen.
+//		}
+//		long now = System.currentTimeMillis();
+//		long millisPassed = now - this.lastPowerUpdateTime;
+//		this.lastPowerUpdateTime = now;
+//
+//		Player thisPlayer = this.getPlayer();
+//		if(thisPlayer != null && thisPlayer.isDead()) {
+//			return;  // don't let dead players regain power until they respawn
+//		}
+//
+//		int millisPerMinute = 60 * 1000;
+//		this.alterPower(millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPowerPerMinute() / millisPerMinute);
+//	}
+//
+//	@Override
+//	public void losePowerFromBeingOffline() {
+//		long now = System.currentTimeMillis();
+//		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() > 0.0 && this.power > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
+//			long millisPassed = now - this.lastPowerUpdateTime;
+//
+//			double loss = millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() / (24 * 60 * 60 * 1000);
+//			if(this.power - loss < FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
+//				loss = this.power;
+//			}
+//			this.alterPower(-loss);
+//		}
+//		this.lastPowerUpdateTime = now;
+//	}
+//
+//	@Override
+//	public void onDeath() {
+//		if(hasFaction()) {
+//			getFaction().setLastDeath(System.currentTimeMillis());
+//		}
+//	}
 
 	//----------------------------------------------//
 	// Territory
@@ -594,7 +569,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 	 * @return true if should show, otherwise false.
 	 */
 	public boolean showInfoBoard(Faction toShow) {
-		return showScoreboard && !toShow.isWarZone() && !toShow.isWilderness() && !toShow.isSafeZone() && FactionsPlugin.getInstance().configMain.scoreboard().info().isEnabled() && FScoreboard.get(this) != null;
+		return showScoreboard && !toShow.isWilderness() && FactionsPlugin.getInstance().configMain.scoreboard().info().isEnabled() && FScoreboard.get(this) != null;
 	}
 
 	@Override
@@ -662,7 +637,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	@Override
 	public boolean canClaimForFaction(Faction forFaction) {
-		return this.isAdminBypassing() || !forFaction.isWilderness() && (forFaction == this.getFaction() && this.getFaction().hasAccess(this, PermissibleAction.TERRITORY)) || (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) || (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer()));
+		return this.isAdminBypassing() || !forFaction.isWilderness() && (forFaction == this.getFaction() && this.getFaction().hasAccess(this, PermissibleAction.TERRITORY));
 	}
 
 	@Override
@@ -683,12 +658,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		} else if(this.isAdminBypassing()) {
 			// Admin bypass
 			return true;
-		} else if(forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
-			// Safezone and can claim for such
-			return true;
-		} else if(forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
-			// Warzone and can claim for such
-			return true;
 		} else if(!forFaction.hasAccess(this, PermissibleAction.TERRITORY)) {
 			// Lacking perms to territory claim
 			denyReason = TextUtil.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
@@ -698,21 +667,15 @@ public abstract class MemoryFPlayer implements FPlayer {
 		} else if(forFaction.getFPlayers().size() < plugin.configMain.factions().claims().getRequireMinFactionMembers()) {
 			// Need more members in order to claim land
 			denyReason = TextUtil.parse(TL.CLAIM_MEMBERS.toString(), plugin.configMain.factions().claims().getRequireMinFactionMembers());
-		} else if(currentFaction.isSafeZone()) {
-			// Cannot claim safezone
-			denyReason = TextUtil.parse(TL.CLAIM_SAFEZONE.toString());
-		} else if(currentFaction.isWarZone()) {
-			// Cannot claim warzone
-			denyReason = TextUtil.parse(TL.CLAIM_WARZONE.toString());
-		} else if(plugin.getLandRaidControl() instanceof PowerControl && ownedLand >= forFaction.getPowerRounded()) {
-			// Already own at least as much land as power
-			denyReason = TextUtil.parse(TL.CLAIM_POWER.toString());
-		} else if(plugin.getLandRaidControl() instanceof DTRControl && ownedLand >= plugin.getLandRaidControl().getLandLimit(forFaction)) {
-			// Already own at least as much land as land limit (DTR)
-			denyReason = TextUtil.parse(TL.CLAIM_DTR_LAND.toString());
-		} else if(plugin.configMain.factions().claims().getLandsMax() != 0 && ownedLand >= plugin.configMain.factions().claims().getLandsMax() && forFaction.isNormal()) {
-			// Land limit reached
-			denyReason = TextUtil.parse(TL.CLAIM_LIMIT.toString());
+//		} else if(plugin.getLandRaidControl() instanceof PowerControl && ownedLand >= forFaction.getPowerRounded()) {
+//			// Already own at least as much land as power
+//			denyReason = TextUtil.parse(TL.CLAIM_POWER.toString());
+//		} else if(plugin.getLandRaidControl() instanceof DTRControl && ownedLand >= plugin.getLandRaidControl().getLandLimit(forFaction)) {
+//			// Already own at least as much land as land limit (DTR)
+//			denyReason = TextUtil.parse(TL.CLAIM_DTR_LAND.toString());
+//		} else if(plugin.configMain.factions().claims().getLandsMax() != 0 && ownedLand >= plugin.configMain.factions().claims().getLandsMax() && forFaction.isNormal()) {
+//			// Land limit reached
+//			denyReason = TextUtil.parse(TL.CLAIM_LIMIT.toString());
 		} else if(currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
 			// // Can't claim ally
 			denyReason = TextUtil.parse(TL.CLAIM_ALLY.toString());
@@ -723,9 +686,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 			} else {
 				denyReason = TextUtil.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
 			}
-		} else if(!(currentFaction.isNormal() && plugin.configMain.factions().claims().isAllowOverClaimAndIgnoringBuffer() && currentFaction.hasLandInflation()) && factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
-			// Too close to buffer
-			denyReason = TextUtil.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
+//		} else if(!(currentFaction.isNormal() && plugin.configMain.factions().claims().isAllowOverClaimAndIgnoringBuffer() && currentFaction.hasLandInflation()) && factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
+//			// Too close to buffer
+//			denyReason = TextUtil.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
 		} else if(currentFaction.isNormal()) {
 			if(myFaction.isPeaceful()) {
 				// Cannot claim as peaceful
@@ -733,13 +696,13 @@ public abstract class MemoryFPlayer implements FPlayer {
 			} else if(currentFaction.isPeaceful()) {
 				// Cannot claim from peaceful
 				denyReason = TextUtil.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
-			} else if(!currentFaction.hasLandInflation()) {
-				// Cannot claim other faction (perhaps based on power/land ratio)
-				// TODO more messages WARN current faction most importantly
-				denyReason = TextUtil.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
-			} else if(currentFaction.hasLandInflation() && !plugin.configMain.factions().claims().isAllowOverClaim()) {
-				// deny over claim when it normally would be allowed.
-				denyReason = TextUtil.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
+//			} else if(!currentFaction.hasLandInflation()) {
+//				// Cannot claim other faction (perhaps based on power/land ratio)
+//				// TODO more messages WARN current faction most importantly
+//				denyReason = TextUtil.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
+//			} else if(currentFaction.hasLandInflation() && !plugin.configMain.factions().claims().isAllowOverClaim()) {
+//				// deny over claim when it normally would be allowed.
+//				denyReason = TextUtil.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
 			} else if(!Board.getInstance().isBorderLocation(flocation)) {
 				denyReason = TextUtil.parse(TL.CLAIM_BORDER.toString());
 			}
@@ -797,7 +760,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	public boolean shouldBeSaved() {
 		// TODO DTR
-		return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting()));
+//		return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting()));
+		return this.hasFaction();
 	}
 
 	@Override

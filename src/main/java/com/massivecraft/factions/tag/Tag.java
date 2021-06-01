@@ -56,7 +56,7 @@ public interface Tag {
 	}
 
 	static boolean isMinimalShow() {
-		return FactionsPlugin.getInstance().configMain.commands().show().isMinimal();
+		return FactionsPlugin.getInstance().configMain.commands().show().minimal();
 	}
 
 	@Override

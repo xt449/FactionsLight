@@ -56,37 +56,33 @@ public interface FPlayer extends RelationParticipator {
 
 	void setTakeFallDamage(boolean fallDamage);
 
-	double getPowerBoost();
-
-	void setPowerBoost(double powerBoost);
+//	double getPowerBoost();
+//
+//	void setPowerBoost(double powerBoost);
 
 	Faction getAutoClaimFor();
 
 	void setAutoClaimFor(Faction faction);
 
-	boolean isAutoSafeClaimEnabled();
-
-	void setIsAutoSafeClaimEnabled(boolean enabled);
-
-	boolean isAutoWarClaimEnabled();
-
-	void setIsAutoWarClaimEnabled(boolean enabled);
+//	boolean isAutoSafeClaimEnabled();
+//
+//	void setIsAutoSafeClaimEnabled(boolean enabled);
+//
+//	boolean isAutoWarClaimEnabled();
+//
+//	void setIsAutoWarClaimEnabled(boolean enabled);
 
 	boolean isAdminBypassing();
 
 	void setIsAdminBypassing(boolean val);
 
-	void setChatMode(ChatMode chatMode);
-
-	ChatMode getChatMode();
-
-	void setIgnoreAllianceChat(boolean ignore);
-
-	boolean isIgnoreAllianceChat();
-
-	void setSpyingChat(boolean chatSpying);
-
-	boolean isSpyingChat();
+//	void setIgnoreAllianceChat(boolean ignore);
+//
+//	boolean isIgnoreAllianceChat();
+//
+//	void setSpyingChat(boolean chatSpying);
+//
+//	boolean isSpyingChat();
 
 	boolean showScoreboard();
 
@@ -124,13 +120,6 @@ public interface FPlayer extends RelationParticipator {
 
 	String getNameAndTag();
 
-	// Chat Tag:
-	// These are injected into the format of global chat messages.
-
-	String getChatTag();
-
-	String getChatTag(FPlayer fplayer);
-
 	int getKills();
 
 	int getDeaths();
@@ -145,29 +134,31 @@ public interface FPlayer extends RelationParticipator {
 	//----------------------------------------------//
 	// Power
 	//----------------------------------------------//
-	double getPower();
 
-	void alterPower(double delta);
-
-	double getPowerMin();
-
-	double getPowerMax();
-
-	int getPowerRounded();
-
-	int getPowerMinRounded();
-
-	int getPowerMaxRounded();
-
-	void updatePower();
-
-	void losePowerFromBeingOffline();
-
-	void onDeath();
+//	double getPower();
+//
+//	void alterPower(double delta);
+//
+//	double getPowerMin();
+//
+//	double getPowerMax();
+//
+//	int getPowerRounded();
+//
+//	int getPowerMinRounded();
+//
+//	int getPowerMaxRounded();
+//
+//	void updatePower();
+//
+//	void losePowerFromBeingOffline();
+//
+//	void onDeath();
 
 	//----------------------------------------------//
 	// Territory
 	//----------------------------------------------//
+
 	boolean isInOwnTerritory();
 
 	boolean isInEnemyTerritory();

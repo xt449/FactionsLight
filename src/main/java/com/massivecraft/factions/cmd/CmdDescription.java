@@ -29,12 +29,6 @@ public class CmdDescription extends FCommand {
 		// And replace all the % because it messes with string formatting and this is easy way around that.
 		context.faction.setDescription(String.join(" ", context.args).replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2"));
 
-		if(!FactionsPlugin.getInstance().configMain.factions().chat().isBroadcastDescriptionChanges()) {
-			context.fPlayer.msg(TL.COMMAND_DESCRIPTION_CHANGED, context.faction.describeTo(context.fPlayer));
-			context.fPlayer.sendMessage(context.faction.getDescription());
-			return;
-		}
-
 		// Broadcast the description to everyone
 		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
 			fplayer.msg(TL.COMMAND_DESCRIPTION_CHANGES, context.faction.describeTo(fplayer));

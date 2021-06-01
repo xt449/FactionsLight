@@ -36,7 +36,7 @@ public class CmdColeader extends FCommand {
 
 				msg.then(s + " ").color(ChatColor.WHITE)
 						.tooltip(TL.COMMAND_COLEADER_CLICKTOPROMOTE + s)
-						.command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " coleader " + s);
+						.command("/f coleader " + s);
 			}
 
 			context.sendFancyMessage(msg);

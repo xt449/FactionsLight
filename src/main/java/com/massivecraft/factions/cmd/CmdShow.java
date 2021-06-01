@@ -19,30 +19,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CmdShow extends FCommand {
 
-	final List<String> defaults = new ArrayList<>();
-
 	public CmdShow() {
 		this.aliases.add("show");
+		this.aliases.add("info");
 		this.aliases.add("who");
-
-		// add defaults to /f show in case config doesnt have it
-		defaults.add("{header}");
-		defaults.add("<a>Description: <i>{description}");
-		defaults.add("<a>Joining: <i>{joining}    {peaceful}");
-		defaults.add("<a>Land / Power / Maxpower: <i> {chunks} / {power} / {maxPower}");
-		defaults.add("<a>Raidable: {raidable}");
-		defaults.add("<a>Founded: <i>{create-date}");
-		defaults.add("<a>This faction is permanent, remaining even with no members.");
-		defaults.add("<a>Land value: <i>{land-value} {land-refund}");
-		defaults.add("<a>Balance: <i>{faction-balance}");
-		defaults.add("<a>Bans: <i>{faction-bancount}");
-		defaults.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list}");
-		defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
-		defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
 
 		this.optionalArgs.put("faction tag", "yours");
 
@@ -60,55 +45,13 @@ public class CmdShow extends FCommand {
 		}
 
 		if(context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
-				&& FactionsPlugin.getInstance().configMain.commands().show().getExempt().contains(faction.getTag())) {
+				&& FactionsPlugin.getInstance().configMain.commands().show().exempt().contains(faction.getTag())) {
 			context.msg(TL.COMMAND_SHOW_EXEMPT);
 			return;
 		}
+		List<String> messageList = Collections.singletonList(TextUtil.parse(Tag.parsePlaceholders(context.player, Tag.parsePlain(faction, context.fPlayer, FactionsPlugin.getInstance().configMain.commands().show().format()))));
 
-		List<String> show = FactionsPlugin.getInstance().configMain.commands().show().getFormat();
-		if(show == null || show.isEmpty()) {
-			show = defaults;
-		}
-
-		if(!faction.isNormal()) {
-			String tag = faction.getTag(context.fPlayer);
-			// send header and that's all
-			String header = show.get(0);
-			if(header.contains(FactionTag.HEADER.toString())) {
-				context.msg(TextUtil.titleize(tag));
-			} else {
-				String message = header.replace(FactionTag.FACTION.toString(), tag);
-				message = Tag.parsePlain(faction, context.fPlayer, message);
-				context.msg(TextUtil.parse(message));
-			}
-			return; // we only show header for non-normal factions
-		}
-
-		List<String> messageList = new ArrayList<>();
-		for(String raw : show) {
-			String parsed = Tag.parsePlain(faction, context.fPlayer, raw); // use relations
-			if(parsed == null) {
-				continue; // Due to minimal f show.
-			}
-
-			if(context.fPlayer != null) {
-				parsed = Tag.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
-			}
-
-			if(!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
-				if(parsed.contains("{ig}")) {
-					// replaces all variables with no home TL
-					parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
-				}
-				parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
-				messageList.add(parsed);
-			}
-		}
-		if(context.fPlayer != null && this.groupPresent()) {
-			new GroupGetter(messageList, context.fPlayer, faction).runTaskAsynchronously(FactionsPlugin.getInstance());
-		} else {
-			this.sendMessages(messageList, context.sender, faction, context.fPlayer);
-		}
+		this.sendMessages(messageList, context.sender, faction, context.fPlayer);
 	}
 
 	private void sendMessages(List<String> messageList, CommandSender recipient, Faction faction, FPlayer player) {
@@ -171,15 +114,6 @@ public class CmdShow extends FCommand {
 			}
 		}
 		recipient.sendMessage(TextUtil.parse(builder.toString()));
-	}
-
-	private boolean groupPresent() {
-		for(String line : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
-			if(line.contains("{group}")) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private class GroupGetter extends BukkitRunnable {

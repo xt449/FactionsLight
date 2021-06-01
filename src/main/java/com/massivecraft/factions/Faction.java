@@ -91,19 +91,9 @@ public interface Faction extends RelationParticipator {
 
 	void setDescription(String value);
 
-	void setHome(Location home);
-
-	void delHome();
-
-	boolean hasHome();
-
-	Location getHome();
-
 	long getFoundedDate();
 
 	void setFoundedDate(long newDate);
-
-	void confirmValidHome();
 
 	boolean noPvPInTerritory();
 
@@ -112,12 +102,6 @@ public interface Faction extends RelationParticipator {
 	boolean isNormal();
 
 	boolean isWilderness();
-
-	boolean isSafeZone();
-
-	boolean isWarZone();
-
-	boolean isPlayerFreeType();
 
 	void setLastDeath(long time);
 
@@ -155,44 +139,45 @@ public interface Faction extends RelationParticipator {
 	// DTR
 	// ----------------------------------------------//
 
-	double getDTR();
-
-	double getDTRWithoutUpdate();
-
-	void setDTR(double dtr);
-
-	long getLastDTRUpdateTime();
-
-	long getFrozenDTRUntilTime();
-
-	void setFrozenDTR(long time);
-
-	boolean isFrozenDTR();
+//	double getDTR();
+//
+//	double getDTRWithoutUpdate();
+//
+//	void setDTR(double dtr);
+//
+//	long getLastDTRUpdateTime();
+//
+//	long getFrozenDTRUntilTime();
+//
+//	void setFrozenDTR(long time);
+//
+//	boolean isFrozenDTR();
 
 	// ----------------------------------------------//
 	// Power
 	// ----------------------------------------------//
-	double getPower();
 
-	double getPowerMax();
-
-	int getPowerRounded();
-
-	int getPowerMaxRounded();
-
-	Integer getPermanentPower();
-
-	void setPermanentPower(Integer permanentPower);
-
-	boolean hasPermanentPower();
-
-	double getPowerBoost();
-
-	void setPowerBoost(double powerBoost);
-
-	boolean hasLandInflation();
-
-	boolean isPowerFrozen();
+//	double getPower();
+//
+//	double getPowerMax();
+//
+//	int getPowerRounded();
+//
+//	int getPowerMaxRounded();
+//
+//	Integer getPermanentPower();
+//
+//	void setPermanentPower(Integer permanentPower);
+//
+//	boolean hasPermanentPower();
+//
+//	double getPowerBoost();
+//
+//	void setPowerBoost(double powerBoost);
+//
+//	boolean hasLandInflation();
+//
+//	boolean isPowerFrozen();
 
 	// -------------------------------
 	// FPlayers

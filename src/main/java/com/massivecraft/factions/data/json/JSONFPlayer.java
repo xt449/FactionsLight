@@ -16,10 +16,10 @@ public class JSONFPlayer extends MemoryFPlayer {
 		((JSONFPlayers) FPlayers.getInstance()).fPlayers.remove(getId());
 	}
 
-	public boolean shouldBeSaved() {
-		return this.hasFaction() ||
-				(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl &&
-						(this.getPowerRounded() != this.getPowerMaxRounded() &&
-								this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting())));
-	}
+//	public boolean shouldBeSaved() {
+//		return this.hasFaction() ||
+//				(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl &&
+//						(this.getPowerRounded() != this.getPowerMaxRounded() &&
+//								this.getPowerRounded() != (int) Math.round(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting())));
+//	}
 }

@@ -58,7 +58,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		final FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		((MemoryFPlayer) me).setName(player.getName());
 
-		this.plugin.getLandRaidControl().onJoin(me);
+//		this.plugin.getLandRaidControl().onJoin(me);
 		// Update the lastLoginTime for this fplayer
 		me.setLastLoginTime(System.currentTimeMillis());
 
@@ -66,11 +66,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		me.setLastStoodAt(new FLocation(player.getLocation()));
 
 		me.login(); // set kills / deaths
-
-		if(me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
-			me.setSpyingChat(false);
-			FactionsPlugin.getInstance().log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
-		}
 
 		if(me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
 			me.setIsAdminBypassing(false);
@@ -117,7 +112,7 @@ public class FactionsPlayerListener extends AbstractListener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-		FactionsPlugin.getInstance().getLandRaidControl().onQuit(me);
+//		FactionsPlugin.getInstance().getLandRaidControl().onQuit(me);
 		// and update their last login time to point to when the logged off, for auto-remove routine
 		me.setLastLoginTime(System.currentTimeMillis());
 
@@ -186,24 +181,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(me.getAutoClaimFor() != null) {
 			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
-		} else if(me.isAutoSafeClaimEnabled()) {
-			if(!Permission.MANAGE_SAFE_ZONE.has(player)) {
-				me.setIsAutoSafeClaimEnabled(false);
-			} else {
-				if(!Board.getInstance().getFactionAt(to).isSafeZone()) {
-					Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-					me.msg(TL.PLAYER_SAFEAUTO);
-				}
-			}
-		} else if(me.isAutoWarClaimEnabled()) {
-			if(!Permission.MANAGE_WAR_ZONE.has(player)) {
-				me.setIsAutoWarClaimEnabled(false);
-			} else {
-				if(!Board.getInstance().getFactionAt(to).isWarZone()) {
-					Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-					me.msg(TL.PLAYER_WARAUTO);
-				}
-			}
 		}
 
 		// Did we change "host"(faction)?
@@ -214,7 +191,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
 				me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
-				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().configMain.commands().map().getCooldown());
+				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().configMain.commands().map().cooldown());
 			}
 		} else {
 			Faction myFaction = me.getFaction();
@@ -347,9 +324,9 @@ public class FactionsPlayerListener extends AbstractListener {
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
-		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
-			return true;
-		}
+//		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
+//			return true;
+//		}
 
 		if(otherFaction.hasPlayersOnline()) {
 			if(!facConf.protection().getTerritoryDenyUsageMaterials().contains(material)) {
@@ -368,26 +345,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 			if(!justCheck) {
 				me.msg(TL.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
-			}
-
-			return false;
-		} else if(otherFaction.isSafeZone()) {
-			if(!facConf.protection().isSafeZoneDenyUsage() || Permission.MANAGE_SAFE_ZONE.has(player)) {
-				return true;
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_SAFEZONE, TextUtil.getMaterialName(material));
-			}
-
-			return false;
-		} else if(otherFaction.isWarZone()) {
-			if(!facConf.protection().isWarZoneDenyUsage() || Permission.MANAGE_WAR_ZONE.has(player)) {
-				return true;
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_WARZONE, TextUtil.getMaterialName(material));
 			}
 
 			return false;
@@ -420,16 +377,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
-
-		Location home = me.getFaction().getHome();
-		MainConfiguration.Factions facConf = FactionsPlugin.getInstance().configMain.factions();
-		if(facConf.homes().isEnabled() &&
-				facConf.homes().isTeleportToOnDeath() &&
-				home != null &&
-				(facConf.landRaidControl().power().isRespawnHomeFromNoPowerLossWorlds() || !facConf.landRaidControl().power().getWorldsNoPowerLoss().contains(event.getPlayer().getWorld().getName()))) {
-			event.setRespawnLocation(home);
-		}
+//		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -441,7 +389,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			return;
 		}
 		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
-			FactionsPlugin.getInstance().getLandRaidControl().update(me);
+//			FactionsPlugin.getInstance().getLandRaidControl().update(me);
 			this.initFactionWorld(me);
 		}
 
@@ -530,11 +478,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(at.isNormal() && rel.isEnemy() && !protection.getTerritoryEnemyDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryEnemyDenyCommands())) {
 			me.msg(TL.PLAYER_COMMAND_ENEMY, fullCmd);
-			return true;
-		}
-
-		if(at.isWarZone() && !protection.getWarzoneDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getWarzoneDenyCommands())) {
-			me.msg(TL.PLAYER_COMMAND_WARZONE, fullCmd);
 			return true;
 		}
 

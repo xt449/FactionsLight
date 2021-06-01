@@ -25,7 +25,7 @@ public class CmdShowInvites extends FCommand {
 		for(String id : context.faction.getInvites()) {
 			FPlayer fp = FPlayers.getInstance().getById(id);
 			String name = fp != null ? fp.getName() : id;
-			msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.format(name)).command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " deinvite " + name);
+			msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.format(name)).command("/f deinvite " + name);
 		}
 
 		context.sendFancyMessage(msg);

@@ -35,8 +35,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
 	public final CmdBoom cmdBoom = new CmdBoom();
 	public final CmdBypass cmdBypass = new CmdBypass();
-	public final CmdChat cmdChat = new CmdChat();
-	public final CmdChatSpy cmdChatSpy = new CmdChatSpy();
 	public final CmdClaim cmdClaim = new CmdClaim();
 	public final CmdCoords cmdCoords = new CmdCoords();
 	public final CmdCreate cmdCreate = new CmdCreate();
@@ -44,7 +42,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdDescription cmdDescription = new CmdDescription();
 	public final CmdDisband cmdDisband = new CmdDisband();
 	public final CmdHelp cmdHelp = new CmdHelp();
-	public final CmdHome cmdHome = new CmdHome();
 	public final CmdInvite cmdInvite = new CmdInvite();
 	public final CmdJoin cmdJoin = new CmdJoin();
 	public final CmdKick cmdKick = new CmdKick();
@@ -58,10 +55,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdOwnerList cmdOwnerList = new CmdOwnerList();
 	public final CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public final CmdPermanent cmdPermanent = new CmdPermanent();
-	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
-	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
-	public final CmdPower cmdPower = new CmdPower();
-	public final CmdDTR cmdDTR = new CmdDTR();
+//	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
+//	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
+//	public final CmdPower cmdPower = new CmdPower();
+//	public final CmdDTR cmdDTR = new CmdDTR();
 	public final CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public final CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public final CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
@@ -69,14 +66,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdReload cmdReload = new CmdReload();
 	public final CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
 	public final CmdSaveAll cmdSaveAll = new CmdSaveAll();
-	public final CmdSethome cmdSethome = new CmdSethome();
-	public final CmdDelhome cmdDelhome = new CmdDelhome();
 	public final CmdShow cmdShow = new CmdShow();
 	public final CmdStatus cmdStatus = new CmdStatus();
 	public final CmdStuck cmdStuck = new CmdStuck();
 	public final CmdTag cmdTag = new CmdTag();
 	public final CmdTitle cmdTitle = new CmdTitle();
-	public final CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
 	public final CmdUnclaim cmdUnclaim = new CmdUnclaim();
 	public final CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
 	public final CmdVersion cmdVersion = new CmdVersion();
@@ -84,16 +78,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdSB cmdSB = new CmdSB();
 	public final CmdShowInvites cmdShowInvites = new CmdShowInvites();
 	public final CmdAnnounce cmdAnnounce = new CmdAnnounce();
-	public final CmdWarp cmdWarp = new CmdWarp();
-	public final CmdWarpOther cmdWarpOther = new CmdWarpOther();
-	public final CmdSetWarp cmdSetWarp = new CmdSetWarp();
-	public final CmdDelWarp cmdDelWarp = new CmdDelWarp();
-	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
+//	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
 	public final CmdLogins cmdLogins = new CmdLogins();
 	public final CmdClaimLine cmdClaimLine = new CmdClaimLine();
 	public final CmdClaimFill cmdClaimFill = new CmdClaimFill();
 	public final CmdTop cmdTop = new CmdTop();
-	public final CmdAHome cmdAHome = new CmdAHome();
 	public final CmdPerm cmdPerm = new CmdPerm();
 	public final CmdPromote cmdPromote = new CmdPromote();
 	public final CmdDemote cmdDemote = new CmdDemote();
@@ -111,7 +100,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
 		cmdBase = this;
 
-		this.aliases.addAll(FactionsPlugin.getInstance().configMain.getCommandBase());
+		this.aliases.add("f");
 		this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
 		this.setHelpShort("The faction base command");
@@ -121,9 +110,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdAutoClaim);
 		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
-		this.addSubCommand(this.cmdChat);
-		this.addSubCommand(this.cmdToggleAllianceChat);
-		this.addSubCommand(this.cmdChatSpy);
 		this.addSubCommand(this.cmdClaim);
 		this.addSubCommand(this.cmdCoords);
 		this.addSubCommand(this.cmdCreate);
@@ -131,7 +117,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
 		this.addSubCommand(this.cmdHelp);
-		this.addSubCommand(this.cmdHome);
 		this.addSubCommand(this.cmdInvite);
 		this.addSubCommand(this.cmdJoin);
 		this.addSubCommand(this.cmdKick);
@@ -152,8 +137,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdReload);
 		this.addSubCommand(this.cmdSafeunclaimall);
 		this.addSubCommand(this.cmdSaveAll);
-		this.addSubCommand(this.cmdSethome);
-		this.addSubCommand(this.cmdDelhome);
 		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdStatus);
 		this.addSubCommand(this.cmdStuck);
@@ -166,14 +149,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdSB);
 		this.addSubCommand(this.cmdShowInvites);
 		this.addSubCommand(this.cmdAnnounce);
-		this.addSubCommand(this.cmdWarp);
-		this.addSubCommand(this.cmdWarpOther);
-		this.addSubCommand(this.cmdSetWarp);
-		this.addSubCommand(this.cmdDelWarp);
 		this.addSubCommand(this.cmdLogins);
 		this.addSubCommand(this.cmdClaimLine);
 		this.addSubCommand(this.cmdClaimFill);
-		this.addSubCommand(this.cmdAHome);
 		this.addSubCommand(this.cmdPerm);
 		this.addSubCommand(this.cmdPromote);
 		this.addSubCommand(this.cmdDemote);
@@ -185,16 +163,16 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdColeader);
 		this.addSubCommand(this.cmdDebug);
 		this.addSubCommand(this.cmdListClaims);
-		if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
-			FactionsPlugin.getInstance().getLogger().info("Using POWER for land/raid control. Enabling power commands.");
-			this.addSubCommand(this.cmdPermanentPower);
-			this.addSubCommand(this.cmdPower);
-			this.addSubCommand(this.cmdPowerBoost);
-			this.addSubCommand(this.cmdModifyPower);
-		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-			FactionsPlugin.getInstance().getLogger().info("Using DTR for land/raid control. Enabling DTR commands.");
-			this.addSubCommand(this.cmdDTR);
-		}
+//		if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
+//			FactionsPlugin.getInstance().getLogger().info("Using POWER for land/raid control. Enabling power commands.");
+//			this.addSubCommand(this.cmdPermanentPower);
+//			this.addSubCommand(this.cmdPower);
+//			this.addSubCommand(this.cmdPowerBoost);
+//			this.addSubCommand(this.cmdModifyPower);
+//		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
+//			FactionsPlugin.getInstance().getLogger().info("Using DTR for land/raid control. Enabling DTR commands.");
+//			this.addSubCommand(this.cmdDTR);
+//		}
 	}
 
 	public void done() {

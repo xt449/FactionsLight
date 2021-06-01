@@ -59,12 +59,6 @@ public enum TL {
 	COMMAND_ADMIN_PROMOTED("%1$s&e gave %2$s&e the leadership of %3$s&e."),
 	COMMAND_ADMIN_DESCRIPTION("Hand over your admin rights"),
 
-	COMMAND_AHOME_DESCRIPTION("Send a player to their f home no matter what."),
-	COMMAND_AHOME_NOHOME("%1$s doesn't have an f home."),
-	COMMAND_AHOME_SUCCESS("%1$s was sent to their f home."),
-	COMMAND_AHOME_OFFLINE("%1$s is offline."),
-	COMMAND_AHOME_TARGET("You were sent to your f home."),
-
 	COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
 
 	COMMAND_AUTOCLAIM_ENABLED("&eNow auto-claiming land for &d%1$s&e."),
@@ -179,17 +173,6 @@ public enum TL {
 	COMMAND_DEINVITE_REVOKES("%1$s&e revoked %2$s's&e invitation."),
 	COMMAND_DEINVITE_DESCRIPTION("Remove a pending invitation"),
 
-	COMMAND_DELFWARP_DELETED("&eDeleted warp &6%1$s"),
-	COMMAND_DELFWARP_INVALID("&eCouldn't find warp &6%1$s"),
-	COMMAND_DELFWARP_TODELETE("to delete warp"),
-	COMMAND_DELFWARP_FORDELETE("for deleting warp"),
-	COMMAND_DELFWARP_DESCRIPTION("Delete a faction warp"),
-
-	COMMAND_DELHOME_DEL("%1$s&e unset the home for your faction."),
-	COMMAND_DELHOME_DESCRIPTION("Unset the faction home"),
-	COMMAND_DELHOME_TOSET("to unset the faction home"),
-	COMMAND_DELHOME_FORSET("for unsetting the faction home"),
-
 	COMMAND_DESCRIPTION_CHANGES("You have changed the description for &d%1$s&e to:"),
 	COMMAND_DESCRIPTION_CHANGED("&eThe faction %1$s&e changed their description to:"),
 	COMMAND_DESCRIPTION_TOCHANGE("to change faction description"),
@@ -209,25 +192,9 @@ public enum TL {
 	COMMAND_DTR_MODIFY_DESCRIPTION("Modify faction DTR"),
 	COMMAND_DTR_MODIFY_DONE("&eSet DTR for %s&e to %s"),
 
-	COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
-	COMMAND_FWARP_COMMANDFORMAT("&e/f warp <warpname> [password]"),
-	COMMAND_FWARP_WARPED("&eWarped to &6%1$s"),
-	COMMAND_FWARP_INVALID_WARP("&eCouldn't find warp &6%1$s"),
-	COMMAND_FWARP_TOWARP("to warp"),
-	COMMAND_FWARP_FORWARPING("for warping"),
-	COMMAND_FWARP_WARPS("Warps: "),
-	COMMAND_FWARP_DESCRIPTION("Teleport to a faction warp"),
-	COMMAND_FWARP_INVALID_PASSWORD("&4Invalid password!"),
-	COMMAND_FWARP_PASSWORD_REQUIRED("&aPlease enter warp password. This will not be visible to anyone else"),
-	COMMAND_FWARP_PASSWORD_CANCEL("&cWarp canceled"),
-	COMMAND_FWARP_NOACCESS("&cYou do not have permission to use %s &cwarps"),
-
-	COMMAND_WARPOTHER_COMMANDFORMAT("&e/f warpother <faction> <warpname> [password]"),
-
 	COMMAND_HELP_404("&cThis page does not exist"),
 	COMMAND_HELP_NEXTCREATE("&eLearn how to create a faction on the next page."),
 	COMMAND_HELP_INVITATIONS("command.help.invitations", "&eYou might want to close it and use invitations:"),
-	COMMAND_HELP_HOME("&eAnd don't forget to set your home:"),
 	COMMAND_HELP_PLAYERTITLES("&ePlayer titles are just for fun. No rules connected to them."),
 	COMMAND_HELP_OWNERSHIP_1("&eClaimed land with ownership set is further protected so"),
 	COMMAND_HELP_OWNERSHIP_2("&ethat only the owner(s), faction admin, and possibly the"),
@@ -261,17 +228,6 @@ public enum TL {
 	COMMAND_HELP_MOAR_2("&eMore commands for server admins:"),
 	COMMAND_HELP_MOAR_3("&eEven more commands for server admins:"),
 	COMMAND_HELP_DESCRIPTION("Display a help page"),
-
-	COMMAND_HOME_DENIED("&cSorry, you cannot teleport to the home of %s"),
-	COMMAND_HOME_DISABLED("&cSorry, Faction homes are disabled on this server."),
-	COMMAND_HOME_TELEPORTDISABLED("&cSorry, the ability to teleport to Faction homes is disabled on this server."),
-	COMMAND_HOME_NOHOME("&cYour faction does not have a home. "),
-	COMMAND_HOME_INENEMY("&cYou cannot teleport to your faction home while in the territory of an enemy faction."),
-	COMMAND_HOME_WRONGWORLD("&cYou cannot teleport to your faction home while in a different world."),
-	COMMAND_HOME_ENEMYNEAR("&cYou cannot teleport to your faction home while an enemy is within %s blocks of you."),
-	COMMAND_HOME_TOTELEPORT("to teleport to your faction home"),
-	COMMAND_HOME_FORTELEPORT("for teleporting to your faction home"),
-	COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
 
 	COMMAND_INVITE_TOINVITE("to invite someone"),
 	COMMAND_INVITE_FORINVITE("for inviting someone"),
@@ -466,20 +422,6 @@ public enum TL {
 	COMMAND_SETDEFAULTROLE_SUCCESS("Set default role of your faction to %1$s"),
 	COMMAND_SETDEFAULTROLE_INVALIDROLE("Couldn't find matching role for %1$s"),
 
-	COMMAND_SETFWARP_NOTCLAIMED("&eYou can only set warps in your faction territory."),
-	COMMAND_SETFWARP_SET("&eSet warp &6%1$s&e and password &b'%2$s' &eto your location."),
-	COMMAND_SETFWARP_TOSET("to set warp"),
-	COMMAND_SETFWARP_FORSET("for setting warp"),
-	COMMAND_SETFWARP_DESCRIPTION("Set a faction warp"),
-
-	COMMAND_SETHOME_DISABLED("&cSorry, Faction homes are disabled on this server."),
-	COMMAND_SETHOME_NOTCLAIMED("&cSorry, your faction home can only be set inside your own claimed territory."),
-	COMMAND_SETHOME_TOSET("to set the faction home"),
-	COMMAND_SETHOME_FORSET("for setting the faction home"),
-	COMMAND_SETHOME_SET("%1$s&e set the home for your faction. You can now use:"),
-	COMMAND_SETHOME_SETOTHER("&cYou have set the home for the %1$s&e faction."),
-	COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
-
 	COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
 	COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
 	COMMAND_SHOW_TOSHOW("to show faction information"),
@@ -490,7 +432,6 @@ public enum TL {
 	COMMAND_SHOW_JOINING("&6Joining: &e%1$s "),
 	COMMAND_SHOW_INVITATION("invitation is required"),
 	COMMAND_SHOW_UNINVITED("no invitation is needed"),
-	COMMAND_SHOW_NOHOME("n/a"),
 	COMMAND_SHOW_POWER("&6Land / Power / Maxpower: &e %1$d/%2$d/%3$d %4$s."),
 	COMMAND_SHOW_BONUS(" (bonus: "),
 	COMMAND_SHOW_PENALTY(" (penalty: "),
@@ -772,11 +713,7 @@ public enum TL {
 	PERM_DISBAND("Disbanding the entire faction"),
 	PERM_ECONOMY("Spending faction money"),
 	PERM_TERRITORY("Claiming or unclaiming faction territory"),
-	PERM_HOME("Visiting the faction home"),
-	PERM_SETHOME("Setting the faction home"),
 	PERM_LISTCLAIMS("View listed faction claims"),
-	PERM_SETWARP("Setting and unsetting faction warps"),
-	PERM_WARP("Using faction warps"),
 	PERM_OWNER("Set ownership of land using /f owner in faction territory"),
 
 	PERM_SHORT_BUILD("build"),
@@ -796,11 +733,7 @@ public enum TL {
 	PERM_SHORT_DISBAND("disband"),
 	PERM_SHORT_ECONOMY("spend faction money"),
 	PERM_SHORT_TERRITORY("manage faction territory"),
-	PERM_SHORT_HOME("visit home"),
-	PERM_SHORT_SETHOME("set home"),
 	PERM_SHORT_LISTCLAIMS("list claims"),
-	PERM_SHORT_SETWARP("set warps"),
-	PERM_SHORT_WARP("use warps"),
 	PERM_SHORT_OWNER("set ownership"),
 
 	PERM_DENIED_WILDERNESS("&cYou can't %s in the wilderness"),
@@ -810,9 +743,6 @@ public enum TL {
 	PERM_DENIED_PAINTERRITORY("&cIt is painful to %s in the territory of %s"),
 	PERM_DENIED_OWNED("&cYou can't %s in this territory, it is owned by: %s"),
 	PERM_DENIED_PAINOWNED("&cIt is painful to try to %s in this territory, it is owned by: %s"),
-
-	GUI_WARPS_ONE_PAGE("%s warps"),
-	GUI_WARPS_PAGE("%1$s warps (page %2$d)"),
 
 	GUI_PERMS_RELATION_NAME("Choose a relation%s:"),
 	GUI_PERMS_RELATION_ONLINEOFFLINEBIT(" (%s)"),

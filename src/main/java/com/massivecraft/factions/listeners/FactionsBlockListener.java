@@ -153,10 +153,6 @@ public class FactionsBlockListener implements Listener {
 			}
 			if(otherFaction.isWilderness() && FactionsPlugin.getInstance().configMain.factions().protection().isWildernessDenyBuild() && !FactionsPlugin.getInstance().configMain.factions().protection().getWorldsNoWildernessProtection().contains(world)) {
 				return false;
-			} else if(otherFaction.isSafeZone() && FactionsPlugin.getInstance().configMain.factions().protection().isSafeZoneDenyBuild()) {
-				return false;
-			} else if(otherFaction.isWarZone() && FactionsPlugin.getInstance().configMain.factions().protection().isWarZoneDenyBuild()) {
-				return false;
 			}
 			Relation rel = pistonFaction.getRelationTo(otherFaction);
 			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
@@ -221,38 +217,10 @@ public class FactionsBlockListener implements Listener {
 			}
 
 			return false;
-		} else if(otherFaction.isSafeZone()) {
-			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player)) {
-				return true;
-			}
-
-			if(!conf.factions().protection().isSafeZoneDenyBuild() || Permission.MANAGE_SAFE_ZONE.has(player)) {
-				return true;
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_SAFEZONE, permissibleAction.descriptionShort);
-			}
-
-			return false;
-		} else if(otherFaction.isWarZone()) {
-			if(conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player)) {
-				return true;
-			}
-
-			if(!conf.factions().protection().isWarZoneDenyBuild() || Permission.MANAGE_WAR_ZONE.has(player)) {
-				return true;
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WARZONE, permissibleAction.descriptionShort);
-			}
-
-			return false;
 		}
-		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
-			return true;
-		}
+//		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
+//			return true;
+//		}
 
 		Faction myFaction = me.getFaction();
 		boolean pain = !justCheck && otherFaction.hasAccess(me, PermissibleAction.PAINBUILD);

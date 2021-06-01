@@ -26,11 +26,7 @@ public enum PermissibleAction {
 	DISBAND(DefaultPermissionsConfiguration.Permissions::getDisband, TL.PERM_DISBAND, TL.PERM_SHORT_DISBAND, Material.BONE),
 	TERRITORY(DefaultPermissionsConfiguration.Permissions::getTerritory, TL.PERM_TERRITORY, TL.PERM_SHORT_TERRITORY, Material.GRASS_BLOCK),
 	OWNER(DefaultPermissionsConfiguration.Permissions::getOwner, TL.PERM_OWNER, TL.PERM_SHORT_OWNER, Material.OAK_FENCE_GATE),
-	HOME(DefaultPermissionsConfiguration.Permissions::getHome, TL.PERM_HOME, TL.PERM_SHORT_HOME, Material.TORCH),
-	SETHOME(DefaultPermissionsConfiguration.Permissions::getSetHome, TL.PERM_SETHOME, TL.PERM_SHORT_SETHOME, Material.COMPASS),
 	LISTCLAIMS(DefaultPermissionsConfiguration.Permissions::getListClaims, TL.PERM_LISTCLAIMS, TL.PERM_SHORT_LISTCLAIMS, Material.MAP),
-	SETWARP(DefaultPermissionsConfiguration.Permissions::getSetWarp, TL.PERM_SETWARP, TL.PERM_SHORT_SETWARP, Material.END_PORTAL_FRAME),
-	WARP(DefaultPermissionsConfiguration.Permissions::getWarp, TL.PERM_WARP, TL.PERM_SHORT_WARP, Material.ENDER_PEARL),
 	;
 
 	public final String description;

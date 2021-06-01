@@ -23,41 +23,42 @@ public class PortalListener implements Listener {
 
 	@EventHandler
 	public void onPortalCreate(PortalCreateEvent event) {
-		Entity entity = event.getEntity();
-
-		if(!FactionsPlugin.getInstance().configMain.factions().portals().isLimit()) {
-			return; // Don't do anything if they don't want us to.
-		}
-
-		if(!(entity instanceof Player) || !plugin.worldUtil().isEnabled(event.getEntity().getWorld())) {
-			return;
-		}
-
-		Player player = (Player) entity;
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-
-		// Only 8 blocks so a loop should be fine.
-		for(BlockState block : event.getBlocks()) {
-			FLocation loc = new FLocation(block.getLocation());
-			Faction faction = Board.getInstance().getFactionAt(loc);
-
-			if(faction.isWilderness()) {
-				continue; // We don't care about wilderness.
-			} else if(!faction.isNormal() && !player.isOp()) {
-				// Don't let non ops make portals in safezone or warzone.
-				event.setCancelled(true);
-				return;
-			}
-
-			String mininumRelation = FactionsPlugin.getInstance().configMain.factions().portals().getMinimumRelation();
-
-			// Don't let people portal into nether bases if server owners don't want that.
-			if(!fPlayer.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
-				event.setCancelled(true);
-				player.sendMessage(TL.PLAYER_PORTAL_NOTALLOWED.toString());
-				return;
-			}
-		}
+		event.setCancelled(true);
+//		Entity entity = event.getEntity();
+//
+//		if(!FactionsPlugin.getInstance().configMain.factions().portals().isLimit()) {
+//			return; // Don't do anything if they don't want us to.
+//		}
+//
+//		if(!(entity instanceof Player) || !plugin.worldUtil().isEnabled(event.getEntity().getWorld())) {
+//			return;
+//		}
+//
+//		Player player = (Player) entity;
+//		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+//
+//		// Only 8 blocks so a loop should be fine.
+//		for(BlockState block : event.getBlocks()) {
+//			FLocation loc = new FLocation(block.getLocation());
+//			Faction faction = Board.getInstance().getFactionAt(loc);
+//
+//			if(faction.isWilderness()) {
+//				continue; // We don't care about wilderness.
+//			} else if(!faction.isNormal() && !player.isOp()) {
+//				// Don't let non ops make portals in safezone or warzone.
+//				event.setCancelled(true);
+//				return;
+//			}
+//
+//			String mininumRelation = FactionsPlugin.getInstance().configMain.factions().portals().getMinimumRelation();
+//
+//			// Don't let people portal into nether bases if server owners don't want that.
+//			if(!fPlayer.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
+//				event.setCancelled(true);
+//				player.sendMessage(TL.PLAYER_PORTAL_NOTALLOWED.toString());
+//				return;
+//			}
+//		}
 
 	}
 }

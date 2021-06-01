@@ -312,10 +312,6 @@ public abstract class MemoryBoard extends Board {
 					Relation relation = fplayer.getRelationTo(factionHere);
 					if(factionHere.isWilderness()) {
 						row.then("-").color(FactionsPlugin.getInstance().configMain.colors().factions().wilderness());
-					} else if(factionHere.isSafeZone()) {
-						row.then("+").color(FactionsPlugin.getInstance().configMain.colors().factions().safezone());
-					} else if(factionHere.isWarZone()) {
-						row.then("+").color(FactionsPlugin.getInstance().configMain.colors().factions().warzone());
 					} else if(factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
 							(FactionsPlugin.getInstance().configMain.map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
 							(FactionsPlugin.getInstance().configMain.map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||

@@ -26,7 +26,6 @@ public class CmdClaimFill extends FCommand {
 		this.aliases.add("cf");
 
 		// Args
-		this.optionalArgs.put("limit", String.valueOf(FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims()));
 		this.optionalArgs.put("faction", "you");
 
 		this.requirements = new CommandRequirements.Builder(Permission.CLAIM_FILL)
@@ -37,12 +36,7 @@ public class CmdClaimFill extends FCommand {
 	@Override
 	public void perform(CommandContext context) {
 		// Args
-		final int limit = context.argAsInt(0, FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims());
-
-		if(limit > FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims()) {
-			context.msg(TL.COMMAND_CLAIMFILL_ABOVEMAX, FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxClaims());
-			return;
-		}
+		final int limit = 25;
 
 		final Faction forFaction = context.argAsFaction(2, context.faction);
 		Location location = context.player.getLocation();
@@ -65,7 +59,7 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-		final double distance = FactionsPlugin.getInstance().configMain.factions().claims().getFillClaimMaxDistance();
+		final double distance = 7;
 		long startX = loc.getX();
 		long startZ = loc.getZ();
 
@@ -93,10 +87,10 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-		if(toClaim.size() > this.plugin.getLandRaidControl().getPossibleClaimCount(forFaction)) {
-			context.msg(TL.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
-			return;
-		}
+//		if(toClaim.size() > this.plugin.getLandRaidControl().getPossibleClaimCount(forFaction)) {
+//			context.msg(TL.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
+//			return;
+//		}
 
 		final int limFail = FactionsPlugin.getInstance().configMain.factions().claims().getRadiusClaimFailureLimit();
 		int fails = 0;

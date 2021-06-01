@@ -34,17 +34,17 @@ public class FactionsEntityListener extends AbstractListener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDeath(EntityDeathEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getEntity().getWorld())) {
-			return;
-		}
-
-		Entity entity = event.getEntity();
-		if(entity instanceof Player) {
-			FactionsPlugin.getInstance().getLandRaidControl().onDeath((Player) entity);
-		}
-	}
+//	@EventHandler(priority = EventPriority.NORMAL)
+//	public void onEntityDeath(EntityDeathEvent event) {
+//		if(!plugin.worldUtil().isEnabled(event.getEntity().getWorld())) {
+//			return;
+//		}
+//
+//		Entity entity = event.getEntity();
+//		if(entity instanceof Player) {
+//			FactionsPlugin.getInstance().getLandRaidControl().onDeath((Player) entity);
+//		}
+//	}
 
 	/**
 	 * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
@@ -61,9 +61,6 @@ public class FactionsEntityListener extends AbstractListener {
 			if(!this.canDamagerHurtDamagee(sub, true)) {
 				event.setCancelled(true);
 			}
-		} else if(FactionsPlugin.getInstance().configMain.factions().protection().isSafeZonePreventAllDamageToPlayers() && isPlayerInSafeZone(event.getEntity())) {
-			// Players can not take any damage in a Safe Zone
-			event.setCancelled(true);
 		} else if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -166,13 +163,6 @@ public class FactionsEntityListener extends AbstractListener {
 		}
 	}
 
-	public boolean isPlayerInSafeZone(Entity damagee) {
-		if(!(damagee instanceof Player)) {
-			return false;
-		}
-		return Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
-	}
-
 	public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
 		return canDamage(sub.getDamager(), sub.getEntity(), notify);
 	}
@@ -219,12 +209,6 @@ public class FactionsEntityListener extends AbstractListener {
 		}
 
 		if(!(damagee instanceof Player)) {
-			if(FactionsPlugin.getInstance().configMain.factions().protection().isSafeZoneBlockAllEntityDamage() && defLocFaction.isSafeZone()) {
-				if(damager instanceof Player && notify) {
-					FPlayers.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_SAFEZONE.format(TL.GENERIC_ATTACK.toString()));
-				}
-				return false;
-			}
 			if(FactionsPlugin.getInstance().configMain.factions().protection().isPeacefulBlockAllEntityDamage() && defLocFaction.isPeaceful()) {
 				if(damager instanceof Player && notify) {
 					FPlayers.getInstance().getByPlayer((Player) damager).msg(TL.PERM_DENIED_TERRITORY.format(TL.GENERIC_ATTACK.toString(), defLocFaction.getTag(FPlayers.getInstance().getByPlayer((Player) damager))));
@@ -260,7 +244,7 @@ public class FactionsEntityListener extends AbstractListener {
 			if(damager instanceof Player) {
 				if(notify) {
 					FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
-					attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
+					attacker.msg(TL.PLAYER_CANTHURT, (TL.REGION_PEACEFUL.toString()));
 				}
 				return false;
 			}
@@ -294,13 +278,9 @@ public class FactionsEntityListener extends AbstractListener {
 		// so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
 		if(locFaction.noPvPInTerritory()) {
 			if(notify) {
-				attacker.msg(TL.PLAYER_CANTHURT, (locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
+				attacker.msg(TL.PLAYER_CANTHURT, (TL.REGION_PEACEFUL.toString()));
 			}
 			return false;
-		}
-
-		if(locFaction.isWarZone() && facConf.protection().isWarZoneFriendlyFire()) {
-			return true;
 		}
 
 		if(facConf.pvp().getWorldsIgnorePvP().contains(defenderLoc.getWorld().getName())) {
@@ -327,18 +307,16 @@ public class FactionsEntityListener extends AbstractListener {
 			}
 		}
 
-		if(!defLocFaction.isWarZone() || facConf.pvp().isDisablePeacefulPVPInWarzone()) {
-			if(defendFaction.isPeaceful()) {
-				if(notify) {
-					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
-				}
-				return false;
-			} else if(attackFaction.isPeaceful()) {
-				if(notify) {
-					attacker.msg(TL.PLAYER_PVP_PEACEFUL);
-				}
-				return false;
+		if(defendFaction.isPeaceful()) {
+			if(notify) {
+				attacker.msg(TL.PLAYER_PVP_PEACEFUL);
 			}
+			return false;
+		} else if(attackFaction.isPeaceful()) {
+			if(notify) {
+				attacker.msg(TL.PLAYER_PVP_PEACEFUL);
+			}
+			return false;
 		}
 
 		Relation relation = defendFaction.getRelationTo(attackFaction);
@@ -411,14 +389,6 @@ public class FactionsEntityListener extends AbstractListener {
 			if(spawning.getPreventInTerritory().contains(reason) && !spawning.getPreventInTerritoryExceptions().contains(type)) {
 				event.setCancelled(true);
 			}
-		} else if(faction.isSafeZone()) {
-			if(spawning.getPreventInSafezone().contains(reason) && !spawning.getPreventInSafezoneExceptions().contains(type)) {
-				event.setCancelled(true);
-			}
-		} else if(faction.isWarZone()) {
-			if(spawning.getPreventInWarzone().contains(reason) && !spawning.getPreventInWarzoneExceptions().contains(type)) {
-				event.setCancelled(true);
-			}
 		} else if(faction.isWilderness()) {
 			if(spawning.getPreventInWilderness().contains(reason) && !spawning.getPreventInWildernessExceptions().contains(type)) {
 				event.setCancelled(true);
@@ -462,9 +432,7 @@ public class FactionsEntityListener extends AbstractListener {
 			MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
 
 			if((faction.isWilderness() && !protection.getWorldsNoWildernessProtection().contains(loc.getWorld().getName()) && (protection.isWildernessBlockCreepers() || protection.isWildernessBlockFireballs() || protection.isWildernessBlockTNT())) ||
-					(faction.isNormal() && (online ? (protection.isTerritoryBlockCreepers() || protection.isTerritoryBlockFireballs() || protection.isTerritoryBlockTNT()) : (protection.isTerritoryBlockCreepersWhenOffline() || protection.isTerritoryBlockFireballsWhenOffline() || protection.isTerritoryBlockTNTWhenOffline()))) ||
-					(faction.isWarZone() && (protection.isWarZoneBlockCreepers() || protection.isWarZoneBlockFireballs() || protection.isWarZoneBlockTNT())) ||
-					faction.isSafeZone()) {
+					(faction.isNormal() && (online ? (protection.isTerritoryBlockCreepers() || protection.isTerritoryBlockFireballs() || protection.isTerritoryBlockTNT()) : (protection.isTerritoryBlockCreepersWhenOffline() || protection.isTerritoryBlockFireballsWhenOffline() || protection.isTerritoryBlockTNTWhenOffline())))) {
 				// explosion which needs prevention
 				event.setCancelled(true);
 				return;
@@ -516,9 +484,7 @@ public class FactionsEntityListener extends AbstractListener {
 			MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
 			// it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
 			if((faction.isWilderness() && protection.isWildernessBlockFireballs() && !protection.getWorldsNoWildernessProtection().contains(loc.getWorld().getName())) ||
-					(faction.isNormal() && (faction.hasPlayersOnline() ? protection.isTerritoryBlockFireballs() : protection.isTerritoryBlockFireballsWhenOffline())) ||
-					(faction.isWarZone() && protection.isWarZoneBlockFireballs()) ||
-					faction.isSafeZone()) {
+					(faction.isNormal() && (faction.hasPlayersOnline() ? protection.isTerritoryBlockFireballs() : protection.isTerritoryBlockFireballsWhenOffline()))) {
 				event.setCancelled(true);
 			}
 		}
@@ -545,10 +511,6 @@ public class FactionsEntityListener extends AbstractListener {
 			return protection.isWildernessDenyEndermanBlocks();
 		} else if(claimFaction.isNormal()) {
 			return claimFaction.hasPlayersOnline() ? protection.isTerritoryDenyEndermanBlocks() : protection.isTerritoryDenyEndermanBlocksWhenOffline();
-		} else if(claimFaction.isSafeZone()) {
-			return protection.isSafeZoneDenyEndermanBlocks();
-		} else if(claimFaction.isWarZone()) {
-			return protection.isWarZoneDenyEndermanBlocks();
 		}
 
 		return false;

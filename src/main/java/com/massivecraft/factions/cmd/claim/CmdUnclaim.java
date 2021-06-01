@@ -77,34 +77,6 @@ public class CmdUnclaim extends FCommand {
 			return false;
 		}
 
-		if(targetFaction.isSafeZone()) {
-			if(Permission.MANAGE_SAFE_ZONE.has(context.sender)) {
-				Board.getInstance().removeAt(target);
-				context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
-
-				if(FactionsPlugin.getInstance().configMain.logging().isLandUnclaims()) {
-					FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
-				}
-				return true;
-			} else {
-				context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
-				return false;
-			}
-		} else if(targetFaction.isWarZone()) {
-			if(Permission.MANAGE_WAR_ZONE.has(context.sender)) {
-				Board.getInstance().removeAt(target);
-				context.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
-
-				if(FactionsPlugin.getInstance().configMain.logging().isLandUnclaims()) {
-					FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
-				}
-				return true;
-			} else {
-				context.msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
-				return false;
-			}
-		}
-
 		if(context.fPlayer.isAdminBypassing()) {
 			LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
 			Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);

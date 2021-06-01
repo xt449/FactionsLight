@@ -58,18 +58,20 @@ public class CmdTop extends FCommand {
 				}
 				return 0;
 			});
-		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl && criteria.equalsIgnoreCase("power")) {
-			factionList.sort((f1, f2) -> {
-				int f1Size = f1.getPowerRounded();
-				int f2Size = f2.getPowerRounded();
-				if(f1Size < f2Size) {
-					return 1;
-				} else if(f1Size > f2Size) {
-					return -1;
-				}
-				return 0;
-			});
-		} else if(criteria.equalsIgnoreCase("land")) {
+		}
+//		else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl && criteria.equalsIgnoreCase("power")) {
+//			factionList.sort((f1, f2) -> {
+//				int f1Size = f1.getPowerRounded();
+//				int f2Size = f2.getPowerRounded();
+//				if(f1Size < f2Size) {
+//					return 1;
+//				} else if(f1Size > f2Size) {
+//					return -1;
+//				}
+//				return 0;
+//			});
+//		}
+		else if(criteria.equalsIgnoreCase("land")) {
 			factionList.sort((f1, f2) -> {
 				int f1Size = f1.getLandRounded();
 				int f2Size = f2.getLandRounded();
@@ -132,11 +134,12 @@ public class CmdTop extends FCommand {
 			return TL.sdf.format(faction.getFoundedDate());
 		} else if(criteria.equalsIgnoreCase("members")) {
 			return String.valueOf(faction.getFPlayers().size());
-		} else if(criteria.equalsIgnoreCase("land")) {
+		} else /* if(criteria.equalsIgnoreCase("land")) */ {
 			return String.valueOf(faction.getLandRounded());
-		} else /* if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl && criteria.equalsIgnoreCase("power")) */ {
-			return String.valueOf(faction.getPowerRounded());
 		}
+//		else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl && criteria.equalsIgnoreCase("power"))  {
+//			return String.valueOf(faction.getPowerRounded());
+//		}
 	}
 
 	@Override

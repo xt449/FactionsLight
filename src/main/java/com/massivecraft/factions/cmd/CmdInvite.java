@@ -49,13 +49,13 @@ public class CmdInvite extends FCommand {
 		// Tooltips, colors, and commands only apply to the string immediately before it.
 		FancyMessage message = new FancyMessage(context.fPlayer.describeTo(target, true))
 				.tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-				.command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " join " + context.faction.getTag())
+				.command("/f join " + context.faction.getTag())
 				.then(TL.COMMAND_INVITE_INVITEDYOU.toString())
 				.color(ChatColor.YELLOW)
 				.tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-				.command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " join " + context.faction.getTag())
+				.command("/f join " + context.faction.getTag())
 				.then(context.faction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-				.command("/" + FactionsPlugin.getInstance().configMain.getCommandBase().get(0) + " join " + context.faction.getTag());
+				.command("/f join " + context.faction.getTag());
 
 		message.send(target.getPlayer());
 

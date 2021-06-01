@@ -33,8 +33,8 @@ public class CmdStuck extends FCommand {
 		final Location sentAt = player.getLocation();
 		final FLocation chunk = context.fPlayer.getLastStoodAt();
 		// TODO handle delay 0
-		final long delay = FactionsPlugin.getInstance().configMain.commands().stuck().getDelay();
-		final int radius = FactionsPlugin.getInstance().configMain.commands().stuck().getRadius();
+		final long delay = FactionsPlugin.getInstance().configMain.commands().stuck().delay();
+		final int radius = FactionsPlugin.getInstance().configMain.commands().stuck().radius();
 
 		if(FactionsPlugin.getInstance().stuckMap.containsKey(player.getUniqueId())) {
 			long wait = FactionsPlugin.getInstance().timers.get(player.getUniqueId()) - System.currentTimeMillis();

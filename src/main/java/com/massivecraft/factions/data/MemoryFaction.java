@@ -63,7 +63,7 @@ public abstract class MemoryFaction implements Faction {
 		this.powerBoost = 0.0;
 		this.foundedDate = System.currentTimeMillis();
 		this.defaultRole = FactionsPlugin.getInstance().configMain.factions().other().getDefaultRole();
-		this.dtr = FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getStartingDTR();
+//		this.dtr = FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getStartingDTR();
 
 		resetPerms(); // Reset on new Faction so it has default values.
 	}
@@ -251,23 +251,6 @@ public abstract class MemoryFaction implements Faction {
 		this.description = value;
 	}
 
-	public void setHome(Location home) {
-		this.home = new LazyLocation(home);
-	}
-
-	public void delHome() {
-		this.home = null;
-	}
-
-	public boolean hasHome() {
-		return this.getHome() != null;
-	}
-
-	public Location getHome() {
-		confirmValidHome();
-		return (this.home != null) ? this.home.getLocation() : null;
-	}
-
 	public long getFoundedDate() {
 		if(this.foundedDate == 0) {
 			setFoundedDate(System.currentTimeMillis());
@@ -277,15 +260,6 @@ public abstract class MemoryFaction implements Faction {
 
 	public void setFoundedDate(long newDate) {
 		this.foundedDate = newDate;
-	}
-
-	public void confirmValidHome() {
-		if(!FactionsPlugin.getInstance().configMain.factions().homes().isMustBeInClaimedTerritory() || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
-			return;
-		}
-
-		msg("<b>Your faction home has been un-set since it is no longer in your territory.");
-		this.home = null;
 	}
 
 	public void setLastDeath(long time) {
@@ -461,12 +435,11 @@ public abstract class MemoryFaction implements Faction {
 	// Extra Getters And Setters
 	// -------------------------------------------- //
 	public boolean noPvPInTerritory() {
-		return isSafeZone() || (peaceful && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisablePVP());
+		return peaceful && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisablePVP();
 	}
 
 	public boolean noMonstersInTerritory() {
-		return isSafeZone() ||
-				(peaceful && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisableMonsters());
+		return peaceful && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisableMonsters();
 	}
 
 	// -------------------------------
@@ -474,23 +447,11 @@ public abstract class MemoryFaction implements Faction {
 	// -------------------------------
 
 	public boolean isNormal() {
-		return !(this.isWilderness() || this.isSafeZone() || this.isWarZone());
+		return !this.isWilderness();
 	}
 
 	public boolean isWilderness() {
-		return this.getId().equals("0");
-	}
-
-	public boolean isSafeZone() {
-		return this.getId().equals("-1");
-	}
-
-	public boolean isWarZone() {
-		return this.getId().equals("-2");
-	}
-
-	public boolean isPlayerFreeType() {
-		return this.isSafeZone() || this.isWarZone();
+		return this.id.equals("0");
 	}
 
 	// -------------------------------
@@ -551,117 +512,118 @@ public abstract class MemoryFaction implements Faction {
 	// DTR
 	// ----------------------------------------------//
 
-	@Override
-	public double getDTR() {
-		LandRaidControl lrc = FactionsPlugin.getInstance().getLandRaidControl();
-		if(lrc instanceof DTRControl) {
-			((DTRControl) lrc).updateDTR(this);
-		}
-		return this.dtr;
-	}
-
-	@Override
-	public double getDTRWithoutUpdate() {
-		return this.dtr;
-	}
-
-	@Override
-	public void setDTR(double dtr) {
-		this.dtr = dtr;
-		this.lastDTRUpdateTime = System.currentTimeMillis();
-	}
-
-	@Override
-	public long getLastDTRUpdateTime() {
-		return this.lastDTRUpdateTime;
-	}
-
-	@Override
-	public long getFrozenDTRUntilTime() {
-		return this.frozenDTRUntilTime;
-	}
-
-	@Override
-	public void setFrozenDTR(long time) {
-		this.frozenDTRUntilTime = time;
-	}
-
-	@Override
-	public boolean isFrozenDTR() {
-		return System.currentTimeMillis() < this.frozenDTRUntilTime;
-	}
+//	@Override
+//	public double getDTR() {
+//		LandRaidControl lrc = FactionsPlugin.getInstance().getLandRaidControl();
+//		if(lrc instanceof DTRControl) {
+//			((DTRControl) lrc).updateDTR(this);
+//		}
+//		return this.dtr;
+//	}
+//
+//	@Override
+//	public double getDTRWithoutUpdate() {
+//		return this.dtr;
+//	}
+//
+//	@Override
+//	public void setDTR(double dtr) {
+//		this.dtr = dtr;
+//		this.lastDTRUpdateTime = System.currentTimeMillis();
+//	}
+//
+//	@Override
+//	public long getLastDTRUpdateTime() {
+//		return this.lastDTRUpdateTime;
+//	}
+//
+//	@Override
+//	public long getFrozenDTRUntilTime() {
+//		return this.frozenDTRUntilTime;
+//	}
+//
+//	@Override
+//	public void setFrozenDTR(long time) {
+//		this.frozenDTRUntilTime = time;
+//	}
+//
+//	@Override
+//	public boolean isFrozenDTR() {
+//		return System.currentTimeMillis() < this.frozenDTRUntilTime;
+//	}
 
 	// ----------------------------------------------//
 	// Power
 	// ----------------------------------------------//
-	@Deprecated
-	public double getPower() {
-		if(this.hasPermanentPower()) {
-			return this.getPermanentPower();
-		}
 
-		double ret = 0;
-		for(FPlayer fplayer : fplayers) {
-			ret += fplayer.getPower();
-		}
-		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax() > 0 && ret > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax()) {
-			ret = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax();
-		}
-		return ret + this.powerBoost;
-	}
-
-	@Deprecated
-	public double getPowerMax() {
-		if(this.hasPermanentPower()) {
-			return this.getPermanentPower();
-		}
-
-		double ret = 0;
-		for(FPlayer fplayer : fplayers) {
-			ret += fplayer.getPowerMax();
-		}
-		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax() > 0 && ret > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax()) {
-			ret = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax();
-		}
-		return ret + this.powerBoost;
-	}
-
-	public int getPowerRounded() {
-		return (int) Math.round(this.getPower());
-	}
-
-	public int getPowerMaxRounded() {
-		return (int) Math.round(this.getPowerMax());
-	}
-
-	public boolean hasLandInflation() {
-		return FactionsPlugin.getInstance().getLandRaidControl().hasLandInflation(this);
-	}
-
-	public Integer getPermanentPower() {
-		return this.permanentPower;
-	}
-
-	public void setPermanentPower(Integer permanentPower) {
-		this.permanentPower = permanentPower;
-	}
-
-	public boolean hasPermanentPower() {
-		return this.permanentPower != null;
-	}
-
-	public double getPowerBoost() {
-		return this.powerBoost;
-	}
-
-	public void setPowerBoost(double powerBoost) {
-		this.powerBoost = powerBoost;
-	}
-
-	public boolean isPowerFrozen() {
-		int freezeSeconds = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPowerFreeze();
-		return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000L;
-	}
+//	@Deprecated
+//	public double getPower() {
+//		if(this.hasPermanentPower()) {
+//			return this.getPermanentPower();
+//		}
+//
+//		double ret = 0;
+//		for(FPlayer fplayer : fplayers) {
+//			ret += fplayer.getPower();
+//		}
+//		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax() > 0 && ret > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax()) {
+//			ret = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax();
+//		}
+//		return ret + this.powerBoost;
+//	}
+//
+//	@Deprecated
+//	public double getPowerMax() {
+//		if(this.hasPermanentPower()) {
+//			return this.getPermanentPower();
+//		}
+//
+//		double ret = 0;
+//		for(FPlayer fplayer : fplayers) {
+//			ret += fplayer.getPowerMax();
+//		}
+//		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax() > 0 && ret > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax()) {
+//			ret = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getFactionMax();
+//		}
+//		return ret + this.powerBoost;
+//	}
+//
+//	public int getPowerRounded() {
+//		return (int) Math.round(this.getPower());
+//	}
+//
+//	public int getPowerMaxRounded() {
+//		return (int) Math.round(this.getPowerMax());
+//	}
+//
+//	public boolean hasLandInflation() {
+//		return FactionsPlugin.getInstance().getLandRaidControl().hasLandInflation(this);
+//	}
+//
+//	public Integer getPermanentPower() {
+//		return this.permanentPower;
+//	}
+//
+//	public void setPermanentPower(Integer permanentPower) {
+//		this.permanentPower = permanentPower;
+//	}
+//
+//	public boolean hasPermanentPower() {
+//		return this.permanentPower != null;
+//	}
+//
+//	public double getPowerBoost() {
+//		return this.powerBoost;
+//	}
+//
+//	public void setPowerBoost(double powerBoost) {
+//		this.powerBoost = powerBoost;
+//	}
+//
+//	public boolean isPowerFrozen() {
+//		int freezeSeconds = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPowerFreeze();
+//		return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000L;
+//	}
 
 	public int getLandRounded() {
 		return Board.getInstance().getFactionCoordCount(this);
@@ -676,11 +638,11 @@ public abstract class MemoryFaction implements Faction {
 	// -------------------------------
 
 	public boolean addFPlayer(FPlayer fplayer) {
-		return !this.isPlayerFreeType() && fplayers.add(fplayer);
+		return !false && fplayers.add(fplayer);
 	}
 
 	public boolean removeFPlayer(FPlayer fplayer) {
-		return !this.isPlayerFreeType() && fplayers.remove(fplayer);
+		return !false && fplayers.remove(fplayer);
 	}
 
 	public Set<FPlayer> getFPlayers() {
@@ -761,7 +723,7 @@ public abstract class MemoryFaction implements Faction {
 
 	public ArrayList<Player> getOnlinePlayers() {
 		ArrayList<Player> ret = new ArrayList<>();
-		if(this.isPlayerFreeType()) {
+		if(false) {
 			return ret;
 		}
 
@@ -779,7 +741,7 @@ public abstract class MemoryFaction implements Faction {
 	// there are any players online
 	public boolean hasPlayersOnline() {
 		// only real factions can have players online, not safe zone / war zone
-		if(this.isPlayerFreeType()) {
+		if(false) {
 			return false;
 		}
 
