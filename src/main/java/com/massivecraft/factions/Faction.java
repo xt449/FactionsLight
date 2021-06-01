@@ -1,10 +1,10 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.combat.Setting;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.BanInfo;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -41,23 +41,24 @@ public interface Faction extends RelationParticipator {
 
 	void setOpen(boolean isOpen);
 
-	boolean isPeaceful();
+	Setting getCombatSetting();
 
-	void setPeaceful(boolean isPeaceful);
+	// TODO
+//	boolean isPeaceful();
 
-	void setPeacefulExplosionsEnabled(boolean val);
+//	void setPeaceful(boolean isPeaceful);
 
-	boolean getPeacefulExplosionsEnabled();
+//	void setPeacefulExplosionsEnabled(boolean val);
 
-	boolean noExplosionsInTerritory();
+//	boolean getPeacefulExplosionsEnabled();
+
+//	boolean noExplosionsInTerritory();
 
 	boolean isPermanent();
 
 	void setPermanent(boolean isPermanent);
 
 	String getTag();
-
-	String getTag(String prefix);
 
 	String getTag(Faction otherFaction);
 
@@ -74,10 +75,6 @@ public interface Faction extends RelationParticipator {
 	long getFoundedDate();
 
 	void setFoundedDate(long newDate);
-
-	boolean noPvPInTerritory();
-
-	boolean noMonstersInTerritory();
 
 	boolean isNormal();
 
@@ -194,32 +191,6 @@ public interface Faction extends RelationParticipator {
 	void sendMessage(String message);
 
 	// ----------------------------------------------//
-	// Ownership of specific claims
-	// ----------------------------------------------//
-
-	Map<FLocation, Set<String>> getClaimOwnership();
-
-	void clearAllClaimOwnership();
-
-	void clearClaimOwnership(FLocation loc);
-
-	void clearClaimOwnership(FPlayer player);
-
-	int getCountOfClaimsWithOwners();
-
-	boolean doesLocationHaveOwnersSet(FLocation loc);
-
-	boolean isPlayerInOwnerList(FPlayer player, FLocation loc);
-
-	void setPlayerAsOwner(FPlayer player, FLocation loc);
-
-	void removePlayerAsOwner(FPlayer player, FLocation loc);
-
-	String getOwnerListString(FLocation loc);
-
-	boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
-
-	// ----------------------------------------------//
 	// Persistance and entity management
 	// ----------------------------------------------//
 	void remove();
@@ -227,5 +198,4 @@ public interface Faction extends RelationParticipator {
 	Set<FLocation> getAllClaims();
 
 	void setId(String id);
-
 }

@@ -8,11 +8,9 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.gui.GUI;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Location;
@@ -30,8 +28,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -71,7 +69,7 @@ public class FactionsPlayerListener extends AbstractListener {
 			FactionsPlugin.getInstance().log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
 		}
 
-		if(plugin.worldUtil().isEnabled(player.getWorld())) {
+		if(plugin.configMain.restrictWorlds().isEnabled(player.getWorld())) {
 			this.initFactionWorld(me);
 		}
 	}
@@ -145,7 +143,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 
@@ -183,63 +181,44 @@ public class FactionsPlayerListener extends AbstractListener {
 				me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
 				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().configMain.commands().map().cooldown());
 			}
-		} else {
-			Faction myFaction = me.getFaction();
-			String ownersTo = myFaction.getOwnerListString(to);
-
-			if(changedFaction) {
-				me.sendFactionHereMessage();
-				if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageOnBorder() && myFaction == factionTo && !ownersTo.isEmpty()) {
-					me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
-				}
-			} else if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageInsideTerritory() && myFaction == factionTo && !myFaction.isWilderness()) {
-				String ownersFrom = myFaction.getOwnerListString(from);
-				if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isMessageByChunk() || !ownersFrom.equals(ownersTo)) {
-					if(!ownersTo.isEmpty()) {
-						me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
-					} else if(!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {
-						me.sendMessage(TL.GENERIC_PUBLICLAND.toString());
-					}
-				}
-			}
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerInteract(PlayerInteractEntityEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
-			return;
-		}
-
-		switch(event.getRightClicked().getType()) {
-			case ITEM_FRAME:
-				if(!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
-					event.setCancelled(true);
-				}
-				break;
-			case HORSE:
-			case SKELETON_HORSE:
-			case ZOMBIE_HORSE:
-			case DONKEY:
-			case MULE:
-			case LLAMA:
-			case TRADER_LLAMA:
-			case PIG:
-			case LEASH_HITCH:
-			case MINECART_CHEST:
-			case MINECART_FURNACE:
-			case MINECART_HOPPER:
-				if(!FactionsPlugin.getInstance().configMain.factions().protection().getEntityInteractExceptions().contains(event.getRightClicked().getType().name()) &&
-						!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
-					event.setCancelled(true);
-				}
-				break;
-		}
-	}
+//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+//	public void onPlayerInteract(PlayerInteractEntityEvent event) {
+//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
+//			return;
+//		}
+//
+//		switch(event.getRightClicked().getType()) {
+//			case ITEM_FRAME:
+//				if(!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
+//					event.setCancelled(true);
+//				}
+//				break;
+//			case HORSE:
+//			case SKELETON_HORSE:
+//			case ZOMBIE_HORSE:
+//			case DONKEY:
+//			case MULE:
+//			case LLAMA:
+//			case TRADER_LLAMA:
+//			case PIG:
+//			case LEASH_HITCH:
+//			case MINECART_CHEST:
+//			case MINECART_FURNACE:
+//			case MINECART_HOPPER:
+//				if(!FactionsPlugin.getInstance().configMain.factions().commandBlacklist().getEntityInteractExceptions().contains(event.getRightClicked().getType().name()) &&
+//						!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
+//					event.setCancelled(true);
+//				}
+//				break;
+//		}
+//	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 
@@ -273,26 +252,24 @@ public class FactionsPlayerListener extends AbstractListener {
 			return;  // only interested on right-clicks for below
 		}
 
-		ItemStack item;
-		if((item = event.getItem()) != null) {
-			boolean ohNo = false;
-			switch(item.getType()) {
-				case ARMOR_STAND:
-				case END_CRYSTAL:
-				case MINECART:
-				case CHEST_MINECART:
-				case COMMAND_BLOCK_MINECART:
-				case FURNACE_MINECART:
-				case HOPPER_MINECART:
-				case TNT_MINECART:
-					ohNo = true;
-			}
-			if(ohNo &&
-					!FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(item.getType()) &&
-					!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()).getLocation(), PermissibleAction.BUILD, false)) {
-				event.setCancelled(true);
-			}
-		}
+//		ItemStack item;
+//		if((item = event.getItem()) != null) {
+//			switch(item.getType()) {
+//				case ARMOR_STAND:
+//				case END_CRYSTAL:
+//				case MINECART:
+//				case CHEST_MINECART:
+//				case COMMAND_BLOCK_MINECART:
+//				case FURNACE_MINECART:
+//				case HOPPER_MINECART:
+//				case TNT_MINECART:
+//					if(!FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(item.getType()) &&
+//							!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()).getLocation(), PermissibleAction.BUILD, false)) {
+//						event.setCancelled(true);
+//					}
+//					break;
+//			}
+//		}
 
 		if(!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
@@ -300,11 +277,6 @@ public class FactionsPlayerListener extends AbstractListener {
 	}
 
 	public boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
-		String name = player.getName();
-		MainConfiguration.Factions facConf = FactionsPlugin.getInstance().configMain.factions();
-		if(facConf.protection().getPlayersWhoBypassAllProtection().contains(name)) {
-			return true;
-		}
 
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
@@ -318,26 +290,8 @@ public class FactionsPlayerListener extends AbstractListener {
 //			return true;
 //		}
 
-		if(otherFaction.hasPlayersOnline()) {
-			if(!facConf.protection().getTerritoryDenyUsageMaterials().contains(material)) {
-				return true; // Item isn't one we're preventing for online factions.
-			}
-		} else {
-			if(!facConf.protection().getTerritoryDenyUsageMaterialsWhenOffline().contains(material)) {
-				return true; // Item isn't one we're preventing for offline factions.
-			}
-		}
-
 		if(otherFaction.isWilderness()) {
-			if(!facConf.protection().isWildernessDenyUsage() || facConf.protection().getWorldsNoWildernessProtection().contains(location.getWorld().getName())) {
-				return true; // This is not faction territory. Use whatever you like here.
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
-			}
-
-			return false;
+			return true;
 		}
 
 		if(!otherFaction.hasAccess(me, PermissibleAction.ITEM)) {
@@ -347,21 +301,12 @@ public class FactionsPlayerListener extends AbstractListener {
 			return false;
 		}
 
-		// Also cancel if player doesn't have ownership rights for this claim
-		if(facConf.ownedArea().isEnabled() && facConf.ownedArea().isDenyUsage() && !otherFaction.playerHasOwnershipRights(me, loc)) {
-			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
-			}
-
-			return false;
-		}
-
 		return true;
 	}
 
 //	@EventHandler(priority = EventPriority.HIGH)
 //	public void onPlayerRespawn(PlayerRespawnEvent event) {
-//		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 //			return;
 //		}
 //
@@ -373,12 +318,12 @@ public class FactionsPlayerListener extends AbstractListener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onTeleport(PlayerTeleportEvent event) {
 		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-		boolean isEnabled = plugin.worldUtil().isEnabled(event.getTo().getWorld());
+		boolean isEnabled = plugin.configMain.restrictWorlds().isEnabled(event.getTo().getWorld());
 		if(!isEnabled) {
 			FScoreboard.remove(me, event.getPlayer());
 			return;
 		}
-		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 //			FactionsPlugin.getInstance().getLandRaidControl().update(me);
 			this.initFactionWorld(me);
 		}
@@ -391,7 +336,7 @@ public class FactionsPlayerListener extends AbstractListener {
 	// but these separate bucket events below always fire without fail
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 
@@ -405,7 +350,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 
@@ -418,13 +363,12 @@ public class FactionsPlayerListener extends AbstractListener {
 	}
 
 	public static boolean preventCommand(String fullCmd, Player player) {
-		MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
-		if((protection.getTerritoryNeutralDenyCommands().isEmpty() &&
-				protection.getTerritoryEnemyDenyCommands().isEmpty() &&
-				protection.getPermanentFactionMemberDenyCommands().isEmpty() &&
-				protection.getWildernessDenyCommands().isEmpty() &&
-				protection.getTerritoryAllyDenyCommands().isEmpty() &&
-				protection.getWarzoneDenyCommands().isEmpty())) {
+		MainConfiguration.Factions.CommandBlacklist commandBlacklist = FactionsPlugin.getInstance().configMain.factions().commandBlacklist();
+		if((commandBlacklist.getInNeutralClaim().isEmpty() &&
+				commandBlacklist.getInEnemyClaim().isEmpty() &&
+				commandBlacklist.getInWilderness().isEmpty() &&
+				commandBlacklist.getInFriendlyClaim().isEmpty() &&
+				commandBlacklist.getInPermanentClaim().isEmpty())) {
 			return false;
 		}
 
@@ -442,31 +386,30 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		if(me.hasFaction() &&
 				!me.isAdminBypassing() &&
-				!protection.getPermanentFactionMemberDenyCommands().isEmpty() &&
 				me.getFaction().isPermanent() &&
-				isCommandInSet(fullCmd, shortCmd, protection.getPermanentFactionMemberDenyCommands())) {
+				isCommandInCollection(fullCmd, shortCmd, commandBlacklist.getInPermanentClaim())) {
 			me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
 			return true;
 		}
 
 		Faction at = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
-		if(at.isWilderness() && !protection.getWildernessDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getWildernessDenyCommands())) {
+		if(at.isWilderness() && !commandBlacklist.getInWilderness().isEmpty() && !me.isAdminBypassing() && isCommandInCollection(fullCmd, shortCmd, commandBlacklist.getInWilderness())) {
 			me.msg(TL.PLAYER_COMMAND_WILDERNESS, fullCmd);
 			return true;
 		}
 
 		Relation rel = at.getRelationTo(me);
-		if(at.isNormal() && rel.isAlly() && !protection.getTerritoryAllyDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryAllyDenyCommands())) {
+		if(at.isNormal() && rel.isAlly() && !commandBlacklist.getInFriendlyClaim().isEmpty() && !me.isAdminBypassing() && isCommandInCollection(fullCmd, shortCmd, commandBlacklist.getInFriendlyClaim())) {
 			me.msg(TL.PLAYER_COMMAND_ALLY, fullCmd);
 			return true;
 		}
 
-		if(at.isNormal() && rel.isNeutral() && !protection.getTerritoryNeutralDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryNeutralDenyCommands())) {
+		if(at.isNormal() && rel.isNeutral() && !commandBlacklist.getInNeutralClaim().isEmpty() && !me.isAdminBypassing() && isCommandInCollection(fullCmd, shortCmd, commandBlacklist.getInNeutralClaim())) {
 			me.msg(TL.PLAYER_COMMAND_NEUTRAL, fullCmd);
 			return true;
 		}
 
-		if(at.isNormal() && rel.isEnemy() && !protection.getTerritoryEnemyDenyCommands().isEmpty() && !me.isAdminBypassing() && isCommandInSet(fullCmd, shortCmd, protection.getTerritoryEnemyDenyCommands())) {
+		if(at.isNormal() && rel.isEnemy() && !commandBlacklist.getInEnemyClaim().isEmpty() && !me.isAdminBypassing() && isCommandInCollection(fullCmd, shortCmd, commandBlacklist.getInEnemyClaim())) {
 			me.msg(TL.PLAYER_COMMAND_ENEMY, fullCmd);
 			return true;
 		}
@@ -474,7 +417,7 @@ public class FactionsPlayerListener extends AbstractListener {
 		return false;
 	}
 
-	private static boolean isCommandInSet(String fullCmd, String shortCmd, Set<String> set) {
+	private static boolean isCommandInCollection(String fullCmd, String shortCmd, Collection<String> set) {
 		for(String string : set) {
 			if(string == null) {
 				continue;
@@ -489,7 +432,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerInteractGUI(InventoryClickEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getWhoClicked().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getWhoClicked().getWorld())) {
 			return;
 		}
 
@@ -519,31 +462,12 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerMoveGUI(InventoryDragEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getWhoClicked().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getWhoClicked().getWorld())) {
 			return;
 		}
 
 		if(event.getInventory().getHolder() instanceof GUI) {
 			event.setCancelled(true);
-		}
-	}
-
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerKick(PlayerKickEvent event) {
-		FPlayer badGuy = FPlayers.getInstance().getByPlayer(event.getPlayer());
-		if(badGuy == null) {
-			return;
-		}
-
-		// if player was banned (not just kicked), get rid of their stored info
-		if(FactionsPlugin.getInstance().configMain.factions().other().isRemovePlayerDataWhenBanned() && event.getReason().equals("Banned by admin.")) {
-			if(badGuy.getRole() == Role.ADMIN) {
-				badGuy.getFaction().promoteNewLeader();
-			}
-
-			badGuy.leave();
-			badGuy.remove();
 		}
 	}
 
@@ -559,7 +483,7 @@ public class FactionsPlayerListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 

@@ -1,15 +1,16 @@
 package com.massivecraft.factions.cmd.relations;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.combat.Setting;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -79,12 +80,13 @@ public abstract class FRelationCommand extends FCommand {
 			context.faction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT, currentRelationColor + them.getTag(), "" + targetRelation.getColor() + targetRelation);
 		}
 
-		if(!targetRelation.isNeutral() && them.isPeaceful()) {
+		// TODO
+		if(!targetRelation.isNeutral() && them.getCombatSetting() == Setting.PREVENT_ALL) {
 			them.msg(TL.COMMAND_RELATIONS_PEACEFUL);
 			context.faction.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
 		}
 
-		if(!targetRelation.isNeutral() && context.faction.isPeaceful()) {
+		if(!targetRelation.isNeutral() && context.faction.getCombatSetting() == Setting.PREVENT_ALL) {
 			them.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
 			context.faction.msg(TL.COMMAND_RELATIONS_PEACEFUL);
 		}

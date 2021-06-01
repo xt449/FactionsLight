@@ -1,6 +1,7 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.combat.Setting;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
@@ -113,7 +114,7 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 			case "faction_joining":
 				return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
 			case "faction_peaceful":
-				return faction.isPeaceful() ? FactionsPlugin.getInstance().configMain.colors().relations().neutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
+				return faction.getCombatSetting() == Setting.PREVENT_ALL ? FactionsPlugin.getInstance().configMain.colors().relations().neutral() + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());

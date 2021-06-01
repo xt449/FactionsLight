@@ -1,7 +1,6 @@
 package com.massivecraft.factions.configuration;
 
-import com.massivecraft.factions.integration.dynmap.DynmapStyle;
-import ninja.leaping.configurate.objectmapping.Setting;
+import com.massivecraft.factions.integration.dynmap.DynMapStyle;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -96,9 +95,9 @@ public class DynMapConfiguration extends AbstractConfiguration {
 			}
 		};
 
-		private transient Map<String, DynmapStyle> styles;
+		private transient Map<String, DynMapStyle> styles;
 
-		public Map<String, DynmapStyle> getFactionStyles() {
+		public Map<String, DynMapStyle> getFactionStyles() {
 			if(styles == null) {
 				styles = new HashMap<>();
 				for(Map.Entry<String, ?> e : ((Map<String, ?>) factionStyles).entrySet()) {
@@ -106,7 +105,7 @@ public class DynMapConfiguration extends AbstractConfiguration {
 					Object s = e.getValue();
 					if(s instanceof Style) {
 						Style style = (Style) s;
-						styles.put(faction, new DynmapStyle()
+						styles.put(faction, new DynMapStyle()
 								.setLineColor(style.getLineColor())
 								.setLineOpacity(style.getLineOpacity())
 								.setLineWeight(style.getLineWeight())
@@ -115,7 +114,7 @@ public class DynMapConfiguration extends AbstractConfiguration {
 //								.setHomeMarker(style.getHomeMarker())
 								.setBoost(style.isStyleBoost()));
 					} else if(s instanceof Map) {
-						DynmapStyle style = new DynmapStyle();
+						DynMapStyle style = new DynMapStyle();
 						Map<String, Object> map = (Map<String, Object>) s;
 //						if(map.containsKey("homeMarker")) {
 //							style.setHomeMarker(map.get("homeMarker").toString());
@@ -165,20 +164,20 @@ public class DynMapConfiguration extends AbstractConfiguration {
 
 	public class Style {
 		// Region Style
-		@Setting
-		private String lineColor = DynmapStyle.DEFAULT_LINE_COLOR;
-		@Setting
-		private final double lineOpacity = DynmapStyle.DEFAULT_LINE_OPACITY;
-		@Setting
-		private final int lineWeight = DynmapStyle.DEFAULT_LINE_WEIGHT;
-		@Setting
-		private String fillColor = DynmapStyle.DEFAULT_FILL_COLOR;
-		@Setting
-		private final double fillOpacity = DynmapStyle.DEFAULT_FILL_OPACITY;
-		@Setting
-		private final String homeMarker = DynmapStyle.DEFAULT_HOME_MARKER;
-		@Setting
-		private final boolean styleBoost = DynmapStyle.DEFAULT_BOOST;
+//		@Setting
+		private String lineColor = DynMapStyle.DEFAULT_LINE_COLOR;
+		//		@Setting
+		private final double lineOpacity = DynMapStyle.DEFAULT_LINE_OPACITY;
+		//		@Setting
+		private final int lineWeight = DynMapStyle.DEFAULT_LINE_WEIGHT;
+		//		@Setting
+		private String fillColor = DynMapStyle.DEFAULT_FILL_COLOR;
+		//		@Setting
+		private final double fillOpacity = DynMapStyle.DEFAULT_FILL_OPACITY;
+		//		@Setting
+		private final String homeMarker = DynMapStyle.DEFAULT_HOME_MARKER;
+		//		@Setting
+		private final boolean styleBoost = DynMapStyle.DEFAULT_BOOST;
 
 		private Style() {
 			// Yay

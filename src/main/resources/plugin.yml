@@ -2,7 +2,7 @@ name: Factions
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, CmdrKittens, xt449]
-softdepend: [DynMap]
+softdepend: [dynamp, LWC, PlaceholderAPI, Sentinel, Vault, WorldGuard]
 api-version: '1.16'
 website: https://www.spigotmc.org/resources/factionsuuid.1035/
 commands:

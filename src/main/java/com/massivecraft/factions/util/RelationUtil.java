@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.RelationParticipator;
+import com.massivecraft.factions.combat.Setting;
 import com.massivecraft.factions.perms.Relation;
 import org.bukkit.ChatColor;
 
@@ -71,7 +72,7 @@ public class RelationUtil {
 			return Relation.MEMBER;
 		}
 
-		if(!ignorePeaceful && (fme.isPeaceful() || fthat.isPeaceful())) {
+		if(!ignorePeaceful && (fme.getCombatSetting() == Setting.PREVENT_ALL| fthat.getCombatSetting() == Setting.PREVENT_ALL)) {
 			return Relation.NEUTRAL;
 		}
 
@@ -98,7 +99,7 @@ public class RelationUtil {
 	public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me) {
 		Faction thatFaction = getFaction(that);
 		if(thatFaction != null) {
-			if(thatFaction.isPeaceful() && thatFaction != getFaction(me)) {
+			if(thatFaction.getCombatSetting() == Setting.PREVENT_ALL && thatFaction != getFaction(me)) {
 				return FactionsPlugin.getInstance().configMain.colors().relations().peaceful();
 			}
 		}

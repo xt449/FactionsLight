@@ -57,12 +57,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private boolean autoSave = true;
 	private boolean loadSuccessful = false;
 
-	private WorldUtil worldUtil;
-
-	public WorldUtil worldUtil() {
-		return worldUtil;
-	}
-
 	private PermUtil permUtil;
 
 	// Persist related
@@ -149,7 +143,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 		// Create Utility Instances
 		this.permUtil = new PermUtil(this);
-		this.worldUtil = new WorldUtil(this);
 
 		// attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
 		// reference command will be used to prevent "unknown command" console messages
@@ -163,8 +156,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		// Register recurring tasks
-		if(saveTask == null && configMain.factions().other().getSaveToFileEveryXMinutes() > 0.0) {
-			long saveTicks = (long) (20 * 60 * configMain.factions().other().getSaveToFileEveryXMinutes()); // Approximately every 30 min by default
+		if(saveTask == null && configMain.factions().limits().getSaveToFileEveryXMinutes() > 0.0) {
+			long saveTicks = (long) (20 * 60 * configMain.factions().limits().getSaveToFileEveryXMinutes()); // Approximately every 30 min by default
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 
@@ -192,9 +185,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			getLogger().warning("Notice: LWC Extended is the updated, and best supported, continuation of LWC. https://www.spigotmc.org/resources/lwc-extended.69551/");
 			getLogger().info(" ");
 		}
-
-		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
-		startAutoLeaveTask(false);
 
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
@@ -398,20 +388,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 			Board.getInstance().forceSave();
 		}
 		log("Disabled");
-	}
-
-	public void startAutoLeaveTask(boolean restartIfRunning) {
-		if(autoLeaveTask != null) {
-			if(!restartIfRunning) {
-				return;
-			}
-			this.getServer().getScheduler().cancelTask(autoLeaveTask);
-		}
-
-		if(configMain.factions().other().getAutoLeaveRoutineRunsEveryXMinutes() > 0.0) {
-			long ticks = (long) (20 * 60 * configMain.factions().other().getAutoLeaveRoutineRunsEveryXMinutes());
-			autoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
-		}
 	}
 
 	// -------------------------------------------- //

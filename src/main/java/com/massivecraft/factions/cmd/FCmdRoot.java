@@ -29,7 +29,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
 	public final CmdAdmin cmdAdmin = new CmdAdmin();
 	public final CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
-	public final CmdBoom cmdBoom = new CmdBoom();
 	public final CmdBypass cmdBypass = new CmdBypass();
 	public final CmdClaim cmdClaim = new CmdClaim();
 	public final CmdCoords cmdCoords = new CmdCoords();
@@ -47,9 +46,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdMap cmdMap = new CmdMap();
 	public final CmdMod cmdMod = new CmdMod();
 	public final CmdOpen cmdOpen = new CmdOpen();
-	public final CmdOwner cmdOwner = new CmdOwner();
-	public final CmdOwnerList cmdOwnerList = new CmdOwnerList();
-	public final CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public final CmdPermanent cmdPermanent = new CmdPermanent();
 	//	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
 //	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
@@ -64,7 +60,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdShow cmdShow = new CmdShow();
 	public final CmdStatus cmdStatus = new CmdStatus();
 	public final CmdStuck cmdStuck = new CmdStuck();
-	public final CmdTag cmdTag = new CmdTag();
+	public final CmdRename cmdRename = new CmdRename();
 	public final CmdTitle cmdTitle = new CmdTitle();
 	public final CmdUnclaim cmdUnclaim = new CmdUnclaim();
 	public final CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
@@ -73,7 +69,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdShowInvites cmdShowInvites = new CmdShowInvites();
 	public final CmdAnnounce cmdAnnounce = new CmdAnnounce();
 	//	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
-	public final CmdLogins cmdLogins = new CmdLogins();
 	public final CmdClaimLine cmdClaimLine = new CmdClaimLine();
 	public final CmdClaimFill cmdClaimFill = new CmdClaimFill();
 	public final CmdTop cmdTop = new CmdTop();
@@ -101,7 +96,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
 		this.addSubCommand(this.cmdAdmin);
 		this.addSubCommand(this.cmdAutoClaim);
-		this.addSubCommand(this.cmdBoom);
 		this.addSubCommand(this.cmdBypass);
 		this.addSubCommand(this.cmdClaim);
 		this.addSubCommand(this.cmdCoords);
@@ -119,9 +113,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdMap);
 		this.addSubCommand(this.cmdMod);
 		this.addSubCommand(this.cmdOpen);
-		this.addSubCommand(this.cmdOwner);
-		this.addSubCommand(this.cmdOwnerList);
-		this.addSubCommand(this.cmdPeaceful);
 		this.addSubCommand(this.cmdPermanent);
 		this.addSubCommand(this.cmdRelationAlly);
 		this.addSubCommand(this.cmdRelationEnemy);
@@ -132,7 +123,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdStatus);
 		this.addSubCommand(this.cmdStuck);
-		this.addSubCommand(this.cmdTag);
+		this.addSubCommand(this.cmdRename);
 		this.addSubCommand(this.cmdTitle);
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
@@ -140,7 +131,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdSB);
 		this.addSubCommand(this.cmdShowInvites);
 		this.addSubCommand(this.cmdAnnounce);
-		this.addSubCommand(this.cmdLogins);
 		this.addSubCommand(this.cmdClaimLine);
 		this.addSubCommand(this.cmdClaimFill);
 		this.addSubCommand(this.cmdPerm);

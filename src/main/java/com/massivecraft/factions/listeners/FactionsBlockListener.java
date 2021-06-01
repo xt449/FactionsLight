@@ -14,7 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 
 import java.util.List;
@@ -35,7 +38,7 @@ public class FactionsBlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
 			return;
 		}
 
@@ -48,11 +51,6 @@ public class FactionsBlockListener implements Listener {
 			return;
 		}
 
-		Faction targetFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
-		if(targetFaction.isNormal() && !targetFaction.isPeaceful() && FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(event.getBlock().getType())) {
-			return;
-		}
-
 		if(!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), PermissibleAction.BUILD, false)) {
 			event.setCancelled(true);
 		}
@@ -60,12 +58,7 @@ public class FactionsBlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
-			return;
-		}
-
-		if(FactionsPlugin.getInstance().configMain.factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
-				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
 			return;
 		}
 
@@ -76,12 +69,7 @@ public class FactionsBlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockDamage(BlockDamageEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
-			return;
-		}
-
-		if(FactionsPlugin.getInstance().configMain.factions().protection().getBreakExceptions().contains(event.getBlock().getType()) &&
-				Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation())).isNormal()) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
 			return;
 		}
 
@@ -90,52 +78,52 @@ public class FactionsBlockListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
-			return;
-		}
+//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+//	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
+//			return;
+//		}
+//
+//		if(!FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
+//			return;
+//		}
+//
+//		// if the pushed blocks list is empty, no worries
+//		if(event.getBlocks().isEmpty()) {
+//			return;
+//		}
+//
+//		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+//
+//		if(!canPistonMoveBlock(pistonFaction, event.getBlocks(), event.getDirection())) {
+//			event.setCancelled(true);
+//		}
+//	}
 
-		if(!FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
-			return;
-		}
-
-		// if the pushed blocks list is empty, no worries
-		if(event.getBlocks().isEmpty()) {
-			return;
-		}
-
-		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-
-		if(!canPistonMoveBlock(pistonFaction, event.getBlocks(), event.getDirection())) {
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
-			return;
-		}
-
-		// if not a sticky piston, retraction should be fine
-		if(!event.isSticky() || !FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
-			return;
-		}
-
-		List<Block> blocks = event.getBlocks();
-
-		// if the retracted blocks list is empty, no worries
-		if(blocks.isEmpty()) {
-			return;
-		}
-
-		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-
-		if(!canPistonMoveBlock(pistonFaction, blocks, null)) {
-			event.setCancelled(true);
-		}
-	}
+//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+//	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
+//			return;
+//		}
+//
+//		// if not a sticky piston, retraction should be fine
+//		if(!event.isSticky() || !FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
+//			return;
+//		}
+//
+//		List<Block> blocks = event.getBlocks();
+//
+//		// if the retracted blocks list is empty, no worries
+//		if(blocks.isEmpty()) {
+//			return;
+//		}
+//
+//		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+//
+//		if(!canPistonMoveBlock(pistonFaction, blocks, null)) {
+//			event.setCancelled(true);
+//		}
+//	}
 
 	private boolean canPistonMoveBlock(Faction pistonFaction, List<Block> blocks, BlockFace direction) {
 		String world = blocks.get(0).getWorld().getName();
@@ -147,18 +135,12 @@ public class FactionsBlockListener implements Listener {
 				.distinct()
 				.collect(Collectors.toList());
 
-		boolean disableOverall = FactionsPlugin.getInstance().configMain.factions().other().isDisablePistonsInTerritory();
+		FactionsPlugin.getInstance().configMain.factions().limits();
 		for(Faction otherFaction : factions) {
 			if(pistonFaction == otherFaction) {
 				continue;
 			}
 			// Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
-			if(disableOverall && otherFaction.isNormal()) {
-				return false;
-			}
-			if(otherFaction.isWilderness() && FactionsPlugin.getInstance().configMain.factions().protection().isWildernessDenyBuild() && !FactionsPlugin.getInstance().configMain.factions().protection().getWorldsNoWildernessProtection().contains(world)) {
-				return false;
-			}
 			Relation rel = pistonFaction.getRelationTo(otherFaction);
 			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
 				return false;
@@ -169,7 +151,7 @@ public class FactionsBlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFrostWalker(EntityBlockFormEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getBlock().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
 			return;
 		}
 
@@ -194,11 +176,7 @@ public class FactionsBlockListener implements Listener {
 	}
 
 	public static boolean playerCanBuildDestroyBlock(Player player, Location location, PermissibleAction permissibleAction, boolean justCheck) {
-		String name = player.getName();
 		MainConfiguration conf = FactionsPlugin.getInstance().configMain;
-		if(conf.factions().protection().getPlayersWhoBypassAllProtection().contains(name)) {
-			return true;
-		}
 
 		FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
 		if(me.isAdminBypassing()) {
@@ -213,15 +191,7 @@ public class FactionsBlockListener implements Listener {
 				return true;
 			}
 
-			if(!conf.factions().protection().isWildernessDenyBuild() || conf.factions().protection().getWorldsNoWildernessProtection().contains(location.getWorld().getName())) {
-				return true; // This is not faction territory. Use whatever you like here.
-			}
-
-			if(!justCheck) {
-				me.msg(TL.PERM_DENIED_WILDERNESS, permissibleAction.descriptionShort);
-			}
-
-			return false;
+			return true; // This is not faction territory. Use whatever you like here.
 		}
 //		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
 //			return true;
@@ -233,31 +203,13 @@ public class FactionsBlockListener implements Listener {
 		// If the faction hasn't: defined access or denied, fallback to config values
 		if(!otherFaction.hasAccess(me, permissibleAction)) {
 			if(pain && permissibleAction != PermissibleAction.FROSTWALK) {
-				player.damage(conf.factions().other().getActionDeniedPainAmount());
-				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
-				return true;
+//				player.damage(conf.factions().limits().getActionDeniedPainAmount());
+//				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
+//				return true;
 			} else if(!justCheck) {
 				me.msg(TL.PERM_DENIED_TERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
 			}
 			return false;
-		}
-
-		// Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-		if(conf.factions().ownedArea().isEnabled() && (conf.factions().ownedArea().isDenyBuild() || conf.factions().ownedArea().isPainBuild()) && !otherFaction.playerHasOwnershipRights(me, loc)) {
-			if(pain && conf.factions().ownedArea().isPainBuild()) {
-				player.damage(conf.factions().other().getActionDeniedPainAmount());
-
-				if(!conf.factions().ownedArea().isDenyBuild()) {
-					me.msg(TL.PERM_DENIED_PAINOWNED, permissibleAction.descriptionShort, otherFaction.getOwnerListString(loc));
-				}
-			}
-			if(conf.factions().ownedArea().isDenyBuild()) {
-				if(!justCheck) {
-					me.msg(TL.PERM_DENIED_OWNED, permissibleAction.descriptionShort, otherFaction.getOwnerListString(loc));
-				}
-
-				return false;
-			}
 		}
 
 		return true;

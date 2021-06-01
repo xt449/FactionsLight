@@ -3,10 +3,10 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -98,7 +98,7 @@ public class CmdKick extends FCommand {
 			context.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(context.fPlayer), toKickFaction.describeTo(context.fPlayer));
 		}
 
-		if(FactionsPlugin.getInstance().configMain.logging().isFactionKick()) {
+		if(FactionsPlugin.getInstance().configMain.logging().factionKick()) {
 			FactionsPlugin.getInstance().log((context.player == null ? "A console command" : context.fPlayer.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
 		}
 

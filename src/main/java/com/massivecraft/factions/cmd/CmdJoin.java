@@ -1,11 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
@@ -49,8 +45,8 @@ public class CmdJoin extends FCommand {
 			return;
 		}
 
-		if(FactionsPlugin.getInstance().configMain.factions().other().getFactionMemberLimit() > 0 && faction.getFPlayers().size() >= FactionsPlugin.getInstance().configMain.factions().other().getFactionMemberLimit()) {
-			context.msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(context.fPlayer), FactionsPlugin.getInstance().configMain.factions().other().getFactionMemberLimit(), fplayer.describeTo(context.fPlayer, false));
+		if(FactionsPlugin.getInstance().configMain.factions().limits().getFactionMemberLimit() > 0 && faction.getFPlayers().size() >= FactionsPlugin.getInstance().configMain.factions().limits().getFactionMemberLimit()) {
+			context.msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(context.fPlayer), FactionsPlugin.getInstance().configMain.factions().limits().getFactionMemberLimit(), fplayer.describeTo(context.fPlayer, false));
 			return;
 		}
 
@@ -97,7 +93,7 @@ public class CmdJoin extends FCommand {
 		faction.deinvite(fplayer);
 		fplayer.setRole(faction.getDefaultRole());
 
-		if(FactionsPlugin.getInstance().configMain.logging().isFactionJoin()) {
+		if(FactionsPlugin.getInstance().configMain.logging().factionJoin()) {
 			if(samePlayer) {
 				FactionsPlugin.getInstance().log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
 			} else {

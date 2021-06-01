@@ -3,8 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -75,7 +75,8 @@ public class CmdColeader extends FCommand {
 		}
 
 		// Check to see if we should allow multiple coleaders or not.
-		if(!FactionsPlugin.getInstance().configMain.factions().other().isAllowMultipleColeaders() && !targetFaction.getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
+		FactionsPlugin.getInstance().configMain.factions().limits();
+		if(!true && !targetFaction.getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
 			context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 			return;
 		}

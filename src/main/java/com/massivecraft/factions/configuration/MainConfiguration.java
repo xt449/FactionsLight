@@ -1,18 +1,13 @@
 package com.massivecraft.factions.configuration;
 
+import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.util.MaterialHelper;
-import com.massivecraft.factions.util.MiscUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Jonathan Talcott (xt449 / BinaryBanana)
@@ -66,7 +61,6 @@ public class MainConfiguration extends AbstractConfiguration {
 		commands.show.delay = config.getInt("commands.show.delay");
 		commands.show.minimal = config.getBoolean("commands.show.minimal");
 		commands.show.format = config.getString("commands.show.format");
-		commands.show.exempt = config.getStringList("commands.show.exempt");
 		//// Stuck:
 		commands.stuck.cooldown = config.getInt("commands.stuck.cooldown");
 		commands.stuck.delay = config.getInt("commands.stuck.delay");
@@ -76,15 +70,34 @@ public class MainConfiguration extends AbstractConfiguration {
 		commands.toolTips.player = config.getString("commands.toolTips.player");
 
 		// Factions:
-		//// LandRaidControl: TODO
+		//// Combat:
+		factions.combat.gracePeriodOnLogin = config.getInt("factions.combat.gracePeriodOnLogin");
+		factions.combat.gracePeriodOnRespawn = config.getInt("factions.combat.gracePeriodOnRespawn");
+		factions.combat.allowByDefault = config.getBoolean("factions.combat.allowByDefault");
+		//// ComandBlacklist:
+		factions.commandBlacklist.inWilderness = Collections.unmodifiableList(config.getStringList("factions.commandBlacklist.inWilderness"));
+		factions.commandBlacklist.inNeutralClaim = Collections.unmodifiableList(config.getStringList("factions.commandBlacklist.inNeutralClaim"));
+		factions.commandBlacklist.inFriendlyClaim = Collections.unmodifiableList(config.getStringList("factions.commandBlacklist.inFriendlyClaim"));
+		factions.commandBlacklist.inEnemyClaim = Collections.unmodifiableList(config.getStringList("factions.commandBlacklist.inEnemyClaim"));
+		factions.commandBlacklist.inPermanentClaim = Collections.unmodifiableList(config.getStringList("factions.commandBlacklist.inPermanentClaim"));
+		//// Limits:
+		factions.limits.tagLengthMin = config.getInt("factions.limits.tagLengthMin");
+		factions.limits.tagLengthMax = config.getInt("factions.limits.tagLengthMax");
+		factions.limits.nameBlacklist = Collections.unmodifiableList(config.getStringList("factions.limits.nameBlacklist"));
+		factions.limits.factionMemberLimit = config.getInt("factions.limits.factionMemberLimit");
+		//// Roles:
+		factions.roles.defaultRelation = Relation.valueOf(config.getString("factions.roles.defaultRelation"));
+		factions.roles.defaultRole = Role.valueOf(config.getString("factions.roles.defaultRole"));
 		//// Prefix:
 		factions.prefixes.admin = config.getString("factions.prefixes.admin");
 		factions.prefixes.coleader = config.getString("factions.prefixes.coleader");
 		factions.prefixes.mod = config.getString("factions.prefixes.mod");
 		factions.prefixes.normal = config.getString("factions.prefixes.normal");
 		factions.prefixes.recruit = config.getString("factions.prefixes.recruit");
-		//// Chat:
 
+		//// RestrictWorlds:
+		restrictWorlds.whitelist = config.getBoolean("restrictWorlds.whitelist");
+		restrictWorlds.worldList = Collections.unmodifiableList(config.getStringList("restrictWorlds.worldList"));
 	}
 
 	public static class Colors {
@@ -305,6 +318,24 @@ public class MainConfiguration extends AbstractConfiguration {
 	}
 
 	public static class Factions {
+		public static class Combat {
+			private transient int gracePeriodOnLogin;
+			private transient int gracePeriodOnRespawn;
+			private transient boolean allowByDefault;
+
+			public int gracePeriodOnLogin() {
+				return gracePeriodOnLogin;
+			}
+
+			public int gracePeriodOnRespawn() {
+				return gracePeriodOnRespawn;
+			}
+
+			public boolean allowByDefault() {
+				return allowByDefault;
+			}
+		}
+
 //		public static class LandRaidControl {
 //			public static class DTR {
 //				private transient double startingDTR;
@@ -518,6 +549,211 @@ public class MainConfiguration extends AbstractConfiguration {
 //			}
 //		}
 
+		public static class CommandBlacklist {
+			private transient List<String> inWilderness;
+			private transient List<String> inNeutralClaim;
+			private transient List<String> inFriendlyClaim;
+			private transient List<String> inEnemyClaim;
+			private transient List<String> inPermanentClaim;
+
+			public List<String> getInWilderness() {
+				return inWilderness;
+			}
+
+			public List<String> getInNeutralClaim() {
+				return inNeutralClaim;
+			}
+
+			public List<String> getInFriendlyClaim() {
+				return inFriendlyClaim;
+			}
+
+			public List<String> getInEnemyClaim() {
+				return inEnemyClaim;
+			}
+
+			public List<String> getInPermanentClaim() {
+				return inPermanentClaim;
+			}
+		}
+
+//		public static class Spawning {
+//			private transient Set<String> preventSpawningInSafezone;
+//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInSafezoneReason;
+//			private transient Set<String> preventSpawningInSafezoneExceptions;
+//			private transient Set<EntityType> preventSpawningInSafezoneExceptionsType;
+//			private transient Set<String> preventSpawningInWarzone;
+//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWarzoneReason;
+//			private transient Set<String> preventSpawningInWarzoneExceptions;
+//			private transient Set<EntityType> preventSpawningInWarzoneExceptionsType;
+//			private transient Set<String> preventSpawningInWilderness;
+//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWildernessReason;
+//			private transient Set<String> preventSpawningInWildernessExceptions;
+//			private transient Set<EntityType> preventSpawningInWildernessExceptionsType;
+//			private transient Set<String> preventSpawningInTerritory;
+//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInTerritoryReason;
+//			private transient Set<String> preventSpawningInTerritoryExceptions;
+//			private transient Set<EntityType> preventSpawningInTerritoryExceptionsType;
+//
+//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInSafezone() {
+//				if(preventSpawningInSafezoneReason == null) {
+//					preventSpawningInSafezoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInSafezone, MiscUtil.SPAWN_REASON_FUNCTION);
+//				}
+//				return preventSpawningInSafezoneReason;
+//			}
+//
+//			public Set<EntityType> getPreventInSafezoneExceptions() {
+//				if(preventSpawningInSafezoneExceptionsType == null) {
+//					preventSpawningInSafezoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInSafezoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
+//				}
+//				return preventSpawningInSafezoneExceptionsType;
+//			}
+//
+//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInTerritory() {
+//				if(preventSpawningInTerritoryReason == null) {
+//					preventSpawningInTerritoryReason = MiscUtil.typeSetFromStringSet(preventSpawningInTerritory, MiscUtil.SPAWN_REASON_FUNCTION);
+//				}
+//				return preventSpawningInTerritoryReason;
+//			}
+//
+//			public Set<EntityType> getPreventInTerritoryExceptions() {
+//				if(preventSpawningInTerritoryExceptionsType == null) {
+//					preventSpawningInTerritoryExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInTerritoryExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
+//				}
+//				return preventSpawningInTerritoryExceptionsType;
+//			}
+//
+//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWarzone() {
+//				if(preventSpawningInWarzoneReason == null) {
+//					preventSpawningInWarzoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInWarzone, MiscUtil.SPAWN_REASON_FUNCTION);
+//				}
+//				return preventSpawningInWarzoneReason;
+//			}
+//
+//			public Set<EntityType> getPreventInWarzoneExceptions() {
+//				if(preventSpawningInWarzoneExceptionsType == null) {
+//					preventSpawningInWarzoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWarzoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
+//				}
+//				return preventSpawningInWarzoneExceptionsType;
+//			}
+//
+//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWilderness() {
+//				if(preventSpawningInWildernessReason == null) {
+//					preventSpawningInWildernessReason = MiscUtil.typeSetFromStringSet(preventSpawningInWilderness, MiscUtil.SPAWN_REASON_FUNCTION);
+//				}
+//				return preventSpawningInWildernessReason;
+//			}
+//
+//			public Set<EntityType> getPreventInWildernessExceptions() {
+//				if(preventSpawningInWildernessExceptionsType == null) {
+//					preventSpawningInWildernessExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWildernessExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
+//				}
+//				return preventSpawningInWildernessExceptionsType;
+//			}
+//		}
+
+//		public static class Limits {
+//
+//		}
+
+		public static class Limits {
+			private transient int tagLengthMin;
+			private transient int tagLengthMax;
+			private transient List<String> nameBlacklist;
+			private transient int factionMemberLimit;
+
+			public int getTagLengthMin() {
+				return tagLengthMin;
+			}
+
+			public int getTagLengthMax() {
+				return tagLengthMax;
+			}
+
+			public List<String> getNameBlacklist() {
+				return nameBlacklist;
+			}
+
+			public int getFactionMemberLimit() {
+				return factionMemberLimit;
+			}
+
+			//
+
+			private transient double saveToFileEveryXMinutes;
+
+			public double getSaveToFileEveryXMinutes() {
+				return saveToFileEveryXMinutes;
+			}
+		}
+
+//		public static class OwnedArea {
+//			private transient boolean enabled;
+//			private transient int limitPerFaction;
+//			private transient boolean moderatorsBypass;
+//			private transient boolean denyBuild;
+//			private transient boolean painBuild;
+//			private transient boolean protectMaterials;
+//			private transient boolean denyUsage;
+//
+//			private transient boolean messageOnBorder;
+//			private transient boolean messageInsideTerritory;
+//			private transient boolean messageByChunk;
+//
+//			public boolean isEnabled() {
+//				return enabled;
+//			}
+//
+//			public int getLimitPerFaction() {
+//				return limitPerFaction;
+//			}
+//
+//			public boolean isModeratorsBypass() {
+//				return moderatorsBypass;
+//			}
+//
+//			public boolean isDenyBuild() {
+//				return denyBuild;
+//			}
+//
+//			public boolean isPainBuild() {
+//				return painBuild;
+//			}
+//
+//			public boolean isProtectMaterials() {
+//				return protectMaterials;
+//			}
+//
+//			public boolean isDenyUsage() {
+//				return denyUsage;
+//			}
+//
+//			public boolean isMessageOnBorder() {
+//				return messageOnBorder;
+//			}
+//
+//			public boolean isMessageInsideTerritory() {
+//				return messageInsideTerritory;
+//			}
+//
+//			public boolean isMessageByChunk() {
+//				return messageByChunk;
+//			}
+//		}
+
+		public static class Roles {
+			private transient Relation defaultRelation;
+			private transient Role defaultRole;
+
+			public Relation defaultRelation() {
+				return defaultRelation;
+			}
+
+			public Role defaultRole() {
+				return defaultRole;
+			}
+		}
+
 		public static class Prefixes {
 			private transient String admin;
 			private transient String coleader;
@@ -546,673 +782,46 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-		public static class PVP {
-			private transient boolean disablePVPBetweenNeutralFactions;
-			private transient boolean disablePVPForFactionlessPlayers;
-			private transient boolean enablePVPAgainstFactionlessInAttackersLand;
-			private transient boolean disablePeacefulPVPInWarzone;
-			private transient int noPVPDamageToOthersForXSecondsAfterLogin;
-			private transient Set<String> worldsIgnorePvP;
-
-			public boolean isDisablePVPBetweenNeutralFactions() {
-				return disablePVPBetweenNeutralFactions;
-			}
-
-			public boolean isDisablePVPForFactionlessPlayers() {
-				return disablePVPForFactionlessPlayers;
-			}
-
-			public boolean isDisablePeacefulPVPInWarzone() {
-				return disablePeacefulPVPInWarzone;
-			}
-
-			public boolean isEnablePVPAgainstFactionlessInAttackersLand() {
-				return enablePVPAgainstFactionlessInAttackersLand;
-			}
-
-			public int getNoPVPDamageToOthersForXSecondsAfterLogin() {
-				return noPVPDamageToOthersForXSecondsAfterLogin;
-			}
-
-			public Set<String> getWorldsIgnorePvP() {
-				return Collections.unmodifiableSet(worldsIgnorePvP);
-			}
-		}
-
-		public static class SpecialCase {
-			private transient boolean peacefulTerritoryDisablePVP;
-			private transient boolean peacefulTerritoryDisableMonsters;
-			private transient boolean peacefulTerritoryDisableBoom;
-			private transient boolean permanentFactionsDisableLeaderPromotion;
-			private transient Set<String> ignoreBuildMaterials;
-			private transient Set<Material> ignoreBuildMaterialsMat;
-
-			public Set<Material> getIgnoreBuildMaterials() {
-				if(ignoreBuildMaterialsMat == null) {
-					ignoreBuildMaterialsMat = new HashSet<>();
-					ignoreBuildMaterials.forEach(m -> ignoreBuildMaterialsMat.add(MaterialHelper.getMaterial(m)));
-					ignoreBuildMaterialsMat.remove(Material.AIR);
-					ignoreBuildMaterials = Collections.unmodifiableSet(ignoreBuildMaterials);
-				}
-				return ignoreBuildMaterialsMat;
-			}
-
-			public boolean isPeacefulTerritoryDisablePVP() {
-				return peacefulTerritoryDisablePVP;
-			}
-
-			public boolean isPeacefulTerritoryDisableMonsters() {
-				return peacefulTerritoryDisableMonsters;
-			}
-
-			public boolean isPeacefulTerritoryDisableBoom() {
-				return peacefulTerritoryDisableBoom;
-			}
-
-			public boolean isPermanentFactionsDisableLeaderPromotion() {
-				return permanentFactionsDisableLeaderPromotion;
-			}
-		}
-
-		public static class Claims {
-			private transient boolean mustBeConnected;
-			private transient boolean canBeUnconnectedIfOwnedByOtherFaction;
-			private transient int requireMinFactionMembers;
-			private transient int radiusClaimFailureLimit;
-			private transient Set<String> worldsNoClaiming;
-			private transient int bufferZone;
-			private transient boolean allowOverClaim;
-			private transient boolean allowOverClaimIgnoringBuffer;
-
-			public boolean isAllowOverClaim() {
-				return allowOverClaim;
-			}
-
-			public boolean isAllowOverClaimAndIgnoringBuffer() {
-				return allowOverClaim && allowOverClaimIgnoringBuffer;
-			}
-
-			public int getBufferZone() {
-				return bufferZone;
-			}
-
-			public boolean isMustBeConnected() {
-				return mustBeConnected;
-			}
-
-			public boolean isCanBeUnconnectedIfOwnedByOtherFaction() {
-				return canBeUnconnectedIfOwnedByOtherFaction;
-			}
-
-			public int getRequireMinFactionMembers() {
-				return requireMinFactionMembers;
-			}
-
-			public int getRadiusClaimFailureLimit() {
-				return radiusClaimFailureLimit;
-			}
-
-			public Set<String> getWorldsNoClaiming() {
-				return Collections.unmodifiableSet(worldsNoClaiming);
-			}
-		}
-
-		public static class Protection {
-			private transient Set<String> permanentFactionMemberDenyCommands;
-			private transient Set<String> territoryNeutralDenyCommands;
-			private transient Set<String> territoryEnemyDenyCommands;
-			private transient Set<String> territoryAllyDenyCommands;
-			private transient Set<String> warzoneDenyCommands;
-			private transient Set<String> wildernessDenyCommands;
-			private transient boolean territoryBlockCreepers;
-			private transient boolean territoryBlockCreepersWhenOffline;
-			private transient boolean territoryBlockFireballs;
-			private transient boolean territoryBlockFireballsWhenOffline;
-			private transient boolean territoryBlockTNT;
-			private transient boolean territoryBlockTNTWhenOffline;
-			private transient boolean territoryBlockOtherExplosions;
-			private transient boolean territoryBlockOtherExplosionsWhenOffline;
-			private transient boolean territoryDenyEndermanBlocks;
-			private transient boolean territoryDenyEndermanBlocksWhenOffline;
-			private transient boolean territoryBlockEntityDamageMatchingPerms;
-			private transient boolean safeZoneDenyBuild;
-			private transient boolean safeZoneDenyUsage;
-			private transient boolean safeZoneBlockTNT;
-			private transient boolean safeZoneBlockOtherExplosions;
-			private transient boolean safeZonePreventAllDamageToPlayers;
-			private transient boolean safeZoneDenyEndermanBlocks;
-			private transient boolean safeZoneBlockAllEntityDamage;
-			private transient boolean peacefulBlockAllEntityDamage;
-			private transient boolean warZoneDenyBuild;
-			private transient boolean warZoneDenyUsage;
-			private transient boolean warZoneBlockCreepers;
-			private transient boolean warZoneBlockFireballs;
-			private transient boolean warZoneBlockTNT;
-			private transient boolean warZoneBlockOtherExplosions;
-			private transient boolean warZoneFriendlyFire;
-			private transient boolean warZoneDenyEndermanBlocks;
-			private transient boolean wildernessDenyBuild;
-			private transient boolean wildernessDenyUsage;
-			private transient boolean wildernessBlockCreepers;
-			private transient boolean wildernessBlockFireballs;
-			private transient boolean wildernessBlockTNT;
-			private transient boolean wildernessBlockOtherExplosions;
-			private transient boolean wildernessDenyEndermanBlocks;
-			private transient boolean pistonProtectionThroughDenyBuild;
-			private transient Set<String> territoryDenyUsageMaterials;
-			private transient Set<String> territoryDenyUsageMaterialsWhenOffline;
-			private transient Set<Material> territoryDenyUsageMaterialsMat;
-			private transient Set<Material> territoryDenyUsageMaterialsWhenOfflineMat;
-			private transient Set<String> containerExceptions;
-			private transient Set<Material> containerExceptionsMat;
-			private transient Set<String> breakExceptions;
-			private transient Set<Material> breakExceptionsMat;
-			private transient Set<String> entityInteractExceptions;
-			private transient Set<String> playersWhoBypassAllProtection;
-			private transient Set<String> worldsNoWildernessProtection;
-
-			public Set<String> getPermanentFactionMemberDenyCommands() {
-				return Collections.unmodifiableSet(permanentFactionMemberDenyCommands);
-			}
-
-			public Set<String> getTerritoryNeutralDenyCommands() {
-				return Collections.unmodifiableSet(territoryNeutralDenyCommands);
-			}
-
-			public Set<String> getTerritoryEnemyDenyCommands() {
-				return Collections.unmodifiableSet(territoryEnemyDenyCommands);
-			}
-
-			public Set<String> getTerritoryAllyDenyCommands() {
-				return Collections.unmodifiableSet(territoryAllyDenyCommands);
-			}
-
-			public Set<String> getWarzoneDenyCommands() {
-				return Collections.unmodifiableSet(warzoneDenyCommands);
-			}
-
-			public Set<String> getWildernessDenyCommands() {
-				return Collections.unmodifiableSet(wildernessDenyCommands);
-			}
-
-			public boolean isTerritoryBlockCreepers() {
-				return territoryBlockCreepers;
-			}
-
-			public boolean isTerritoryBlockCreepersWhenOffline() {
-				return territoryBlockCreepersWhenOffline;
-			}
-
-			public boolean isTerritoryBlockFireballs() {
-				return territoryBlockFireballs;
-			}
-
-			public boolean isTerritoryBlockFireballsWhenOffline() {
-				return territoryBlockFireballsWhenOffline;
-			}
-
-			public boolean isTerritoryBlockTNT() {
-				return territoryBlockTNT;
-			}
-
-			public boolean isTerritoryBlockTNTWhenOffline() {
-				return territoryBlockTNTWhenOffline;
-			}
-
-			public boolean isTerritoryDenyEndermanBlocks() {
-				return territoryDenyEndermanBlocks;
-			}
-
-			public boolean isTerritoryDenyEndermanBlocksWhenOffline() {
-				return territoryDenyEndermanBlocksWhenOffline;
-			}
-
-			public boolean isTerritoryBlockEntityDamageMatchingPerms() {
-				return territoryBlockEntityDamageMatchingPerms;
-			}
-
-			public boolean isSafeZoneDenyBuild() {
-				return safeZoneDenyBuild;
-			}
-
-			public boolean isSafeZoneDenyUsage() {
-				return safeZoneDenyUsage;
-			}
-
-			public boolean isSafeZoneBlockTNT() {
-				return safeZoneBlockTNT;
-			}
-
-			public boolean isSafeZonePreventAllDamageToPlayers() {
-				return safeZonePreventAllDamageToPlayers;
-			}
-
-			public boolean isSafeZoneDenyEndermanBlocks() {
-				return safeZoneDenyEndermanBlocks;
-			}
-
-			public boolean isSafeZoneBlockAllEntityDamage() {
-				return safeZoneBlockAllEntityDamage;
-			}
-
-			public boolean isPeacefulBlockAllEntityDamage() {
-				return peacefulBlockAllEntityDamage;
-			}
-
-			public boolean isWarZoneDenyBuild() {
-				return warZoneDenyBuild;
-			}
-
-			public boolean isWarZoneDenyUsage() {
-				return warZoneDenyUsage;
-			}
-
-			public boolean isWarZoneBlockCreepers() {
-				return warZoneBlockCreepers;
-			}
-
-			public boolean isWarZoneBlockFireballs() {
-				return warZoneBlockFireballs;
-			}
-
-			public boolean isWarZoneBlockTNT() {
-				return warZoneBlockTNT;
-			}
-
-			public boolean isWarZoneFriendlyFire() {
-				return warZoneFriendlyFire;
-			}
-
-			public boolean isWarZoneDenyEndermanBlocks() {
-				return warZoneDenyEndermanBlocks;
-			}
-
-			public boolean isWildernessDenyBuild() {
-				return wildernessDenyBuild;
-			}
-
-			public boolean isWildernessDenyUsage() {
-				return wildernessDenyUsage;
-			}
-
-			public boolean isWildernessBlockCreepers() {
-				return wildernessBlockCreepers;
-			}
-
-			public boolean isWildernessBlockFireballs() {
-				return wildernessBlockFireballs;
-			}
-
-			public boolean isWildernessBlockTNT() {
-				return wildernessBlockTNT;
-			}
-
-			public boolean isWildernessDenyEndermanBlocks() {
-				return wildernessDenyEndermanBlocks;
-			}
-
-			public boolean isPistonProtectionThroughDenyBuild() {
-				return pistonProtectionThroughDenyBuild;
-			}
-
-			public boolean isTerritoryBlockOtherExplosions() {
-				return territoryBlockOtherExplosions;
-			}
-
-			public boolean isTerritoryBlockOtherExplosionsWhenOffline() {
-				return territoryBlockOtherExplosionsWhenOffline;
-			}
-
-			public boolean isSafeZoneBlockOtherExplosions() {
-				return safeZoneBlockOtherExplosions;
-			}
-
-			public boolean isWarZoneBlockOtherExplosions() {
-				return warZoneBlockOtherExplosions;
-			}
-
-			public boolean isWildernessBlockOtherExplosions() {
-				return wildernessBlockOtherExplosions;
-			}
-
-			public Set<Material> getTerritoryDenyUsageMaterials() {
-				if(territoryDenyUsageMaterialsMat == null) {
-					territoryDenyUsageMaterialsMat = new HashSet<>();
-					territoryDenyUsageMaterials.forEach(m -> territoryDenyUsageMaterialsMat.add(MaterialHelper.getMaterial(m)));
-					territoryDenyUsageMaterialsMat.remove(Material.AIR);
-					territoryDenyUsageMaterialsMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsMat);
-				}
-				return territoryDenyUsageMaterialsMat;
-			}
-
-			public Set<Material> getTerritoryDenyUsageMaterialsWhenOffline() {
-				if(territoryDenyUsageMaterialsWhenOfflineMat == null) {
-					territoryDenyUsageMaterialsWhenOfflineMat = new HashSet<>();
-					territoryDenyUsageMaterialsWhenOffline.forEach(m -> territoryDenyUsageMaterialsWhenOfflineMat.add(MaterialHelper.getMaterial(m)));
-					territoryDenyUsageMaterialsWhenOfflineMat.remove(Material.AIR);
-					territoryDenyUsageMaterialsWhenOfflineMat = Collections.unmodifiableSet(territoryDenyUsageMaterialsWhenOfflineMat);
-				}
-				return territoryDenyUsageMaterialsWhenOfflineMat;
-			}
-
-			public Set<Material> getContainerExceptions() {
-				if(containerExceptionsMat == null) {
-					containerExceptionsMat = new HashSet<>();
-					containerExceptions.forEach(m -> containerExceptionsMat.add(MaterialHelper.getMaterial(m)));
-					containerExceptionsMat.remove(Material.AIR);
-					containerExceptionsMat = Collections.unmodifiableSet(containerExceptionsMat);
-				}
-				return containerExceptionsMat;
-			}
-
-			public Set<Material> getBreakExceptions() {
-				if(breakExceptionsMat == null) {
-					breakExceptionsMat = new HashSet<>();
-					breakExceptions.forEach(m -> breakExceptionsMat.add(MaterialHelper.getMaterial(m)));
-					breakExceptionsMat.remove(Material.AIR);
-					breakExceptionsMat = Collections.unmodifiableSet(breakExceptionsMat);
-				}
-				return breakExceptionsMat;
-			}
-
-			public Set<String> getEntityInteractExceptions() {
-				return Collections.unmodifiableSet(entityInteractExceptions);
-			}
-
-			public Set<String> getPlayersWhoBypassAllProtection() {
-				return Collections.unmodifiableSet(playersWhoBypassAllProtection);
-			}
-
-			public Set<String> getWorldsNoWildernessProtection() {
-				return Collections.unmodifiableSet(worldsNoWildernessProtection);
-			}
-		}
-
-		public static class Spawning {
-			private transient Set<String> preventSpawningInSafezone;
-			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInSafezoneReason;
-			private transient Set<String> preventSpawningInSafezoneExceptions;
-			private transient Set<EntityType> preventSpawningInSafezoneExceptionsType;
-			private transient Set<String> preventSpawningInWarzone;
-			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWarzoneReason;
-			private transient Set<String> preventSpawningInWarzoneExceptions;
-			private transient Set<EntityType> preventSpawningInWarzoneExceptionsType;
-			private transient Set<String> preventSpawningInWilderness;
-			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWildernessReason;
-			private transient Set<String> preventSpawningInWildernessExceptions;
-			private transient Set<EntityType> preventSpawningInWildernessExceptionsType;
-			private transient Set<String> preventSpawningInTerritory;
-			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInTerritoryReason;
-			private transient Set<String> preventSpawningInTerritoryExceptions;
-			private transient Set<EntityType> preventSpawningInTerritoryExceptionsType;
-
-			public Set<CreatureSpawnEvent.SpawnReason> getPreventInSafezone() {
-				if(preventSpawningInSafezoneReason == null) {
-					preventSpawningInSafezoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInSafezone, MiscUtil.SPAWN_REASON_FUNCTION);
-				}
-				return preventSpawningInSafezoneReason;
-			}
-
-			public Set<EntityType> getPreventInSafezoneExceptions() {
-				if(preventSpawningInSafezoneExceptionsType == null) {
-					preventSpawningInSafezoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInSafezoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-				}
-				return preventSpawningInSafezoneExceptionsType;
-			}
-
-			public Set<CreatureSpawnEvent.SpawnReason> getPreventInTerritory() {
-				if(preventSpawningInTerritoryReason == null) {
-					preventSpawningInTerritoryReason = MiscUtil.typeSetFromStringSet(preventSpawningInTerritory, MiscUtil.SPAWN_REASON_FUNCTION);
-				}
-				return preventSpawningInTerritoryReason;
-			}
-
-			public Set<EntityType> getPreventInTerritoryExceptions() {
-				if(preventSpawningInTerritoryExceptionsType == null) {
-					preventSpawningInTerritoryExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInTerritoryExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-				}
-				return preventSpawningInTerritoryExceptionsType;
-			}
-
-			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWarzone() {
-				if(preventSpawningInWarzoneReason == null) {
-					preventSpawningInWarzoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInWarzone, MiscUtil.SPAWN_REASON_FUNCTION);
-				}
-				return preventSpawningInWarzoneReason;
-			}
-
-			public Set<EntityType> getPreventInWarzoneExceptions() {
-				if(preventSpawningInWarzoneExceptionsType == null) {
-					preventSpawningInWarzoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWarzoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-				}
-				return preventSpawningInWarzoneExceptionsType;
-			}
-
-			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWilderness() {
-				if(preventSpawningInWildernessReason == null) {
-					preventSpawningInWildernessReason = MiscUtil.typeSetFromStringSet(preventSpawningInWilderness, MiscUtil.SPAWN_REASON_FUNCTION);
-				}
-				return preventSpawningInWildernessReason;
-			}
-
-			public Set<EntityType> getPreventInWildernessExceptions() {
-				if(preventSpawningInWildernessExceptionsType == null) {
-					preventSpawningInWildernessExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWildernessExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-				}
-				return preventSpawningInWildernessExceptionsType;
-			}
-		}
-
-		public static class OwnedArea {
-			private transient boolean enabled;
-			private transient int limitPerFaction;
-			private transient boolean moderatorsBypass;
-			private transient boolean denyBuild;
-			private transient boolean painBuild;
-			private transient boolean protectMaterials;
-			private transient boolean denyUsage;
-
-			private transient boolean messageOnBorder;
-			private transient boolean messageInsideTerritory;
-			private transient boolean messageByChunk;
-
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			public int getLimitPerFaction() {
-				return limitPerFaction;
-			}
-
-			public boolean isModeratorsBypass() {
-				return moderatorsBypass;
-			}
-
-			public boolean isDenyBuild() {
-				return denyBuild;
-			}
-
-			public boolean isPainBuild() {
-				return painBuild;
-			}
-
-			public boolean isProtectMaterials() {
-				return protectMaterials;
-			}
-
-			public boolean isDenyUsage() {
-				return denyUsage;
-			}
-
-			public boolean isMessageOnBorder() {
-				return messageOnBorder;
-			}
-
-			public boolean isMessageInsideTerritory() {
-				return messageInsideTerritory;
-			}
-
-			public boolean isMessageByChunk() {
-				return messageByChunk;
-			}
-		}
-
-		public static class Other {
-			private transient boolean allowMultipleColeaders;
-			private transient int tagLengthMin;
-			private transient int tagLengthMax;
-			private transient boolean tagForceUpperCase;
-
-			private transient boolean newFactionsDefaultOpen;
-			private transient boolean newFactionsDefaultPeaceful;
-			private transient int factionMemberLimit;
-			private transient String newPlayerStartingFactionID;
-
-			private transient double saveToFileEveryXMinutes;
-
-			private transient double autoLeaveAfterDaysOfInactivity;
-			private transient double autoLeaveRoutineRunsEveryXMinutes;
-			private transient int autoLeaveRoutineMaxMillisecondsPerTick;
-			private transient boolean removePlayerDataWhenBanned;
-			private transient boolean autoLeaveDeleteFPlayerData; // Let them just remove player from Faction.
-			private transient double considerFactionsReallyOfflineAfterXMinutes;
-			private transient int actionDeniedPainAmount;
-			private transient String defaultRelation;
-			private transient String defaultRole;
-			private transient Role defaultRoleRole;
-			private transient boolean disablePistonsInTerritory;
-			private transient List<String> nameBlacklist;
-
-			public List<String> getNameBlacklist() {
-				return Collections.unmodifiableList(this.nameBlacklist);
-			}
-
-			public boolean isDisablePistonsInTerritory() {
-				return disablePistonsInTerritory;
-			}
-
-			public String getDefaultRelation() {
-				return defaultRelation;
-			}
-
-			public Role getDefaultRole() {
-				if(defaultRoleRole == null) {
-					if((defaultRoleRole = Role.fromString(defaultRole)) == null) {
-						defaultRoleRole = Role.NORMAL;
-					}
-				}
-				return defaultRoleRole;
-			}
-
-			public boolean isAllowMultipleColeaders() {
-				return allowMultipleColeaders;
-			}
-
-			public int getTagLengthMin() {
-				return tagLengthMin;
-			}
-
-			public int getTagLengthMax() {
-				return tagLengthMax;
-			}
-
-			public boolean isTagForceUpperCase() {
-				return tagForceUpperCase;
-			}
-
-			public boolean isNewFactionsDefaultOpen() {
-				return newFactionsDefaultOpen;
-			}
-
-			public boolean isNewFactionsDefaultPeaceful() {
-				return newFactionsDefaultPeaceful;
-			}
-
-			public int getFactionMemberLimit() {
-				return factionMemberLimit;
-			}
-
-			public String getNewPlayerStartingFactionID() {
-				return newPlayerStartingFactionID;
-			}
-
-			public double getSaveToFileEveryXMinutes() {
-				return saveToFileEveryXMinutes;
-			}
-
-			public double getAutoLeaveAfterDaysOfInactivity() {
-				return autoLeaveAfterDaysOfInactivity;
-			}
-
-			public double getAutoLeaveRoutineRunsEveryXMinutes() {
-				return autoLeaveRoutineRunsEveryXMinutes;
-			}
-
-			public int getAutoLeaveRoutineMaxMillisecondsPerTick() {
-				return autoLeaveRoutineMaxMillisecondsPerTick;
-			}
-
-			public boolean isRemovePlayerDataWhenBanned() {
-				return removePlayerDataWhenBanned;
-			}
-
-			public boolean isAutoLeaveDeleteFPlayerData() {
-				return autoLeaveDeleteFPlayerData;
-			}
-
-			public double getConsiderFactionsReallyOfflineAfterXMinutes() {
-				return considerFactionsReallyOfflineAfterXMinutes;
-			}
-
-			public int getActionDeniedPainAmount() {
-				return actionDeniedPainAmount;
-			}
-		}
-
-		private final transient PVP pvp = new PVP();
-		private final transient SpecialCase specialCase = new SpecialCase();
-		private final transient Claims claims = new Claims();
-		private final transient Protection protection = new Protection();
-		private final transient OwnedArea ownedArea = new OwnedArea();
-		private final transient Prefixes prefixes = new Prefixes();
+		private final transient Combat combat = new Combat();
 		//		private transient LandRaidControl landRaidControl = new LandRaidControl();
-		private final transient Other other = new Other();
-		private final transient Spawning spawning = new Spawning();
+		private final transient CommandBlacklist commandBlacklist = new CommandBlacklist();
+		private final transient Limits limits = new Limits();
+		private final transient Roles roles = new Roles();
+		//		private final transient OwnedArea ownedArea = new OwnedArea();
+		private final transient Prefixes prefixes = new Prefixes();
+//		private final transient Spawning spawning = new Spawning();
 
-		public PVP pvp() {
-			return pvp;
+		public Combat combat() {
+			return combat;
 		}
 
-		public SpecialCase specialCase() {
-			return specialCase;
+//		public LandRaidControl landRaidControl() {
+//			return landRaidControl;
+//		}
+
+		public CommandBlacklist commandBlacklist() {
+			return commandBlacklist;
 		}
 
-		public Claims claims() {
-			return claims;
+		public Limits limits() {
+			return limits;
 		}
 
-		public Protection protection() {
-			return protection;
+		public Roles roles() {
+			return roles;
 		}
 
-		public Other other() {
-			return other;
-		}
-
-		public OwnedArea ownedArea() {
-			return ownedArea;
-		}
+//		public OwnedArea ownedArea() {
+//			return ownedArea;
+//		}
 
 		public Prefixes prefixes() {
 			return prefixes;
 		}
 
-		//		public LandRaidControl landRaidControl() {
-//			return landRaidControl;
+//		public Spawning spawning() {
+//			return spawning;
 //		}
-		public Spawning spawning() {
-			return spawning;
-		}
 	}
 
 	public static class Logging {
@@ -1221,53 +830,43 @@ public class MainConfiguration extends AbstractConfiguration {
 		private transient boolean factionJoin;
 		private transient boolean factionKick;
 		private transient boolean factionLeave;
-		private transient boolean landClaims;
-		private transient boolean landUnclaims;
-		private transient boolean playerCommands;
+		private transient boolean landClaim;
+		private transient boolean landUnclaim;
 
-		public boolean isFactionCreate() {
+		public boolean factionCreate() {
 			return factionCreate;
 		}
 
-		public boolean isFactionDisband() {
+		public boolean factionDisband() {
 			return factionDisband;
 		}
 
-		public boolean isFactionJoin() {
+		public boolean factionJoin() {
 			return factionJoin;
 		}
 
-		public boolean isFactionKick() {
+		public boolean factionKick() {
 			return factionKick;
 		}
 
-		public boolean isFactionLeave() {
+		public boolean factionLeave() {
 			return factionLeave;
 		}
 
-		public boolean isLandClaims() {
-			return landClaims;
+		public boolean landClaim() {
+			return landClaim;
 		}
 
-		public boolean isLandUnclaims() {
-			return landUnclaims;
-		}
-
-		public boolean isPlayerCommands() {
-			return playerCommands;
+		public boolean landUnclaim() {
+			return landUnclaim;
 		}
 	}
 
 	public static class MapSettings {
-		private transient int width;
 		private transient boolean showFactionKey;
 		private transient boolean showNeutralFactionsOnMap;
 		private transient boolean showEnemyFactions;
 		private transient boolean showTruceFactions;
-
-		public int getWidth() {
-			return width;
-		}
 
 		public boolean isShowFactionKey() {
 			return showFactionKey;
@@ -1287,20 +886,19 @@ public class MainConfiguration extends AbstractConfiguration {
 	}
 
 	public static class RestrictWorlds {
-		private transient boolean restrictWorlds;
 		private transient boolean whitelist;
-		private transient Set<String> worldList;
-
-		public boolean isRestrictWorlds() {
-			return restrictWorlds;
-		}
+		private transient List<String> worldList;
 
 		public boolean isWhitelist() {
 			return whitelist;
 		}
 
-		public Set<String> getWorldList() {
-			return Collections.unmodifiableSet(worldList);
+		public List<String> getWorldList() {
+			return worldList;
+		}
+
+		public boolean isEnabled(World world) {
+			return whitelist == worldList.contains(world.getName());
 		}
 	}
 

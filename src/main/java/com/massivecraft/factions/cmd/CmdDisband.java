@@ -5,7 +5,6 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 
@@ -74,7 +73,7 @@ public class CmdDisband extends FCommand {
 				fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, faction.getTag(fplayer));
 			}
 		}
-		if(FactionsPlugin.getInstance().configMain.logging().isFactionDisband()) {
+		if(FactionsPlugin.getInstance().configMain.logging().factionDisband()) {
 			//TODO: Format this correctly and translate.
 			FactionsPlugin.getInstance().log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (context.player == null ? "console command" : context.fPlayer.getName()) + ".");
 		}

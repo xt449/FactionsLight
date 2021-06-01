@@ -1,6 +1,5 @@
-package com.massivecraft.factions.struct;
+package com.massivecraft.factions;
 
-import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {

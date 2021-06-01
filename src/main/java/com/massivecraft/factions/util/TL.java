@@ -196,9 +196,6 @@ public enum TL {
 	COMMAND_HELP_NEXTCREATE("&eLearn how to create a faction on the next page."),
 	COMMAND_HELP_INVITATIONS("command.help.invitations", "&eYou might want to close it and use invitations:"),
 	COMMAND_HELP_PLAYERTITLES("&ePlayer titles are just for fun. No rules connected to them."),
-	COMMAND_HELP_OWNERSHIP_1("&eClaimed land with ownership set is further protected so"),
-	COMMAND_HELP_OWNERSHIP_2("&ethat only the owner(s), faction admin, and possibly the"),
-	COMMAND_HELP_OWNERSHIP_3("&efaction moderators have full access."),
 	COMMAND_HELP_RELATIONS_1("&eSet the relation you WISH to have with another faction."),
 	COMMAND_HELP_RELATIONS_2("&eYour default relation with other factions will be neutral."),
 	COMMAND_HELP_RELATIONS_3("&eIf BOTH factions choose \"ally\" you will be allies."),
@@ -317,25 +314,6 @@ public enum TL {
 	COMMAND_OPEN_CHANGES("%1$s&e changed the faction to &d%2$s&e."),
 	COMMAND_OPEN_CHANGED("&eThe faction %1$s&e is now %2$s"),
 	COMMAND_OPEN_DESCRIPTION("Switch if invitation is required to join"),
-
-	COMMAND_OWNER_DISABLED("&cSorry, but owned areas are disabled on this server."),
-	COMMAND_OWNER_LIMIT("&cSorry, but you have reached the server's &dlimit of %1$d &cowned areas per faction."),
-	COMMAND_OWNER_WRONGFACTION("&cThis land is not claimed by your faction, so you can't set ownership of it."),
-	COMMAND_OWNER_NOTCLAIMED("&cThis land is not claimed by a faction. Ownership is not possible."),
-	COMMAND_OWNER_NOTMEMBER("%1$s&e is not a member of this faction."),
-	COMMAND_OWNER_CLEARED("&eYou have cleared ownership for this claimed area."),
-	COMMAND_OWNER_REMOVED("&eYou have removed ownership of this claimed land from %1$s&e."),
-	COMMAND_OWNER_TOSET("to set ownership of claimed land"),
-	COMMAND_OWNER_FORSET("for setting ownership of claimed land"),
-	COMMAND_OWNER_ADDED("&eYou have added %1$s&e to the owner list for this claimed land."),
-	COMMAND_OWNER_DESCRIPTION("Set ownership of claimed land"),
-
-	COMMAND_OWNERLIST_DISABLED("&cSorry, but owned areas are disabled on this server."),//dup->
-	COMMAND_OWNERLIST_WRONGFACTION("&cThis land is not claimed by your faction."),//eq
-	COMMAND_OWNERLIST_NOTCLAIMED("&eThis land is not claimed by any faction, thus no owners."),//eq
-	COMMAND_OWNERLIST_NONE("&eNo owners are set here; everyone in the faction has access."),
-	COMMAND_OWNERLIST_OWNERS("&eCurrent owner(s) of this land: %1$s"),
-	COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
 
 	COMMAND_PEACEFUL_DESCRIPTION("Set a faction to peaceful"),
 	COMMAND_PEACEFUL_YOURS("%1$s has %2$s your faction"),
@@ -464,12 +442,12 @@ public enum TL {
 	COMMAND_STUCK_FORSTUCK("for %1$s initiating a safe teleport out"),
 	COMMAND_STUCK_DESCRIPTION("Safely teleports you out of enemy faction"),
 
-	COMMAND_TAG_TAKEN("&cThat tag is already taken"),
-	COMMAND_TAG_TOCHANGE("to change the faction tag"),
-	COMMAND_TAG_FORCHANGE("for changing the faction tag"),
-	COMMAND_TAG_FACTION("%1$s&e changed your faction tag to %2$s"),
-	COMMAND_TAG_CHANGED("&eThe faction %1$s&e changed their name to %2$s."),
-	COMMAND_TAG_DESCRIPTION("Change the faction tag"),
+	COMMAND_RENAME_TAKEN("&cThat tag is already taken"),
+	COMMAND_RENAME_TOCHANGE("to change the faction tag"),
+	COMMAND_RENAME_FORCHANGE("for changing the faction tag"),
+	COMMAND_RENAME_FACTION("%1$s&e changed your faction tag to %2$s"),
+	COMMAND_RENAME_CHANGED("&eThe faction %1$s&e changed their name to %2$s."),
+	COMMAND_RENAME_DESCRIPTION("Change the faction tag"),
 
 	COMMAND_TITLE_TOCHANGE("to change a players title"),
 	COMMAND_TITLE_FORCHANGE("for changing a players title"),
@@ -549,8 +527,8 @@ public enum TL {
 	CLAIM_ALLY("&cYou can't claim the land of your allies."),
 	CLAIM_CONTIGIOUS("&cYou can only claim additional land which is connected to your first claim or controlled by another faction!"),
 	CLAIM_FACTIONCONTIGUOUS("&cYou can only claim additional land which is connected to your first claim!"),
-	CLAIM_PEACEFUL("%s&e owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
-	CLAIM_PEACEFULTARGET("%s&e owns this land, and is a peaceful faction. You cannot claim land from them."),
+	//	CLAIM_PEACEFUL("%s&e owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
+//	CLAIM_PEACEFULTARGET("%s&e owns this land, and is a peaceful faction. You cannot claim land from them."),
 	CLAIM_THISISSPARTA("%s&e owns this land and is strong enough to keep it."),
 	CLAIM_BORDER("&cYou must start claiming land at the border of the territory."),
 	CLAIM_TOCLAIM("to claim this land"),
@@ -579,8 +557,6 @@ public enum TL {
 	GENERIC_ARGS_TOOFEW("&cToo few arguments. &eUse like this:"),
 	GENERIC_ARGS_TOOMANY("&cStrange argument \"&3%1$s&c\". &eUse the command like this:"),
 	GENERIC_DEFAULTDESCRIPTION("Default faction description :("),
-	GENERIC_OWNERS("Owner(s): %1$s"),
-	GENERIC_PUBLICLAND("Public faction land."),
 	GENERIC_FACTIONLESS("factionless"),
 	GENERIC_SERVERADMIN("A server admin"),
 	GENERIC_DISABLED("disabled"),
@@ -661,14 +637,8 @@ public enum TL {
 	 * In the player and entity listeners
 	 */
 	PLAYER_CANTHURT("&eYou may not harm other players in %s"),
-	PLAYER_SAFEAUTO("&eThis land is now a safe zone."),
-	PLAYER_WARAUTO("&eThis land is now a war zone."),
 	PLAYER_OUCH("&cOuch, that is starting to hurt. You should give it a rest."),
-	PLAYER_USE_WILDERNESS("&cYou can't use &d%s&c in the wilderness."),
-	PLAYER_USE_SAFEZONE("&cYou can't use &d%s&c in a safe zone."),
-	PLAYER_USE_WARZONE("&cYou can't use &d%s&c in a war zone."),
 	PLAYER_USE_TERRITORY("&cYou can't &d%s&c in the territory of &d%s&c."),
-	PLAYER_USE_OWNED("&cYou can't use &d%s&c in this territory, it is owned by: %s&c."),
 	PLAYER_COMMAND_WARZONE("&cYou can't use the command '%s' in war zone."),
 	PLAYER_COMMAND_NEUTRAL("&cYou can't use the command '%s' in neutral territory."),
 	PLAYER_COMMAND_ENEMY("&cYou can't use the command '%s' in enemy territory."),
@@ -687,10 +657,7 @@ public enum TL {
 	PLAYER_POWER_VAMPIRISM_GAIN("&eStole &d%.2f&e power from %s&e. Your power is now &d%d / %d"),
 
 	PLAYER_PVP_LOGIN("&eYou can't hurt other players for %d seconds after logging in."),
-	PLAYER_PVP_REQUIREFACTION("&eYou can't hurt other players until you join a faction."),
-	PLAYER_PVP_FACTIONLESS("&eYou can't hurt players who are not currently in a faction."),
 	PLAYER_PVP_PEACEFUL("&ePeaceful players cannot participate in combat."),
-	PLAYER_PVP_NEUTRAL("&eYou can't hurt neutral factions. Declare them as an enemy."),
 	PLAYER_PVP_CANTHURT("&eYou can't hurt %s&e."),
 
 	PLAYER_PVP_NEUTRALFAIL("&eYou can't hurt %s&e in their own territory unless you declare them as an enemy."),
@@ -714,7 +681,6 @@ public enum TL {
 	PERM_ECONOMY("Spending faction money"),
 	PERM_TERRITORY("Claiming or unclaiming faction territory"),
 	PERM_LISTCLAIMS("View listed faction claims"),
-	PERM_OWNER("Set ownership of land using /f owner in faction territory"),
 
 	PERM_SHORT_BUILD("build"),
 	PERM_SHORT_DESTROY("destroy"),
@@ -734,15 +700,11 @@ public enum TL {
 	PERM_SHORT_ECONOMY("spend faction money"),
 	PERM_SHORT_TERRITORY("manage faction territory"),
 	PERM_SHORT_LISTCLAIMS("list claims"),
-	PERM_SHORT_OWNER("set ownership"),
 
-	PERM_DENIED_WILDERNESS("&cYou can't %s in the wilderness"),
 	PERM_DENIED_SAFEZONE("&c>You can't %s in a safe zone"),
 	PERM_DENIED_WARZONE("&cYou can't %s in a war zone"),
 	PERM_DENIED_TERRITORY("&cYou can't %s in the territory of %s"),
 	PERM_DENIED_PAINTERRITORY("&cIt is painful to %s in the territory of %s"),
-	PERM_DENIED_OWNED("&cYou can't %s in this territory, it is owned by: %s"),
-	PERM_DENIED_PAINOWNED("&cIt is painful to try to %s in this territory, it is owned by: %s"),
 
 	GUI_PERMS_RELATION_NAME("Choose a relation%s:"),
 	GUI_PERMS_RELATION_ONLINEOFFLINEBIT(" (%s)"),
@@ -813,7 +775,7 @@ public enum TL {
 	;
 
 	private String path;
-	private final String def;
+	private final String defaultValue;
 	private static YamlConfiguration LANG;
 	public static SimpleDateFormat sdf;
 
@@ -825,7 +787,7 @@ public enum TL {
 	 */
 	TL(String path, String start) {
 		this.path = path;
-		this.def = start;
+		this.defaultValue = start;
 	}
 
 	/**
@@ -838,7 +800,7 @@ public enum TL {
 		if(this.path.startsWith(".")) {
 			path = "root" + path;
 		}
-		this.def = start;
+		this.defaultValue = start;
 	}
 
 	/**
@@ -853,7 +815,7 @@ public enum TL {
 
 	@Override
 	public String toString() {
-		return this == TITLE ? ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " " : ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
+		return this == TITLE ? ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, defaultValue)) + " " : ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, defaultValue));
 	}
 
 	public String format(Object... args) {
@@ -866,7 +828,7 @@ public enum TL {
 	 * @return The default value of the path.
 	 */
 	public String getDefault() {
-		return this.def;
+		return this.defaultValue;
 	}
 
 	/**

@@ -1,9 +1,9 @@
 package com.massivecraft.factions.data.json;
 
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.data.MemoryFaction;
 import com.massivecraft.factions.data.MemoryFactions;
 import com.massivecraft.factions.util.DiscUtil;
 import com.massivecraft.factions.util.UUIDFetcher;
@@ -28,20 +28,20 @@ public class JSONFactions extends MemoryFactions {
 	}
 
 	public void forceSave(boolean sync) {
-		final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<>();
+		final Map<String, MemoryFaction> entitiesThatShouldBeSaved = new HashMap<>();
 		for(Faction entity : this.factions.values()) {
-			entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
+			entitiesThatShouldBeSaved.put(entity.getId(), (MemoryFaction) entity);
 		}
 
 		saveCore(file, entitiesThatShouldBeSaved, sync);
 	}
 
-	private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
+	private boolean saveCore(File target, Map<String, MemoryFaction> entities, boolean sync) {
 		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(entities), sync);
 	}
 
 	public int load() {
-		Map<String, JSONFaction> factions = this.loadCore();
+		Map<String, MemoryFaction> factions = this.loadCore();
 		if(factions == null) {
 			return 0;
 		}
@@ -51,7 +51,7 @@ public class JSONFactions extends MemoryFactions {
 		return factions.size();
 	}
 
-	private Map<String, JSONFaction> loadCore() {
+	private Map<String, MemoryFaction> loadCore() {
 		if(!this.file.exists()) {
 			return new HashMap<>();
 		}
@@ -61,23 +61,20 @@ public class JSONFactions extends MemoryFactions {
 			return null;
 		}
 
-		Map<String, JSONFaction> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
+		Map<String, MemoryFaction> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<String, MemoryFaction>>() {
 		}.getType());
 
 		this.nextId = 1;
 		// Do we have any names that need updating in claims or invites?
 
 		int needsUpdate = 0;
-		for(Entry<String, JSONFaction> entry : data.entrySet()) {
+		for(Entry<String, MemoryFaction> entry : data.entrySet()) {
 			String id = entry.getKey();
 			Faction f = entry.getValue();
 			f.checkPerms();
 			f.setId(id);
 			this.updateNextIdForId(id);
 			needsUpdate += whichKeysNeedMigration(f.getInvites()).size();
-			for(Set<String> keys : f.getClaimOwnership().values()) {
-				needsUpdate += whichKeysNeedMigration(keys).size();
-			}
 		}
 
 		if(needsUpdate > 0) {
@@ -97,35 +94,35 @@ public class JSONFactions extends MemoryFactions {
 
 			FactionsPlugin.getInstance().log(Level.INFO, "Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
 
-			// Update claim ownership
-
-			for(String string : data.keySet()) {
-				Faction f = data.get(string);
-				Map<FLocation, Set<String>> claims = f.getClaimOwnership();
-				for(FLocation key : claims.keySet()) {
-					Set<String> set = claims.get(key);
-
-					Set<String> list = whichKeysNeedMigration(set);
-
-					if(list.size() > 0) {
-						UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
-						try {
-							Map<String, UUID> response = fetcher.call();
-							for(String value : response.keySet()) {
-								// Let's replace their old named entry with a
-								// UUID key
-								String id = response.get(value).toString();
-								set.remove(value.toLowerCase()); // Out with the
-								// old...
-								set.add(id); // And in with the new
-							}
-						} catch(Exception e) {
-							FactionsPlugin.getInstance().getLogger().log(Level.SEVERE, "Encountered exception looking up UUIDs", e);
-						}
-						claims.put(key, set); // Update
-					}
-				}
-			}
+//			// Update claim ownership
+//
+//			for(String string : data.keySet()) {
+//				Faction f = data.get(string);
+//				Map<FLocation, Set<String>> claims = f.getClaimOwnership();
+//				for(FLocation key : claims.keySet()) {
+//					Set<String> set = claims.get(key);
+//
+//					Set<String> list = whichKeysNeedMigration(set);
+//
+//					if(list.size() > 0) {
+//						UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
+//						try {
+//							Map<String, UUID> response = fetcher.call();
+//							for(String value : response.keySet()) {
+//								// Let's replace their old named entry with a
+//								// UUID key
+//								String id = response.get(value).toString();
+//								set.remove(value.toLowerCase()); // Out with the
+//								// old...
+//								set.add(id); // And in with the new
+//							}
+//						} catch(Exception e) {
+//							FactionsPlugin.getInstance().getLogger().log(Level.SEVERE, "Encountered exception looking up UUIDs", e);
+//						}
+//						claims.put(key, set); // Update
+//					}
+//				}
+//			}
 
 			// Update invites
 
@@ -209,13 +206,13 @@ public class JSONFactions extends MemoryFactions {
 	@Override
 	public Faction generateFactionObject() {
 		String id = getNextId();
-		Faction faction = new JSONFaction(id);
+		Faction faction = new MemoryFaction(id);
 		updateNextIdForId(id);
 		return faction;
 	}
 
 	@Override
 	public Faction generateFactionObject(String id) {
-		return new JSONFaction(id);
+		return new MemoryFaction(id);
 	}
 }

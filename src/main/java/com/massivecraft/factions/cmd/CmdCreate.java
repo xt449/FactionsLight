@@ -5,7 +5,6 @@ import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionAttemptCreateEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
@@ -40,7 +39,7 @@ public class CmdCreate extends FCommand {
 			return;
 		}
 
-		ArrayList<String> tagValidationErrors = MiscUtil.validateTag(tag);
+		ArrayList<String> tagValidationErrors = MiscUtil.validateFactionName(tag);
 		if(tagValidationErrors.size() > 0) {
 			context.sendMessage(tagValidationErrors);
 			return;
@@ -82,7 +81,7 @@ public class CmdCreate extends FCommand {
 
 		context.msg(TL.COMMAND_CREATE_YOUSHOULD, FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context));
 
-		if(FactionsPlugin.getInstance().configMain.logging().isFactionCreate()) {
+		if(FactionsPlugin.getInstance().configMain.logging().factionCreate()) {
 			FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag);
 		}
 	}

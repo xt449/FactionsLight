@@ -3,12 +3,11 @@ package com.massivecraft.factions.cmd.claim;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 
@@ -92,13 +91,12 @@ public class CmdClaimFill extends FCommand {
 //			return;
 //		}
 
-		final int limFail = FactionsPlugin.getInstance().configMain.factions().claims().getRadiusClaimFailureLimit();
 		int fails = 0;
 		for(FLocation currentLocation : toClaim) {
 			if(!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {
 				fails++;
 			}
-			if(fails >= limFail) {
+			if(fails >= 25) {
 				context.msg(TL.COMMAND_CLAIMFILL_TOOMUCHFAIL, fails);
 				return;
 			}

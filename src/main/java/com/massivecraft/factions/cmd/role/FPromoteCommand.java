@@ -2,12 +2,12 @@ package com.massivecraft.factions.cmd.role;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
 public class FPromoteCommand extends FCommand {
@@ -52,7 +52,8 @@ public class FPromoteCommand extends FCommand {
 			return;
 		}
 
-		if(promotion == Role.COLEADER && !FactionsPlugin.getInstance().configMain.factions().other().isAllowMultipleColeaders()) {
+		FactionsPlugin.getInstance().configMain.factions().limits();
+		if(promotion == Role.COLEADER && !true) {
 			if(!target.getFaction().getFPlayersWhereRole(Role.COLEADER).isEmpty()) {
 				context.msg(TL.COMMAND_COLEADER_ALREADY_COLEADER);
 				return;

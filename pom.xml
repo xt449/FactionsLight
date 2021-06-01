@@ -22,14 +22,6 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>sponge-repo</id>
-            <url>https://repo.spongepowered.org/maven</url>
-        </repository>
-        <repository>
-            <id>fuuid-repo</id>
-            <url>https://github.com/factions-site/repo/raw/public</url>
-        </repository>
-        <repository>
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
@@ -38,7 +30,7 @@
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
-            <id>k89q-repo</id>
+            <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
@@ -60,6 +52,34 @@
         </dependency>
 
         <dependency>
+            <groupId>org.dynmap</groupId>
+            <artifactId>dynmap</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.griefcraft.lwc</groupId>
+            <artifactId>Modern-LWC</artifactId>
+            <version>2.1.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.6</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mcmonkey</groupId>
+            <artifactId>sentinel</artifactId>
+            <version>2.1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
@@ -74,34 +94,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.dynmap</groupId>
-            <artifactId>dynmap</artifactId>
-            <version>2.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.10.6</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.griefcraft.lwc</groupId>
-            <artifactId>Modern-LWC</artifactId>
-            <version>2.1.4</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mcmonkey</groupId>
-            <artifactId>sentinel</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
             <version>1.0.6</version>
@@ -112,26 +104,6 @@
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.4.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spongepowered</groupId>
-            <artifactId>configurate-hocon</artifactId>
-            <version>3.6.1</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>checker-qual</artifactId>
-                    <groupId>org.checkerframework</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.kitteh</groupId>
-            <artifactId>paste-gg-api</artifactId>
-            <version>0.9.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

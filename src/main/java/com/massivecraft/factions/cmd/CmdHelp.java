@@ -1,8 +1,9 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class CmdHelp extends FCommand {
 		pageLines = new ArrayList<>();
 		pageLines.add(FCmdRoot.getInstance().cmdCreate.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdDescription.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdTag.getUsageTemplate(context, true));
+		pageLines.add(FCmdRoot.getInstance().cmdRename.getUsageTemplate(context, true));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_INVITATIONS.toString()));
 		pageLines.add(FCmdRoot.getInstance().cmdOpen.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdInvite.getUsageTemplate(context, true));
@@ -71,12 +72,6 @@ public class CmdHelp extends FCommand {
 
 		pageLines = new ArrayList<>();
 		pageLines.add(FCmdRoot.getInstance().cmdMap.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdBoom.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdOwner.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdOwnerList.getUsageTemplate(context, true));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_OWNERSHIP_1.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_OWNERSHIP_2.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_OWNERSHIP_3.toString()));
 		helpPages.add(pageLines);
 
 		pageLines = new ArrayList<>();
@@ -122,8 +117,7 @@ public class CmdHelp extends FCommand {
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_2.toString()));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_3.toString()));
 		//TODO:TL
-		pageLines.add(TextUtil.parse("<i>Note: " + FCmdRoot.getInstance().cmdUnclaim.getUsageTemplate(context, false) + TextUtil.parse("<i>") + " works on safe/war zones as well."));
-		pageLines.add(FCmdRoot.getInstance().cmdPeaceful.getUsageTemplate(context, true));
+		pageLines.add(TextUtil.parse(ChatColor.YELLOW + "Note: " + FCmdRoot.getInstance().cmdUnclaim.getUsageTemplate(context, false) + ChatColor.YELLOW + " works on safe/war zones as well."));
 		helpPages.add(pageLines);
 
 		pageLines = new ArrayList<>();

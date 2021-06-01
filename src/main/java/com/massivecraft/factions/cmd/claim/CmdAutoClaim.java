@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 
 public class CmdAutoClaim extends FCommand {

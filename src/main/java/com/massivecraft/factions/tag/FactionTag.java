@@ -3,6 +3,7 @@ package com.massivecraft.factions.tag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.combat.Setting;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
@@ -50,7 +51,7 @@ public enum FactionTag implements Tag {
 //			DurationFormatUtils.formatDuration(fac.getFrozenDTRUntilTime() - System.currentTimeMillis(), FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getFreezeTimeFormat()) :
 //			TL.DTR_FROZEN_TIME_NOTFROZEN.toString()))),
 //	MAX_CHUNKS("max-chunks", (fac -> String.valueOf(FactionsPlugin.getInstance().getLandRaidControl().getLandLimit(fac)))),
-	PEACEFUL("peaceful", (fac) -> fac.isPeaceful() ? FactionsPlugin.getInstance().configMain.colors().relations().peaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
+	PEACEFUL("peaceful", (fac) -> fac.getCombatSetting() == Setting.PREVENT_ALL ? FactionsPlugin.getInstance().configMain.colors().relations().peaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
 	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
 	DESCRIPTION("description", Faction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),

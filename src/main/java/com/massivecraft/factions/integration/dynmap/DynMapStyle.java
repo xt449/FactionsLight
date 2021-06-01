@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration.dynmap;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.configuration.DynMapConfiguration;
 
-public class DynmapStyle {
+public class DynMapStyle {
 	public static final String DEFAULT_LINE_COLOR = "#00FF00";
 	public static final double DEFAULT_LINE_OPACITY = 0.8D;
 	public static final int DEFAULT_LINE_WEIGHT = 3;
@@ -12,7 +12,7 @@ public class DynmapStyle {
 	public static final String DEFAULT_HOME_MARKER = "greenflag";
 	public static final boolean DEFAULT_BOOST = false;
 
-	private static final DynmapStyle defaultStyle = new DynmapStyle()
+	private static final DynMapStyle defaultStyle = new DynMapStyle()
 			.setLineColor(DEFAULT_LINE_COLOR)
 			.setLineOpacity(DEFAULT_LINE_OPACITY)
 			.setLineWeight(DEFAULT_LINE_WEIGHT)
@@ -20,7 +20,7 @@ public class DynmapStyle {
 			.setFillOpacity(DEFAULT_FILL_OPACITY)
 			.setBoost(DEFAULT_BOOST);
 
-	public static DynmapStyle getDefault() {
+	public static DynMapStyle getDefault() {
 		return defaultStyle;
 	}
 
@@ -37,7 +37,7 @@ public class DynmapStyle {
 		return getColor(coalesce(this.lineColor, styleConf().getLineColor(), DEFAULT_FILL_COLOR));
 	}
 
-	public DynmapStyle setLineColor(String strokeColor) {
+	public DynMapStyle setLineColor(String strokeColor) {
 		this.lineColor = strokeColor;
 		return this;
 	}
@@ -48,7 +48,7 @@ public class DynmapStyle {
 		return coalesce(this.lineOpacity, styleConf().getLineOpacity(), DEFAULT_LINE_OPACITY);
 	}
 
-	public DynmapStyle setLineOpacity(Double strokeOpacity) {
+	public DynMapStyle setLineOpacity(Double strokeOpacity) {
 		this.lineOpacity = strokeOpacity;
 		return this;
 	}
@@ -59,7 +59,7 @@ public class DynmapStyle {
 		return coalesce(this.lineWeight, styleConf().getLineWeight(), DEFAULT_LINE_WEIGHT);
 	}
 
-	public DynmapStyle setLineWeight(Integer strokeWeight) {
+	public DynMapStyle setLineWeight(Integer strokeWeight) {
 		this.lineWeight = strokeWeight;
 		return this;
 	}
@@ -70,7 +70,7 @@ public class DynmapStyle {
 		return getColor(coalesce(this.fillColor, styleConf().getFillColor(), DEFAULT_FILL_COLOR));
 	}
 
-	public DynmapStyle setFillColor(String fillColor) {
+	public DynMapStyle setFillColor(String fillColor) {
 		this.fillColor = fillColor;
 		return this;
 	}
@@ -81,7 +81,7 @@ public class DynmapStyle {
 		return coalesce(this.fillOpacity, styleConf().getFillOpacity(), DEFAULT_FILL_OPACITY);
 	}
 
-	public DynmapStyle setFillOpacity(Double fillOpacity) {
+	public DynMapStyle setFillOpacity(Double fillOpacity) {
 		this.fillOpacity = fillOpacity;
 		return this;
 	}
@@ -92,7 +92,7 @@ public class DynmapStyle {
 		return coalesce(this.boost, styleConf().isStyleBoost(), DEFAULT_BOOST);
 	}
 
-	public DynmapStyle setBoost(Boolean boost) {
+	public DynMapStyle setBoost(Boolean boost) {
 		this.boost = boost;
 		return this;
 	}

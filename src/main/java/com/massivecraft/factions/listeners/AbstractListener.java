@@ -1,16 +1,14 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.util.TL;
-import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
-import org.bukkit.entity.minecart.ExplosiveMinecart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Listener;
 
@@ -24,11 +22,6 @@ public abstract class AbstractListener implements Listener {
 	}
 
 	public static boolean canInteractHere(Player player, Location location) {
-		String name = player.getName();
-		if(FactionsPlugin.getInstance().configMain.factions().protection().getPlayersWhoBypassAllProtection().contains(name)) {
-			return true;
-		}
-
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
@@ -41,14 +34,14 @@ public abstract class AbstractListener implements Listener {
 //			return true;
 //		}
 
-		MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
-		if(otherFaction.isWilderness()) {
-			if(!protection.isWildernessDenyUsage() || protection.getWorldsNoWildernessProtection().contains(location.getWorld().getName())) {
-				return true; // This is not faction territory. Use whatever you like here.
-			}
-			me.msg(TL.PLAYER_USE_WILDERNESS, "this");
-			return false;
-		}
+//		MainConfiguration.Factions.CommandBlacklist commandBlacklist = FactionsPlugin.getInstance().configMain.factions().commandBlacklist();
+//		if(otherFaction.isWilderness()) {
+//			if(!commandBlacklist.isWildernessDenyUsage() || commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorld().getName())) {
+//				return true; // This is not faction territory. Use whatever you like here.
+//			}
+//			me.msg(TL.PLAYER_USE_WILDERNESS, "this");
+//			return false;
+//		}
 
 		boolean access = otherFaction.hasAccess(me, PermissibleAction.ITEM);
 
@@ -58,17 +51,11 @@ public abstract class AbstractListener implements Listener {
 			return false;
 		}
 
-		// Also cancel if player doesn't have ownership rights for this claim
-		if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isDenyUsage() && !otherFaction.playerHasOwnershipRights(me, loc)) {
-			me.msg(TL.PLAYER_USE_OWNED, "this", otherFaction.getOwnerListString(loc));
-			return false;
-		}
-
 		return true;
 	}
 
 	protected void handleExplosion(Location loc, Entity boomer, Cancellable event, List<Block> blockList) {
-		if(!FactionsPlugin.getInstance().worldUtil().isEnabled(loc.getWorld())) {
+		if(!FactionsPlugin.getInstance().configMain.restrictWorlds().isEnabled(loc.getWorld())) {
 			return;
 		}
 
@@ -84,29 +71,30 @@ public abstract class AbstractListener implements Listener {
 	}
 
 	public static boolean explosionDisallowed(Entity boomer, FLocation location) {
-		Faction faction = Board.getInstance().getFactionAt(location);
-		boolean online = faction.hasPlayersOnline();
-		if(faction.noExplosionsInTerritory() || (faction.isPeaceful() && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisableBoom())) {
-			// faction is peaceful and has explosions set to disabled
-			return true;
-		}
-		MainConfiguration.Factions.Protection protection = FactionsPlugin.getInstance().configMain.factions().protection();
-		if(boomer instanceof Creeper && ((faction.isWilderness() && protection.isWildernessBlockCreepers() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
-				(faction.isNormal() && (online ? protection.isTerritoryBlockCreepers() : protection.isTerritoryBlockCreepersWhenOffline())))) {
-			// creeper which needs prevention
-			return true;
-		} else if(
-				(boomer instanceof Fireball || boomer instanceof Wither) && (faction.isWilderness() && protection.isWildernessBlockFireballs() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName()) || faction.isNormal() && (online ? protection.isTerritoryBlockFireballs() : protection.isTerritoryBlockFireballsWhenOffline()))) {
-			// ghast fireball which needs prevention
-			// it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-			return true;
-		} else if((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && protection.isWildernessBlockTNT() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
-				(faction.isNormal() && (online ? protection.isTerritoryBlockTNT() : protection.isTerritoryBlockTNTWhenOffline())))) {
-			// TNT which needs prevention
-			return true;
-		} else
-			return (faction.isWilderness() && protection.isWildernessBlockOtherExplosions() && !protection.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
-					(faction.isNormal() && (online ? protection.isTerritoryBlockOtherExplosions() : protection.isTerritoryBlockOtherExplosionsWhenOffline()));
+		return false;
+//		Faction faction = Board.getInstance().getFactionAt(location);
+//		boolean online = faction.hasPlayersOnline();
+////		if(faction.noExplosionsInTerritory() || (faction.isPeaceful() && FactionsPlugin.getInstance().configMain.factions().specialCase().isPeacefulTerritoryDisableBoom())) {
+////			// faction is peaceful and has explosions set to disabled
+////			return true;
+////		}
+//		MainConfiguration.Factions.CommandBlacklist commandBlacklist = FactionsPlugin.getInstance().configMain.factions().commandBlacklist();
+//		if(boomer instanceof Creeper && ((faction.isWilderness() && commandBlacklist.isWildernessBlockCreepers() && !commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
+//				(faction.isNormal() && (online ? commandBlacklist.isTerritoryBlockCreepers() : commandBlacklist.isTerritoryBlockCreepersWhenOffline())))) {
+//			// creeper which needs prevention
+//			return true;
+//		} else if(
+//				(boomer instanceof Fireball || boomer instanceof Wither) && (faction.isWilderness() && commandBlacklist.isWildernessBlockFireballs() && !commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorldName()) || faction.isNormal() && (online ? commandBlacklist.isTerritoryBlockFireballs() : commandBlacklist.isTerritoryBlockFireballsWhenOffline()))) {
+//			// ghast fireball which needs prevention
+//			// it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
+//			return true;
+//		} else if((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && commandBlacklist.isWildernessBlockTNT() && !commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
+//				(faction.isNormal() && (online ? commandBlacklist.isTerritoryBlockTNT() : commandBlacklist.isTerritoryBlockTNTWhenOffline())))) {
+//			// TNT which needs prevention
+//			return true;
+//		} else
+//			return (faction.isWilderness() && commandBlacklist.isWildernessBlockOtherExplosions() && !commandBlacklist.getWorldsNoWildernessProtection().contains(location.getWorldName())) ||
+//					(faction.isNormal() && (online ? commandBlacklist.isTerritoryBlockOtherExplosions() : commandBlacklist.isTerritoryBlockOtherExplosionsWhenOffline()));
 	}
 
 	public boolean canPlayerUseBlock(Player player, Material material, Location location, boolean justCheck) {
@@ -114,10 +102,6 @@ public abstract class AbstractListener implements Listener {
 	}
 
 	public static boolean canUseBlock(Player player, Material material, Location location, boolean justCheck) {
-		if(FactionsPlugin.getInstance().configMain.factions().protection().getPlayersWhoBypassAllProtection().contains(player.getName())) {
-			return true;
-		}
-
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		if(me.isAdminBypassing()) {
 			return true;
@@ -231,9 +215,9 @@ public abstract class AbstractListener implements Listener {
 		}
 
 		// Ignored types
-		if(action == PermissibleAction.CONTAINER && FactionsPlugin.getInstance().configMain.factions().protection().getContainerExceptions().contains(material)) {
-			return true;
-		}
+//		if(action == PermissibleAction.CONTAINER && FactionsPlugin.getInstance().configMain.factions().commandBlacklist().getContainerExceptions().contains(material)) {
+//			return true;
+//		}
 
 		// F PERM check runs through before other checks.
 		if(!otherFaction.hasAccess(me, action)) {
@@ -244,13 +228,13 @@ public abstract class AbstractListener implements Listener {
 		}
 
 		// Also cancel if player doesn't have ownership rights for this claim
-		if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isProtectMaterials() && !otherFaction.playerHasOwnershipRights(me, loc)) {
-			if(!justCheck) {
-				me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
-			}
-
-			return false;
-		}
+//		if(FactionsPlugin.getInstance().configMain.factions().ownedArea().isEnabled() && FactionsPlugin.getInstance().configMain.factions().ownedArea().isProtectMaterials() && !otherFaction.playerHasOwnershipRights(me, loc)) {
+//			if(!justCheck) {
+//				me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+//			}
+//
+//			return false;
+//		}
 
 		return true;
 	}

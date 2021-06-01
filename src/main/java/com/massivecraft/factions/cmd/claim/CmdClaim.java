@@ -2,11 +2,10 @@ package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.util.TL;
 
@@ -28,7 +27,7 @@ public class CmdClaim extends FCommand {
 
 	@Override
 	public void perform(final CommandContext context) {
-		if(!plugin.worldUtil().isEnabled(context.player.getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(context.player.getWorld())) {
 			context.sender.sendMessage(TL.GENERIC_DISABLEDWORLD.toString());
 			return;
 		}
@@ -54,14 +53,13 @@ public class CmdClaim extends FCommand {
 
 			new SpiralTask(new FLocation(context.player), radius) {
 				private int failCount = 0;
-				private final int limit = FactionsPlugin.getInstance().configMain.factions().claims().getRadiusClaimFailureLimit() - 1;
 
 				@Override
 				public boolean work() {
 					boolean success = context.fPlayer.attemptClaim(forFaction, this.currentLocation(), true);
 					if(success) {
 						failCount = 0;
-					} else if(failCount++ >= limit) {
+					} else if(failCount++ >= 25) {
 						this.stop();
 						return false;
 					}

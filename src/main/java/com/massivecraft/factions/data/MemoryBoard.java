@@ -82,8 +82,6 @@ public abstract class MemoryBoard extends Board {
 	}
 
 	public void setIdAt(String id, FLocation flocation) {
-		clearOwnershipAt(flocation);
-
 		if(id.equals("0")) {
 			removeAt(flocation);
 		}
@@ -96,7 +94,6 @@ public abstract class MemoryBoard extends Board {
 	}
 
 	public void removeAt(FLocation flocation) {
-		clearOwnershipAt(flocation);
 		flocationIds.remove(flocation);
 	}
 
@@ -114,19 +111,7 @@ public abstract class MemoryBoard extends Board {
 		return getAllClaims(faction.getId());
 	}
 
-	// not to be confused with claims, ownership referring to further member-specific ownership of a claim
-	public void clearOwnershipAt(FLocation flocation) {
-		Faction faction = getFactionAt(flocation);
-		if(faction != null && faction.isNormal()) {
-			faction.clearClaimOwnership(flocation);
-		}
-	}
-
 	public void unclaimAll(String factionId) {
-		Faction faction = Factions.getInstance().getFactionById(factionId);
-		if(faction != null && faction.isNormal()) {
-			faction.clearAllClaimOwnership();
-		}
 		clean(factionId);
 	}
 
@@ -256,7 +241,8 @@ public abstract class MemoryBoard extends Board {
 		// Get the compass
 		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, TextUtil.parse("<a>"));
 
-		int halfWidth = FactionsPlugin.getInstance().configMain.map().getWidth() / 2;
+		int mapWidth = 35;
+		int halfWidth = mapWidth / 2;
 		// Use player's value for height
 		int mapHeight = 18;
 		int halfHeight = mapHeight / 2;

@@ -1,8 +1,12 @@
-package com.massivecraft.factions.integration.dynmap;
+package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.data.MemoryBoard;
+import com.massivecraft.factions.integration.dynmap.DynMapStyle;
+import com.massivecraft.factions.integration.dynmap.TempAreaMarker;
+import com.massivecraft.factions.integration.dynmap.TempMarker;
+import com.massivecraft.factions.integration.dynmap.TempMarkerSet;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +19,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
-public class EngineDynmap {
+public class DynMapIntegration {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
@@ -36,10 +40,10 @@ public class EngineDynmap {
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	private static final EngineDynmap instance = new EngineDynmap();
+	private static final DynMapIntegration instance = new DynMapIntegration();
 	private final DynMapConfiguration config = FactionsPlugin.getInstance().configDynMap;
 
-	public static EngineDynmap getInstance() {
+	public static DynMapIntegration getInstance() {
 		return instance;
 	}
 
@@ -183,7 +187,7 @@ public class EngineDynmap {
 			if(marker == null) {
 				marker = temp.create(this.markerApi, this.markerset, markerId);
 				if(marker == null) {
-					EngineDynmap.logSevere("Could not get/create the home marker " + markerId);
+					DynMapIntegration.logSevere("Could not get/create the home marker " + markerId);
 				}
 			} else {
 				temp.update(this.markerApi, marker);
@@ -273,7 +277,7 @@ public class EngineDynmap {
 		String description = getDescription(faction);
 
 		// Fetch Style
-		DynmapStyle style = this.getStyle(faction);
+		DynMapStyle style = this.getStyle(faction);
 
 		// Loop through chunks: set flags on chunk map
 		TileFlags allChunkFlags = new TileFlags();
@@ -687,8 +691,8 @@ public class EngineDynmap {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	public DynmapStyle getStyle(Faction faction) {
-		DynmapStyle ret;
+	public DynMapStyle getStyle(Faction faction) {
+		DynMapStyle ret;
 
 		ret = config.dynmap().getFactionStyles().get(faction.getId());
 		if(ret != null) {
@@ -700,7 +704,7 @@ public class EngineDynmap {
 			return ret;
 		}
 
-		return DynmapStyle.getDefault();
+		return DynMapStyle.getDefault();
 	}
 
 	// Thread Safe / Asynchronous: Yes

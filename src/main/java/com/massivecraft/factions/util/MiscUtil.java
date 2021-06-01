@@ -67,22 +67,22 @@ public class MiscUtil {
 		return ret.toString().toLowerCase();
 	}
 
-	public static ArrayList<String> validateTag(String str) {
+	public static ArrayList<String> validateFactionName(String str) {
 		ArrayList<String> errors = new ArrayList<>();
 
-		for(String blacklistItem : FactionsPlugin.getInstance().configMain.factions().other().getNameBlacklist()) {
+		for(String blacklistItem : FactionsPlugin.getInstance().configMain.factions().limits().getNameBlacklist()) {
 			if(str.toLowerCase().contains(blacklistItem.toLowerCase())) {
 				errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_BLACKLIST.toString()));
 				break;
 			}
 		}
 
-		if(getComparisonString(str).length() < FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMin()) {
-			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMin()));
+		if(getComparisonString(str).length() < FactionsPlugin.getInstance().configMain.factions().limits().getTagLengthMin()) {
+			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), FactionsPlugin.getInstance().configMain.factions().limits().getTagLengthMin()));
 		}
 
-		if(str.length() > FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMax()) {
-			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), FactionsPlugin.getInstance().configMain.factions().other().getTagLengthMax()));
+		if(str.length() > FactionsPlugin.getInstance().configMain.factions().limits().getTagLengthMax()) {
+			errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), FactionsPlugin.getInstance().configMain.factions().limits().getTagLengthMax()));
 		}
 
 		if(!str.matches("^\\w+$")) {

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -17,10 +16,10 @@ import java.util.logging.Level;
 
 public class IntegrationManager implements Listener {
 	private enum Integration {
-		DYNMAP("dynmap", EngineDynmap.getInstance()::init),
+		DYNMAP("dynmap", DynMapIntegration.getInstance()::init),
 		LWC("LWC", LWCIntegration::setup),
 		PLACEHOLDERAPI("PlaceholderAPI", (p) -> FactionsPlugin.getInstance().setupPlaceholderAPI()),
-		SENTINEL("Sentinel", SentinelIntegration::init),
+		SENTINEL("Sentinel", plugin -> SentinelIntegration.init(plugin)), // resist
 		WORLDGUARD("WorldGuard", (plugin) -> {
 			FactionsPlugin f = FactionsPlugin.getInstance();
 			if(!f.configMain.worldGuard().isChecking() && !f.configMain.worldGuard().isBuildPriority()) {

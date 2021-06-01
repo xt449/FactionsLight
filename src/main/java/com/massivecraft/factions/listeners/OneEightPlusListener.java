@@ -16,7 +16,7 @@ public class OneEightPlusListener extends AbstractListener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerArmorStandManipulateEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
 			return;
 		}
 
