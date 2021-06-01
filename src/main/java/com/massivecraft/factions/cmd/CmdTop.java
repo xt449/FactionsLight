@@ -2,8 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.entity.Player;

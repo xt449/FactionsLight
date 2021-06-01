@@ -169,7 +169,7 @@ public class FTeamWrapper {
 		MainConfiguration.Scoreboard.Constant conf = FactionsPlugin.getInstance().configMain.scoreboard().constant();
 		if(conf.isPrefixes()) {
 			Team team = teams.get(fboard);
-			String prefix = this.apply(conf.getPrefixTemplate(), fboard.getFPlayer(), conf.getPrefixLength());
+			String prefix = this.apply(conf.getPrefixTemplate(), fboard.getFPlayer(), 32);
 
 			if(!prefix.equals(team.getPrefix())) {
 				team.setPrefix(prefix);
@@ -177,7 +177,7 @@ public class FTeamWrapper {
 		}
 		if(conf.isSuffixes()) {
 			Team team = teams.get(fboard);
-			String suffix = this.apply(conf.getSuffixTemplate(), fboard.getFPlayer(), conf.getSuffixLength());
+			String suffix = this.apply(conf.getSuffixTemplate(), fboard.getFPlayer(), 32);
 
 			if(!suffix.equals(team.getSuffix())) {
 				team.setSuffix(suffix);

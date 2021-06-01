@@ -1,8 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
-
 //public class CmdDTR extends FCommand {
 //	private final CmdDTRGet cmdDTRGet;
 //

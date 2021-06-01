@@ -13,17 +13,16 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 
 	public static class Permissions {
 		public static class PermissiblePermInfo {
+			private transient boolean locked;
+			private transient boolean value;
+
 			public boolean isLocked() {
-				return this.locked;
+				return locked;
 			}
 
 			public boolean defaultAllowed() {
 				return this.value;
 			}
-
-			private final boolean locked = false;
-
-			private boolean value = false;
 		}
 
 		public static class FactionOnlyPermInfo {
@@ -121,14 +120,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			return this.item;
 		}
 
-		public FullPermInfo getHome() {
-			return this.home;
-		}
-
-		public FactionOnlyPermInfo getSetHome() {
-			return this.sethome;
-		}
-
 		public FactionOnlyPermInfo getListClaims() {
 			return this.listClaims;
 		}
@@ -151,14 +142,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 
 		public FactionOnlyPermInfo getPromote() {
 			return this.promote;
-		}
-
-		public FactionOnlyPermInfo getSetWarp() {
-			return this.setwarp;
-		}
-
-		public FullPermInfo getWarp() {
-			return this.warp;
 		}
 
 		private final FactionOnlyPermInfo ban = new FactionOnlyPermInfo() {
@@ -258,25 +241,10 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 			}
 		};
 
-		private final FullPermInfo home = new FullPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-			}
-		};
-
 		private final FactionOnlyPermInfo listClaims = new FactionOnlyPermInfo() {
 			{
 				this.coleader.value = true;
 				this.moderator.value = true;
-			}
-		};
-
-		private final FactionOnlyPermInfo sethome = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
 			}
 		};
 
@@ -306,23 +274,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 				this.moderator.value = true;
 			}
 		};
-
-		private final FactionOnlyPermInfo setwarp = new FactionOnlyPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-			}
-		};
-
-		private final FullPermInfo warp = new FullPermInfo() {
-			{
-				this.coleader.value = true;
-				this.moderator.value = true;
-				this.normal.value = true;
-				this.recruit.value = true;
-			}
-		};
-
 	}
 
 	private final Permissions permissions = new Permissions();

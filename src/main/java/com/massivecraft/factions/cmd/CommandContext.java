@@ -7,7 +7,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
-import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -374,13 +373,4 @@ public class CommandContext {
 
 		return false;
 	}
-
-	public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-		this.doWarmUp(fPlayer, warmup, translationKey, action, runnable, delay);
-	}
-
-	public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-		WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
-	}
-
 }

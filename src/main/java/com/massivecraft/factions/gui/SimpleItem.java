@@ -55,19 +55,6 @@ public class SimpleItem {
 		}
 	}
 
-	// All non null values in 'from' will be merged into this ItemGUI
-	public void merge(SimpleItem from) {
-		if(from.material != null) {
-			material = from.material;
-		}
-		if(from.name != null) {
-			name = from.name;
-		}
-		if(!from.lore.isEmpty()) {
-			lore = from.lore;
-		}
-	}
-
 	public boolean isValid() {
 		// For an ItemStack to be built this class needs the material, if more information is available then it will be used
 		return material != null;

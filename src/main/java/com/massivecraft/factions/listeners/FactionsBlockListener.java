@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.world.PortalCreateEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +26,11 @@ public class FactionsBlockListener implements Listener {
 
 	public FactionsBlockListener(FactionsPlugin plugin) {
 		this.plugin = plugin;
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPortalCreate(PortalCreateEvent event) {
+		event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

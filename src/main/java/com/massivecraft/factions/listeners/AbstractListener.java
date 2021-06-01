@@ -3,7 +3,6 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.perms.PermissibleAction;
-import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Chunk;

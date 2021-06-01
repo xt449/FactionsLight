@@ -6,13 +6,10 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -59,14 +56,6 @@ public abstract class MemoryBoard extends Board {
 
 		public void removeFaction(String factionId) {
 			Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
-			for(FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
-				if(fLocations.contains(fPlayer.getLastStoodAt())) {
-					if(fPlayer.isWarmingUp()) {
-						fPlayer.clearWarmup();
-						fPlayer.msg(TL.WARMUPS_CANCELLED);
-					}
-				}
-			}
 			for(FLocation floc : fLocations) {
 				super.remove(floc);
 			}
@@ -107,17 +96,6 @@ public abstract class MemoryBoard extends Board {
 	}
 
 	public void removeAt(FLocation flocation) {
-		Faction faction = getFactionAt(flocation);
-		faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
-		for(Entity entity : flocation.getChunk().getEntities()) {
-			if(entity instanceof Player) {
-				FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
-				if(fPlayer.isWarmingUp()) {
-					fPlayer.clearWarmup();
-					fPlayer.msg(TL.WARMUPS_CANCELLED);
-				}
-			}
-		}
 		clearOwnershipAt(flocation);
 		flocationIds.remove(flocation);
 	}
@@ -148,7 +126,6 @@ public abstract class MemoryBoard extends Board {
 		Faction faction = Factions.getInstance().getFactionById(factionId);
 		if(faction != null && faction.isNormal()) {
 			faction.clearAllClaimOwnership();
-			faction.clearWarps();
 		}
 		clean(factionId);
 	}
@@ -266,8 +243,6 @@ public abstract class MemoryBoard extends Board {
 	// Map generation
 	//----------------------------------------------//
 
-	private final int mapHeight = 18;
-
 	/**
 	 * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
 	 * of decreasing z
@@ -283,6 +258,7 @@ public abstract class MemoryBoard extends Board {
 
 		int halfWidth = FactionsPlugin.getInstance().configMain.map().getWidth() / 2;
 		// Use player's value for height
+		int mapHeight = 18;
 		int halfHeight = mapHeight / 2;
 		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 		int width = halfWidth * 2 + 1;

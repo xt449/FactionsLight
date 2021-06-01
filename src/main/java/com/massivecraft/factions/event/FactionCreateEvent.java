@@ -14,12 +14,10 @@ public class FactionCreateEvent extends Event {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private final String factionTag;
 	private final Player sender;
 	private final Faction faction;
 
 	public FactionCreateEvent(Player sender, String tag, Faction faction) {
-		this.factionTag = tag;
 		this.sender = sender;
 		this.faction = faction;
 	}

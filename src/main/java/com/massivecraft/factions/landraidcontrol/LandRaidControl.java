@@ -1,10 +1,5 @@
 package com.massivecraft.factions.landraidcontrol;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.cmd.CommandContext;
-import org.bukkit.entity.Player;
-
 public interface LandRaidControl {
 //	static LandRaidControl getByName(String name) {
 //		switch(name.toLowerCase()) {

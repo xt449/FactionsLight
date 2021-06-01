@@ -1,14 +1,5 @@
 package com.massivecraft.factions.cmd.dtr;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.CommandContext;
-import com.massivecraft.factions.cmd.CommandRequirements;
-import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
-import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.TL;
-
 //public class CmdDTRGet extends FCommand {
 //	public CmdDTRGet() {
 //		super();

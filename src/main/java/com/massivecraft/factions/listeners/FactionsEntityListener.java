@@ -82,12 +82,7 @@ public class FactionsEntityListener extends AbstractListener {
 		// entity took generic damage?
 		if(playerHurt) {
 			Player player = (Player) damagee;
-			FPlayer me = FPlayers.getInstance().getByPlayer(player);
 			cancelFStuckTeleport(player);
-			if(me.isWarmingUp()) {
-				me.clearWarmup();
-				me.msg(TL.WARMUPS_CANCELLED);
-			}
 		}
 	}
 

@@ -5,20 +5,16 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.integration.LWCIntegration;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
-import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
-import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -48,19 +44,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected String factionId;
 	protected Role role;
 	protected String title;
-//	protected double power;
-	protected double powerBoost;
-	protected long lastPowerUpdateTime;
+	//	protected double power;
+//	protected double powerBoost;
+//	protected long lastPowerUpdateTime;
 	protected long lastLoginTime;
-	protected ChatMode chatMode;
-	protected boolean ignoreAllianceChat = false;
 	protected String id;
 	protected String name;
 	protected boolean monitorJoins;
-	protected boolean spyingChat = false;
 	protected boolean showScoreboard = true;
-	protected WarmUpUtil.Warmup warmup;
-	protected int warmupTask;
 	protected boolean isAdminBypassing = false;
 	protected int kills, deaths;
 	protected boolean willAutoLeave = true;
@@ -68,8 +59,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	protected transient boolean mapAutoUpdating;
 	protected transient Faction autoClaimFor;
-	protected transient boolean autoSafeZoneEnabled;
-	protected transient boolean autoWarZoneEnabled;
 	protected transient boolean loginPvpDisabled;
 	protected transient long lastFrostwalkerMessage;
 	protected transient boolean shouldTakeFallDamage = true;
@@ -78,14 +67,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.id = id;
 		this.resetFactionData();
 //		this.power = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting();
-		this.lastPowerUpdateTime = System.currentTimeMillis();
+//		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
-		this.autoSafeZoneEnabled = false;
-		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = FactionsPlugin.getInstance().configMain.factions().pvp().getNoPVPDamageToOthersForXSecondsAfterLogin() > 0;
-		this.powerBoost = 0.0;
+//		this.powerBoost = 0.0;
 		this.kills = 0;
 		this.deaths = 0;
 
@@ -203,11 +190,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	@Override
 	public void setAutoClaimFor(Faction faction) {
 		this.autoClaimFor = faction;
-		if(this.autoClaimFor != null) {
-			// TODO: merge these into same autoclaim
-			this.autoSafeZoneEnabled = false;
-			this.autoWarZoneEnabled = false;
-		}
 	}
 
 //	@Override
@@ -279,8 +261,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 			}
 		}
 
-		this.factionId = "0"; // The default neutral faction
-		this.chatMode = ChatMode.PUBLIC;
+		this.factionId = "0"; // The wilderness faction
 		this.role = Role.NORMAL;
 		this.title = "";
 		this.autoClaimFor = null;
@@ -646,8 +627,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		String denyReason = null;
 		Faction myFaction = getFaction();
 		Faction currentFaction = Board.getInstance().getFactionAt(flocation);
-		int ownedLand = forFaction.getLandRounded();
-		int factionBuffer = plugin.configMain.factions().claims().getBufferZone();
 
 		if(plugin.configMain.worldGuard().isChecking() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
@@ -849,32 +828,5 @@ public abstract class MemoryFPlayer implements FPlayer {
 	@Override
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	@Override
-	public void clearWarmup() {
-		if(warmup != null) {
-			Bukkit.getScheduler().cancelTask(warmupTask);
-			this.stopWarmup();
-		}
-	}
-
-	@Override
-	public void stopWarmup() {
-		warmup = null;
-	}
-
-	@Override
-	public boolean isWarmingUp() {
-		return warmup != null;
-	}
-
-	@Override
-	public void addWarmup(WarmUpUtil.Warmup warmup, int taskId) {
-		if(this.warmup != null) {
-			this.clearWarmup();
-		}
-		this.warmup = warmup;
-		this.warmupTask = taskId;
 	}
 }

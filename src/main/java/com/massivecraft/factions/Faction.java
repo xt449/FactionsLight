@@ -5,8 +5,6 @@ import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
-import com.massivecraft.factions.util.LazyLocation;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,24 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 public interface Faction extends RelationParticipator {
-
-	Map<String, LazyLocation> getWarps();
-
-	LazyLocation getWarp(String name);
-
-	void setWarp(String name, LazyLocation loc);
-
-	boolean isWarp(String name);
-
-	boolean hasWarpPassword(String warp);
-
-	boolean isWarpPassword(String warp, String password);
-
-	void setWarpPassword(String warp, String password);
-
-	boolean removeWarp(String name);
-
-	void clearWarps();
 
 	void addAnnouncement(FPlayer fPlayer, String msg);
 
@@ -102,8 +82,6 @@ public interface Faction extends RelationParticipator {
 	boolean isNormal();
 
 	boolean isWilderness();
-
-	void setLastDeath(long time);
 
 	int getKills();
 

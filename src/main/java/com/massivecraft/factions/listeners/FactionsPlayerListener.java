@@ -15,7 +15,6 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
-import com.massivecraft.factions.util.VisualizeUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -152,15 +151,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		Player player = event.getPlayer();
 		FPlayer me = FPlayers.getInstance().getByPlayer(player);
-
-		// clear visualization
-		if(event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-			VisualizeUtil.clear(event.getPlayer());
-			if(me.isWarmingUp()) {
-				me.clearWarmup();
-				me.msg(TL.WARMUPS_CANCELLED);
-			}
-		}
 
 		// quick check to make sure player is moving between chunks; good performance boost
 		if(event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
@@ -369,16 +359,16 @@ public class FactionsPlayerListener extends AbstractListener {
 		return true;
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
-			return;
-		}
-
-		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-
+//	@EventHandler(priority = EventPriority.HIGH)
+//	public void onPlayerRespawn(PlayerRespawnEvent event) {
+//		if(!plugin.worldUtil().isEnabled(event.getPlayer().getWorld())) {
+//			return;
+//		}
+//
+//		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+//
 //		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
-	}
+//	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onTeleport(PlayerTeleportEvent event) {

@@ -3,21 +3,17 @@ package com.massivecraft.factions.tag;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
-import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
-import org.apache.commons.lang.time.DurationFormatUtils;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public enum FactionTag implements Tag {
 	CHUNKS("chunks", (fac) -> String.valueOf(fac.getLandRounded())),
-	WARPS("warps", (fac) -> String.valueOf(fac.getWarps().size())),
 	HEADER("header", (fac, fp) -> TextUtil.titleize(fac.getTag(fp))),
-//	POWER("power", (fac) -> String.valueOf(fac.getPowerRounded())),
+	//	POWER("power", (fac) -> String.valueOf(fac.getPowerRounded())),
 //	MAX_POWER("maxPower", (fac) -> String.valueOf(fac.getPowerMaxRounded())),
 //	POWER_BOOST("power-boost", (fac) -> {
 //		double powerBoost = fac.getPowerBoost();
@@ -31,7 +27,7 @@ public enum FactionTag implements Tag {
 	@SuppressWarnings("Convert2MethodRef")
 	FACTION("faction", (fac) -> fac.getTag()),
 	FACTION_RELATION_COLOR("faction-relation-color", (fac, fp) -> fp == null ? "" : fp.getColorTo(fac).toString()),
-//	RAIDABLE("raidable", (fac) -> {
+	//	RAIDABLE("raidable", (fac) -> {
 //		boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(fac);
 //		return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
 //	}),

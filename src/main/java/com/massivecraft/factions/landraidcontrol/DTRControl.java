@@ -1,17 +1,5 @@
 package com.massivecraft.factions.landraidcontrol;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.CommandContext;
-import com.massivecraft.factions.configuration.MainConfiguration;
-import com.massivecraft.factions.event.DTRLossEvent;
-import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class DTRControl implements LandRaidControl {
 //	private static FactionsPlugin plugin;
 //

@@ -1,9 +1,7 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -119,8 +117,6 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
-			case "faction_warps":
-				return String.valueOf(faction.getWarps().size());
 //			case "faction_raidable":
 //				boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(faction);
 //				return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();

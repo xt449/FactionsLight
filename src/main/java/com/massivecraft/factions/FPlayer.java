@@ -2,8 +2,6 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -196,17 +194,4 @@ public interface FPlayer extends RelationParticipator {
 	boolean isOffline();
 
 	void setId(String id);
-
-	// -------------------------------
-	// Warmups
-	// -------------------------------
-
-	boolean isWarmingUp();
-
-	void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
-
-	void stopWarmup();
-
-	void clearWarmup();
-
 }

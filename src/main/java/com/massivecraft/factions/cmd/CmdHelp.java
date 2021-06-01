@@ -121,8 +121,6 @@ public class CmdHelp extends FCommand {
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_1.toString()));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_2.toString()));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_3.toString()));
-		pageLines.add(FCmdRoot.getInstance().cmdSafeunclaimall.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdWarunclaimall.getUsageTemplate(context, true));
 		//TODO:TL
 		pageLines.add(TextUtil.parse("<i>Note: " + FCmdRoot.getInstance().cmdUnclaim.getUsageTemplate(context, false) + TextUtil.parse("<i>") + " works on safe/war zones as well."));
 		pageLines.add(FCmdRoot.getInstance().cmdPeaceful.getUsageTemplate(context, true));

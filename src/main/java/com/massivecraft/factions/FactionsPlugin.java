@@ -8,20 +8,22 @@ import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.SaveTask;
-import com.massivecraft.factions.integration.*;
-import com.massivecraft.factions.landraidcontrol.LandRaidControl;
-import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.integration.IntegrationManager;
+import com.massivecraft.factions.integration.PlaceholderAPIIntegration;
+import com.massivecraft.factions.integration.VaultPermissionIntegration;
+import com.massivecraft.factions.integration.Worldguard7Integration;
+import com.massivecraft.factions.listeners.FactionsBlockListener;
+import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
+import com.massivecraft.factions.listeners.OneEightPlusListener;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissionsMapTypeAdapter;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,19 +32,20 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
-	// Our single plugin instance.
-	// Single 4 life.
 	private static FactionsPlugin instance;
 
 	public static FactionsPlugin getInstance() {
 		return instance;
+	}
+
+	{
+		FactionsPlugin.instance = this;
 	}
 
 	// Configurations
@@ -84,11 +87,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	private PlaceholderAPIIntegration placeholderAPI;
 	private Worldguard7Integration worldguard;
 	private VaultPermissionIntegration vaultPermission;
-	private final Set<String> pluginsHandlingChat = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-	public FactionsPlugin() {
-		instance = this;
-	}
 
 	@Override
 	public void onEnable() {
@@ -200,11 +198,9 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 		// Register Event Handlers
 		getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
-		getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
 		getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
 		getServer().getPluginManager().registerEvents(new OneEightPlusListener(this), this);
-		getServer().getPluginManager().registerEvents(new PortalListener(this), this);
 
 		// since some other plugins execute commands directly through this command interface, provide it
 		this.getCommand(refCommand).setExecutor(cmdBase);
@@ -427,12 +423,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	public int getAPIVersion() {
 		// Updated from 4 to 5 for version 0.5.0
 		return 4;
-	}
-
-	// Is this chat message actually a Factions command, and thus should be left alone by other plugins?
-	// TODO: GET THIS BACK AND WORKING
-	public boolean isFactionsCommand(String check) {
-		return !(check == null || check.isEmpty()); //&& this.handleCommand(null, check, true);
 	}
 
 	// Get a list of all players in the specified faction

@@ -1,14 +1,5 @@
 package com.massivecraft.factions.landraidcontrol;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.CommandContext;
-import com.massivecraft.factions.configuration.MainConfiguration;
-import com.massivecraft.factions.event.PowerLossEvent;
-import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 public class PowerControl implements LandRaidControl {
 //	@Override
 //	public boolean isRaidable(Faction faction) {

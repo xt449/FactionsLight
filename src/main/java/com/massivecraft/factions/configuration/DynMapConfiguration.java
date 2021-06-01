@@ -112,14 +112,14 @@ public class DynMapConfiguration extends AbstractConfiguration {
 								.setLineWeight(style.getLineWeight())
 								.setFillColor(style.getFillColor())
 								.setFillOpacity(style.getFillOpacity())
-								.setHomeMarker(style.getHomeMarker())
+//								.setHomeMarker(style.getHomeMarker())
 								.setBoost(style.isStyleBoost()));
 					} else if(s instanceof Map) {
 						DynmapStyle style = new DynmapStyle();
 						Map<String, Object> map = (Map<String, Object>) s;
-						if(map.containsKey("homeMarker")) {
-							style.setHomeMarker(map.get("homeMarker").toString());
-						}
+//						if(map.containsKey("homeMarker")) {
+//							style.setHomeMarker(map.get("homeMarker").toString());
+//						}
 						if(map.containsKey("fillOpacity")) {
 							style.setFillOpacity(getDouble(map.get("fillOpacity").toString()));
 						}

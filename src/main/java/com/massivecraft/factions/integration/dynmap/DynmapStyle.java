@@ -18,7 +18,6 @@ public class DynmapStyle {
 			.setLineWeight(DEFAULT_LINE_WEIGHT)
 			.setFillColor(DEFAULT_FILL_COLOR)
 			.setFillOpacity(DEFAULT_FILL_OPACITY)
-			.setHomeMarker(DEFAULT_HOME_MARKER)
 			.setBoost(DEFAULT_BOOST);
 
 	public static DynmapStyle getDefault() {
@@ -84,17 +83,6 @@ public class DynmapStyle {
 
 	public DynmapStyle setFillOpacity(Double fillOpacity) {
 		this.fillOpacity = fillOpacity;
-		return this;
-	}
-
-	private String homeMarker = null;
-
-	public String getHomeMarker() {
-		return coalesce(this.homeMarker, styleConf().getHomeMarker(), DEFAULT_HOME_MARKER);
-	}
-
-	public DynmapStyle setHomeMarker(String homeMarker) {
-		this.homeMarker = homeMarker;
 		return this;
 	}
 

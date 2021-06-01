@@ -20,16 +20,6 @@ public class FLocation implements Serializable {
 	private int x = 0;
 	private int z = 0;
 
-	static {
-		boolean worldBorderClassPresent = false;
-		try {
-			Class.forName("org.bukkit.WorldBorder");
-			worldBorderClassPresent = true;
-		} catch(ClassNotFoundException ignored) {
-		}
-
-	}
-
 	//----------------------------------------------//
 	// Constructors
 	//----------------------------------------------//

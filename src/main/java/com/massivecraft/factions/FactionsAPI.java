@@ -1,9 +1,5 @@
 package com.massivecraft.factions;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.Plugin;
-
 import java.util.Set;
 
 public interface FactionsAPI {

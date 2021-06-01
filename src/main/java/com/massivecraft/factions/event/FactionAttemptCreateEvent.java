@@ -14,12 +14,10 @@ public class FactionAttemptCreateEvent extends Event implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	private final String factionTag;
 	private final Player sender;
 	private boolean cancelled;
 
 	public FactionAttemptCreateEvent(Player sender, String tag) {
-		this.factionTag = tag;
 		this.sender = sender;
 	}
 

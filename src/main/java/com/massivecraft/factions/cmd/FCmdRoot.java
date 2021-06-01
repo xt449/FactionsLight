@@ -8,8 +8,6 @@ import com.massivecraft.factions.cmd.relations.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
-import com.massivecraft.factions.landraidcontrol.PowerControl;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,8 +26,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public static FCmdRoot getInstance() {
 		return cmdBase;
 	}
-
-	public CmdAutoHelp cmdAutoHelp = new CmdAutoHelp();
 
 	public final CmdAdmin cmdAdmin = new CmdAdmin();
 	public final CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -55,7 +51,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdOwnerList cmdOwnerList = new CmdOwnerList();
 	public final CmdPeaceful cmdPeaceful = new CmdPeaceful();
 	public final CmdPermanent cmdPermanent = new CmdPermanent();
-//	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
+	//	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
 //	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
 //	public final CmdPower cmdPower = new CmdPower();
 //	public final CmdDTR cmdDTR = new CmdDTR();
@@ -64,7 +60,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
 	public final CmdRelationTruce cmdRelationTruce = new CmdRelationTruce();
 	public final CmdReload cmdReload = new CmdReload();
-	public final CmdSafeunclaimall cmdSafeunclaimall = new CmdSafeunclaimall();
 	public final CmdSaveAll cmdSaveAll = new CmdSaveAll();
 	public final CmdShow cmdShow = new CmdShow();
 	public final CmdStatus cmdStatus = new CmdStatus();
@@ -74,11 +69,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdUnclaim cmdUnclaim = new CmdUnclaim();
 	public final CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
 	public final CmdVersion cmdVersion = new CmdVersion();
-	public final CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
 	public final CmdSB cmdSB = new CmdSB();
 	public final CmdShowInvites cmdShowInvites = new CmdShowInvites();
 	public final CmdAnnounce cmdAnnounce = new CmdAnnounce();
-//	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
+	//	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
 	public final CmdLogins cmdLogins = new CmdLogins();
 	public final CmdClaimLine cmdClaimLine = new CmdClaimLine();
 	public final CmdClaimFill cmdClaimFill = new CmdClaimFill();
@@ -92,7 +86,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdUnban cmdUnban = new CmdUnban();
 	public final CmdBanlist cmdbanlist = new CmdBanlist();
 	public final CmdColeader cmdColeader = new CmdColeader();
-	public final CmdDebug cmdDebug = new CmdDebug();
 	public final CmdListClaims cmdListClaims = new CmdListClaims();
 
 	public FCmdRoot() {
@@ -135,7 +128,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdRelationNeutral);
 		this.addSubCommand(this.cmdRelationTruce);
 		this.addSubCommand(this.cmdReload);
-		this.addSubCommand(this.cmdSafeunclaimall);
 		this.addSubCommand(this.cmdSaveAll);
 		this.addSubCommand(this.cmdShow);
 		this.addSubCommand(this.cmdStatus);
@@ -145,7 +137,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
 		this.addSubCommand(this.cmdVersion);
-		this.addSubCommand(this.cmdWarunclaimall);
 		this.addSubCommand(this.cmdSB);
 		this.addSubCommand(this.cmdShowInvites);
 		this.addSubCommand(this.cmdAnnounce);
@@ -161,7 +152,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdUnban);
 		this.addSubCommand(this.cmdbanlist);
 		this.addSubCommand(this.cmdColeader);
-		this.addSubCommand(this.cmdDebug);
 		this.addSubCommand(this.cmdListClaims);
 //		if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
 //			FactionsPlugin.getInstance().getLogger().info("Using POWER for land/raid control. Enabling power commands.");

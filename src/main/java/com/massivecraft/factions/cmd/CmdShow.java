@@ -6,19 +6,14 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,43 +109,6 @@ public class CmdShow extends FCommand {
 			}
 		}
 		recipient.sendMessage(TextUtil.parse(builder.toString()));
-	}
-
-	private class GroupGetter extends BukkitRunnable {
-		private final List<String> messageList;
-		private final FPlayer sender;
-		private final Faction faction;
-
-		private GroupGetter(List<String> messageList, FPlayer sender, Faction faction) {
-			this.messageList = messageList;
-			this.sender = sender;
-			this.faction = faction;
-		}
-
-		@Override
-		public void run() {
-			new Sender(this.messageList, this.sender, this.faction).runTask(FactionsPlugin.getInstance());
-		}
-	}
-
-	private class Sender extends BukkitRunnable {
-		private final List<String> messageList;
-		private final FPlayer sender;
-		private final Faction faction;
-
-		private Sender(List<String> messageList, FPlayer sender, Faction faction) {
-			this.messageList = messageList;
-			this.sender = sender;
-			this.faction = faction;
-		}
-
-		@Override
-		public void run() {
-			Player player = Bukkit.getPlayerExact(sender.getName());
-			if(player != null) {
-				CmdShow.this.sendMessages(messageList, player, faction, sender);
-			}
-		}
 	}
 
 	@Override

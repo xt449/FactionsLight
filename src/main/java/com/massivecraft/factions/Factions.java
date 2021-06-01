@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.data.json.JSONFactions;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public abstract class Factions {
 	protected static final Factions instance = getFactionsImpl();
@@ -21,8 +20,6 @@ public abstract class Factions {
 	public abstract Faction createFaction();
 
 	public abstract void removeFaction(String id);
-
-	public abstract Set<String> getFactionTags();
 
 	public abstract ArrayList<Faction> getAllFactions();
 

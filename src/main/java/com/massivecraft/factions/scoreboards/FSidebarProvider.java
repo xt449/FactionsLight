@@ -3,7 +3,6 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 
 import java.util.List;

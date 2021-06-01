@@ -4,18 +4,18 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.integration.LWCIntegration;
-import com.massivecraft.factions.landraidcontrol.DTRControl;
-import com.massivecraft.factions.landraidcontrol.LandRaidControl;
 import com.massivecraft.factions.perms.Permissible;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.util.TL;
+import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -31,25 +31,22 @@ public abstract class MemoryFaction implements Faction {
 	protected String description;
 	protected boolean open;
 	protected boolean peaceful;
-	protected Integer permanentPower;
-	protected LazyLocation home;
+	//	protected Integer permanentPower;
 	protected long foundedDate;
 	protected transient long lastPlayerLoggedOffTime;
-	protected double powerBoost;
+	//	protected double powerBoost;
 	protected final Map<String, Relation> relationWish = new HashMap<>();
 	protected final Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
 	protected final transient Set<FPlayer> fplayers = new HashSet<>();
 	protected final Set<String> invites = new HashSet<>();
 	protected final HashMap<String, List<String>> announcements = new HashMap<>();
-	protected final ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
-	protected final ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
-	private long lastDeath;
+	//	private long lastDeath;
 	protected Role defaultRole;
 	protected final Map<Permissible, Map<PermissibleAction, Boolean>> permissions = new HashMap<>();
 	protected final Set<BanInfo> bans = new HashSet<>();
-	protected double dtr;
-	protected long lastDTRUpdateTime;
-	protected long frozenDTRUntilTime;
+//	protected double dtr;
+//	protected long lastDTRUpdateTime;
+//	protected long frozenDTRUntilTime;
 
 	public MemoryFaction(String id) {
 		this.id = id;
@@ -60,7 +57,7 @@ public abstract class MemoryFaction implements Faction {
 		this.peaceful = FactionsPlugin.getInstance().configMain.factions().other().isNewFactionsDefaultPeaceful();
 		this.peacefulExplosionsEnabled = false;
 		this.permanent = false;
-		this.powerBoost = 0.0;
+//		this.powerBoost = 0.0;
 		this.foundedDate = System.currentTimeMillis();
 		this.defaultRole = FactionsPlugin.getInstance().configMain.factions().other().getDefaultRole();
 //		this.dtr = FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getStartingDTR();
@@ -88,43 +85,6 @@ public abstract class MemoryFaction implements Faction {
 
 	public void removeAnnouncements(FPlayer fPlayer) {
 		announcements.remove(fPlayer.getId());
-	}
-
-	public ConcurrentHashMap<String, LazyLocation> getWarps() {
-		return this.warps;
-	}
-
-	public LazyLocation getWarp(String name) {
-		return this.warps.get(name);
-	}
-
-	public void setWarp(String name, LazyLocation loc) {
-		this.warps.put(name, loc);
-	}
-
-	public boolean isWarp(String name) {
-		return this.warps.containsKey(name);
-	}
-
-	public boolean removeWarp(String name) {
-		warpPasswords.remove(name); // remove password no matter what.
-		return warps.remove(name) != null;
-	}
-
-	public boolean isWarpPassword(String warp, String password) {
-		return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
-	}
-
-	public boolean hasWarpPassword(String warp) {
-		return warpPasswords.containsKey(warp.toLowerCase());
-	}
-
-	public void setWarpPassword(String warp, String password) {
-		warpPasswords.put(warp.toLowerCase(), password);
-	}
-
-	public void clearWarps() {
-		warps.clear();
 	}
 
 	public Set<String> getInvites() {
@@ -262,10 +222,6 @@ public abstract class MemoryFaction implements Faction {
 		this.foundedDate = newDate;
 	}
 
-	public void setLastDeath(long time) {
-		this.lastDeath = time;
-	}
-
 	public int getKills() {
 		int kills = 0;
 		for(FPlayer fp : getFPlayers()) {
@@ -333,12 +289,10 @@ public abstract class MemoryFaction implements Faction {
 		}
 
 		Permissible perm;
-		boolean online = true;
 		if(player.getFaction() == this) {
 			perm = player.getRole();
 		} else {
 			perm = player.getFaction().getRelationTo(this);
-			online = this.hasPlayersOnline();
 		}
 
 		return this.hasAccess(perm, permissibleAction);
@@ -638,11 +592,11 @@ public abstract class MemoryFaction implements Faction {
 	// -------------------------------
 
 	public boolean addFPlayer(FPlayer fplayer) {
-		return !false && fplayers.add(fplayer);
+		return fplayers.add(fplayer);
 	}
 
 	public boolean removeFPlayer(FPlayer fplayer) {
-		return !false && fplayers.remove(fplayer);
+		return fplayers.remove(fplayer);
 	}
 
 	public Set<FPlayer> getFPlayers() {

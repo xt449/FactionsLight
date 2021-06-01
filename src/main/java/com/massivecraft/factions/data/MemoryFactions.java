@@ -7,9 +7,7 @@ import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFactions extends Factions {
@@ -132,14 +130,6 @@ public abstract class MemoryFactions extends Factions {
 		Faction faction = generateFactionObject();
 		factions.put(faction.getId(), faction);
 		return faction;
-	}
-
-	public Set<String> getFactionTags() {
-		Set<String> tags = new HashSet<>();
-		for(Faction faction : factions.values()) {
-			tags.add(faction.getTag());
-		}
-		return tags;
 	}
 
 	public abstract Faction generateFactionObject();

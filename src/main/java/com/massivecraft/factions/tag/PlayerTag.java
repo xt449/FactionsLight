@@ -1,7 +1,6 @@
 package com.massivecraft.factions.tag;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
@@ -15,7 +14,7 @@ public enum PlayerTag implements Tag {
 		String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
 		return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
 	}),
-//	PLAYER_POWER("player-power", (fp) -> String.valueOf(fp.getPowerRounded())),
+	//	PLAYER_POWER("player-power", (fp) -> String.valueOf(fp.getPowerRounded())),
 //	PLAYER_MAXPOWER("player-maxpower", (fp) -> String.valueOf(fp.getPowerMaxRounded())),
 	PLAYER_KILLS("player-kills", (fp) -> String.valueOf(fp.getKills())),
 	PLAYER_DEATHS("player-deaths", (fp) -> String.valueOf(fp.getDeaths())),

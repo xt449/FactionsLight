@@ -6,7 +6,6 @@ import com.massivecraft.factions.data.MemoryBoard;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.*;
@@ -29,9 +28,6 @@ public class EngineDynmap {
 	public final static String FACTIONS_ = FACTIONS + "_";
 
 	public final static String FACTIONS_MARKERSET = FACTIONS_ + "markerset";
-
-	public final static String FACTIONS_HOME = FACTIONS_ + "home";
-	public final static String FACTIONS_HOME_ = FACTIONS_HOME + "_";
 
 	public final static String FACTIONS_PLAYERSET = FACTIONS_ + "playerset";
 	public final static String FACTIONS_PLAYERSET_ = FACTIONS_PLAYERSET + "_";
@@ -137,9 +133,9 @@ public class EngineDynmap {
 
 	// Thread Safe / Asynchronous: Yes
 	public Map<String, TempMarker> createHomes() {
-		Map<String, TempMarker> ret = new HashMap<>();
-
-		// Loop current factions
+//		Map<String, TempMarker> ret = new HashMap<>();
+//
+//		// Loop current factions
 //		for(Faction faction : Factions.getInstance().getAllFactions()) {
 //			Location ps = faction.getHome(); // TODO
 //			if(ps == null) {
@@ -161,8 +157,9 @@ public class EngineDynmap {
 //
 //			ret.put(markerId, temp);
 //		}
-
-		return ret;
+//
+//		return ret;
+		return new HashMap<>();
 	}
 
 	// Thread Safe / Asynchronous: No
