@@ -34,12 +34,6 @@ public class CmdList extends FCommand {
 		factionList.remove(Factions.getInstance().getSafeZone());
 		factionList.remove(Factions.getInstance().getWarZone());
 
-		// remove exempt factions
-		if(!context.sender.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())) {
-			List<String> exemptFactions = FactionsPlugin.getInstance().configMain.commands().show().exempt();
-			factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
-		}
-
 		// Sort by total followers first
 		factionList.sort(this.compare(Faction::getFPlayers));
 

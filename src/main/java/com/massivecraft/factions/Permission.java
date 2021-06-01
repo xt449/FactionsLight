@@ -70,7 +70,6 @@ public enum Permission {
 	SETHOME("sethome"),
 	SETHOME_ANY("sethome.any"),
 	SHOW("show"),
-	SHOW_BYPASS_EXEMPT("show.bypassexempt"),
 	STATUS("status"),
 	STUCK("stuck"),
 	TAG("tag"),

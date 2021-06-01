@@ -80,7 +80,7 @@ public enum FactionTag implements Tag {
 	FACTION_BANCOUNT("faction-bancount", (fac) -> String.valueOf(fac.getBannedPlayers().size())),
 	;
 
-	private final String tag;
+	public final String tag;
 	private final BiFunction<Faction, FPlayer, String> biFunction;
 	private final Function<Faction, String> function;
 

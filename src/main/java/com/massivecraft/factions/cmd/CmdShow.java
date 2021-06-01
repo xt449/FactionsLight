@@ -2,14 +2,17 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.perms.Relation;
+import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.FancyTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,12 +38,47 @@ public class CmdShow extends FCommand {
 			return;
 		}
 
-		if(context.fPlayer != null && !context.player.hasPermission(Permission.SHOW_BYPASS_EXEMPT.toString())
-				&& FactionsPlugin.getInstance().configMain.commands().show().exempt().contains(faction.getTag())) {
-			context.msg(TL.COMMAND_SHOW_EXEMPT);
-			return;
+		List<String> show = Collections.singletonList(FactionsPlugin.getInstance().configMain.commands().show().format());
+
+		if(!faction.isNormal()) {
+			String tag = faction.getTag(context.fPlayer);
+			// send header and that's all
+			String header = show.get(0);
+			if (header.contains(FactionTag.HEADER.tag)) {
+				context.msg(TextUtil.titleize(tag));
+			} else {
+				String message = header.replace(FactionTag.FACTION.tag, tag);
+				message = Tag.parsePlain(faction, context.fPlayer, message);
+				context.msg(TextUtil.parse(message));
+			}
+			Bukkit.broadcastMessage("01 : " + faction.getTag());
+			return; // we only show header for non-normal factions
 		}
-		List<String> messageList = Collections.singletonList(TextUtil.parse(Tag.parsePlaceholders(context.player, Tag.parsePlain(faction, context.fPlayer, FactionsPlugin.getInstance().configMain.commands().show().format()))));
+
+		List<String> messageList = new ArrayList<>();
+		for(String raw : show) {
+			String parsed = Tag.parsePlain(faction, context.fPlayer, raw); // use relations
+			if (parsed == null) {
+				continue; // Due to minimal f show.
+			}
+
+			if (context.fPlayer != null) {
+				parsed = Tag.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
+			}
+
+			parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
+			messageList.add(parsed);
+		}
+
+//		List<String> messageList = Collections.singletonList(
+//				TextUtil.parse(
+//						Tag.parsePlaceholders(
+//								context.player, Tag.parsePlain(
+//										faction, context.fPlayer, FactionsPlugin.getInstance().configMain.commands().show().format()
+//								)
+//						)
+//				)
+//		);
 
 		this.sendMessages(messageList, context.sender, faction, context.fPlayer);
 	}

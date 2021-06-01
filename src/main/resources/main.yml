@@ -14,18 +14,25 @@ colors:
     truce: DARK_PURPLE
 
 commands:
-  home:
-    # Warmup seconds before command executes. Set to 0 for no warmup.
+  commandPost:
+    cooldown: 0
     delay: 0
+    mustBeInClaimedTerritory: true
+    teleportAllowedFromEnemyTerrittory: false
+    teleportAllowedFromDifferentWorld: false
+    teleportIgnoreEnemiesIfInFriendlyTerritory: true
+    teleportAllowedEnemyDistance: 4
   
   list:
+    cooldown: 0
+    delay: 0
     # You can use any variable here
     entry: '&6{faction-relation-color}{faction} &e{online} /: members online, &6Land / Power / Maxpower: &e{chunks}/{power}/{maxPower}'
     # You can use any variables here
     factionlessEntry: '&eFactionless&e: factionless online'
     # You can only use: pagenumber and: pagecount in the footer.
     # Blank entry results in nothing being displayed.
-    footer: 
+    footer: ''
     # You can only use: pagenumber and: pagecount in the header.
     # Blank entry results in nothing being displayed.
     header: '&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------'
@@ -36,9 +43,12 @@ commands:
     # This can prevent some teleportation-based exploits for finding factions.
     # The old default was 2000, which blocks any movement faster than running.
     # The new default is 700, which should also allow boats and horses.
-    cooldown: 700
+    cooldown: 0
+    delay: 0
 
   perms:
+    cooldown: 0
+    delay: 0
     # Placeholders:: action-access-color,: action-access,: action-desc
     guiLore: |
       &8Access:: action-access-color{action-access}
@@ -48,6 +58,8 @@ commands:
       &8Right click to &c&lDeny
 
   show:
+    cooldown: 0
+    delay: 0
     # You can use any variable here, including fancy messages. Color codes and or tags work fine.
     # Lines that aren't defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
     # Supports placeholders.
@@ -56,21 +68,21 @@ commands:
     format: |
       {header}
       &6Description: &e{description}
-      &6Joining: &e{joining}   : peaceful
+      &6Joining: &e{joining}
       &6Land / Power / Maxpower: &e: chunks/{power}/{maxPower}
-      &6Raidable:: raidable
       &6Founded: &e{create-date}
       &6This faction is permanent, remaining even with no members.
-      &6Land value: &e{land-value}: land-refund
+      &6Land value: &e{land-value}: TBI
       &6Balance: &e{faction-balance}
       &6Bans: &e{faction-bancount}
-      &6Allies(&e{allies}&6/&e{max-allies}&6):: allies-list
-      &6Online: (&e{online}&6/&e{members}&6):: online-list
-      &6Offline: (&e{offline}&6/&e{members}&6):: offline-list
+      &6Allies(&e{allies}&6/&e{max-allies}&6):: {allies-list}
+      &6Online: (&e{online}&6/&e{members}&6):: {online-list}
+      &6Offline: (&e{offline}&6/&e{members}&6):: {offline-list}
     # Set true to not display empty fancy messages
     minimal: false
 
   stuck:
+    cooldown: 0
     # Warmup seconds before command executes. Set to 0 for no warmup.
     delay: 30
     # This radius defines how far from where they ran the command the player
@@ -95,218 +107,38 @@ commands:
       &6Rank: &f{group}
       &6Balance: &a${balance}
 
-  warp:
-    # Warmup seconds before command executes. Set to 0 for no warmup.
-    delay: 0
-    # What should be the maximum amount of warps that a Faction can set?
-    maxWarps: 5
-
 factions:
-  chat:
-    allianceChatFormat: '&d%s:&f %s'
-    alwaysShowChatTag: true
-    broadcastDescriptionChanges: false
-    broadcastTagChanges: false
-    factionChatFormat: '%s:&f %s'
-    # Allow for players to chat only within their faction, with allies, etc.
-    # Set to false to only allow public chats through this plugin.
-    factionOnlyChat: true
-    modChatFormat: '&c%s:&f %s'
-    tagFormat: '%s&f'
-    # If true, disables adding of faction tag so another plugin can manage this
-    tagHandledByAnotherPlugin: false
-    tagInsertAfterString:
-    tagInsertBeforeString:
-    tagInsertIndex: 0
-    tagPadAfter: true
-    tagPadBefore: false
-    tagRelationColored: true
-    tagReplaceString: [FACTION]
-    truceChatFormat: '&5%s:&f %s'
+  combat:
+    gracePeriodOnLogin: 10
+    gracePeriodOnRespawn: 10
+    allowByDefault: true
 
-  claims:
-    # Should we allow Factions to over claim if they are raidable?
-    # This has always been true, allowing factions to over claim others.
-    allowOverClaim: true
-    # If true (and allowOverClaim is true, claiming over another faction's land will ignore buffer zone settings.
-    allowOverClaimIgnoringBuffer: false
-    # Buffer Zone is an chunk area required between claims of different Factions.
-    # This is default to 0 and has always been that way. Meaning Factions can have
-    #  claims that border each other.
-    # If this is set to 3, then Factions need to have 3 chunks between their claim
-    #  and another Faction's claim.
-    # It's recommended to keep this pretty low as the radius check could be a
-    #  heavy operation if set to a large number.
-    # If this is set to 0, we won't even bother checking which is how Factions has
-    #  always been.
-    bufferZone: 0
-    canBeUnconnectedIfOwnedByOtherFaction: true
-    fillClaimMaxClaims: 25
-    fillClaimMaxDistance: 5
-    landsMax: 0
-    lineClaimLimit: 5
-    mustBeConnected: false
-    # If someone is doing a radius claim and the process fails to claim land this many times in a row, it will exit
-    radiusClaimFailureLimit: 9
-    requireMinFactionMembers: 1
-    worldsNoClaiming:
-      - exampleWorldName
+  # Commands which will be prevented when in said claim territory
+  commandBlacklist:
+    inWilderness: []
+    inNeutralClaim: []
+    inFriendlyClaim: []
+    inEnemyClaim: []
+    inPermanentClaim: []
 
-  homes:
-    enabled: true
-    mustBeInClaimedTerritory: true
-    teleportAllowedEnemyDistance: 32
-    teleportAllowedFromDifferentWorld: true
-    teleportAllowedFromEnemyTerritory: true
-    teleportCommandEnabled: true
-    teleportCommandEssentialsIntegration: true
-    teleportCommandSmokeEffectEnabled: true
-    teleportCommandSmokeEffectThickness: 3
-    teleportIgnoreEnemiesIfInOwnTerritory: true
-    teleportToOnDeath: true
-
-  landRaidControl:
-    # Sets the mode of land/raid control
-    system: power
-
-    # Controls the dtr system of land/raid control
-    # Set the 'system' value to 'dtr' to use this system
-    dtr:
-      decimalDigits: 2
-      freezeKickPenalty: 0.5
-      freezePreventsDisband: true
-      freezePreventsJoin: true
-      freezePreventsLeave: true
-      # Time, in seconds, to freeze DTR regeneration after a faction member dies
-      freezeTime: 0
-      freezeTimeFormat: H:mm:ss
-      # Additional claims allowed for each player in the faction
-      landPerPlayer: 3
-      # Claims the faction starts with.
-      # Note: A faction of one player has this many PLUS the perPlayer amount.
-      landStarting: 6
-      lossPerDeath: 1
-      maxDTR: 10
-      minDTR: -3
-      perPlayer: 1
-      regainPerMinuteMaxRate: 0.1
-      regainPerMinutePerPlayer: 0.05
-      startingDTR: 2
-      worldDeathModifiers:
-      world_nether: 0.5
-      world_the_end: 0.25
-
-    # Controls the power system of land/raid control
-    # Set the 'system' value to 'power' to use this system
-    power:
-      # Disallow joining/leaving/kicking while power is negative
-      canLeaveWithNegativePower: true
-      # If greater than 0, used as a cap for how much power a faction can have
-      # Additional power from players beyond this acts as a buffer of sorts
-      factionMax: 0
-      # How much is lost on death
-      lossPerDeath: 4
-      # A player stops losing power from being offline once they reach this amount
-      offlineLossLimit: 0
-      # A player loses this much per day offline
-      offlineLossPerDay: 0
-      peacefulMembersDisablePowerLoss: true
-      playerMax: 10
-      playerMin: -10
-      playerStarting: 0
-      # After a player dies, how long should the faction not be able to regen power?
-      # This resets on each death but does not accumulate.
-      # Set to 0 for no freeze. Time is in seconds.
-      powerFreeze: 0
-      # Default health rate of 0.2 takes 5 minutes to recover one power
-      powerPerMinute: 0.2
-      # Allow a faction to be raided if they have more land than power.
-      # This will make claimed territory lose all protections
-      #  allowing factions to open chests, break blocks, etc. if they
-      #  have more claimed chunks (land) than power. (See raidabilityOnEqualLandAndPower)
-      raidability: false
-      # Determines if the requirement for raidability is land>: power (true) or
-      # land>power (false)
-      raidabilityOnEqualLandAndPower: true
-      # Does a player regenerate power while offline?
-      regenOffline: false
-      respawnHomeFromNoPowerLossWorlds: true
-      # Power stealing. 0 to disable, 1 to give the killing player all of the target player's lost power,
-      # 0.5 to give the killing player half of what was lost, etc.
-      # Negative values will give the incredibly wild option of taking power from the killer too.
-      vampirism: 0
-      warZonePowerLoss: true
-      wildernessPowerLoss: true
-      worldsNoPowerLoss:
-        - exampleWorld
-
-  # Remaining settings not categorized
-  other:
-    actionDeniedPainAmount: 1
-    allowMultipleColeaders: false
-    autoLeaveAfterDaysOfInactivity: 10
-    autoLeaveDeleteFPlayerData: true
-    autoLeaveRoutineMaxMillisecondsPerTick: 5
-    autoLeaveRoutineRunsEveryXMinutes: 5
-    considerFactionsReallyOfflineAfterXMinutes: 0
-    # Default Relation allows you to change the default relation for Factions.
-    # Example usage would be so people can't leave then make a new Faction while Raiding
-    #  in order to be able to execute commands if the default relation is neutral.
-    defaultRelation: neutral
-    # Default role of a player when joining a faction. Can be customized by faction leader
-    # with /f defaultrole
-    # Options: coleader, moderator, member, recruit
-    # Defaults to member if set incorrectly
-    defaultRole: member
-    # Should we delete player homes that they set via Essentials when they leave a Faction
-    # if they have homes set in that Faction's territory?
-    deleteEssentialsHomes: true
-    # If true, disables pistons entirely within faction territory.
-    # Prevents flying piston machines in faction territory.
-    disablePistonsInTerritory: false
-    # When faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
-    factionMemberLimit: 0
+  limits:
+    # Minimum faction tag length
+    tagLengthMin: 3
+    # Maximum faction tag length
+    tagLengthMax: 10
     # Any faction names CONTAINING any of these items will be disallowed
     nameBlacklist:
       - blockedwordhere,
       - anotherblockedthinghere
-    newFactionsDefaultOpen: false
-    newFactionsDefaultPeaceful: false
-    # What faction ID to start new players in when they first join the server; default is 0, no faction
-    newPlayerStartingFactionID: 0
-    removePlayerDataWhenBanned: true
-    saveToFileEveryXMinutes: 30
-    # If enabled, perms can be managed separately for when the faction is offline
-    separateOfflinePerms: false
-    tagForceUpperCase: false
-    # Maximum faction tag length
-    tagLengthMax: 10
-    # Minimum faction tag length
-    tagLengthMin: 3
+    # When faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
+    factionMemberLimit: 0
 
-  # For claimed areas where further faction-member ownership can be defined
-  ownedArea:
-    denyBuild: true
-    denyUsage: true
-    enabled: true
-    limitPerFaction: 0
-    messageByChunk: false
-    messageInsideTerritory: true
-    messageOnBorder: true
-    moderatorsBypass: true
-    painBuild: false
-    protectMaterials: true
-
-  # Do you want to limit portal creation?
-  portals:
-    # If true, portals will be limited to the minimum relation below
-    limit: false
-    # What should the minimum relation be to create a portal in territory?
-    # Goes in the order of: ENEMY, NEUTRAL, ALLY, MEMBER.
-    # Minimum relation allows that and all listed to the right to create portals.
-    # Example: put ALLY to allow ALLY and MEMBER to be able to create portals.
-    # If typed incorrectly, defaults to NEUTRAL.
-    minimumRelation: MEMBER
+  roles:
+    # Default Relation allows you to change the default relation for Factions.
+    # Example usage would be so people can't leave then make a new Faction while Raiding
+    #  in order to be able to execute commands if the default relation is neutral.
+    defaultRelation: NEUTRAL
+    defaultRole: RECRUIT
 
   # Displayed prefixes for different roles within a faction
   prefixes:
@@ -316,186 +148,14 @@ factions:
     normal: '+'
     recruit: '-'
 
-  protection:
-    # Exceptions to consideration for breaking perms. Can always be broken.
-    breakExceptions: []
-    # Exceptions to consideration for container perms.
-    # For example, putting TRAPPED_CHEST into here would allow anyone to open trapped chests anywhere.
-    containerExceptions: []
-    # Exceptions for protections of interacting with entities, such as mounting horses
-    entityInteractExceptions: []
-    peacefulBlockAllEntityDamage: false
-    # Commands which will be prevented if the player is a member of a permanent faction
-    permanentFactionMemberDenyCommands:
-      - exampleCommand
-    pistonProtectionThroughDenyBuild: true
-    # Mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections.
-    playersWhoBypassAllProtection:
-      - example-player-name
-    safeZoneBlockAllEntityDamage: false
-    safeZoneBlockOtherExplosions: true
-    safeZoneBlockTNT: true
-    safeZoneDenyBuild: true
-    safeZoneDenyEndermanBlocks: true
-    safeZoneDenyUsage: true
-    safeZonePreventAllDamageToPlayers: false
-    # Commands which will be prevented when in claimed territory of an ally faction
-    territoryAllyDenyCommands:
-      - exampleCommand
-    territoryBlockCreepers: false
-    territoryBlockCreepersWhenOffline: false
-    territoryBlockEntityDamageMatchingPerms: false
-    territoryBlockFireballs: false
-    territoryBlockFireballsWhenOffline: false
-    territoryBlockOtherExplosions: false
-    territoryBlockOtherExplosionsWhenOffline: false
-    territoryBlockTNT: false
-    territoryBlockTNTWhenOffline: false
-    territoryDenyEndermanBlocks: true
-    territoryDenyEndermanBlocksWhenOffline: true
-    territoryDenyUsageMaterials:
-      - FLINT_AND_STEEL
-      - BUCKET
-      - LAVA_BUCKET
-      - WATER_BUCKET
-      - FIRE_CHARGE
-    territoryDenyUsageMaterialsWhenOffline:
-      - FLINT_AND_STEEL
-      - BUCKET
-      - LAVA_BUCKET
-      - WATER_BUCKET
-      - FIRE_CHARGE
-    # Commands which will be prevented when in claimed territory of an enemy faction
-    territoryEnemyDenyCommands:
-      - spawn
-      - tpa
-      - sethome
-      - tpahere
-      - tpaccept
-      - home
-    # Commands which will be prevented when in claimed territory of a neutral faction
-    territoryNeutralDenyCommands:
-      - exampleCommand
-    warZoneBlockCreepers: true
-    warZoneBlockFireballs: true
-    warZoneBlockOtherExplosions: true
-    warZoneBlockTNT: true
-    warZoneDenyBuild: true
-    warZoneDenyEndermanBlocks: true
-    warZoneDenyUsage: true
-    warZoneFriendlyFire: false
-    # Commands which will be prevented when in warzone
-    warzoneDenyCommands:
-      - exampleCommand
-    wildernessBlockCreepers: false
-    wildernessBlockFireballs: false
-    wildernessBlockOtherExplosions: false
-    wildernessBlockTNT: false
-    wildernessDenyBuild: false
-    # Commands which will be prevented when in wilderness
-    wildernessDenyCommands:
-      - exampleCommand
-    wildernessDenyEndermanBlocks: false
-    wildernessDenyUsage: false
-    worldsNoWildernessProtection:
-      - exampleWorld
+restrictWorlds:
+  # If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.
+  # True for whitelist, false for blacklist.
+  whitelist: true
+  worldList:
+    - exampleWorld
 
-  pvp:
-    disablePVPBetweenNeutralFactions: false
-    disablePVPForFactionlessPlayers: false
-    disablePeacefulPVPInWarzone: true
-    enablePVPAgainstFactionlessInAttackersLand: false
-    noPVPDamageToOthersForXSecondsAfterLogin: 3
-    worldsIgnorePvP:
-      - exampleWorldName
-
-  # Spawn control.
-  # Exception names are entity type names as seen at the below URL.
-  # Note that any name with an underscore MUST have quotes around it.
-  # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
-  # Spawn types are those at the below URL:
-  # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
-  spawning:
-    preventSpawningInSafezone:
-      - OCELOT_BABY
-      - OCELOT_BABY
-      - REINFORCEMENTS
-      - VILLAGE_DEFENSE
-      - DISPENSE_EGG
-      - ENDER_PEARL
-      - EXPLOSION
-      - TRAP
-      - SILVERFISH_BLOCK
-      - NATURAL
-      - BREEDING
-      - INFECTION
-      - BUILD_WITHER
-      - MOUNT
-      - BUILD_SNOWMAN
-      - DROWNED
-      - EGG
-      - CURED
-      - LIGHTNING
-      - RAID
-      - SPAWNER
-      - SLIME_SPLIT
-      - PATROL
-      - BUILD_IRONGOLEM
-      - NETHER_PORTAL
-      - VILLAGE_INVASION
-      - SPAWNER_EGG
-      - DEFAULT
-    preventSpawningInSafezoneExceptions:
-      - MULE
-      - LLAMA
-      - SHEEP
-      - TROPICAL_FISH
-      - VILLAGER
-      - POLAR_BEAR
-      - MUSHROOM_COW
-      - CHICKEN
-      - TURTLE
-      - COD
-      - TRADER_LLAMA
-      - PUFFERFISH
-      - SQUID
-      - HORSE
-      - PARROT
-      - COW
-      - WANDERING_TRADER
-      - FOX
-      - PIG
-      - BAT
-      - DOLPHIN
-      - CAT
-      - SALMON
-      - RABBIT
-      - WOLF
-      - DONKEY
-      - STRIDER
-      - IRON_GOLEM
-      - PANDA
-      - OCELOT
-    preventSpawningInTerritory: []
-    preventSpawningInTerritoryExceptions: []
-    preventSpawningInWarzone: []
-    preventSpawningInWarzoneExceptions: []
-    preventSpawningInWilderness: []
-    preventSpawningInWildernessExceptions: []
-    # If true, FactionsUUID will automatically add in its new defaults such as
-    # adding new friendly mobs to the safe zone exception list
-    updateAutomatically: true
-
-  specialCase:
-    # Material names of things whose placement is ignored in faction territory
-    ignoreBuildMaterials:
-      - exampleMaterial
-    peacefulTerritoryDisableBoom: false
-    peacefulTerritoryDisableMonsters: false
-    peacefulTerritoryDisablePVP: true
-    permanentFactionsDisableLeaderPromotion: false
-
-  # What should be logged?
+# What should be logged?
 logging:
   factionCreate: true
   factionDisband: true
@@ -524,15 +184,6 @@ map:
   showNeutralFactionsOnMap: true
   showTruceFactions: true
   width: 49
-
-restrictWorlds:
-  # If true, Factions will only function on certain worlds
-  enabled: false
-  # If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.
-  # True for whitelist, false for blacklist.
-  whitelist: true
-  worldList:
-    - exampleWorld
 
 scoreboard:
   # Constant scoreboard stays around all the time, displaying status info.

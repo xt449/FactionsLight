@@ -95,7 +95,6 @@ public class JSONFactions extends MemoryFactions {
 			FactionsPlugin.getInstance().log(Level.INFO, "Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
 
 //			// Update claim ownership
-//
 //			for(String string : data.keySet()) {
 //				Faction f = data.get(string);
 //				Map<FLocation, Set<String>> claims = f.getClaimOwnership();
@@ -125,7 +124,6 @@ public class JSONFactions extends MemoryFactions {
 //			}
 
 			// Update invites
-
 			for(String string : data.keySet()) {
 				Faction f = data.get(string);
 				Set<String> invites = f.getInvites();

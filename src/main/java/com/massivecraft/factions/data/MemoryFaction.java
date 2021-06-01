@@ -30,7 +30,7 @@ public class MemoryFaction implements Faction {
 	protected transient long lastPlayerLoggedOffTime;
 	//	protected double powerBoost;
 	protected final Map<String, Relation> relationWish = new HashMap<>();
-	protected final transient Set<FPlayer> fplayers = new HashSet<>();
+	protected transient Set<FPlayer> fplayers = new HashSet<>();
 	protected final Set<String> invites = new HashSet<>();
 	protected final HashMap<String, List<String>> announcements = new HashMap<>();
 	//	private long lastDeath;
@@ -577,6 +577,11 @@ public class MemoryFaction implements Faction {
 	// -------------------------------
 
 	public boolean addFPlayer(FPlayer fplayer) {
+		if(fplayers == null) {
+			System.out.println("Creating new player set for MemoryFaction!\nIf you see this message at any time after startup be afraid!");
+			fplayers = new HashSet<>();
+		}
+
 		return fplayers.add(fplayer);
 	}
 

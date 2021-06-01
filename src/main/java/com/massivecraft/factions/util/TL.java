@@ -414,7 +414,6 @@ public enum TL {
 	COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
 	COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
 	COMMAND_SHOW_DEATHS_TIL_RAIDABLE("&eDTR: %1$d"),
-	COMMAND_SHOW_EXEMPT("&cThis faction is exempt and cannot be seen."),
 
 	COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
 	COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
@@ -729,10 +728,6 @@ public enum TL {
 	TITLE("title", "&bFactions &0|&r"),
 	WILDERNESS("wilderness", "&2Wilderness"),
 	WILDERNESS_DESCRIPTION("wilderness-description", ""),
-	WARZONE("warzone", "&4Warzone"),
-	WARZONE_DESCRIPTION("warzone-description", "Not the safest place to be."),
-	SAFEZONE("safezone", "&6Safezone"),
-	SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
 	TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
 	FACTION_LEAVE("faction-leave", "&6Leaving %1$s, &6Entering %2$s"),
 	FACTIONS_ANNOUNCEMENT_TOP("faction-announcement-top", "&d--Unread Faction Announcements--"),
