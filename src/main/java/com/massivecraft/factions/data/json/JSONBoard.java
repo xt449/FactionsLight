@@ -22,13 +22,13 @@ public class JSONBoard extends MemoryBoard {
 	// Persistance
 	// -------------------------------------------- //
 
-	public Map<String, Map<String, String>> dumpAsSaveFormat() {
-		Map<String, Map<String, String>> worldCoordIds = new HashMap<>();
+	public Map<String, Map<String, Integer>> dumpAsSaveFormat() {
+		Map<String, Map<String, Integer>> worldCoordIds = new HashMap<>();
 
 		String worldName, coords;
-		String id;
+		Integer id;
 
-		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+		for(Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
 			worldName = entry.getKey().getWorldName();
 			coords = entry.getKey().getCoordString();
 			id = entry.getValue();
@@ -42,17 +42,17 @@ public class JSONBoard extends MemoryBoard {
 		return worldCoordIds;
 	}
 
-	public void loadFromSaveFormat(Map<String, Map<String, String>> worldCoordIds) {
+	public void loadFromSaveFormat(Map<String, Map<String, Integer>> worldCoordIds) {
 		flocationIds.clear();
 
 		String worldName;
 		String[] coords;
 		int x, z;
-		String factionId;
+		Integer factionId;
 
-		for(Entry<String, Map<String, String>> entry : worldCoordIds.entrySet()) {
+		for(Entry<String, Map<String, Integer>> entry : worldCoordIds.entrySet()) {
 			worldName = entry.getKey();
-			for(Entry<String, String> entry2 : entry.getValue().entrySet()) {
+			for(Entry<String, Integer> entry2 : entry.getValue().entrySet()) {
 				coords = entry2.getKey().trim().split("[,\\s]+");
 				x = Integer.parseInt(coords[0]);
 				z = Integer.parseInt(coords[1]);
@@ -80,7 +80,7 @@ public class JSONBoard extends MemoryBoard {
 		try {
 			Type type = new TypeToken<Map<String, Map<String, String>>>() {
 			}.getType();
-			Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
+			Map<String, Map<String, Integer>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
 		} catch(Exception e) {
 			FactionsPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to load the board from disk.", e);

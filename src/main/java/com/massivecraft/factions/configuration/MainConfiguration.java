@@ -244,7 +244,6 @@ public class MainConfiguration extends AbstractConfiguration {
 		public static class Show extends CommandConfiguration {
 			private transient boolean minimal;
 			private transient String format;
-			private transient java.util.List<String> exempt;
 
 			public boolean minimal() {
 				return minimal;
@@ -252,10 +251,6 @@ public class MainConfiguration extends AbstractConfiguration {
 
 			public String format() {
 				return format;
-			}
-
-			public java.util.List<String> exempt() {
-				return Collections.unmodifiableList(exempt);
 			}
 		}
 

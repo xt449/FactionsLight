@@ -44,7 +44,7 @@ public class CmdShow extends FCommand {
 			String tag = faction.getTag(context.fPlayer);
 			// send header and that's all
 			String header = show.get(0);
-			if (header.contains(FactionTag.HEADER.tag)) {
+			if(header.contains(FactionTag.HEADER.tag)) {
 				context.msg(TextUtil.titleize(tag));
 			} else {
 				String message = header.replace(FactionTag.FACTION.tag, tag);
@@ -58,11 +58,11 @@ public class CmdShow extends FCommand {
 		List<String> messageList = new ArrayList<>();
 		for(String raw : show) {
 			String parsed = Tag.parsePlain(faction, context.fPlayer, raw); // use relations
-			if (parsed == null) {
+			if(parsed == null) {
 				continue; // Due to minimal f show.
 			}
 
-			if (context.fPlayer != null) {
+			if(context.fPlayer != null) {
 				parsed = Tag.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
 			}
 

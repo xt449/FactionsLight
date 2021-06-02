@@ -79,6 +79,9 @@ public class CmdDisband extends FCommand {
 		}
 
 		Factions.getInstance().removeFaction(faction.getId());
+		if(context.player == null) {
+			context.sendMessage(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS.format(TL.GENERIC_SERVERADMIN.toString(), faction.getTag()));
+		}
 		FTeamWrapper.applyUpdates(faction);
 	}
 

@@ -48,9 +48,9 @@ public class DynMapConfiguration extends AbstractConfiguration {
 
 		private final boolean visibilityByFaction = true;
 
-		private final Set<String> visibleFactions = new HashSet<>();
+		private final Set<Integer> visibleFactions = new HashSet<>();
 
-		private final Set<String> hiddenFactions = new HashSet<>();
+		private final Set<Integer> hiddenFactions = new HashSet<>();
 
 		public boolean isEnabled() {
 			return enabled;
@@ -80,28 +80,23 @@ public class DynMapConfiguration extends AbstractConfiguration {
 			return visibilityByFaction;
 		}
 
-		public Set<String> getVisibleFactions() {
+		public Set<Integer> getVisibleFactions() {
 			return visibleFactions;
 		}
 
-		public Set<String> getHiddenFactions() {
+		public Set<Integer> getHiddenFactions() {
 			return hiddenFactions;
 		}
 
-		private final Map<String, Style> factionStyles = new HashMap<String, Style>() {
-			{
-				this.put("-1", new DynMapConfiguration.Style("#FF00FF", "#FF00FF"));
-				this.put("-2", new DynMapConfiguration.Style("#FF0000", "#FF0000"));
-			}
-		};
+		private final Map<Integer, Style> factionStyles = new HashMap<>();
 
-		private transient Map<String, DynMapStyle> styles;
+		private transient Map<Integer, DynMapStyle> styles;
 
-		public Map<String, DynMapStyle> getFactionStyles() {
+		public Map<Integer, DynMapStyle> getFactionStyles() {
 			if(styles == null) {
 				styles = new HashMap<>();
-				for(Map.Entry<String, ?> e : ((Map<String, ?>) factionStyles).entrySet()) {
-					String faction = e.getKey();
+				for(Map.Entry<Integer, ?> e : ((Map<Integer, ?>) factionStyles).entrySet()) {
+					Integer faction = e.getKey();
 					Object s = e.getValue();
 					if(s instanceof Style) {
 						Style style = (Style) s;

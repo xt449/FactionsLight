@@ -17,14 +17,14 @@ import java.util.Map.Entry;
 
 public abstract class MemoryBoard extends Board {
 
-	public static class MemoryBoardMap extends HashMap<FLocation, String> {
+	public static class MemoryBoardMap extends HashMap<FLocation, Integer> {
 		private static final long serialVersionUID = -6689617828610585368L;
 
-		final Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+		final Multimap<Integer, FLocation> factionToLandMap = HashMultimap.create();
 
 		@Override
-		public String put(FLocation floc, String factionId) {
-			String previousValue = super.put(floc, factionId);
+		public Integer put(FLocation floc, Integer factionId) {
+			Integer previousValue = super.put(floc, factionId);
 			if(previousValue != null) {
 				factionToLandMap.remove(previousValue, floc);
 			}
@@ -34,8 +34,8 @@ public abstract class MemoryBoard extends Board {
 		}
 
 		@Override
-		public String remove(Object key) {
-			String result = super.remove(key);
+		public Integer remove(Object key) {
+			Integer result = super.remove(key);
 			if(result != null) {
 				FLocation floc = (FLocation) key;
 				factionToLandMap.remove(result, floc);
@@ -50,11 +50,11 @@ public abstract class MemoryBoard extends Board {
 			factionToLandMap.clear();
 		}
 
-		public int getOwnedLandCount(String factionId) {
+		public int getOwnedLandCount(int factionId) {
 			return factionToLandMap.get(factionId).size();
 		}
 
-		public void removeFaction(String factionId) {
+		public void removeFaction(int factionId) {
 			Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
 			for(FLocation floc : fLocations) {
 				super.remove(floc);
@@ -69,9 +69,9 @@ public abstract class MemoryBoard extends Board {
 	//----------------------------------------------//
 	// Get and Set
 	//----------------------------------------------//
-	public String getIdAt(FLocation flocation) {
+	public int getIdAt(FLocation flocation) {
 		if(!flocationIds.containsKey(flocation)) {
-			return "0";
+			return 0;
 		}
 
 		return flocationIds.get(flocation);
@@ -81,8 +81,8 @@ public abstract class MemoryBoard extends Board {
 		return Factions.getInstance().getFactionById(getIdAt(flocation));
 	}
 
-	public void setIdAt(String id, FLocation flocation) {
-		if(id.equals("0")) {
+	public void setIdAt(int id, FLocation flocation) {
+		if(id == 0) {
 			removeAt(flocation);
 		}
 
@@ -97,9 +97,9 @@ public abstract class MemoryBoard extends Board {
 		flocationIds.remove(flocation);
 	}
 
-	public Set<FLocation> getAllClaims(String factionId) {
+	public Set<FLocation> getAllClaims(int factionId) {
 		Set<FLocation> locs = new HashSet<>();
-		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+		for(Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
 			if(entry.getValue().equals(factionId)) {
 				locs.add(entry.getKey());
 			}
@@ -111,11 +111,11 @@ public abstract class MemoryBoard extends Board {
 		return getAllClaims(faction.getId());
 	}
 
-	public void unclaimAll(String factionId) {
+	public void unclaimAll(int factionId) {
 		clean(factionId);
 	}
 
-	public void unclaimAllInWorld(String factionId, World world) {
+	public void unclaimAllInWorld(int factionId, World world) {
 		for(FLocation loc : getAllClaims(factionId)) {
 			if(loc.getWorldName().equals(world.getName())) {
 				removeAt(loc);
@@ -123,9 +123,9 @@ public abstract class MemoryBoard extends Board {
 		}
 	}
 
-	public void clean(String factionId) {
+	public void clean(int factionId) {
 		if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
-			for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+			for(Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
 				if(entry.getValue().equals(factionId)) {
 					LWCIntegration.clearAllLocks(entry.getKey());
 				}
@@ -155,15 +155,6 @@ public abstract class MemoryBoard extends Board {
 //		return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
 //	}
 
-	/**
-	 * Checks if there is another faction within a given radius other than Wilderness. Used for HCF feature that
-	 * requires a 'buffer' between factions.
-	 *
-	 * @param flocation - center location.
-	 * @param faction   - faction checking for.
-	 * @param radius    - chunk radius to check.
-	 * @return true if another Faction is within the radius, otherwise false.
-	 */
 //	public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
 //		for(int x = -radius; x <= radius; x++) {
 //			for(int z = -radius; z <= radius; z++) {
@@ -186,9 +177,9 @@ public abstract class MemoryBoard extends Board {
 	// Cleaner. Remove orphaned foreign keys
 	//----------------------------------------------//
 	public void clean() {
-		Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
+		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
 		while(iter.hasNext()) {
-			Entry<FLocation, String> entry = iter.next();
+			Entry<FLocation, Integer> entry = iter.next();
 			if(!Factions.getInstance().isValidFactionId(entry.getValue())) {
 				if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
 					LWCIntegration.clearAllLocks(entry.getKey());
@@ -203,7 +194,7 @@ public abstract class MemoryBoard extends Board {
 	// Coord count
 	//----------------------------------------------//
 
-	public int getFactionCoordCount(String factionId) {
+	public int getFactionCoordCount(int factionId) {
 		return flocationIds.getOwnedLandCount(factionId);
 	}
 

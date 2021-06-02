@@ -7,7 +7,6 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.configuration.DefaultPermissionsConfiguration;
 import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.configuration.MainConfiguration;
-import com.massivecraft.factions.data.MemoryFaction;
 import com.massivecraft.factions.data.SaveTask;
 import com.massivecraft.factions.integration.IntegrationManager;
 import com.massivecraft.factions.integration.PlaceholderAPIIntegration;
@@ -30,7 +29,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -172,13 +170,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 				fPlayer.resetFactionData();
 				continue;
 			}
-			try {
-				Field field = MemoryFaction.class.getDeclaredField("fplayers");
-				field.setAccessible(true);
-				field.set(faction, new HashSet<FPlayer>());
-			} catch(NoSuchFieldException | IllegalAccessException exc) {
-				exc.printStackTrace();
-			}
+//			faction.initFix();
 			faction.addFPlayer(fPlayer);
 		}
 		int loadedClaims = Board.getInstance().load();

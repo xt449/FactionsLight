@@ -14,7 +14,7 @@ public abstract class Board {
 	//----------------------------------------------//
 	// Get and Set
 	//----------------------------------------------//
-	public abstract String getIdAt(FLocation flocation);
+	public abstract int getIdAt(FLocation flocation);
 
 	private static Board getBoardImpl() {
 		return new JSONBoard(); // TODO switch on configuration backend
@@ -26,19 +26,19 @@ public abstract class Board {
 
 	public abstract Faction getFactionAt(FLocation flocation);
 
-	public abstract void setIdAt(String id, FLocation flocation);
+	public abstract void setIdAt(int id, FLocation flocation);
 
 	public abstract void setFactionAt(Faction faction, FLocation flocation);
 
 	public abstract void removeAt(FLocation flocation);
 
-	public abstract Set<FLocation> getAllClaims(String factionId);
+	public abstract Set<FLocation> getAllClaims(int factionId);
 
 	public abstract Set<FLocation> getAllClaims(Faction faction);
 
-	public abstract void unclaimAll(String factionId);
+	public abstract void unclaimAll(int factionId);
 
-	public abstract void unclaimAllInWorld(String factionId, World world);
+	public abstract void unclaimAllInWorld(int factionId, World world);
 
 	// Is this coord NOT completely surrounded by coords claimed by the same faction?
 	// Simpler: Is there any nearby coord with a faction other than the faction here?
@@ -59,7 +59,7 @@ public abstract class Board {
 	// Coord count
 	//----------------------------------------------//
 
-	public abstract int getFactionCoordCount(String factionId);
+	public abstract int getFactionCoordCount(int factionId);
 
 	public abstract int getFactionCoordCount(Faction faction);
 

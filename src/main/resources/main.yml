@@ -27,15 +27,15 @@ commands:
     cooldown: 0
     delay: 0
     # You can use any variable here
-    entry: '&6{faction-relation-color}{faction} &e{online} /: members online, &6Land / Power / Maxpower: &e{chunks}/{power}/{maxPower}'
+    entry: '&6{faction-relation-color}{faction}&e: {online} online, &6Land: &e{chunks}'
     # You can use any variables here
-    factionlessEntry: '&eFactionless&e: factionless online'
+    factionlessEntry: '&eFactionless&e: {factionless} online'
     # You can only use: pagenumber and: pagecount in the footer.
     # Blank entry results in nothing being displayed.
     footer: ''
     # You can only use: pagenumber and: pagecount in the header.
     # Blank entry results in nothing being displayed.
-    header: '&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------'
+    header: '&6----------------[ &2Faction List &9{pagenumber}&6/&9{pagecount} &6]----------------'
 
   map:
     # This will help limit how many times a player can be sent a map of factions.
@@ -49,9 +49,9 @@ commands:
   perms:
     cooldown: 0
     delay: 0
-    # Placeholders:: action-access-color,: action-access,: action-desc
+    # Placeholders:: {action-access-color},: {action-access},: {action-desc}
     guiLore: |
-      &8Access:: action-access-color{action-access}
+      &8Access:: {action-access-color}{action-access}
       &8{action-desc}
 
       &8Left click to &a&lAllow
@@ -69,15 +69,15 @@ commands:
       {header}
       &6Description: &e{description}
       &6Joining: &e{joining}
-      &6Land / Power / Maxpower: &e: chunks/{power}/{maxPower}
+      &6Land&e: {chunks}
       &6Founded: &e{create-date}
       &6This faction is permanent, remaining even with no members.
       &6Land value: &e{land-value}: TBI
       &6Balance: &e{faction-balance}
       &6Bans: &e{faction-bancount}
-      &6Allies(&e{allies}&6/&e{max-allies}&6):: {allies-list}
-      &6Online: (&e{online}&6/&e{members}&6):: {online-list}
-      &6Offline: (&e{offline}&6/&e{members}&6):: {offline-list}
+      &6Allies (&e{allies}&6/&e{max-allies}&6): {allies-list}
+      &6Online (&e{online}&6/&e{members}&6): {online-list}
+      &6Offline (&e{offline}&6/&e{members}&6): {offline-list}
     # Set true to not display empty fancy messages
     minimal: false
 
@@ -95,17 +95,12 @@ commands:
     faction: |
       &6Leader: &f{leader}
       &6Claimed: &f{chunks}
-      &6Raidable: &f{raidable}
-      &6Warps: &f{warps}
-      &6Power: &f{power}/{maxPower}
       &6Members: &f{online}/{members}
 
     # Player on-hover tooltip information
     player: |
       &6Last Seen: &f{lastSeen}
-      &6Power: &f{player-power}
       &6Rank: &f{group}
-      &6Balance: &a${balance}
 
 factions:
   combat:
@@ -192,10 +187,6 @@ scoreboard:
     content: |
       &6Your Faction
       {faction}
-      &3Your Power
-      {power}
-      &aBalance
-      ${balance}
     enabled: false
     factionlessContent: |
       Make a new Faction
@@ -226,8 +217,6 @@ scoreboard:
     alsoSendChat: true
     # Supports placeholders
     content: |
-      &6Power
-      {power}
       &3Members
       {online}/{members}
       &4Leader

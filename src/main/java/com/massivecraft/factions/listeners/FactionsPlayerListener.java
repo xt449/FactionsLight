@@ -25,7 +25,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -74,16 +73,6 @@ public class FactionsPlayerListener extends AbstractListener {
 	}
 
 	private void initFactionWorld(FPlayer me) {
-		// Check for Faction announcements. Let's delay this so they actually see it.
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(me.isOnline()) {
-					me.getFaction().sendUnreadAnnouncements(me);
-				}
-			}
-		}.runTaskLater(FactionsPlugin.getInstance(), 33L); // Don't ask me why.
-
 		if(FactionsPlugin.getInstance().configMain.scoreboard().constant().isEnabled()) {
 			FScoreboard.init(me);
 			FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar());

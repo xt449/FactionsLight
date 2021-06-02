@@ -13,15 +13,9 @@ import java.util.Set;
 
 public interface Faction extends RelationParticipator {
 
-	void addAnnouncement(FPlayer fPlayer, String msg);
-
-	void sendUnreadAnnouncements(FPlayer fPlayer);
-
-	void removeAnnouncements(FPlayer fPlayer);
-
 	Set<String> getInvites();
 
-	String getId();
+	int getId();
 
 	void invite(FPlayer fplayer);
 
@@ -197,5 +191,7 @@ public interface Faction extends RelationParticipator {
 
 	Set<FLocation> getAllClaims();
 
-	void setId(String id);
+	void setId(int id);
+
+//	void initFix();
 }
