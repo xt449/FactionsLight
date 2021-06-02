@@ -78,7 +78,7 @@ public class JSONBoard extends MemoryBoard {
 		}
 
 		try {
-			Type type = new TypeToken<Map<String, Map<String, String>>>() {
+			Type type = new TypeToken<Map<String, Map<String, Integer>>>() {
 			}.getType();
 			Map<String, Map<String, Integer>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);

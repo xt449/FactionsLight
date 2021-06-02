@@ -222,6 +222,13 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		this.worldguard = wg;
 	}
 
+	@Override
+	public void reloadConfig() {
+		configMain.initialize();
+		configDefaultPermissions.initialize();
+		configDynMap.initialize();
+	}
+
 	public void loadLang() {
 		File lang = new File(getDataFolder(), "lang.yml");
 		OutputStream out = null;
