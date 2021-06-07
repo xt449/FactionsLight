@@ -92,10 +92,6 @@ public class CmdHelp extends FCommand {
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_7.toString()));
 		pageLines.add(TL.COMMAND_HELP_RELATIONS_8.toString());
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_9.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_10.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_11.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_12.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_RELATIONS_13.toString()));
 		helpPages.add(pageLines);
 
 		pageLines = new ArrayList<>();
@@ -113,9 +109,6 @@ public class CmdHelp extends FCommand {
 		pageLines = new ArrayList<>();
 		pageLines.add(TL.COMMAND_HELP_MOAR_1.toString());
 		pageLines.add(FCmdRoot.getInstance().cmdBypass.getUsageTemplate(context, true));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_1.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_2.toString()));
-		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_ADMIN_3.toString()));
 		//TODO:TL
 		pageLines.add(TextUtil.parse(ChatColor.YELLOW + "Note: " + FCmdRoot.getInstance().cmdUnclaim.getUsageTemplate(context, false) + ChatColor.YELLOW + " works on safe/war zones as well."));
 		helpPages.add(pageLines);

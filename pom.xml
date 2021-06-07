@@ -5,10 +5,12 @@
     <groupId>com.massivecraft</groupId>
     <artifactId>factions</artifactId>
     <version>${minecraft.version}-U0.5.21</version>
-    <name>PatriamFactions</name>
+    <name>FactionsLight</name>
 
     <properties>
         <minecraft.version>1.16.5</minecraft.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

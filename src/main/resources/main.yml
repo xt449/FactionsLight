@@ -71,11 +71,9 @@ commands:
       &6Joining: &e{joining}
       &6Land&e: {chunks}
       &6Founded: &e{create-date}
-      &6This faction is permanent, remaining even with no members.
-      &6Land value: &e{land-value}: TBI
-      &6Balance: &e{faction-balance}
+      &6{permanence}
       &6Bans: &e{faction-bancount}
-      &6Allies (&e{allies}&6/&e{max-allies}&6): {allies-list}
+      &6Allies (&e{allies}&6): {allies-list}
       &6Online (&e{online}&6/&e{members}&6): {online-list}
       &6Offline (&e{offline}&6/&e{members}&6): {offline-list}
     # Set true to not display empty fancy messages

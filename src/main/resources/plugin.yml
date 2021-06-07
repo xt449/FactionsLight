@@ -4,7 +4,6 @@ main: ${project.groupId}.${project.artifactId}.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, CmdrKittens, xt449]
 softdepend: [dynamp, LWC, PlaceholderAPI, Sentinel, Vault, WorldGuard]
 api-version: '1.16'
-website: https://www.spigotmc.org/resources/factionsuuid.1035/
 commands:
   factions:
     description: Reference command for Factions.
@@ -18,8 +17,6 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
-      factions.modifypower: true
-      factions.ahome: true
       factions.updates: true
       factions.debug: true
   factions.*:
@@ -33,23 +30,16 @@ permissions:
       factions.disband.any: true
       factions.setpeaceful: true
       factions.setpermanent: true
-      factions.setpermanentpower: true
-      factions.powerboost: true
-      factions.sethome.any: true
       factions.join.any: true
       factions.join.others: true
       factions.admin.any: true
       factions.mod.any: true
   factions.kit.halfmod:
-    description: Zones, bypassing, kicking, and chatspy
+    description: Zones, bypassing, and kicking
     children:
       factions.kit.fullplayer: true
-      factions.managesafezone: true
-      factions.managewarzone: true
       factions.bypass: true
       factions.kick.any: true
-      factions.ownershipbypass: true
-      factions.chatspy: true
       factions.show.bypassexempt: true
   factions.kit.fullplayer:
     default: true
@@ -63,7 +53,6 @@ permissions:
     children:
       factions.admin: true
       factions.autoclaim: true
-      factions.chat: true
       factions.claim: true
       factions.claim.line: true
       factions.claim.radius: true
@@ -71,9 +60,7 @@ permissions:
       factions.deinvite: true
       factions.description: true
       factions.disband: true
-      factions.dtr: true
       factions.help: true
-      factions.home: true
       factions.invite: true
       factions.join: true
       factions.kick: true
@@ -81,15 +68,8 @@ permissions:
       factions.list: true
       factions.map: true
       factions.mod: true
-      factions.noboom: true
       factions.open: true
-      factions.owner: true
-      factions.ownerlist: true
-      factions.power: true
-      factions.power.any: true
       factions.relation: true
-      factions.sethome: true
-      factions.delhome: true
       factions.show: true
       factions.stuck: true
       factions.tag: true
@@ -99,9 +79,7 @@ permissions:
       factions.unclaimall: true
       factions.scoreboard: true
       factions.showinvites: true
-      factions.monitorlogins: true
       factions.top: true
-      factions.togglealliancechat: true
       factions.ban: true
       factions.coleader: true
       factions.permissions: true
@@ -115,10 +93,6 @@ permissions:
     description: auto-claim land as you walk around
   factions.bypass:
     description: enable admin bypass mode
-  factions.chat:
-    description: change chat mode
-  factions.chatspy:
-    description: enable admin chat spy mode
   factions.claim:
     description: claim land where you are standing
   factions.claim.radius:
@@ -137,8 +111,6 @@ permissions:
     description: disband another faction
   factions.help:
     description: display a help page
-  factions.home:
-    description: teleport to the faction home
   factions.invite:
     description: invite a player to your faction
   factions.join:
@@ -157,52 +129,26 @@ permissions:
     description: see a list of the factions
   factions.lock:
     description: lock all write stuff
-  factions.managesafezone:
-    description: claim land as a safe zone and build/destroy within safe zones
-  factions.managewarzone:
-    description: claim land as a war zone and build/destroy within war zones
   factions.map:
     description: show the territory map, and set optional auto update
   factions.mod:
     description: give or revoke moderator rights
   factions.mod.any:
     description: give or revoke moderator rights for any player in any faction
-  factions.noboom:
-    description: toggle explosions (peaceful factions only)
   factions.open:
     description: switch if invitation is required to join
-  factions.owner:
-    description: set ownership of claimed land
-  factions.ownerlist:
-    description: list owner(s) of this claimed land
-  factions.ownershipbypass:
-    description: bypass ownership restrictions within own faction's territory
   factions.setpeaceful:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
-  factions.setpermanentpower:
-    description: set permanent power for a faction
   factions.stuck:
     description: teleports player outside a faction
-  factions.power:
-    description: show player power info
-  factions.power.any:
-    description: view an other players power level
-  factions.powerboost:
-    description: apply permanent power bonus/penalty to specified player or faction
   factions.relation:
     description: set relation wish to another faction
   factions.reload:
     description: reload data file(s) from disk
   factions.save:
     description: save all data to disk
-  factions.sethome:
-    description: set the faction home
-  factions.delhome:
-    description: unset the faction home
-  factions.sethome.any:
-    description: set faction home for another faction
   factions.show:
     description: show faction information
   factions.show.bypassexempt:
@@ -223,28 +169,10 @@ permissions:
     description: ability to toggle scoreboards
   factions.showinvites:
     description: show pending invites to your faction
-  factions.setwarp:
-    description: set a warp for your faction
-  factions.warp:
-    description: access your faction warps
-  factions.dtr:
-    description: view your faction's DTR
-  factions.modifydtr:
-    description: modify other factions' DTR
-  factions.modifypower:
-    description: modify other player's power
-  factions.monitorlogins:
-    description: monitor join and leaves of faction members
   factions.claim.line:
     description: claim in a line
   factions.top:
     description: sort factions
-  factions.togglealliancechat:
-    description: toggle alliance chat on and off
-  factions.dontlosepoweroffline:
-    description: Don't lose power for being offline.
-  factions.ahome:
-    description: Ability to send players to their faction home.
   factions.autoleavebypass:
     description: Bypass autoleave.
   factions.ban:
