@@ -10,7 +10,7 @@ import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.SaveTask;
 import com.massivecraft.factions.integration.IntegrationManager;
 import com.massivecraft.factions.integration.PlaceholderAPIIntegration;
-import com.massivecraft.factions.integration.VaultPermissionIntegration;
+import com.massivecraft.factions.integration.VaultIntegration;
 import com.massivecraft.factions.integration.Worldguard7Integration;
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
@@ -32,9 +32,7 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
@@ -80,49 +78,12 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	private PlaceholderAPIIntegration placeholderAPI;
 	private Worldguard7Integration worldguard;
-	private VaultPermissionIntegration vaultPermission;
+	private VaultIntegration vaultIntegration;
 
 	@Override
 	public void onEnable() {
+		final long timeEnableStart = System.currentTimeMillis();
 		this.loadSuccessful = false;
-		StringBuilder startupBuilder = new StringBuilder();
-		StringBuilder startupExceptionBuilder = new StringBuilder();
-		Handler handler = new Handler() {
-			@Override
-			public void publish(LogRecord record) {
-				if(record.getMessage() != null && record.getMessage().contains("Loaded class {0}")) {
-					return;
-				}
-				startupBuilder.append('[').append(record.getLevel().getName()).append("] ").append(record.getMessage()).append('\n');
-				if(record.getThrown() != null) {
-					StringWriter stringWriter = new StringWriter();
-					PrintWriter printWriter = new PrintWriter(stringWriter);
-					record.getThrown().printStackTrace(printWriter);
-					startupExceptionBuilder.append('[').append(record.getLevel().getName()).append("] ").append(record.getMessage()).append('\n')
-							.append(stringWriter).append('\n');
-				}
-			}
-
-			@Override
-			public void flush() {
-
-			}
-
-			@Override
-			public void close() throws SecurityException {
-
-			}
-		};
-		getLogger().addHandler(handler);
-		getLogger().info("=== Starting up! ===");
-		long timeEnableStart = System.currentTimeMillis();
-
-		getLogger().info("");
-		getLogger().info("Patriam Factions UUID!");
-		getLogger().info("Version " + this.getDescription().getVersion());
-		getLogger().info("");
-		getLogger().info("Need support? https://factions.support/help/");
-		getLogger().info("");
 
 		// Ensure data folder exists!
 		this.getDataFolder().mkdirs();
@@ -206,11 +167,7 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				vaultPermission = new VaultPermissionIntegration();
-				cmdBase.done();
-				getLogger().removeHandler(handler);
-				startupLog = startupBuilder.toString();
-				startupExceptionLog = startupExceptionBuilder.toString();
+				vaultIntegration = new VaultIntegration();
 			}
 		}.runTask(this);
 
@@ -430,6 +387,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 	}
 
 	public String getPrimaryGroup(OfflinePlayer player) {
-		return this.vaultPermission.getPrimaryGroup(player);
+		return this.vaultIntegration.getPrimaryGroup(player);
 	}
 }
