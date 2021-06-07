@@ -1,13 +1,13 @@
 name: Factions
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.FactionsPlugin
-authors: [Olof Larsson, Brett Flannigan, drtshock, CmdrKittens, xt449]
-softdepend: [dynamp, LWC, PlaceholderAPI, Sentinel, Vault, WorldGuard]
+authors: [ Olof Larsson, Brett Flannigan, drtshock, CmdrKittens, xt449 ]
+softdepend: [ dynamp, LWC, PlaceholderAPI, Sentinel, Vault, WorldGuard ]
 api-version: '1.16'
 commands:
   factions:
     description: Reference command for Factions.
-    aliases: [f]
+    aliases: [ f ]
 permissions:
   factions.kit.admin:
     description: All faction permissions.

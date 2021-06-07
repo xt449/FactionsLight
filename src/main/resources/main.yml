@@ -4,7 +4,7 @@ colors:
     safezone: GOLD
     warzone: DARK_RED
     wilderness: GRAY
-    
+
   relations:
     ally: LIGHT_PURPLE
     enemy: RED
@@ -22,7 +22,7 @@ commands:
     teleportAllowedFromDifferentWorld: false
     teleportIgnoreEnemiesIfInFriendlyTerritory: true
     teleportAllowedEnemyDistance: 4
-  
+
   list:
     cooldown: 0
     delay: 0
@@ -37,8 +37,7 @@ commands:
     # Blank entry results in nothing being displayed.
     header: '&6----------------[ &2Faction List &9{pagenumber}&6/&9{pagecount} &6]----------------'
 
-  map:
-    # This will help limit how many times a player can be sent a map of factions.
+  map: # This will help limit how many times a player can be sent a map of factions.
     # Set this to the cooldown you want, in milliseconds, for a map to be shown to a player.
     # This can prevent some teleportation-based exploits for finding factions.
     # The old default was 2000, which blocks any movement faster than running.
@@ -88,8 +87,7 @@ commands:
     # command will be cancelled.
     radius: 10
 
-  toolTips:
-    # Faction on-hover tooltip information
+  toolTips: # Faction on-hover tooltip information
     faction: |
       &6Leader: &f{leader}
       &6Claimed: &f{chunks}
@@ -108,14 +106,13 @@ factions:
 
   # Commands which will be prevented when in said claim territory
   commandBlacklist:
-    inWilderness: []
-    inNeutralClaim: []
-    inFriendlyClaim: []
-    inEnemyClaim: []
-    inPermanentClaim: []
+    inWilderness: [ ]
+    inNeutralClaim: [ ]
+    inFriendlyClaim: [ ]
+    inEnemyClaim: [ ]
+    inPermanentClaim: [ ]
 
-  limits:
-    # Minimum faction tag length
+  limits: # Minimum faction tag length
     tagLengthMin: 3
     # Maximum faction tag length
     tagLengthMax: 10
@@ -126,8 +123,7 @@ factions:
     # When faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
     factionMemberLimit: 0
 
-  roles:
-    # Default Relation allows you to change the default relation for Factions.
+  roles: # Default Relation allows you to change the default relation for Factions.
     # Example usage would be so people can't leave then make a new Faction while Raiding
     #  in order to be able to execute commands if the default relation is neutral.
     defaultRelation: NEUTRAL
@@ -141,8 +137,7 @@ factions:
     normal: '+'
     recruit: '-'
 
-restrictWorlds:
-  # If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.
+restrictWorlds: # If restrictWorlds is true, this setting determines if the world list below is a whitelist or blacklist.
   # True for whitelist, false for blacklist.
   whitelist: true
   worldList:
@@ -178,8 +173,7 @@ map:
   showTruceFactions: true
   width: 49
 
-scoreboard:
-  # Constant scoreboard stays around all the time, displaying status info.
+scoreboard: # Constant scoreboard stays around all the time, displaying status info.
   # Also, if prefixes are enabled while it is enabled, will show prefixes on nametags and tab
   constant:
     content: |
@@ -210,8 +204,7 @@ scoreboard:
 
   # Info scoreboard is displayed when a player walks into a new Faction's territory.
   # Scoreboard disappears after <expiration> seconds.
-  info:
-    # send faction change message as well when scoreboard is up?
+  info: # send faction change message as well when scoreboard is up?
     alsoSendChat: true
     # Supports placeholders
     content: |

@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -227,9 +226,6 @@ public abstract class MemoryBoard extends Board {
 		Faction factionLoc = getFactionAt(flocation);
 		ret.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
 
-		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, TextUtil.parse("<a>"));
-
 		int mapWidth = 35;
 		int halfWidth = mapWidth / 2;
 		// Use player's value for height
@@ -249,14 +245,10 @@ public abstract class MemoryBoard extends Board {
 		// For each row
 		for(int dz = 0; dz < height; dz++) {
 			// Draw and add that row
-			FancyMessage row = new FancyMessage("");
-
-			if(dz < 3) {
-				row.then(asciiCompass.get(dz));
-			}
-			for(int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
+			final FancyMessage row = new FancyMessage("");
+			for(int dx = 3; dx < width; dx++) {
 				if(dx == halfWidth && dz == halfHeight) {
-					row.then("+").color(ChatColor.AQUA);
+					row.then(String.valueOf(inDegrees % 90)).color(ChatColor.AQUA);
 				} else {
 					FLocation flocationHere = topLeft.getRelative(dx, dz);
 					Faction factionHere = getFactionAt(flocationHere);
