@@ -5,14 +5,16 @@ import com.massivecraft.factions.configuration.DynMapConfiguration;
 import com.massivecraft.factions.data.MemoryBoard;
 import com.massivecraft.factions.integration.dynmap.DynMapStyle;
 import com.massivecraft.factions.integration.dynmap.TempAreaMarker;
-import com.massivecraft.factions.integration.dynmap.TempMarker;
 import com.massivecraft.factions.integration.dynmap.TempMarkerSet;
 import com.massivecraft.factions.perms.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
-import org.dynmap.markers.*;
+import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerSet;
+import org.dynmap.markers.PlayerSet;
 import org.dynmap.utils.TileFlags;
 
 import java.util.*;
@@ -66,7 +68,6 @@ public class DynMapIntegration {
 		// Schedule non thread safe sync at the end!
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
 
-			final Map<String, TempMarker> homes = createHomes();
 			final Map<String, TempAreaMarker> areas = createAreas();
 			final Map<String, Set<String>> playerSets = createPlayersets();
 
@@ -79,7 +80,6 @@ public class DynMapIntegration {
 				return;
 			}
 
-			updateHomes(homes);
 			updateAreas(areas);
 			updatePlayersets(playerSets);
 		}, 100L, 100L);
@@ -129,76 +129,6 @@ public class DynMapIntegration {
 			temp.update(this.markerset);
 		}
 		return true;
-	}
-
-	// -------------------------------------------- //
-	// UPDATE: HOMES
-	// -------------------------------------------- //
-
-	// Thread Safe / Asynchronous: Yes
-	public Map<String, TempMarker> createHomes() {
-//		Map<String, TempMarker> ret = new HashMap<>();
-//
-//		// Loop current factions
-//		for(Faction faction : Factions.getInstance().getAllFactions()) {
-//			Location ps = faction.getHome(); // TODO
-//			if(ps == null) {
-//				continue;
-//			}
-//
-//			DynmapStyle style = getStyle(faction);
-//
-//			String markerId = FACTIONS_HOME_ + faction.getId();
-//
-//			TempMarker temp = new TempMarker();
-//			temp.label = ChatColor.stripColor(faction.getTag());
-//			temp.world = ps.getWorld().toString();
-//			temp.x = ps.getX();
-//			temp.y = ps.getY();
-//			temp.z = ps.getZ();
-//			temp.iconName = style.getHomeMarker();
-//			temp.description = getDescription(faction);
-//
-//			ret.put(markerId, temp);
-//		}
-//
-//		return ret;
-		return new HashMap<>();
-	}
-
-	// Thread Safe / Asynchronous: No
-	// This method places out the faction home markers into the factions markerset.
-	public void updateHomes(Map<String, TempMarker> homes) {
-		// Put all current faction markers in a map
-		Map<String, Marker> markers = new HashMap<>();
-		for(Marker marker : this.markerset.getMarkers()) {
-			markers.put(marker.getMarkerID(), marker);
-		}
-
-		// Loop homes
-		for(Entry<String, TempMarker> entry : homes.entrySet()) {
-			String markerId = entry.getKey();
-			TempMarker temp = entry.getValue();
-
-			// Get Creative
-			// NOTE: I remove from the map created just in the beginning of this method.
-			// NOTE: That way what is left at the end will be outdated markers to remove.
-			Marker marker = markers.remove(markerId);
-			if(marker == null) {
-				marker = temp.create(this.markerApi, this.markerset, markerId);
-				if(marker == null) {
-					DynMapIntegration.logSevere("Could not get/create the home marker " + markerId);
-				}
-			} else {
-				temp.update(this.markerApi, marker);
-			}
-		}
-
-		// Delete Deprecated Markers
-		// Only old markers should now be left
-		for(Marker marker : markers.values()) {
-			marker.deleteMarker();
-		}
 	}
 
 	// -------------------------------------------- //
@@ -261,7 +191,7 @@ public class DynMapIntegration {
 		Map<String, TempAreaMarker> ret = new HashMap<>();
 
 		// If the faction is visible ...
-		if(!isVisible(faction, world)) {
+		if(!isVisible(faction)) {
 			return ret;
 		}
 
@@ -663,7 +593,7 @@ public class DynMapIntegration {
 	}
 
 	// Thread Safe / Asynchronous: Yes
-	private boolean isVisible(Faction faction, String world) {
+	private boolean isVisible(Faction faction) {
 		if(faction == null) {
 			return false;
 		}
@@ -712,8 +642,7 @@ public class DynMapIntegration {
 	}
 
 	// Find all contiguous blocks, set in target and clear in source
-	private int floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
-		int cnt = 0;
+	private void floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
 		ArrayDeque<int[]> stack = new ArrayDeque<>();
 		stack.push(new int[] {x, y});
 
@@ -724,7 +653,6 @@ public class DynMapIntegration {
 			if(source.getFlag(x, y)) { // Set in src
 				source.setFlag(x, y, false); // Clear source
 				destination.setFlag(x, y, true); // Set in destination
-				cnt++;
 				if(source.getFlag(x + 1, y)) {
 					stack.push(new int[] {x + 1, y});
 				}
@@ -739,6 +667,5 @@ public class DynMapIntegration {
 				}
 			}
 		}
-		return cnt;
 	}
 }

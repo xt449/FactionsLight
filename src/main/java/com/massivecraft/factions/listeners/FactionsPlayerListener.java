@@ -130,38 +130,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		}
 	}
 
-//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-//	public void onPlayerInteract(PlayerInteractEntityEvent event) {
-//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
-//			return;
-//		}
-//
-//		switch(event.getRightClicked().getType()) {
-//			case ITEM_FRAME:
-//				if(!canPlayerUseBlock(event.getPlayer(), Material.ITEM_FRAME, event.getRightClicked().getLocation(), false)) {
-//					event.setCancelled(true);
-//				}
-//				break;
-//			case HORSE:
-//			case SKELETON_HORSE:
-//			case ZOMBIE_HORSE:
-//			case DONKEY:
-//			case MULE:
-//			case LLAMA:
-//			case TRADER_LLAMA:
-//			case PIG:
-//			case LEASH_HITCH:
-//			case MINECART_CHEST:
-//			case MINECART_FURNACE:
-//			case MINECART_HOPPER:
-//				if(!FactionsPlugin.getInstance().configMain.factions().commandBlacklist().getEntityInteractExceptions().contains(event.getRightClicked().getType().name()) &&
-//						!this.playerCanInteractHere(event.getPlayer(), event.getRightClicked().getLocation())) {
-//					event.setCancelled(true);
-//				}
-//				break;
-//		}
-//	}
-
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
@@ -198,25 +166,6 @@ public class FactionsPlayerListener extends AbstractListener {
 			return;  // only interested on right-clicks for below
 		}
 
-//		ItemStack item;
-//		if((item = event.getItem()) != null) {
-//			switch(item.getType()) {
-//				case ARMOR_STAND:
-//				case END_CRYSTAL:
-//				case MINECART:
-//				case CHEST_MINECART:
-//				case COMMAND_BLOCK_MINECART:
-//				case FURNACE_MINECART:
-//				case HOPPER_MINECART:
-//				case TNT_MINECART:
-//					if(!FactionsPlugin.getInstance().configMain.factions().specialCase().getIgnoreBuildMaterials().contains(item.getType()) &&
-//							!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getClickedBlock().getRelative(event.getBlockFace()).getLocation(), PermissibleAction.BUILD, false)) {
-//						event.setCancelled(true);
-//					}
-//					break;
-//			}
-//		}
-
 		if(!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 		}
@@ -231,10 +180,6 @@ public class FactionsPlayerListener extends AbstractListener {
 
 		FLocation loc = new FLocation(location);
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
-
-//		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
-//			return true;
-//		}
 
 		if(otherFaction.isWilderness()) {
 			return true;

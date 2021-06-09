@@ -37,17 +37,6 @@ public interface Faction extends RelationParticipator {
 
 	Setting getCombatSetting();
 
-	// TODO
-//	boolean isPeaceful();
-
-//	void setPeaceful(boolean isPeaceful);
-
-//	void setPeacefulExplosionsEnabled(boolean val);
-
-//	boolean getPeacefulExplosionsEnabled();
-
-//	boolean noExplosionsInTerritory();
-
 	boolean isPermanent();
 
 	void setPermanent(boolean isPermanent);
@@ -152,9 +141,9 @@ public interface Faction extends RelationParticipator {
 	// FPlayers
 	// -------------------------------
 
-	boolean addFPlayer(FPlayer fplayer);
+	void addFPlayer(FPlayer fplayer);
 
-	boolean removeFPlayer(FPlayer fplayer);
+	void removeFPlayer(FPlayer fplayer);
 
 	Set<FPlayer> getFPlayers();
 

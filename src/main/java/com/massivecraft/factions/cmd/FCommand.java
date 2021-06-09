@@ -132,20 +132,10 @@ public abstract class FCommand {
 		Common Logic
 	 */
 	public List<String> getToolTips(FPlayer player) {
-//		List<String> lines = new ArrayList<>();
-//		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
-//			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, s)));
-//		}
-//		return lines;
 		return Collections.singletonList(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(player, FactionsPlugin.getInstance().configMain.commands().toolTips().player())));
 	}
 
 	public List<String> getToolTips(Faction faction) {
-//		List<String> lines = new ArrayList<>();
-//		for(String s : FactionsPlugin.getInstance().configMain.commands().toolTips().faction()) {
-//			lines.add(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, s)));
-//		}
-//		return lines;
 		return Collections.singletonList(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(faction, FactionsPlugin.getInstance().configMain.commands().toolTips().faction())));
 	}
 

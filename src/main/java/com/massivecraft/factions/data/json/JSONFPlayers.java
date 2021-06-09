@@ -38,8 +38,8 @@ public class JSONFPlayers extends MemoryFPlayers {
 		saveCore(file, entitiesThatShouldBeSaved, sync);
 	}
 
-	private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
-		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(data), sync);
+	private void saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
+		DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(data), sync);
 	}
 
 	public int load() {

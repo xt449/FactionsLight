@@ -72,76 +72,6 @@ public class FactionsBlockListener implements Listener {
 		}
 	}
 
-//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-//	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
-//			return;
-//		}
-//
-//		if(!FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
-//			return;
-//		}
-//
-//		// if the pushed blocks list is empty, no worries
-//		if(event.getBlocks().isEmpty()) {
-//			return;
-//		}
-//
-//		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-//
-//		if(!canPistonMoveBlock(pistonFaction, event.getBlocks(), event.getDirection())) {
-//			event.setCancelled(true);
-//		}
-//	}
-
-//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-//	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
-//			return;
-//		}
-//
-//		// if not a sticky piston, retraction should be fine
-//		if(!event.isSticky() || !FactionsPlugin.getInstance().configMain.factions().protection().isPistonProtectionThroughDenyBuild()) {
-//			return;
-//		}
-//
-//		List<Block> blocks = event.getBlocks();
-//
-//		// if the retracted blocks list is empty, no worries
-//		if(blocks.isEmpty()) {
-//			return;
-//		}
-//
-//		Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-//
-//		if(!canPistonMoveBlock(pistonFaction, blocks, null)) {
-//			event.setCancelled(true);
-//		}
-//	}
-
-//	private boolean canPistonMoveBlock(Faction pistonFaction, List<Block> blocks, BlockFace direction) {
-//		List<Faction> factions = (direction == null ? blocks.stream() : blocks.stream().map(b -> b.getRelative(direction)))
-//				.map(Block::getLocation)
-//				.map(FLocation::new)
-//				.distinct()
-//				.map(Board.getInstance()::getFactionAt)
-//				.distinct()
-//				.collect(Collectors.toList());
-//
-//		FactionsPlugin.getInstance().configMain.factions().limits();
-//		for(Faction otherFaction : factions) {
-//			if(pistonFaction == otherFaction) {
-//				continue;
-//			}
-//			// Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
-//			Relation rel = pistonFaction.getRelationTo(otherFaction);
-//			if(!otherFaction.hasAccess(rel, PermissibleAction.BUILD)) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFrostWalker(EntityBlockFormEvent event) {
 		if(!plugin.configMain.restrictWorlds().isEnabled(event.getBlock().getWorld())) {
@@ -186,9 +116,6 @@ public class FactionsBlockListener implements Listener {
 
 			return true; // This is not faction territory. Use whatever you like here.
 		}
-//		if(FactionsPlugin.getInstance().getLandRaidControl().isRaidable(otherFaction)) {
-//			return true;
-//		}
 
 		Faction myFaction = me.getFaction();
 		boolean pain = !justCheck && otherFaction.hasAccess(me, PermissibleAction.PAINBUILD);
@@ -196,9 +123,8 @@ public class FactionsBlockListener implements Listener {
 		// If the faction hasn't: defined access or denied, fallback to config values
 		if(!otherFaction.hasAccess(me, permissibleAction)) {
 			if(pain && permissibleAction != PermissibleAction.FROSTWALK) {
-//				player.damage(conf.factions().limits().getActionDeniedPainAmount());
-//				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
-//				return true;
+				me.msg(TL.PERM_DENIED_PAINTERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
+				return true;
 			} else if(!justCheck) {
 				me.msg(TL.PERM_DENIED_TERRITORY, permissibleAction.descriptionShort, otherFaction.getTag(myFaction));
 			}

@@ -79,10 +79,6 @@ public class CmdKick extends FCommand {
 				context.msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
 				return;
 			}
-
-//			if(!FactionsPlugin.getInstance().getLandRaidControl().canKick(toKick, context)) {
-//				return;
-//			}
 		}
 
 		// trigger the leave event (cancellable) [reason:kicked]

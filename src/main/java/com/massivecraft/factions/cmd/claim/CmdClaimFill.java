@@ -86,11 +86,6 @@ public class CmdClaimFill extends FCommand {
 			return;
 		}
 
-//		if(toClaim.size() > this.plugin.getLandRaidControl().getPossibleClaimCount(forFaction)) {
-//			context.msg(TL.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
-//			return;
-//		}
-
 		int fails = 0;
 		for(FLocation currentLocation : toClaim) {
 			if(!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {

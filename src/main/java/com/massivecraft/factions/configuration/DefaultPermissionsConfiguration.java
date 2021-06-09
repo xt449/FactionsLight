@@ -156,10 +156,6 @@ public class DefaultPermissionsConfiguration extends AbstractConfiguration {
 		return this.territory;
 	}
 
-//	public FactionOnlyPermInfo getOwner() {
-//		return this.owner;
-//	}
-
 	public FullPermInfo getPlate() {
 		return this.plate;
 	}

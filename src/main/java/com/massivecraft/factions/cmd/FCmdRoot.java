@@ -45,10 +45,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdMod cmdMod = new CmdMod();
 	public final CmdOpen cmdOpen = new CmdOpen();
 	public final CmdPermanent cmdPermanent = new CmdPermanent();
-	//	public final CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
-//	public final CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
-//	public final CmdPower cmdPower = new CmdPower();
-//	public final CmdDTR cmdDTR = new CmdDTR();
 	public final CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
 	public final CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
 	public final CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
@@ -138,16 +134,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdbanlist);
 		this.addSubCommand(this.cmdColeader);
 		this.addSubCommand(this.cmdListClaims);
-//		if(FactionsPlugin.getInstance().getLandRaidControl() instanceof PowerControl) {
-//			FactionsPlugin.getInstance().getLogger().info("Using POWER for land/raid control. Enabling power commands.");
-//			this.addSubCommand(this.cmdPermanentPower);
-//			this.addSubCommand(this.cmdPower);
-//			this.addSubCommand(this.cmdPowerBoost);
-//			this.addSubCommand(this.cmdModifyPower);
-//		} else if(FactionsPlugin.getInstance().getLandRaidControl() instanceof DTRControl) {
-//			FactionsPlugin.getInstance().getLogger().info("Using DTR for land/raid control. Enabling DTR commands.");
-//			this.addSubCommand(this.cmdDTR);
-//		}
 	}
 
 	@Override

@@ -57,7 +57,7 @@ public abstract class DiscUtil {
 
 	private static final HashMap<String, Lock> locks = new HashMap<>();
 
-	public static boolean writeCatch(final File file, final String content, boolean sync) {
+	public static void writeCatch(final File file, final String content, boolean sync) {
 		String name = file.getName();
 		final Lock lock;
 
@@ -94,8 +94,6 @@ public abstract class DiscUtil {
 				}
 			}.runTaskAsynchronously(FactionsPlugin.getInstance());
 		}
-
-		return true; // don't really care but for some reason this is a boolean.
 	}
 
 	public static String readCatch(File file) {

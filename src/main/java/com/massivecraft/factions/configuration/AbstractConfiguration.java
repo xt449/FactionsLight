@@ -17,8 +17,6 @@ public abstract class AbstractConfiguration {
 	protected final Plugin plugin;
 	protected YamlConfiguration config;
 
-	protected final String header = null;
-
 	protected AbstractConfiguration(Plugin plugin, String filePath) {
 		this.plugin = plugin;
 		this.filePath = filePath;
@@ -54,7 +52,6 @@ public abstract class AbstractConfiguration {
 		// Config Setup:
 		config.options().copyDefaults(true);
 		config.options().copyHeader(false);
-		config.options().header(header);
 
 		// write
 		writeDefaults();

@@ -121,16 +121,6 @@ public enum FancyTag implements Tag {
 	 * @return list of tooltips for a fancy message
 	 */
 	private static List<String> tipPlayer(FPlayer fplayer) {
-//		List<String> lines = new ArrayList<>();
-//		for(String line : FactionsPlugin.getInstance().configMain.commands().toolTips().player()) {
-//			String string = Tag.parsePlain(fplayer, line);
-//			if(string == null) {
-//				continue;
-//			}
-//			lines.add(ChatColor.translateAlternateColorCodes('&', string));
-//		}
-//		return lines;
-
 		return Collections.singletonList(ChatColor.translateAlternateColorCodes('&', Tag.parsePlain(fplayer, FactionsPlugin.getInstance().configMain.commands().toolTips().player())));
 	}
 

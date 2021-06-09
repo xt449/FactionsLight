@@ -54,16 +54,6 @@ public class CmdShow extends FCommand {
 			messageList.add(parsed);
 		}
 
-//		List<String> messageList = Collections.singletonList(
-//				TextUtil.parse(
-//						Tag.parsePlaceholders(
-//								context.player, Tag.parsePlain(
-//										faction, context.fPlayer, FactionsPlugin.getInstance().configMain.commands().show().format()
-//								)
-//						)
-//				)
-//		);
-
 		this.sendMessages(messageList, context.sender, faction, context.fPlayer);
 	}
 

@@ -23,9 +23,4 @@ public class OneEightPlusListener extends AbstractListener {
 			event.setCancelled(true);
 		}
 	}
-
-//	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-//	public void onBlockExplode(BlockExplodeEvent event) {
-//		handleExplosion(event.getBlock().getLocation(), null, event, event.blockList());
-//	}
 }

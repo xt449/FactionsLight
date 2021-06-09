@@ -86,10 +86,6 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 				return fPlayer.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fPlayer.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
 			case "player_group":
 				return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
-//			case "player_power":
-//				return String.valueOf(fPlayer.getPowerRounded());
-//			case "player_maxpower":
-//				return String.valueOf(fPlayer.getPowerMaxRounded());
 			case "player_kills":
 				return String.valueOf(fPlayer.getKills());
 			case "player_deaths":
@@ -118,9 +114,6 @@ public class PlaceholderAPIIntegration extends PlaceholderExpansion implements R
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
-//			case "faction_raidable":
-//				boolean raid = FactionsPlugin.getInstance().getLandRaidControl().isRaidable(faction);
-//				return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
 			case "faction_allies":
 				return String.valueOf(faction.getRelationCount(Relation.ALLY));
 			case "faction_allies_players":

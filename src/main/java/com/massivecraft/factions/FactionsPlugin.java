@@ -278,10 +278,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		this.autoSave = val;
 	}
 
-//	public LandRaidControl getLandRaidControl() {
-//		return this.landRaidControl;
-//	}
-
 	public Worldguard7Integration getWorldguard() {
 		return this.worldguard;
 	}

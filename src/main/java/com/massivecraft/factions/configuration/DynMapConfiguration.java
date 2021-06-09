@@ -111,9 +111,6 @@ public class DynMapConfiguration extends AbstractConfiguration {
 					} else if(s instanceof Map) {
 						DynMapStyle style = new DynMapStyle();
 						Map<String, Object> map = (Map<String, Object>) s;
-//						if(map.containsKey("homeMarker")) {
-//							style.setHomeMarker(map.get("homeMarker").toString());
-//						}
 						if(map.containsKey("fillOpacity")) {
 							style.setFillOpacity(getDouble(map.get("fillOpacity").toString()));
 						}
