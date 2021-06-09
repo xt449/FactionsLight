@@ -34,26 +34,12 @@ public class CmdShow extends FCommand {
 		if(context.argIsSet(0)) {
 			faction = context.argAsFaction(0);
 		}
-		if(faction == null) {
+		if(faction == null || faction.isWilderness()) {
+			context.msg(TL.COMMAND_SHOW_NOFACTION_SELF);
 			return;
 		}
 
 		List<String> show = Collections.singletonList(FactionsPlugin.getInstance().configMain.commands().show().format());
-
-		if(!faction.isNormal()) {
-			String tag = faction.getTag(context.fPlayer);
-			// send header and that's all
-			String header = show.get(0);
-			if(header.contains(FactionTag.HEADER.tag)) {
-				context.msg(TextUtil.titleize(tag));
-			} else {
-				String message = header.replace(FactionTag.FACTION.tag, tag);
-				message = Tag.parsePlain(faction, context.fPlayer, message);
-				context.msg(TextUtil.parse(message));
-			}
-			Bukkit.broadcastMessage("01 : " + faction.getTag());
-			return; // we only show header for non-normal factions
-		}
 
 		List<String> messageList = new ArrayList<>();
 		for(String raw : show) {
