@@ -276,7 +276,7 @@ public abstract class MemoryBoard extends Board {
 			final FancyMessage row = new FancyMessage("");
 			for(int dx = 0; dx < width; dx++) {
 				if(dx == halfWidth && dz == halfHeight) {
-					final float yaw = fplayer.getPlayer().getLocation().getYaw();
+					final float yaw = fplayer.getPlayer().getLocation().getYaw() % 360;
 					if(yaw < 45) {
 						row.then("↓");
 					} else if(yaw < 135) {
