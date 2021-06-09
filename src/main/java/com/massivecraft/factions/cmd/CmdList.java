@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.Permission;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.TL;
@@ -11,7 +10,6 @@ import com.massivecraft.factions.util.TextUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Function;
 
 
@@ -31,8 +29,6 @@ public class CmdList extends FCommand {
 	public void perform(CommandContext context) {
 		ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
 		factionList.remove(Factions.getInstance().getWilderness());
-		factionList.remove(Factions.getInstance().getSafeZone());
-		factionList.remove(Factions.getInstance().getWarZone());
 
 		// Sort by total followers first
 		factionList.sort(this.compare(Faction::getFPlayers));

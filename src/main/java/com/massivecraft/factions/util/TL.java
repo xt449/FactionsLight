@@ -88,23 +88,6 @@ public enum TL {
 	COMMAND_BYPASS_DISABLELOG(" has DISABLED admin bypass mode."),
 	COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
 
-	COMMAND_CHAT_DISABLED("&cThe built in chat channels are disabled on this server."),
-	COMMAND_CHAT_INVALIDMODE("&cUnrecognised chat mode. &ePlease enter either 'a','f','m','t' or 'p'"),
-	COMMAND_CHAT_INSUFFICIENTRANK("&cYou must be at least moderator to enter this chat."),
-	COMMAND_CHAT_DESCRIPTION("Change chat mode"),
-
-	COMMAND_CHAT_MODE_PUBLIC("&ePublic chat mode."),
-	COMMAND_CHAT_MODE_ALLIANCE("&eAlliance only chat mode."),
-	COMMAND_CHAT_MODE_TRUCE("&eTruce only chat mode."),
-	COMMAND_CHAT_MODE_FACTION("&eFaction only chat mode."),
-	COMMAND_CHAT_MODE_MOD("&eMod only chat mode."),
-
-	COMMAND_CHATSPY_ENABLE("&eYou have enabled chat spying mode."),
-	COMMAND_CHATSPY_ENABLELOG(" has ENABLED chat spying mode."),
-	COMMAND_CHATSPY_DISABLE("&eYou have disabled chat spying mode."),
-	COMMAND_CHATSPY_DISABLELOG(" has DISABLED chat spying mode."),
-	COMMAND_CHATSPY_DESCRIPTION("Enable admin chat spy mode"),
-
 	COMMAND_CLAIM_INVALIDRADIUS("&cIf you specify a radius, it must be at least 1."),
 	COMMAND_CLAIM_DENIED("&cYou do not have permission to claim in a radius."),
 	COMMAND_CLAIM_DESCRIPTION("Claim land from where you are standing"),
@@ -172,18 +155,11 @@ public enum TL {
 	COMMAND_DESCRIPTION_FORCHANGE("for changing faction description"),
 	COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
-	COMMAND_DISBAND_IMMUTABLE("&eYou cannot disband the Wilderness, safe zone, or war zone."),
+	COMMAND_DISBAND_IMMUTABLE("&eYou cannot disband the Wilderness."),
 	COMMAND_DISBAND_MARKEDPERMANENT("&eThis faction is designated as permanent, so you cannot disband it."),
 	COMMAND_DISBAND_BROADCAST_YOURS("&d%1$s&e disbanded your faction."),
 	COMMAND_DISBAND_BROADCAST_NOTYOURS("&d%1$s&e disbanded the faction %2$s."),
 	COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
-
-	COMMAND_DTR_TOSHOW("to show faction DTR info"),
-	COMMAND_DTR_FORSHOW("for showing faction DTR info"),
-	COMMAND_DTR_DTR("%1$s&6 - DTR / Max DTR: &e%2$s / %3$s"),
-	COMMAND_DTR_DESCRIPTION("Show faction DTR info"),
-	COMMAND_DTR_MODIFY_DESCRIPTION("Modify faction DTR"),
-	COMMAND_DTR_MODIFY_DONE("&eSet DTR for %s&e to %s"),
 
 	COMMAND_HELP_404("&cThis page does not exist"),
 	COMMAND_HELP_NEXTCREATE("&eLearn how to create a faction on the next page."),
@@ -198,10 +174,6 @@ public enum TL {
 	COMMAND_HELP_RELATIONS_7("&eYou can always hurt enemies and players without faction."),
 	COMMAND_HELP_RELATIONS_8(""),
 	COMMAND_HELP_RELATIONS_9("&eDamage from enemies is reduced in your own territory."),
-	COMMAND_HELP_RELATIONS_10("&eWhen you die you lose power. It is restored over time."),
-	COMMAND_HELP_RELATIONS_11("&eThe power of a faction is the sum of all member power."),
-	COMMAND_HELP_RELATIONS_12("&eThe power of a faction determines how much land it can hold."),
-	COMMAND_HELP_RELATIONS_13("&eYou can claim land from factions with too little power."),
 	COMMAND_HELP_PERMISSIONS_1("&eOnly faction members can build and destroy in their own"),
 	COMMAND_HELP_PERMISSIONS_2("&eterritory. Usage of the following items is also restricted:"),
 	COMMAND_HELP_PERMISSIONS_3("&eDoor, Chest, Furnace, Dispenser, Diode."),
@@ -211,9 +183,6 @@ public enum TL {
 	COMMAND_HELP_PERMISSIONS_7("&ealso use this to create member only areas."),
 	COMMAND_HELP_PERMISSIONS_8("&eAs dispensers are protected, you can create traps without"),
 	COMMAND_HELP_PERMISSIONS_9("&eworrying about those arrows getting stolen."),
-	COMMAND_HELP_ADMIN_1("&b/f claim safezone &eclaim land for the safe zone"),
-	COMMAND_HELP_ADMIN_2("&b/f claim warzone &eclaim land for the war zone"),
-	COMMAND_HELP_ADMIN_3("&b/f autoclaim [safezone|warzone] &etake a guess"),
 	COMMAND_HELP_MOAR_1("Finally some commands for the server admins:"),
 	COMMAND_HELP_MOAR_2("&eMore commands for server admins:"),
 	COMMAND_HELP_MOAR_3("&eEven more commands for server admins:"),
@@ -233,7 +202,6 @@ public enum TL {
 	COMMAND_JOIN_ALREADYMEMBER("&c%1$s %2$s already a member of %3$s"),
 	COMMAND_JOIN_ATLIMIT(" &c!&f The faction %1$s is at the limit of %2$d members, so %3$s cannot currently join."),
 	COMMAND_JOIN_INOTHERFACTION("&c%1$s must leave %2$s current faction first."),
-	COMMAND_JOIN_NEGATIVEPOWER("&c%1$s cannot join a faction with a negative power level."),
 	COMMAND_JOIN_REQUIRESINVITATION("&eThis faction requires invitation."),
 	COMMAND_JOIN_ATTEMPTEDJOIN("%1$s&e tried to join your faction."),
 	COMMAND_JOIN_TOJOIN("to join a faction"),
@@ -253,7 +221,6 @@ public enum TL {
 	COMMAND_KICK_NONE("That player is not in a faction."),
 	COMMAND_KICK_NOTMEMBER("%1$s&c is not a member of %2$s"),
 	COMMAND_KICK_INSUFFICIENTRANK("&cYour rank is too low to kick this player."),
-	COMMAND_KICK_NEGATIVEPOWER("&cYou cannot kick that member until their power is positive."),
 	COMMAND_KICK_TOKICK("to kick someone from the faction"),
 	COMMAND_KICK_FORKICK("for kicking someone from the faction"),
 	COMMAND_KICK_FACTION("%1$s&e kicked %2$s&e from the faction! :O"), //message given to faction members
@@ -297,9 +264,6 @@ public enum TL {
 	COMMAND_MOD_PROMOTED("&eYou have promoted %1$s&e to moderator."),
 	COMMAND_MOD_DESCRIPTION("Give or revoke moderator rights"),
 
-	COMMAND_MODIFYPOWER_ADDED("&eAdded &6%1$f &epower to &6%2$s. &eNew total rounded power: &6%3$d"),
-	COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
-
 	COMMAND_OPEN_TOOPEN("to open or close the faction"),
 	COMMAND_OPEN_FOROPEN("for opening or closing the faction"),
 	COMMAND_OPEN_OPEN("open"),
@@ -332,33 +296,11 @@ public enum TL {
 	COMMAND_PROMOTE_PROMOTED("promoted"),
 	COMMAND_PROMOTE_DEMOTED("demoted"),
 
-	COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"),
-	COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
-	COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
-	COMMAND_PERMANENTPOWER_SUCCESS("&eYou %s &d%s&e."),
-	COMMAND_PERMANENTPOWER_FACTION("%s&e %s your faction"),
-
 	COMMAND_PROMOTE_DESCRIPTION("/f promote <name>"),
 	COMMAND_PROMOTE_WRONGFACTION("%1$s is not part of your faction."),
 	COMMAND_NOACCESS("You don't have access to that."),
 	COMMAND_PROMOTE_NOTTHATPLAYER("That player cannot be promoted."),
 	COMMAND_PROMOTE_NOT_ALLOWED("You can't promote or demote that player."),
-
-	COMMAND_POWER_TOSHOW("to show player power info"),
-	COMMAND_POWER_FORSHOW("for showing player power info"),
-	COMMAND_POWER_POWER("%1$s&6 - Power / Maxpower: &e%2$d / %3$d %4$s"),
-	COMMAND_POWER_BONUS(" (bonus: "),
-	COMMAND_POWER_PENALTY(" (penalty: "),
-	COMMAND_POWER_DESCRIPTION("Show player power info"),
-
-	COMMAND_POWERBOOST_HELP_1("&cYou must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction."),
-	COMMAND_POWERBOOST_HELP_2("&cex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5"),
-	COMMAND_POWERBOOST_INVALIDNUM("&cYou must specify a valid numeric value for the power bonus/penalty amount."),
-	COMMAND_POWERBOOST_PLAYER("Player \"%1$s\""),
-	COMMAND_POWERBOOST_FACTION("Faction \"%1$s\""),
-	COMMAND_POWERBOOST_BOOST("&e%1$s now has a power bonus/penalty of %2$d to min and max power levels."),
-	COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
-	COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
 
 	COMMAND_RELATIONS_ALLTHENOPE("&cNope! You can't."),
 	COMMAND_RELATIONS_MORENOPE("&cNope! You can't declare a relation to yourself :)"),
@@ -378,10 +320,6 @@ public enum TL {
 
 	COMMAND_RELOAD_TIME("&eReloaded &dall configuration files &efrom disk, took &d%1$d ms&e."),
 	COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
-
-	COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safe zone land"),
-	COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&eYou unclaimed ALL safe zone land."),
-	COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all safe zones."),
 
 	COMMAND_SAVEALL_SUCCESS("&eFactions saved to disk!"),
 	COMMAND_SAVEALL_DESCRIPTION("Save all data to disk"),
@@ -403,7 +341,6 @@ public enum TL {
 	COMMAND_SHOW_JOINING("&6Joining: &e%1$s "),
 	COMMAND_SHOW_INVITATION("invitation is required"),
 	COMMAND_SHOW_UNINVITED("no invitation is needed"),
-	COMMAND_SHOW_POWER("&6Land / Power / Maxpower: &e %1$d/%2$d/%3$d %4$s."),
 	COMMAND_SHOW_BONUS(" (bonus: "),
 	COMMAND_SHOW_PENALTY(" (penalty: "),
 	COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
@@ -413,13 +350,12 @@ public enum TL {
 	COMMAND_SHOW_MEMBERSONLINE("Members online: "),
 	COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
 	COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
-	COMMAND_SHOW_DEATHS_TIL_RAIDABLE("&eDTR: %1$d"),
 
 	COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
 	COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
 	COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
 
-	COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
+	COMMAND_STATUS_FORMAT("%1$sLast Seen: %3$s"),
 	COMMAND_STATUS_ONLINE("Online"),
 	COMMAND_STATUS_AGOSUFFIX(" ago."),
 	COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
@@ -446,26 +382,18 @@ public enum TL {
 	COMMAND_TITLE_CHANGED("%1$s&e changed a title: %2$s"),
 	COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
-	COMMAND_TOGGLEALLIANCECHAT_DESCRIPTION("Toggles whether or not you will see alliance chat"),
-	COMMAND_TOGGLEALLIANCECHAT_IGNORE("Alliance chat is now ignored"),
-	COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
-
 	COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
 
 	COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
 	COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
 	COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
-	COMMAND_TOP_INVALID("Could not sort by %s. Try online, members, power or land."),
+	COMMAND_TOP_INVALID("Could not sort by %s. Try online, members, or land."),
 
 	COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
 	COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
 	COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
 	COMMAND_UNBAN_TARGET("&aYou were unbanned from &r%s"),
 
-	COMMAND_UNCLAIM_SAFEZONE_SUCCESS("&eSafe zone was unclaimed."),
-	COMMAND_UNCLAIM_SAFEZONE_NOPERM("&cThis is a safe zone. You lack permissions to unclaim."),
-	COMMAND_UNCLAIM_WARZONE_SUCCESS("&eWar zone was unclaimed."),
-	COMMAND_UNCLAIM_WARZONE_NOPERM("&cThis is a war zone. You lack permissions to unclaim."),
 	COMMAND_UNCLAIM_UNCLAIMED("%1$s&e unclaimed some of your land."),
 	COMMAND_UNCLAIM_UNCLAIMS("&eYou unclaimed this land."),
 	COMMAND_UNCLAIM_WRONGFACTIONOTHER("&cAttempted to unclaim land for incorrect faction"),
@@ -485,16 +413,10 @@ public enum TL {
 	COMMAND_VERSION_VERSION("&eYou are running %1$s"),
 	COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
-	COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all war zone land"),
-	COMMAND_WARUNCLAIMALL_SUCCESS("&eYou unclaimed ALL war zone land."),
-	COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
-
-
 	/**
 	 * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
 	 */
 	LEAVE_PASSADMIN("&cYou must give the admin role to someone else first."),
-	LEAVE_NEGATIVEPOWER("&cYou cannot leave until your power is positive."),
 	LEAVE_TOLEAVE("to leave your faction."),
 	LEAVE_FORLEAVE("for leaving your faction."),
 	LEAVE_LEFT("%s&e left faction %s&e."),
@@ -511,16 +433,12 @@ public enum TL {
 	CLAIM_ALREADYOWN("%s&e already own this land."),
 	CLAIM_MUSTBE("&cYou must be &d%s&c to claim land."),
 	CLAIM_MEMBERS("Factions must have at least &d%s&c members to claim land."),
-	CLAIM_SAFEZONE("&cYou can not claim a safe zone."),
-	CLAIM_WARZONE("&cYou can not claim a war zone."),
-	CLAIM_POWER("&cYou can't claim more land! You need more power!"),
-	CLAIM_DTR_LAND("&cYou can't claim more land!"),
 	CLAIM_LIMIT("&cLimit reached. You can't claim more land!"),
 	CLAIM_ALLY("&cYou can't claim the land of your allies."),
 	CLAIM_CONTIGIOUS("&cYou can only claim additional land which is connected to your first claim or controlled by another faction!"),
 	CLAIM_FACTIONCONTIGUOUS("&cYou can only claim additional land which is connected to your first claim!"),
-	//	CLAIM_PEACEFUL("%s&e owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
-//	CLAIM_PEACEFULTARGET("%s&e owns this land, and is a peaceful faction. You cannot claim land from them."),
+	CLAIM_PEACEFUL("%s&e owns this land. Your faction is peaceful, so you cannot claim land from other factions."),
+	CLAIM_PEACEFULTARGET("%s&e owns this land, and is a peaceful faction. You cannot claim land from them."),
 	CLAIM_THISISSPARTA("%s&e owns this land and is strong enough to keep it."),
 	CLAIM_BORDER("&cYou must start claiming land at the border of the territory."),
 	CLAIM_TOCLAIM("to claim this land"),
@@ -578,23 +496,6 @@ public enum TL {
 	PLACEHOLDER_CUSTOM_FACTION("{faction} "),
 
 	/**
-	 * ASCII compass (for chat map)
-	 */
-	COMPASS_SHORT_NORTH("N"),
-	COMPASS_SHORT_EAST("E"),
-	COMPASS_SHORT_SOUTH("S"),
-	COMPASS_SHORT_WEST("W"),
-
-	/**
-	 * Chat modes
-	 */
-	CHAT_MOD("mod chat"),
-	CHAT_FACTION("faction chat"),
-	CHAT_ALLIANCE("alliance chat"),
-	CHAT_TRUCE("truce chat"),
-	CHAT_PUBLIC("public chat"),
-
-	/**
 	 * Relations
 	 */
 	RELATION_MEMBER_SINGULAR("member"),
@@ -620,8 +521,6 @@ public enum TL {
 	/**
 	 * Region types.
 	 */
-	REGION_SAFEZONE("safezone"),
-	REGION_WARZONE("warzone"),
 	REGION_WILDERNESS("wilderness"),
 
 	REGION_PEACEFUL("peaceful territory"),
@@ -631,7 +530,6 @@ public enum TL {
 	PLAYER_CANTHURT("&eYou may not harm other players in %s"),
 	PLAYER_OUCH("&cOuch, that is starting to hurt. You should give it a rest."),
 	PLAYER_USE_TERRITORY("&cYou can't &d%s&c in the territory of &d%s&c."),
-	PLAYER_COMMAND_WARZONE("&cYou can't use the command '%s' in war zone."),
 	PLAYER_COMMAND_NEUTRAL("&cYou can't use the command '%s' in neutral territory."),
 	PLAYER_COMMAND_ENEMY("&cYou can't use the command '%s' in enemy territory."),
 	PLAYER_COMMAND_PERMANENT("&cYou can't use the command '%s' because you are in a permanent faction."),
@@ -639,14 +537,6 @@ public enum TL {
 	PLAYER_COMMAND_WILDERNESS("&cYou can't use the command '%s' in the wilderness."),
 
 	PLAYER_PORTAL_NOTALLOWED("&cDestination portal can't be created there."),
-
-	PLAYER_POWER_NOLOSS_PEACEFUL("&eYou didn't lose any power since you are in a peaceful faction."),
-	PLAYER_POWER_NOLOSS_WORLD("&eYou didn't lose any power due to the world you died in."),
-	PLAYER_POWER_NOLOSS_WILDERNESS("&eYou didn't lose any power since you were in the wilderness."),
-	PLAYER_POWER_NOLOSS_WARZONE("&eYou didn't lose any power since you were in a war zone."),
-	PLAYER_POWER_LOSS_WARZONE("&cThe world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n&eYour power is now &d%d / %d"),
-	PLAYER_POWER_NOW("&eYour power is now &d%d / %d"),
-	PLAYER_POWER_VAMPIRISM_GAIN("&eStole &d%.2f&e power from %s&e. Your power is now &d%d / %d"),
 
 	PLAYER_PVP_LOGIN("&eYou can't hurt other players for %d seconds after logging in."),
 	PLAYER_PVP_PEACEFUL("&ePeaceful players cannot participate in combat."),
@@ -693,8 +583,6 @@ public enum TL {
 	PERM_SHORT_TERRITORY("manage faction territory"),
 	PERM_SHORT_LISTCLAIMS("list claims"),
 
-	PERM_DENIED_SAFEZONE("&c>You can't %s in a safe zone"),
-	PERM_DENIED_WARZONE("&cYou can't %s in a war zone"),
 	PERM_DENIED_TERRITORY("&cYou can't %s in the territory of %s"),
 	PERM_DENIED_PAINTERRITORY("&cIt is painful to %s in the territory of %s"),
 
@@ -743,23 +631,12 @@ public enum TL {
 	 */
 	RAIDABLE_TRUE("raidable-true", "true"),
 	RAIDABLE_FALSE("raidable-false", "false"),
+
 	/**
 	 * Warmups
 	 */
 	WARMUPS_NOTIFY_FLIGHT("&eFlight will enable in &d%2$d &eseconds."),
 	WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
-	WARMUPS_ALREADY("&cYou are already warming up."),
-	WARMUPS_CANCELLED("&cYou have cancelled your warmup."),
-	/**
-	 * DTR
-	 */
-	DTR_CANNOT_FROZEN("&cAction denied due to frozen DTR"),
-	DTR_KICK_PENALTY("&cPenalty DTR lost due to kicking with frozen DTR"),
-	DTR_FROZEN_STATUS_MESSAGE("%s"),
-	DTR_FROZEN_STATUS_TRUE("Frozen"),
-	DTR_FROZEN_STATUS_FALSE("Not frozen"),
-	DTR_FROZEN_TIME_MESSAGE("%s"),
-	DTR_FROZEN_TIME_NOTFROZEN(""),
 	;
 
 	private String path;

@@ -52,7 +52,7 @@ public enum FactionTag implements Tag {
 //			TL.DTR_FROZEN_TIME_NOTFROZEN.toString()))),
 //	MAX_CHUNKS("max-chunks", (fac -> String.valueOf(FactionsPlugin.getInstance().getLandRaidControl().getLandLimit(fac)))),
 	PEACEFUL("peaceful", (fac) -> fac.getCombatSetting() == Setting.PREVENT_ALL ? FactionsPlugin.getInstance().configMain.colors().relations().peaceful() + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
-	PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
+	PERMANENT("permanence", (fac) -> fac.isPermanent() ? TL.COMMAND_SHOW_PERMANENT.toString() : ""), // no braces needed
 	DESCRIPTION("description", Faction::getDescription),
 	CREATE_DATE("create-date", (fac) -> TL.sdf.format(fac.getFoundedDate())),
 	ALLIES_COUNT("allies", (fac) -> String.valueOf(fac.getRelationCount(Relation.ALLY))),

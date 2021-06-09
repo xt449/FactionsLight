@@ -4,8 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWCIntegration;
-import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -17,14 +15,14 @@ import java.util.Map.Entry;
 
 public abstract class MemoryBoard extends Board {
 
-	public static class MemoryBoardMap extends HashMap<FLocation, String> {
+	public static class MemoryBoardMap extends HashMap<FLocation, Integer> {
 		private static final long serialVersionUID = -6689617828610585368L;
 
-		final Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+		final Multimap<Integer, FLocation> factionToLandMap = HashMultimap.create();
 
 		@Override
-		public String put(FLocation floc, String factionId) {
-			String previousValue = super.put(floc, factionId);
+		public Integer put(FLocation floc, Integer factionId) {
+			Integer previousValue = super.put(floc, factionId);
 			if(previousValue != null) {
 				factionToLandMap.remove(previousValue, floc);
 			}
@@ -34,8 +32,8 @@ public abstract class MemoryBoard extends Board {
 		}
 
 		@Override
-		public String remove(Object key) {
-			String result = super.remove(key);
+		public Integer remove(Object key) {
+			Integer result = super.remove(key);
 			if(result != null) {
 				FLocation floc = (FLocation) key;
 				factionToLandMap.remove(result, floc);
@@ -50,11 +48,11 @@ public abstract class MemoryBoard extends Board {
 			factionToLandMap.clear();
 		}
 
-		public int getOwnedLandCount(String factionId) {
+		public int getOwnedLandCount(int factionId) {
 			return factionToLandMap.get(factionId).size();
 		}
 
-		public void removeFaction(String factionId) {
+		public void removeFaction(int factionId) {
 			Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
 			for(FLocation floc : fLocations) {
 				super.remove(floc);
@@ -62,16 +60,14 @@ public abstract class MemoryBoard extends Board {
 		}
 	}
 
-	private final char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
-
 	public final MemoryBoardMap flocationIds = new MemoryBoardMap();
 
 	//----------------------------------------------//
 	// Get and Set
 	//----------------------------------------------//
-	public String getIdAt(FLocation flocation) {
+	public int getIdAt(FLocation flocation) {
 		if(!flocationIds.containsKey(flocation)) {
-			return "0";
+			return 0;
 		}
 
 		return flocationIds.get(flocation);
@@ -81,8 +77,8 @@ public abstract class MemoryBoard extends Board {
 		return Factions.getInstance().getFactionById(getIdAt(flocation));
 	}
 
-	public void setIdAt(String id, FLocation flocation) {
-		if(id.equals("0")) {
+	public void setIdAt(int id, FLocation flocation) {
+		if(id == 0) {
 			removeAt(flocation);
 		}
 
@@ -97,9 +93,9 @@ public abstract class MemoryBoard extends Board {
 		flocationIds.remove(flocation);
 	}
 
-	public Set<FLocation> getAllClaims(String factionId) {
+	public Set<FLocation> getAllClaims(int factionId) {
 		Set<FLocation> locs = new HashSet<>();
-		for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+		for(Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
 			if(entry.getValue().equals(factionId)) {
 				locs.add(entry.getKey());
 			}
@@ -111,11 +107,11 @@ public abstract class MemoryBoard extends Board {
 		return getAllClaims(faction.getId());
 	}
 
-	public void unclaimAll(String factionId) {
+	public void unclaimAll(int factionId) {
 		clean(factionId);
 	}
 
-	public void unclaimAllInWorld(String factionId, World world) {
+	public void unclaimAllInWorld(int factionId, World world) {
 		for(FLocation loc : getAllClaims(factionId)) {
 			if(loc.getWorldName().equals(world.getName())) {
 				removeAt(loc);
@@ -123,9 +119,9 @@ public abstract class MemoryBoard extends Board {
 		}
 	}
 
-	public void clean(String factionId) {
+	public void clean(int factionId) {
 		if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
-			for(Entry<FLocation, String> entry : flocationIds.entrySet()) {
+			for(Entry<FLocation, Integer> entry : flocationIds.entrySet()) {
 				if(entry.getValue().equals(factionId)) {
 					LWCIntegration.clearAllLocks(entry.getKey());
 				}
@@ -155,15 +151,6 @@ public abstract class MemoryBoard extends Board {
 //		return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
 //	}
 
-	/**
-	 * Checks if there is another faction within a given radius other than Wilderness. Used for HCF feature that
-	 * requires a 'buffer' between factions.
-	 *
-	 * @param flocation - center location.
-	 * @param faction   - faction checking for.
-	 * @param radius    - chunk radius to check.
-	 * @return true if another Faction is within the radius, otherwise false.
-	 */
 //	public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
 //		for(int x = -radius; x <= radius; x++) {
 //			for(int z = -radius; z <= radius; z++) {
@@ -186,9 +173,9 @@ public abstract class MemoryBoard extends Board {
 	// Cleaner. Remove orphaned foreign keys
 	//----------------------------------------------//
 	public void clean() {
-		Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
+		Iterator<Entry<FLocation, Integer>> iter = flocationIds.entrySet().iterator();
 		while(iter.hasNext()) {
-			Entry<FLocation, String> entry = iter.next();
+			Entry<FLocation, Integer> entry = iter.next();
 			if(!Factions.getInstance().isValidFactionId(entry.getValue())) {
 				if(LWCIntegration.getEnabled() && FactionsPlugin.getInstance().configMain.lwc().isResetLocksOnUnclaim()) {
 					LWCIntegration.clearAllLocks(entry.getKey());
@@ -203,7 +190,7 @@ public abstract class MemoryBoard extends Board {
 	// Coord count
 	//----------------------------------------------//
 
-	public int getFactionCoordCount(String factionId) {
+	public int getFactionCoordCount(int factionId) {
 		return flocationIds.getOwnedLandCount(factionId);
 	}
 
@@ -226,79 +213,109 @@ public abstract class MemoryBoard extends Board {
 	// Map generation
 	//----------------------------------------------//
 
+	// 1
+	private static final ChatColor mapUnclaimed = ChatColor.DARK_GRAY;
+
+	// 6
+	private static final ChatColor[] mapColorsEnemy = {
+			ChatColor.DARK_PURPLE,
+			ChatColor.LIGHT_PURPLE,
+			ChatColor.DARK_RED,
+			ChatColor.RED,
+			ChatColor.GOLD,
+			ChatColor.YELLOW,
+	};
+
+	// 3
+	private static final ChatColor[] mapColorsNeutral = {
+			ChatColor.WHITE,
+			ChatColor.GRAY,
+	};
+
+	// 6
+	private static final ChatColor[] mapColorsFriendly = {
+			ChatColor.DARK_GREEN,
+			ChatColor.GREEN,
+			ChatColor.DARK_AQUA,
+			ChatColor.AQUA,
+			ChatColor.BLUE,
+			ChatColor.DARK_BLUE,
+	};
+
 	/**
 	 * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
 	 * of decreasing z
 	 */
-	public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
-		Faction faction = fplayer.getFaction();
-		ArrayList<FancyMessage> ret = new ArrayList<>();
-		Faction factionLoc = getFactionAt(flocation);
-		ret.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
-
-		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, TextUtil.parse("<a>"));
+	public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation) {
+		final ArrayList<FancyMessage> messages = new ArrayList<>();
+		messages.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fplayer))));
 
 		int mapWidth = 35;
-		int halfWidth = mapWidth / 2;
-		// Use player's value for height
 		int mapHeight = 18;
+
+		int halfWidth = mapWidth / 2;
 		int halfHeight = mapHeight / 2;
-		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
+
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
+
+		final FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 
 		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
 			height--;
 		}
 
-		Map<String, Character> fList = new HashMap<>();
-		int chrIdx = 0;
+		Map<Integer, ChatColor> fList = new HashMap<>();
+		int colorIndexEnemy = 0;
+		int colorIndexNeutral = 0;
+		int colorIndexFriendly = 0;
 
 		// For each row
 		for(int dz = 0; dz < height; dz++) {
 			// Draw and add that row
-			FancyMessage row = new FancyMessage("");
-
-			if(dz < 3) {
-				row.then(asciiCompass.get(dz));
-			}
-			for(int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
+			final FancyMessage row = new FancyMessage("");
+			for(int dx = 0; dx < width; dx++) {
 				if(dx == halfWidth && dz == halfHeight) {
-					row.then("+").color(ChatColor.AQUA);
-				} else {
-					FLocation flocationHere = topLeft.getRelative(dx, dz);
-					Faction factionHere = getFactionAt(flocationHere);
-					Relation relation = fplayer.getRelationTo(factionHere);
-					if(factionHere.isWilderness()) {
-						row.then("-").color(FactionsPlugin.getInstance().configMain.colors().factions().wilderness());
-					} else if(factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
-							(FactionsPlugin.getInstance().configMain.map().isShowNeutralFactionsOnMap() && relation.equals(Relation.NEUTRAL)) ||
-							(FactionsPlugin.getInstance().configMain.map().isShowEnemyFactions() && relation.equals(Relation.ENEMY)) ||
-							FactionsPlugin.getInstance().configMain.map().isShowTruceFactions() && relation.equals(Relation.TRUCE)) {
-						if(!fList.containsKey(factionHere.getTag())) {
-							fList.put(factionHere.getTag(), this.mapKeyChrs[Math.min(chrIdx++, this.mapKeyChrs.length - 1)]);
-						}
-						char tag = fList.get(factionHere.getTag());
-						row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction));
+					final float yaw = fplayer.getPlayer().getLocation().getYaw() % 360;
+					if(yaw < 45) {
+						row.then("↓");
+					} else if(yaw < 135) {
+						row.then("←");
+					} else if(yaw < 225) {
+						row.then("↑");
+					} else if(yaw < 315) {
+						row.then("→");
 					} else {
-						row.then("-").color(ChatColor.GRAY);
+						row.then("↓");
+					}
+					row.color(ChatColor.AQUA);
+				} else {
+					final Faction faction = getFactionAt(topLeft.getRelative(dx, dz));
+
+					if(faction.isWilderness()) {
+						row.then("＿");
+						row.color(mapUnclaimed);
+					} else {
+						row.then("█");
+						if(!fList.containsKey(faction.getId())) {
+							switch(fplayer.getRelationTo(faction)) {
+								case ENEMY:
+									fList.put(faction.getId(), mapColorsEnemy[colorIndexEnemy++ % mapColorsEnemy.length]);
+									break;
+								case NEUTRAL:
+									fList.put(faction.getId(), mapColorsNeutral[colorIndexNeutral++ % mapColorsNeutral.length]);
+									break;
+								default:
+									fList.put(faction.getId(), mapColorsFriendly[colorIndexFriendly++ % mapColorsFriendly.length]);
+							}
+						}
+						row.color(fList.get(faction.getId()));
 					}
 				}
 			}
-			ret.add(row);
+			messages.add(row);
 		}
 
-		// Add the faction key
-		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
-			FancyMessage fRow = new FancyMessage("");
-			for(String key : fList.keySet()) {
-				final Relation relation = fplayer.getRelationTo(Factions.getInstance().getByTag(key));
-				fRow.then(String.format("%s: %s ", fList.get(key), key)).color(relation.getColor());
-			}
-			ret.add(fRow);
-		}
-
-		return ret;
+		return messages;
 	}
 }

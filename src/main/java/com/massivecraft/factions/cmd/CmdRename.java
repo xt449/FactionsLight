@@ -51,7 +51,7 @@ public class CmdRename extends FCommand {
 
 		// Inform
 		for(FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-			if(fplayer.getFactionId().equals(context.faction.getId())) {
+			if(fplayer.getFactionId() == context.faction.getId()) {
 				fplayer.msg(TL.COMMAND_RENAME_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
 				continue;
 			}

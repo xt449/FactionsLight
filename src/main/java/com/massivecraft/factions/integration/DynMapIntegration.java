@@ -219,7 +219,7 @@ public class DynMapIntegration {
 		// Note: The board is the world. The board id is the world name.
 		MemoryBoard board = (MemoryBoard) Board.getInstance();
 
-		for(Entry<FLocation, String> entry : board.flocationIds.entrySet()) {
+		for(Entry<FLocation, Integer> entry : board.flocationIds.entrySet()) {
 			String world = entry.getKey().getWorldName();
 			Faction chunkOwner = Factions.getInstance().getFactionById(entry.getValue());
 
@@ -480,11 +480,7 @@ public class DynMapIntegration {
 		if(faction.isWilderness()) {
 			return null;
 		}
-		String factionId = faction.getId();
-		if(factionId == null) {
-			return null;
-		}
-		return FACTIONS_PLAYERSET_ + factionId;
+		return FACTIONS_PLAYERSET_ + faction.getId();
 	}
 
 	// Thread Safe / Asynchronous: Yes
@@ -671,23 +667,20 @@ public class DynMapIntegration {
 		if(faction == null) {
 			return false;
 		}
-		final String factionId = faction.getId();
-		if(factionId == null) {
-			return false;
-		}
+		final int factionId = faction.getId();
 		final String factionName = faction.getTag();
 		if(factionName == null) {
 			return false;
 		}
 
-		Set<String> visible = config.dynmap().getVisibleFactions();
-		Set<String> hidden = config.dynmap().getHiddenFactions();
+		Set<Integer> visible = config.dynmap().getVisibleFactions();
+		Set<Integer> hidden = config.dynmap().getHiddenFactions();
 
-		if(!visible.isEmpty() && !visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world)) {
+		if(!visible.isEmpty() && !visible.contains(factionId)) {
 			return false;
 		}
 
-		return !hidden.contains(factionId) && !hidden.contains(factionName) && !hidden.contains("world:" + world);
+		return !hidden.contains(factionId);
 	}
 
 	// Thread Safe / Asynchronous: Yes
@@ -695,11 +688,6 @@ public class DynMapIntegration {
 		DynMapStyle ret;
 
 		ret = config.dynmap().getFactionStyles().get(faction.getId());
-		if(ret != null) {
-			return ret;
-		}
-
-		ret = config.dynmap().getFactionStyles().get(faction.getTag());
 		if(ret != null) {
 			return ret;
 		}

@@ -11,18 +11,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFactions extends Factions {
-	public final Map<String, Faction> factions = new ConcurrentHashMap<>();
+
+	public final Map<Integer, Faction> factions = new ConcurrentHashMap<>();
 	public int nextId = 1;
 
 	public int load() {
 		// Make sure the default neutral faction exists
-		if(!factions.containsKey("0")) {
-			Faction faction = generateFactionObject("0");
-			factions.put("0", faction);
+		if(!factions.containsKey(0)) {
+			Faction faction = generateFactionObject(0);
+			factions.put(0, faction);
 			faction.setTag(TL.WILDERNESS.toString());
 			faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
 		} else {
-			Faction faction = factions.get("0");
+			Faction faction = factions.get(0);
 			if(!faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
 				faction.setTag(TL.WILDERNESS.toString());
 			}
@@ -33,11 +34,11 @@ public abstract class MemoryFactions extends Factions {
 		return 0;
 	}
 
-	public Faction getFactionById(String id) {
+	public Faction getFactionById(int id) {
 		return factions.get(id);
 	}
 
-	public abstract Faction generateFactionObject(String string);
+	public abstract Faction generateFactionObject(int string);
 
 	public Faction getByTag(String str) {
 		String compStr = MiscUtil.getComparisonString(str);
@@ -82,7 +83,7 @@ public abstract class MemoryFactions extends Factions {
 		return this.getByTag(str) != null;
 	}
 
-	public boolean isValidFactionId(String id) {
+	public boolean isValidFactionId(int id) {
 		return factions.containsKey(id);
 	}
 
@@ -94,7 +95,7 @@ public abstract class MemoryFactions extends Factions {
 
 	public abstract Faction generateFactionObject();
 
-	public void removeFaction(String id) {
+	public void removeFaction(int id) {
 		factions.remove(id).remove();
 	}
 
@@ -105,16 +106,6 @@ public abstract class MemoryFactions extends Factions {
 
 	@Override
 	public Faction getWilderness() {
-		return factions.get("0");
-	}
-
-	@Override
-	public Faction getSafeZone() {
-		return factions.get("-1");
-	}
-
-	@Override
-	public Faction getWarZone() {
-		return factions.get("-2");
+		return factions.get(0);
 	}
 }

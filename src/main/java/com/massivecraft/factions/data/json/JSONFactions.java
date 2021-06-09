@@ -28,7 +28,7 @@ public class JSONFactions extends MemoryFactions {
 	}
 
 	public void forceSave(boolean sync) {
-		final Map<String, MemoryFaction> entitiesThatShouldBeSaved = new HashMap<>();
+		final Map<Integer, MemoryFaction> entitiesThatShouldBeSaved = new HashMap<>();
 		for(Faction entity : this.factions.values()) {
 			entitiesThatShouldBeSaved.put(entity.getId(), (MemoryFaction) entity);
 		}
@@ -36,12 +36,12 @@ public class JSONFactions extends MemoryFactions {
 		saveCore(file, entitiesThatShouldBeSaved, sync);
 	}
 
-	private boolean saveCore(File target, Map<String, MemoryFaction> entities, boolean sync) {
+	private boolean saveCore(File target, Map<Integer, MemoryFaction> entities, boolean sync) {
 		return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().gson.toJson(entities), sync);
 	}
 
 	public int load() {
-		Map<String, MemoryFaction> factions = this.loadCore();
+		Map<Integer, MemoryFaction> factions = this.loadCore();
 		if(factions == null) {
 			return 0;
 		}
@@ -51,7 +51,7 @@ public class JSONFactions extends MemoryFactions {
 		return factions.size();
 	}
 
-	private Map<String, MemoryFaction> loadCore() {
+	private Map<Integer, MemoryFaction> loadCore() {
 		if(!this.file.exists()) {
 			return new HashMap<>();
 		}
@@ -61,15 +61,15 @@ public class JSONFactions extends MemoryFactions {
 			return null;
 		}
 
-		Map<String, MemoryFaction> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<String, MemoryFaction>>() {
+		Map<Integer, MemoryFaction> data = FactionsPlugin.getInstance().gson.fromJson(content, new TypeToken<Map<Integer, MemoryFaction>>() {
 		}.getType());
 
 		this.nextId = 1;
 		// Do we have any names that need updating in claims or invites?
 
 		int needsUpdate = 0;
-		for(Entry<String, MemoryFaction> entry : data.entrySet()) {
-			String id = entry.getKey();
+		for(Entry<Integer, MemoryFaction> entry : data.entrySet()) {
+			Integer id = entry.getKey();
 			Faction f = entry.getValue();
 			f.checkPerms();
 			f.setId(id);
@@ -124,7 +124,7 @@ public class JSONFactions extends MemoryFactions {
 //			}
 
 			// Update invites
-			for(String string : data.keySet()) {
+			for(Integer string : data.keySet()) {
 				Faction f = data.get(string);
 				Set<String> invites = f.getInvites();
 				Set<String> list = whichKeysNeedMigration(invites);
@@ -172,19 +172,15 @@ public class JSONFactions extends MemoryFactions {
 	// ID MANAGEMENT
 	// -------------------------------------------- //
 
-	public String getNextId() {
+	public int getNextId() {
 		while(!isIdFree(this.nextId)) {
 			this.nextId += 1;
 		}
-		return Integer.toString(this.nextId);
-	}
-
-	public boolean isIdFree(String id) {
-		return !this.factions.containsKey(id);
+		return this.nextId;
 	}
 
 	public boolean isIdFree(int id) {
-		return this.isIdFree(Integer.toString(id));
+		return !this.factions.containsKey(id);
 	}
 
 	protected synchronized void updateNextIdForId(int id) {
@@ -203,14 +199,14 @@ public class JSONFactions extends MemoryFactions {
 
 	@Override
 	public Faction generateFactionObject() {
-		String id = getNextId();
+		int id = getNextId();
 		Faction faction = new MemoryFaction(id);
 		updateNextIdForId(id);
 		return faction;
 	}
 
 	@Override
-	public Faction generateFactionObject(String id) {
+	public Faction generateFactionObject(int id) {
 		return new MemoryFaction(id);
 	}
 }

@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class MemoryFaction implements Faction {
-	protected String id;
+	protected int id;
 	//	protected boolean peacefulExplosionsEnabled;
 	protected boolean permanent;
 	protected String tag;
@@ -29,21 +29,25 @@ public class MemoryFaction implements Faction {
 	protected long foundedDate;
 	protected transient long lastPlayerLoggedOffTime;
 	//	protected double powerBoost;
-	protected final Map<String, Relation> relationWish = new HashMap<>();
-	protected transient Set<FPlayer> fplayers = new HashSet<>();
+	protected final Map<Integer, Relation> relationWish = new HashMap<>();
 	protected final Set<String> invites = new HashSet<>();
-	protected final HashMap<String, List<String>> announcements = new HashMap<>();
 	//	private long lastDeath;
 	protected Role defaultRole;
 	protected final Map<Permissible, Map<PermissibleAction, Boolean>> permissions = new HashMap<>();
 	protected final Set<BanInfo> bans = new HashSet<>();
-//	protected double dtr;
+	//	protected double dtr;
 //	protected long lastDTRUpdateTime;
 //	protected long frozenDTRUntilTime;
+	private final transient Set<FPlayer> fplayers;
 
-	public MemoryFaction(String id) {
+	// Needed for GSON deserialization
+	@SuppressWarnings("unused")
+	public MemoryFaction() {
+		fplayers = new HashSet<>();
+	}
+
+	public MemoryFaction(int id) {
 		this.id = id;
-		FactionsPlugin.getInstance().configMain.factions().limits();
 		this.open = false;
 		this.tag = "???";
 		this.description = TL.GENERIC_DEFAULTDESCRIPTION.toString();
@@ -56,40 +60,19 @@ public class MemoryFaction implements Faction {
 		this.defaultRole = FactionsPlugin.getInstance().configMain.factions().roles().defaultRole();
 //		this.dtr = FactionsPlugin.getInstance().configMain.factions().landRaidControl().dtr().getStartingDTR();
 
+		fplayers = new HashSet<>();
 		resetPerms(); // Reset on new Faction so it has default values.
-	}
-
-	public void addAnnouncement(FPlayer fPlayer, String msg) {
-		List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<>();
-		list.add(msg);
-		announcements.put(fPlayer.getId(), list);
-	}
-
-	public void sendUnreadAnnouncements(FPlayer fPlayer) {
-		if(!announcements.containsKey(fPlayer.getId())) {
-			return;
-		}
-		fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_TOP);
-		for(String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
-			fPlayer.sendMessage(s);
-		}
-		fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_BOTTOM);
-		announcements.remove(fPlayer.getId());
-	}
-
-	public void removeAnnouncements(FPlayer fPlayer) {
-		announcements.remove(fPlayer.getId());
 	}
 
 	public Set<String> getInvites() {
 		return invites;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -335,10 +318,7 @@ public class MemoryFaction implements Faction {
 		}
 
 		for(Map.Entry<Permissible, Map<PermissibleAction, Boolean>> entry : permissions.entrySet()) {
-			System.out.println("> > " + entry.getKey().name());
 			for(PermissibleAction permissibleAction : PermissibleAction.values()) {
-				System.out.println("> " + permissibleAction.toString());
-//				DefaultPermissionsConfiguration.Permissions.FactionOnlyPermInfo permInfo = permissibleAction.getPermInfo(defaults);
 				entry.getValue().put(permissibleAction, permissibleAction.getPermInfo(defaults).get(entry.getKey()).defaultAllowed());
 			}
 		}
@@ -386,11 +366,11 @@ public class MemoryFaction implements Faction {
 	// -------------------------------
 
 	public boolean isNormal() {
-		return !this.isWilderness();
+		return id != 0;
 	}
 
 	public boolean isWilderness() {
-		return this.id.equals("0");
+		return id == 0;
 	}
 
 	// -------------------------------
@@ -572,16 +552,18 @@ public class MemoryFaction implements Faction {
 //		return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
 //	}
 
+//	@Override
+//	public void initFix() {
+//		if(fplayers == null) {
+//			fplayers = new HashSet<>();
+//		}
+//	}
+
 	// -------------------------------
 	// FPlayers
 	// -------------------------------
 
 	public boolean addFPlayer(FPlayer fplayer) {
-		if(fplayers == null) {
-			System.out.println("Creating new player set for MemoryFaction!\nIf you see this message at any time after startup be afraid!");
-			fplayers = new HashSet<>();
-		}
-
 		return fplayers.add(fplayer);
 	}
 

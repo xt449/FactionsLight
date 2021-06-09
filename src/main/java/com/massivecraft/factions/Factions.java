@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public abstract class Factions {
 	protected static final Factions instance = getFactionsImpl();
 
-	public abstract Faction getFactionById(String id);
+	public abstract Faction getFactionById(int id);
 
 	public abstract Faction getByTag(String str);
 
@@ -15,19 +15,15 @@ public abstract class Factions {
 
 	public abstract boolean isTagTaken(String str);
 
-	public abstract boolean isValidFactionId(String id);
+	public abstract boolean isValidFactionId(int id);
 
 	public abstract Faction createFaction();
 
-	public abstract void removeFaction(String id);
+	public abstract void removeFaction(int id);
 
 	public abstract ArrayList<Faction> getAllFactions();
 
 	public abstract Faction getWilderness();
-
-	public abstract Faction getSafeZone();
-
-	public abstract Faction getWarZone();
 
 	public abstract void forceSave();
 

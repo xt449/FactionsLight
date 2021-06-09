@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.relations.CmdRelationAlly;
 import com.massivecraft.factions.cmd.relations.CmdRelationEnemy;
@@ -9,7 +8,6 @@ import com.massivecraft.factions.cmd.relations.CmdRelationTruce;
 import com.massivecraft.factions.cmd.role.CmdDemote;
 import com.massivecraft.factions.cmd.role.CmdPromote;
 import com.massivecraft.factions.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,7 +65,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 	public final CmdVersion cmdVersion = new CmdVersion();
 	public final CmdSB cmdSB = new CmdSB();
 	public final CmdShowInvites cmdShowInvites = new CmdShowInvites();
-	public final CmdAnnounce cmdAnnounce = new CmdAnnounce();
 	//	public final CmdModifyPower cmdModifyPower = new CmdModifyPower();
 	public final CmdClaimLine cmdClaimLine = new CmdClaimLine();
 	public final CmdClaimFill cmdClaimFill = new CmdClaimFill();
@@ -125,12 +122,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 		this.addSubCommand(this.cmdStuck);
 		this.addSubCommand(this.cmdRename);
 		this.addSubCommand(this.cmdTitle);
+		this.addSubCommand(this.cmdTop);
 		this.addSubCommand(this.cmdUnclaim);
 		this.addSubCommand(this.cmdUnclaimall);
 		this.addSubCommand(this.cmdVersion);
 		this.addSubCommand(this.cmdSB);
 		this.addSubCommand(this.cmdShowInvites);
-		this.addSubCommand(this.cmdAnnounce);
 		this.addSubCommand(this.cmdClaimLine);
 		this.addSubCommand(this.cmdClaimFill);
 		this.addSubCommand(this.cmdPerm);
@@ -153,14 +150,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 //			FactionsPlugin.getInstance().getLogger().info("Using DTR for land/raid control. Enabling DTR commands.");
 //			this.addSubCommand(this.cmdDTR);
 //		}
-	}
-
-	public void done() {
-		if(Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
-			FactionsPlugin.getInstance().getLogger().info("Found FactionsTop plugin. Disabling our own /f top command.");
-		} else {
-			this.addSubCommand(this.cmdTop);
-		}
 	}
 
 	@Override

@@ -40,7 +40,7 @@ import java.util.UUID;
 
 public abstract class MemoryFPlayer implements FPlayer {
 
-	protected String factionId;
+	protected int factionId;
 	protected Role role;
 	protected String title;
 	//	protected double power;
@@ -62,7 +62,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	public MemoryFPlayer(String id) {
 		this.id = id;
-		this.resetFactionData();
+		this.factionId = 0;
 //		this.power = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting();
 //		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
@@ -73,7 +73,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.kills = 0;
 		this.deaths = 0;
 
-		this.factionId = "0";
+		this.resetFactionData();
 	}
 
 	@Override
@@ -90,26 +90,24 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	@Override
 	public Faction getFaction() {
-		if(this.factionId == null) {
-			this.factionId = "0";
-		}
 		Faction faction = Factions.getInstance().getFactionById(this.factionId);
 		if(faction == null) {
 			FactionsPlugin.getInstance().getLogger().warning("Found null faction (id " + this.factionId + ") for player " + this.getName());
-			this.factionId = "0";
-			faction = Factions.getInstance().getFactionById(this.factionId);
+			this.factionId = 0;
+			faction = Factions.getInstance().getWilderness();
 		}
+//		faction.initFix();
 		return faction;
 	}
 
 	@Override
-	public String getFactionId() {
-		return this.factionId;
+	public int getFactionId() {
+		return factionId;
 	}
 
 	@Override
 	public boolean hasFaction() {
-		return !factionId.equals("0");
+		return factionId != 0;
 	}
 
 	@Override
@@ -228,12 +226,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 	@Override
 	public void resetFactionData() {
 		// clean up any territory ownership in old faction, if there is one
-		if(factionId != null && Factions.getInstance().isValidFactionId(this.getFactionId())) {
-			Faction currentFaction = this.getFaction();
+		final Faction currentFaction = Factions.getInstance().getFactionById(factionId);
+		if(currentFaction != null) {
 			currentFaction.removeFPlayer(this);
 		}
 
-		this.factionId = "0"; // The wilderness faction
+		this.factionId = 0; // The wilderness faction
 		this.role = Role.NORMAL;
 		this.title = "";
 		this.autoClaimFor = null;
@@ -571,7 +569,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 			}
 		}
 
-		myFaction.removeAnnouncements(this);
 		this.resetFactionData();
 
 		if(myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {

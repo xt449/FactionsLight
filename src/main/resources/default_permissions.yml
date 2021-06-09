@@ -2,13 +2,12 @@
 # Each main section represents one permission.
 # Inside is each relation.
 # Each relation has a default value (true: allowed, false: disallowed) and true/false for if it's locked to editing by factions admins.
-permissions:
-  # Can ban others from the faction
+permissions: # Can ban others from the faction
   ban:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
@@ -16,7 +15,7 @@ permissions:
     normal:
       default: false
       locked: false
-    
+
     recruit:
       default: false
       locked: false
@@ -26,184 +25,184 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-    
+
     enemy:
       default: false
       locked: false
-    
+
     moderator:
       default: true
       locked: false
-    
+
     neutral:
       default: false
       locked: false
-    
+
     normal:
       default: true
       locked: false
-    
+
     recruit:
       default: true
       locked: false
-    
+
     truce:
       default: false
       locked: false
-  
+
   # Use buttons in faction territory (while not raidable)
   button:
     ally:
       default: true
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-    
+
     neutral:
       default: false
       locked: false
-    
+
     normal:
       default: true
       locked: false
-    
+
     recruit:
       default: true
       locked: false
-    
+
     truce:
       default: false
       locked: false
-  
+
   # Use containers in faction territory (while not raidable)
   container:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-    
+
     enemy:
       default: false
       locked: false
-    
+
     moderator:
       default: true
       locked: false
-    
+
     neutral:
       default: false
       locked: false
-    
+
     normal:
       default: true
       locked: false
-    
+
     recruit:
       default: true
       locked: false
-    
+
     truce:
       default: false
       locked: false
-  
+
   # Can destroy in faction territory (while not raidable)
   destroy:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-    
+
     enemy:
       default: false
       locked: false
-    
+
     moderator:
       default: true
       locked: false
-    
+
     neutral:
       default: false
       locked: false
-    
+
     normal:
       default: true
       locked: false
-    
+
     recruit:
       default: true
       locked: false
-    
+
     truce:
       default: false
       locked: false
-  
+
   disband:
     coleader:
       default: false
       locked: false
-  
+
     moderator:
       default: false
       locked: false
-    
+
     normal:
       default: false
       locked: false
-    
+
     recruit:
       default: false
       locked: false
-  
+
   # Use doors in faction territory (while not raidable)
   door:
     ally:
       default: true
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-    
+
     normal:
       default: true
       locked: false
-    
+
     recruit:
       default: true
       locked: false
-    
+
     truce:
       default: false
       locked: false
@@ -213,31 +212,31 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -247,31 +246,31 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -281,15 +280,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -299,31 +298,31 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -332,15 +331,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -350,31 +349,31 @@ permissions:
     ally:
       default: true
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -384,15 +383,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -402,15 +401,15 @@ permissions:
     coleader:
       default: false
       locked: false
-  
+
     moderator:
       default: false
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -420,31 +419,31 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: false
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: false
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -454,31 +453,31 @@ permissions:
     ally:
       default: true
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false
@@ -488,15 +487,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -506,15 +505,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: false
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -524,15 +523,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -542,15 +541,15 @@ permissions:
     coleader:
       default: true
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     normal:
       default: false
       locked: false
-  
+
     recruit:
       default: false
       locked: false
@@ -560,31 +559,31 @@ permissions:
     ally:
       default: false
       locked: false
-  
+
     coleader:
       default: true
       locked: false
-  
+
     enemy:
       default: false
       locked: false
-  
+
     moderator:
       default: true
       locked: false
-  
+
     neutral:
       default: false
       locked: false
-  
+
     normal:
       default: true
       locked: false
-  
+
     recruit:
       default: true
       locked: false
-  
+
     truce:
       default: false
       locked: false

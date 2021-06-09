@@ -19,24 +19,24 @@ dynmap:
   # Per-faction overrides
   factionStyles:
     -1:
-       fillColor: "#FF00FF"
-       fillOpacity: 0.35
-       homeMarker: greenflag
-       lineColor: "#FF00FF"
-       lineOpacity: 0.8
-       lineWeight: 3
-       styleBoost: false
+      fillColor: "#FF00FF"
+      fillOpacity: 0.35
+      homeMarker: greenflag
+      lineColor: "#FF00FF"
+      lineOpacity: 0.8
+      lineWeight: 3
+      styleBoost: false
     -2:
-       fillColor: "#FF0000"
-       fillOpacity: 0.35
-       homeMarker: greenflag
-       lineColor: "#FF0000"
-       lineOpacity: 0.8
-       lineWeight: 3
-       styleBoost: false
+      fillColor: "#FF0000"
+      fillOpacity: 0.35
+      homeMarker: greenflag
+      lineColor: "#FF0000"
+      lineOpacity: 0.8
+      lineWeight: 3
+      styleBoost: false
 
   # To hide all factions in a world, use 'world:worldnamehere'
-  hiddenFactions: []
+  hiddenFactions: [ ]
   layerMinimumZoom: 0
   layerName: Factions
   layerPriority: 2
@@ -45,7 +45,7 @@ dynmap:
   visibilityByFaction: true
   # If not empty, *only* listed factions (by name or ID) will be shown.
   # To show all factions in a world, use 'world:worldnamehere'
-  visibleFactions: []
+  visibleFactions: [ ]
 
 style:
   fillColor: "#00FF00"

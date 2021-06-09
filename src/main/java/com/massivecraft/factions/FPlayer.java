@@ -28,7 +28,7 @@ public interface FPlayer extends RelationParticipator {
 
 	Faction getFaction();
 
-	String getFactionId();
+	int getFactionId();
 
 	boolean hasFaction();
 
