@@ -116,23 +116,21 @@ public class FactionsPlayerListener extends AbstractListener {
 			return;
 		}
 
-		Player player = event.getPlayer();
-		FPlayer me = FPlayers.getInstance().getByPlayer(player);
-
 		// quick check to make sure player is moving between chunks; good performance boost
 		if(event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
 			return;
 		}
 
-		// Did we change coord?
-		FLocation from = me.getLastStoodAt();
-		FLocation to = new FLocation(event.getTo());
+		final Player player = event.getPlayer();
+		final FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
+		final FLocation from = me.getLastStoodAt();
+		final FLocation to = new FLocation(event.getTo());
+
+		// Did we change chunk?
 		if(from.equals(to)) {
 			return;
 		}
-
-		// Yes we did change coord (:
 
 		me.setLastStoodAt(to);
 
@@ -140,15 +138,13 @@ public class FactionsPlayerListener extends AbstractListener {
 			me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
 		}
 
-		// Did we change "host"(faction)?
-		Faction factionFrom = Board.getInstance().getFactionAt(from);
-		Faction factionTo = Board.getInstance().getFactionAt(to);
-
 		if(me.isMapAutoUpdating()) {
 			if(!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
-				me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
+				me.sendFancyMessage(Board.getInstance().getMap(me, to));
 				showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().configMain.commands().map().cooldown());
 			}
+		} else if(Board.getInstance().getFactionAt(to) != Board.getInstance().getFactionAt(from)) {
+			me.sendFactionHereMessage();
 		}
 	}
 

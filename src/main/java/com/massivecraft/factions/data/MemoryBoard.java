@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.LWCIntegration;
-import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -214,13 +213,11 @@ public abstract class MemoryBoard extends Board {
 	// Map generation
 	//----------------------------------------------//
 
-	private final char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
-
 	// 1
-	private final ChatColor mapUnclaimed = ChatColor.DARK_GRAY;
+	private static final ChatColor mapUnclaimed = ChatColor.DARK_GRAY;
 
 	// 6
-	private final ChatColor[] mapColorsEnemy = {
+	private static final ChatColor[] mapColorsEnemy = {
 			ChatColor.DARK_PURPLE,
 			ChatColor.LIGHT_PURPLE,
 			ChatColor.DARK_RED,
@@ -230,13 +227,13 @@ public abstract class MemoryBoard extends Board {
 	};
 
 	// 3
-	private final ChatColor[] mapColorsNeutral = {
+	private static final ChatColor[] mapColorsNeutral = {
 			ChatColor.WHITE,
 			ChatColor.GRAY,
 	};
 
 	// 6
-	private final ChatColor[] mapColorsFriendly = {
+	private static final ChatColor[] mapColorsFriendly = {
 			ChatColor.DARK_GREEN,
 			ChatColor.GREEN,
 			ChatColor.DARK_AQUA,
@@ -249,19 +246,20 @@ public abstract class MemoryBoard extends Board {
 	 * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
 	 * of decreasing z
 	 */
-	public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
-		ArrayList<FancyMessage> ret = new ArrayList<>();
-		Faction factionLoc = getFactionAt(flocation);
-		ret.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+	public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation) {
+		final ArrayList<FancyMessage> messages = new ArrayList<>();
+		messages.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fplayer))));
 
 		int mapWidth = 35;
-		int halfWidth = mapWidth / 2;
-		// Use player's value for height
 		int mapHeight = 18;
+
+		int halfWidth = mapWidth / 2;
 		int halfHeight = mapHeight / 2;
-		FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
+
 		int width = halfWidth * 2 + 1;
 		int height = halfHeight * 2 + 1;
+
+		final FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 
 		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
 			height--;
@@ -278,47 +276,46 @@ public abstract class MemoryBoard extends Board {
 			final FancyMessage row = new FancyMessage("");
 			for(int dx = 0; dx < width; dx++) {
 				if(dx == halfWidth && dz == halfHeight) {
-					if(inDegrees < 45) {
+					final float yaw = fplayer.getPlayer().getLocation().getYaw();
+					if(yaw < 45) {
 						row.then("↓");
-					} else if(inDegrees < 135) {
+					} else if(yaw < 135) {
 						row.then("←");
-					} else if(inDegrees < 225) {
+					} else if(yaw < 225) {
 						row.then("↑");
-					} else if(inDegrees < 315) {
+					} else if(yaw < 315) {
 						row.then("→");
 					} else {
 						row.then("↓");
 					}
 					row.color(ChatColor.AQUA);
 				} else {
-					row.then("█");
+					final Faction faction = getFactionAt(topLeft.getRelative(dx, dz));
 
-					FLocation flocationHere = topLeft.getRelative(dx, dz);
-					Faction factionHere = getFactionAt(flocationHere);
-					Relation relation = fplayer.getRelationTo(factionHere);
-
-					if(factionHere.isWilderness()) {
+					if(faction.isWilderness()) {
+						row.then("＿");
 						row.color(mapUnclaimed);
 					} else {
-						if(!fList.containsKey(factionHere.getId())) {
-							switch(relation) {
+						row.then("█");
+						if(!fList.containsKey(faction.getId())) {
+							switch(fplayer.getRelationTo(faction)) {
 								case ENEMY:
-									fList.put(factionHere.getId(), mapColorsEnemy[colorIndexEnemy++ % mapColorsEnemy.length]);
+									fList.put(faction.getId(), mapColorsEnemy[colorIndexEnemy++ % mapColorsEnemy.length]);
 									break;
 								case NEUTRAL:
-									fList.put(factionHere.getId(), mapColorsNeutral[colorIndexNeutral++ % mapColorsNeutral.length]);
+									fList.put(faction.getId(), mapColorsNeutral[colorIndexNeutral++ % mapColorsNeutral.length]);
 									break;
 								default:
-									fList.put(factionHere.getId(), mapColorsFriendly[colorIndexFriendly++ % mapColorsFriendly.length]);
+									fList.put(faction.getId(), mapColorsFriendly[colorIndexFriendly++ % mapColorsFriendly.length]);
 							}
 						}
-						row.color(fList.get(factionHere.getId()));
+						row.color(fList.get(faction.getId()));
 					}
 				}
 			}
-			ret.add(row);
+			messages.add(row);
 		}
 
-		return ret;
+		return messages;
 	}
 }
