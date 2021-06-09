@@ -18,18 +18,6 @@ import org.bukkit.entity.Player;
 
 public class Worldguard7Integration {
 
-	// PVP Flag check
-	// Returns:
-	//   True: PVP is allowed
-	//   False: PVP is disallowed
-	public boolean isPVP(Player player) {
-		LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-		RegionQuery query = container.createQuery();
-
-		return query.testState(localPlayer.getLocation(), localPlayer, Flags.PVP);
-	}
-
 	// Check if player can build at location by worldguards rules.
 	// Returns:
 	//	True: Player can build in the region.
