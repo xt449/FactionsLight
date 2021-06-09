@@ -24,12 +24,18 @@ public class CmdHelp extends FCommand {
 	public void perform(CommandContext context) {
 		final int pageIndex = context.argAsInt(0, 1) - 1;
 
-		if(pageIndex < 0 || pageIndex >= helpPages.size()) {
+		if(pageIndex < 0) {
 			context.msg(TL.COMMAND_HELP_404);
 			return;
+		} else {
+			updateHelp(context);
+
+			if(pageIndex >= helpPages.size()) {
+				context.msg(TL.COMMAND_HELP_404);
+				return;
+			}
 		}
 
-		updateHelp(context);
 		context.sender.sendMessage(helpPages.get(pageIndex).toArray(new String[0]));
 	}
 

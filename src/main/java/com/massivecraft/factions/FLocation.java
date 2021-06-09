@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
@@ -50,9 +49,6 @@ public class FLocation implements Serializable {
 		this(fplayer.getPlayer());
 	}
 
-	public FLocation(Block block) {
-		this(block.getLocation());
-	}
 
 	//----------------------------------------------//
 	// Getters and Setters

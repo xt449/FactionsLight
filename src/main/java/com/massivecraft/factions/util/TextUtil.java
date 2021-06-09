@@ -4,9 +4,6 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class TextUtil {
 
 	// -------------------------------------------- //
@@ -100,29 +97,5 @@ public abstract class TextUtil {
 		} else {
 			return ChatColor.GOLD + center;
 		}
-	}
-
-	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title) {
-		ArrayList<String> ret = new ArrayList<>();
-		int pageZeroBased = pageHumanBased - 1;
-		int pageheight = 9;
-		int pagecount = (lines.size() / pageheight) + 1;
-
-		ret.add(titleize(title + " " + pageHumanBased + "/" + pagecount));
-
-		if(pageZeroBased < 0 || pageHumanBased > pagecount) {
-			ret.add(TL.INVALIDPAGE.format(pagecount));
-			return ret;
-		}
-
-		int from = pageZeroBased * pageheight;
-		int to = from + pageheight;
-		if(to > lines.size()) {
-			to = lines.size();
-		}
-
-		ret.addAll(lines.subList(from, to));
-
-		return ret;
 	}
 }

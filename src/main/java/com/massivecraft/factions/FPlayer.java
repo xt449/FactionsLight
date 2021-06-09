@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Location;
@@ -8,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-
 
 /**
  * Logged in players always have exactly one FPlayer instance. Logged out players may or may not have an FPlayer
@@ -46,37 +44,13 @@ public interface FPlayer extends RelationParticipator {
 
 	void setTakeFallDamage(boolean fallDamage);
 
-//	double getPowerBoost();
-//
-//	void setPowerBoost(double powerBoost);
-
 	Faction getAutoClaimFor();
 
 	void setAutoClaimFor(Faction faction);
 
-//	boolean isAutoSafeClaimEnabled();
-//
-//	void setIsAutoSafeClaimEnabled(boolean enabled);
-//
-//	boolean isAutoWarClaimEnabled();
-//
-//	void setIsAutoWarClaimEnabled(boolean enabled);
-
 	boolean isAdminBypassing();
 
 	void setIsAdminBypassing(boolean val);
-
-//	void setIgnoreAllianceChat(boolean ignore);
-//
-//	boolean isIgnoreAllianceChat();
-//
-//	void setSpyingChat(boolean chatSpying);
-//
-//	boolean isSpyingChat();
-
-	boolean showScoreboard();
-
-	void setShowScoreboard(boolean show);
 
 	void resetFactionData();
 
@@ -116,44 +90,9 @@ public interface FPlayer extends RelationParticipator {
 
 	int getDeaths();
 
-
-	// -------------------------------
-	// Relation and relation colors
-	// -------------------------------
-
-	Relation getRelationToLocation();
-
-	//----------------------------------------------//
-	// Power
-	//----------------------------------------------//
-
-//	double getPower();
-//
-//	void alterPower(double delta);
-//
-//	double getPowerMin();
-//
-//	double getPowerMax();
-//
-//	int getPowerRounded();
-//
-//	int getPowerMinRounded();
-//
-//	int getPowerMaxRounded();
-//
-//	void updatePower();
-//
-//	void losePowerFromBeingOffline();
-//
-//	void onDeath();
-
 	//----------------------------------------------//
 	// Territory
 	//----------------------------------------------//
-
-	boolean isInOwnTerritory();
-
-	boolean isInEnemyTerritory();
 
 	void sendFactionHereMessage();
 
@@ -182,10 +121,6 @@ public interface FPlayer extends RelationParticipator {
 	void sendMessage(List<String> messages);
 
 	void sendFancyMessage(List<FancyMessage> message);
-
-	void remove();
-
-	boolean isOffline();
 
 	void setId(String id);
 }

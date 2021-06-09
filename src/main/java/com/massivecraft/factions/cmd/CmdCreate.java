@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.event.FactionAttemptCreateEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.perms.Role;
 import com.massivecraft.factions.util.MiscUtil;
@@ -42,12 +41,6 @@ public class CmdCreate extends FCommand {
 		ArrayList<String> tagValidationErrors = MiscUtil.validateFactionName(tag);
 		if(tagValidationErrors.size() > 0) {
 			context.sendMessage(tagValidationErrors);
-			return;
-		}
-
-		FactionAttemptCreateEvent attemptEvent = new FactionAttemptCreateEvent(context.player, tag);
-		Bukkit.getServer().getPluginManager().callEvent(attemptEvent);
-		if(attemptEvent.isCancelled()) {
 			return;
 		}
 

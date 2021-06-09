@@ -242,6 +242,15 @@ public abstract class MemoryBoard extends Board {
 			ChatColor.DARK_BLUE,
 	};
 
+	private static final int mapWidth = 35;
+	private static final int mapHeight = 18;
+
+	private static final int halfWidth = mapWidth / 2;
+	private static final int halfHeight = mapHeight / 2;
+
+	private static final int width = halfWidth * 2 + 1;
+	private static final int height = halfHeight * 2 + 1;
+
 	/**
 	 * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
 	 * of decreasing z
@@ -250,19 +259,7 @@ public abstract class MemoryBoard extends Board {
 		final ArrayList<FancyMessage> messages = new ArrayList<>();
 		messages.add(new FancyMessage(TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fplayer))));
 
-		int mapWidth = 35;
-		int mapHeight = 18;
-
-		int halfWidth = mapWidth / 2;
-		int halfHeight = mapHeight / 2;
-
-		int width = halfWidth * 2 + 1;
-		int height = halfHeight * 2 + 1;
-
 		final FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
-
-		// subtract 1; top row is used for title and current claim faction name display
-		height--;
 
 		Map<Integer, ChatColor> fList = new HashMap<>();
 		int colorIndexEnemy = 0;

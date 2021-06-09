@@ -4,10 +4,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.ChatColor;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 public enum Role implements Permissible {
 	ADMIN(4, TL.ROLE_ADMIN),
 	COLEADER(3, TL.ROLE_COLEADER),
@@ -18,8 +14,6 @@ public enum Role implements Permissible {
 	public final int value;
 	public final String nicename;
 	public final TL translation;
-	private Set<String> roleNamesAtOrBelow;
-	private Set<String> roleNamesAtOrAbove;
 
 	Role(final int value, final TL translation) {
 		this.value = value;
@@ -29,10 +23,6 @@ public enum Role implements Permissible {
 
 	public boolean isAtLeast(Role role) {
 		return this.value >= role.value;
-	}
-
-	public boolean isAtMost(Role role) {
-		return this.value <= role.value;
 	}
 
 	public static Role getRelative(Role role, int relative) {
@@ -113,43 +103,5 @@ public enum Role implements Permissible {
 	@Override
 	public ChatColor getColor() {
 		return Relation.MEMBER.getColor();
-	}
-
-	/**
-	 * Gets this role name and roles above it in priority. These names are
-	 * not localized and will always match the enum values.
-	 *
-	 * @return an immutable set of role names
-	 */
-	public Set<String> getRoleNamesAtOrAbove() {
-		if(this.roleNamesAtOrAbove == null) {
-			Set<String> set = new HashSet<>();
-			for(Role role : values()) {
-				if(this.isAtMost(role)) {
-					set.add(role.name().toLowerCase());
-				}
-			}
-			this.roleNamesAtOrAbove = Collections.unmodifiableSet(set);
-		}
-		return this.roleNamesAtOrAbove;
-	}
-
-	/**
-	 * Gets this role name and roles below it in priority. These names are
-	 * not localized and will always match the enum values.
-	 *
-	 * @return an immutable set of role names
-	 */
-	public Set<String> getRoleNamesAtOrBelow() {
-		if(this.roleNamesAtOrBelow == null) {
-			Set<String> set = new HashSet<>();
-			for(Role role : values()) {
-				if(this.isAtLeast(role)) {
-					set.add(role.name().toLowerCase());
-				}
-			}
-			this.roleNamesAtOrBelow = Collections.unmodifiableSet(set);
-		}
-		return this.roleNamesAtOrBelow;
 	}
 }

@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 public enum Permission {
 	ADMIN("admin"),
 	ADMIN_ANY("admin.any"),
-	ANNOUNCE("announce"),
 	AUTOCLAIM("autoclaim"),
 	BAN("ban"),
 	BYPASS("bypass"),
@@ -39,7 +38,6 @@ public enum Permission {
 	MOD("mod"),
 	MOD_ANY("mod.any"),
 	OPEN("open"),
-	SET_PEACEFUL("setpeaceful"),
 	SET_PERMANENT("setpermanent"),
 	SHOW_INVITES("showinvites"),
 	PERMISSIONS("permissions"),
@@ -56,11 +54,7 @@ public enum Permission {
 	UNCLAIM("unclaim"),
 	UNCLAIM_ALL("unclaimall"),
 	VERSION("version"),
-	SCOREBOARD("scoreboard"),
-	SEECHUNK("seechunk"),
-	TOP("top"),
-	UPDATES("updates"),
-	DEBUG("debug");
+	TOP("top");
 
 	public final String node;
 

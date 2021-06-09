@@ -321,11 +321,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	}
 
 	@Override
-	public Relation getRelationToLocation() {
-		return Board.getInstance().getFactionAt(new FLocation(this)).getRelationTo(this);
-	}
-
-	@Override
 	public ChatColor getColorTo(RelationParticipator rp) {
 		return RelationUtil.getColorOfThatToMe(this, rp);
 	}
@@ -333,15 +328,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	//----------------------------------------------//
 	// Territory
 	//----------------------------------------------//
-	@Override
-	public boolean isInOwnTerritory() {
-		return Board.getInstance().getFactionAt(new FLocation(this)) == this.getFaction();
-	}
-
-	@Override
-	public boolean isInEnemyTerritory() {
-		return Board.getInstance().getFactionAt(new FLocation(this)).getRelationTo(this).isEnemy();
-	}
 
 	@Override
 	public void sendFactionHereMessage() {
@@ -352,16 +338,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 			String title = Tag.parsePlain(toShow, this, "{faction-relation-color}{faction}");
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(title));
 		}
-	}
-
-	@Override
-	public boolean showScoreboard() {
-		return this.showScoreboard;
-	}
-
-	@Override
-	public void setShowScoreboard(boolean show) {
-		this.showScoreboard = show;
 	}
 
 	// -------------------------------
@@ -552,11 +528,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public boolean isOnline() {
 		Player player = this.getPlayer();
 		return player != null && FactionsPlugin.getInstance().configMain.restrictWorlds().isEnabled(player.getWorld());
-	}
-
-	@Override
-	public boolean isOffline() {
-		return !isOnline();
 	}
 
 	@Override

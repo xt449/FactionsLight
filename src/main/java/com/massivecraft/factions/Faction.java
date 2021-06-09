@@ -168,10 +168,6 @@ public interface Faction extends RelationParticipator {
 
 	List<Player> getOnlinePlayers();
 
-	// slightly faster check than getOnlinePlayers() if you just want to see if
-	// there are any players online
-	boolean hasPlayersOnline();
-
 	void memberLoggedOff();
 
 	// used when current leader is about to be removed from the faction;
@@ -181,8 +177,6 @@ public interface Faction extends RelationParticipator {
 	Role getDefaultRole();
 
 	void setDefaultRole(Role role);
-
-	void sendMessage(String message);
 
 	// ----------------------------------------------//
 	// Persistance and entity management

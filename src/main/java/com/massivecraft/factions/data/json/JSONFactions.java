@@ -189,14 +189,6 @@ public class JSONFactions extends MemoryFactions {
 		}
 	}
 
-	protected void updateNextIdForId(String id) {
-		try {
-			int idAsInt = Integer.parseInt(id);
-			this.updateNextIdForId(idAsInt);
-		} catch(Exception ignored) {
-		}
-	}
-
 	@Override
 	public Faction generateFactionObject() {
 		int id = getNextId();

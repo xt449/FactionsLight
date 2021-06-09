@@ -660,24 +660,6 @@ public class MemoryFaction implements Faction {
 		return ret;
 	}
 
-	// slightly faster check than getOnlinePlayers() if you just want to see if
-	// there are any players online
-	// TODO
-	public boolean hasPlayersOnline() {
-		// only real factions can have players online, not safe zone / war zone
-
-		for(Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
-			FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-			if(fplayer != null && fplayer.getFaction() == this) {
-				return true;
-			}
-		}
-
-		// even if all players are technically logged off, maybe someone was on
-		// recently enough to not consider them officially offline yet
-		return System.currentTimeMillis() < lastPlayerLoggedOffTime + 60000;
-	}
-
 	public void memberLoggedOff() {
 		if(this.isNormal()) {
 			lastPlayerLoggedOffTime = System.currentTimeMillis();
@@ -750,12 +732,6 @@ public class MemoryFaction implements Faction {
 
 	public void msg(TL translation, Object... args) {
 		msg(translation.toString(), args);
-	}
-
-	public void sendMessage(String message) {
-		for(FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
-			fplayer.sendMessage(message);
-		}
 	}
 
 	// ----------------------------------------------//

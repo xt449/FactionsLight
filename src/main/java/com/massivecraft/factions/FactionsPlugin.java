@@ -71,11 +71,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 
 	private Integer autoLeaveTask = null;
 
-//	private LandRaidControl landRaidControl;
-
-	private String startupLog;
-	private String startupExceptionLog;
-
 	private PlaceholderAPIIntegration placeholderAPI;
 	private Worldguard7Integration worldguard;
 	private VaultIntegration vaultIntegration;
@@ -243,14 +238,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 	}
 
-	public String getStartupLog() {
-		return this.startupLog;
-	}
-
-	public String getStartupExceptionLog() {
-		return this.startupExceptionLog;
-	}
-
 	public PermUtil getPermUtil() {
 		return permUtil;
 	}
@@ -324,7 +311,6 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 				.enableComplexMapKeySerialization()
 				.excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
 				.registerTypeAdapter(accessType, new PermissionsMapTypeAdapter())
-				.registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
 				.registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
 				.registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
 	}

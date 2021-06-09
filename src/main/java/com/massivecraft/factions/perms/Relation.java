@@ -90,14 +90,6 @@ public enum Relation implements Permissible {
 		return this == ENEMY;
 	}
 
-	public boolean isAtLeast(Relation relation) {
-		return this.value >= relation.value;
-	}
-
-	public boolean isAtMost(Relation relation) {
-		return this.value <= relation.value;
-	}
-
 	public ChatColor getColor() {
 		switch(this) {
 			case MEMBER:

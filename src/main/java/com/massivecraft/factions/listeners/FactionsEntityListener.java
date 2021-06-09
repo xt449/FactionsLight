@@ -293,7 +293,7 @@ public class FactionsEntityListener extends AbstractListener {
 			return false;
 		}
 
-		boolean ownTerritory = defender.isInOwnTerritory();
+		boolean ownTerritory = Board.getInstance().getFactionAt(new FLocation(defender)) == defender.getFaction();
 
 		// You can not hurt neutrals in their own territory.
 		if(ownTerritory && relation.isNeutral()) {
