@@ -261,9 +261,8 @@ public abstract class MemoryBoard extends Board {
 
 		final FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
 
-		if(FactionsPlugin.getInstance().configMain.map().isShowFactionKey()) {
-			height--;
-		}
+		// subtract 1; top row is used for title and current claim faction name display
+		height--;
 
 		Map<Integer, ChatColor> fList = new HashMap<>();
 		int colorIndexEnemy = 0;

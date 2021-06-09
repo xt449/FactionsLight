@@ -95,9 +95,27 @@ public class MainConfiguration extends AbstractConfiguration {
 		factions.prefixes.normal = config.getString("factions.prefixes.normal");
 		factions.prefixes.recruit = config.getString("factions.prefixes.recruit");
 
-		//// RestrictWorlds:
+		// Logging:
+		logging.factionCreate = config.getBoolean("logging.factionCreate");
+		logging.factionDisband = config.getBoolean("logging.factionDisband");
+		logging.factionJoin = config.getBoolean("logging.factionJoin");
+		logging.factionKick = config.getBoolean("logging.factionKick");
+		logging.factionLeave = config.getBoolean("logging.factionLeave");
+		logging.landClaim = config.getBoolean("logging.landClaim");
+		logging.landUnclaim = config.getBoolean("logging.landUnclaim");
+
+		// RestrictWorlds:
 		restrictWorlds.whitelist = config.getBoolean("restrictWorlds.whitelist");
 		restrictWorlds.worldList = Collections.unmodifiableList(config.getStringList("restrictWorlds.worldList"));
+
+		// LWC:
+		lwc.enabled = config.getBoolean("lwc.enabled");
+		lwc.resetLocksOnUnclaim = config.getBoolean("lwc.resetLocksOnUnclaim");
+		lwc.resetLocksOnCapture = config.getBoolean("lwc.resetLocksOnCapture");
+
+		// WorldGuard:
+		worldGuard.enabled = config.getBoolean("worldGuard.enabled");
+		worldGuard.buildPriority = config.getBoolean("worldGuard.buildPriority");
 	}
 
 	public static class Colors {
@@ -331,219 +349,6 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-//		public static class LandRaidControl {
-//			public static class DTR {
-//				private transient double startingDTR;
-//				private transient double maxDTR;
-//				private transient double minDTR;
-//				private transient double perPlayer;
-//				private transient double regainPerMinutePerPlayer;
-//				private transient double regainPerMinuteMaxRate;
-//				private transient double lossPerDeath;
-//				private transient int freezeTime;
-//				private transient boolean freezePreventsJoin;
-//				private transient boolean freezePreventsLeave;
-//				private transient boolean freezePreventsDisband;
-//				private transient double freezeKickPenalty;
-//				private transient String freezeTimeFormat;
-//				private transient int landPerPlayer;
-//				private transient int landStarting;
-//				private transient int decimalDigits;
-//				private transient Map<String, Double> worldDeathModifiers;
-//
-//				public int getDecimalDigits() {
-//					return decimalDigits;
-//				}
-//
-//				public int getLandPerPlayer() {
-//					return landPerPlayer;
-//				}
-//
-//				public int getLandStarting() {
-//					return landStarting;
-//				}
-//
-//				public int getFreezeTime() {
-//					return freezeTime;
-//				}
-//
-//				public String getFreezeTimeFormat() {
-//					return freezeTimeFormat;
-//				}
-//
-//				public boolean isFreezePreventsJoin() {
-//					return freezePreventsJoin;
-//				}
-//
-//				public boolean isFreezePreventsLeave() {
-//					return freezePreventsLeave;
-//				}
-//
-//				public boolean isFreezePreventsDisband() {
-//					return freezePreventsDisband;
-//				}
-//
-//				public double getFreezeKickPenalty() {
-//					return freezeKickPenalty;
-//				}
-//
-//				public double getMinDTR() {
-//					return minDTR;
-//				}
-//
-//				public double getPerPlayer() {
-//					return perPlayer;
-//				}
-//
-//				public double getRegainPerMinutePerPlayer() {
-//					return regainPerMinutePerPlayer;
-//				}
-//
-//				public double getRegainPerMinuteMaxRate() {
-//					return regainPerMinuteMaxRate;
-//				}
-//
-//				public double getMaxDTR() {
-//					return maxDTR;
-//				}
-//
-//				public double getStartingDTR() {
-//					return startingDTR;
-//				}
-//
-//				/**
-//				 * Not used directly by the plugin, as it uses the helper method.
-//				 *
-//				 * @return loss per death
-//				 * @see #getLossPerDeath(World)
-//				 */
-//				public double getLossPerDeathBase() {
-//					return this.lossPerDeath;
-//				}
-//
-//				public double getLossPerDeath(World world) {
-//					if(this.worldDeathModifiers == null) {
-//						this.worldDeathModifiers = new HashMap<>();
-//					}
-//					return this.lossPerDeath * this.worldDeathModifiers.getOrDefault(world.getName(), 1D);
-//				}
-//			}
-//
-//			public static class Power {
-//				private transient double playerMin;
-//				private transient double playerMax;
-//				private transient double playerStarting;
-//				private transient double powerPerMinute;
-//				private transient double lossPerDeath;
-//				private transient boolean regenOffline;
-//				private transient double offlineLossPerDay;
-//				private transient double offlineLossLimit;
-//				private transient double factionMax;
-//				private transient boolean respawnHomeFromNoPowerLossWorlds;
-//				private transient Set<String> worldsNoPowerLoss;
-//				private transient boolean peacefulMembersDisablePowerLoss;
-//				private transient boolean warZonePowerLoss;
-//				private transient boolean wildernessPowerLoss;
-//				private transient boolean canLeaveWithNegativePower;
-//				private transient boolean raidability;
-//				private transient boolean raidabilityOnEqualLandAndPower;
-//				private transient int powerFreeze;
-//				private transient double vampirism;
-//
-//				public boolean isRaidability() {
-//					return raidability;
-//				}
-//
-//				public boolean isRaidabilityOnEqualLandAndPower() {
-//					return raidabilityOnEqualLandAndPower;
-//				}
-//
-//				public int getPowerFreeze() {
-//					return powerFreeze;
-//				}
-//
-//				public boolean canLeaveWithNegativePower() {
-//					return canLeaveWithNegativePower;
-//				}
-//
-//				public boolean isWarZonePowerLoss() {
-//					return warZonePowerLoss;
-//				}
-//
-//				public boolean isWildernessPowerLoss() {
-//					return wildernessPowerLoss;
-//				}
-//
-//				public double getPlayerMin() {
-//					return playerMin;
-//				}
-//
-//				public double getPlayerMax() {
-//					return playerMax;
-//				}
-//
-//				public double getPlayerStarting() {
-//					return playerStarting;
-//				}
-//
-//				public double getPowerPerMinute() {
-//					return powerPerMinute;
-//				}
-//
-//				public double getLossPerDeath() {
-//					return lossPerDeath;
-//				}
-//
-//				public boolean isRegenOffline() {
-//					return regenOffline;
-//				}
-//
-//				public double getOfflineLossPerDay() {
-//					return offlineLossPerDay;
-//				}
-//
-//				public double getOfflineLossLimit() {
-//					return offlineLossLimit;
-//				}
-//
-//				public double getFactionMax() {
-//					return factionMax;
-//				}
-//
-//				public boolean isRespawnHomeFromNoPowerLossWorlds() {
-//					return respawnHomeFromNoPowerLossWorlds;
-//				}
-//
-//				public Set<String> getWorldsNoPowerLoss() {
-//					return Collections.unmodifiableSet(worldsNoPowerLoss);
-//				}
-//
-//				public boolean isPeacefulMembersDisablePowerLoss() {
-//					return peacefulMembersDisablePowerLoss;
-//				}
-//
-//				public double getVampirism() {
-//					return vampirism;
-//				}
-//			}
-//
-//			private transient String system;
-//			private transient DTR dtr = new DTR();
-//			private transient Power power = new Power();
-//
-//			public String getSystem() {
-//				return system;
-//			}
-//
-//			public DTR dtr() {
-//				return this.dtr;
-//			}
-//
-//			public Power power() {
-//				return power;
-//			}
-//		}
-
 		public static class CommandBlacklist {
 			private transient List<String> inWilderness;
 			private transient List<String> inNeutralClaim;
@@ -572,85 +377,6 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-//		public static class Spawning {
-//			private transient Set<String> preventSpawningInSafezone;
-//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInSafezoneReason;
-//			private transient Set<String> preventSpawningInSafezoneExceptions;
-//			private transient Set<EntityType> preventSpawningInSafezoneExceptionsType;
-//			private transient Set<String> preventSpawningInWarzone;
-//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWarzoneReason;
-//			private transient Set<String> preventSpawningInWarzoneExceptions;
-//			private transient Set<EntityType> preventSpawningInWarzoneExceptionsType;
-//			private transient Set<String> preventSpawningInWilderness;
-//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInWildernessReason;
-//			private transient Set<String> preventSpawningInWildernessExceptions;
-//			private transient Set<EntityType> preventSpawningInWildernessExceptionsType;
-//			private transient Set<String> preventSpawningInTerritory;
-//			private transient Set<CreatureSpawnEvent.SpawnReason> preventSpawningInTerritoryReason;
-//			private transient Set<String> preventSpawningInTerritoryExceptions;
-//			private transient Set<EntityType> preventSpawningInTerritoryExceptionsType;
-//
-//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInSafezone() {
-//				if(preventSpawningInSafezoneReason == null) {
-//					preventSpawningInSafezoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInSafezone, MiscUtil.SPAWN_REASON_FUNCTION);
-//				}
-//				return preventSpawningInSafezoneReason;
-//			}
-//
-//			public Set<EntityType> getPreventInSafezoneExceptions() {
-//				if(preventSpawningInSafezoneExceptionsType == null) {
-//					preventSpawningInSafezoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInSafezoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-//				}
-//				return preventSpawningInSafezoneExceptionsType;
-//			}
-//
-//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInTerritory() {
-//				if(preventSpawningInTerritoryReason == null) {
-//					preventSpawningInTerritoryReason = MiscUtil.typeSetFromStringSet(preventSpawningInTerritory, MiscUtil.SPAWN_REASON_FUNCTION);
-//				}
-//				return preventSpawningInTerritoryReason;
-//			}
-//
-//			public Set<EntityType> getPreventInTerritoryExceptions() {
-//				if(preventSpawningInTerritoryExceptionsType == null) {
-//					preventSpawningInTerritoryExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInTerritoryExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-//				}
-//				return preventSpawningInTerritoryExceptionsType;
-//			}
-//
-//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWarzone() {
-//				if(preventSpawningInWarzoneReason == null) {
-//					preventSpawningInWarzoneReason = MiscUtil.typeSetFromStringSet(preventSpawningInWarzone, MiscUtil.SPAWN_REASON_FUNCTION);
-//				}
-//				return preventSpawningInWarzoneReason;
-//			}
-//
-//			public Set<EntityType> getPreventInWarzoneExceptions() {
-//				if(preventSpawningInWarzoneExceptionsType == null) {
-//					preventSpawningInWarzoneExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWarzoneExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-//				}
-//				return preventSpawningInWarzoneExceptionsType;
-//			}
-//
-//			public Set<CreatureSpawnEvent.SpawnReason> getPreventInWilderness() {
-//				if(preventSpawningInWildernessReason == null) {
-//					preventSpawningInWildernessReason = MiscUtil.typeSetFromStringSet(preventSpawningInWilderness, MiscUtil.SPAWN_REASON_FUNCTION);
-//				}
-//				return preventSpawningInWildernessReason;
-//			}
-//
-//			public Set<EntityType> getPreventInWildernessExceptions() {
-//				if(preventSpawningInWildernessExceptionsType == null) {
-//					preventSpawningInWildernessExceptionsType = MiscUtil.typeSetFromStringSet(preventSpawningInWildernessExceptions, MiscUtil.ENTITY_TYPE_FUNCTION);
-//				}
-//				return preventSpawningInWildernessExceptionsType;
-//			}
-//		}
-
-//		public static class Limits {
-//
-//		}
-
 		public static class Limits {
 			private transient int tagLengthMin;
 			private transient int tagLengthMax;
@@ -672,69 +398,7 @@ public class MainConfiguration extends AbstractConfiguration {
 			public int getFactionMemberLimit() {
 				return factionMemberLimit;
 			}
-
-			//
-
-			private transient double saveToFileEveryXMinutes;
-
-			public double getSaveToFileEveryXMinutes() {
-				return saveToFileEveryXMinutes;
-			}
 		}
-
-//		public static class OwnedArea {
-//			private transient boolean enabled;
-//			private transient int limitPerFaction;
-//			private transient boolean moderatorsBypass;
-//			private transient boolean denyBuild;
-//			private transient boolean painBuild;
-//			private transient boolean protectMaterials;
-//			private transient boolean denyUsage;
-//
-//			private transient boolean messageOnBorder;
-//			private transient boolean messageInsideTerritory;
-//			private transient boolean messageByChunk;
-//
-//			public boolean isEnabled() {
-//				return enabled;
-//			}
-//
-//			public int getLimitPerFaction() {
-//				return limitPerFaction;
-//			}
-//
-//			public boolean isModeratorsBypass() {
-//				return moderatorsBypass;
-//			}
-//
-//			public boolean isDenyBuild() {
-//				return denyBuild;
-//			}
-//
-//			public boolean isPainBuild() {
-//				return painBuild;
-//			}
-//
-//			public boolean isProtectMaterials() {
-//				return protectMaterials;
-//			}
-//
-//			public boolean isDenyUsage() {
-//				return denyUsage;
-//			}
-//
-//			public boolean isMessageOnBorder() {
-//				return messageOnBorder;
-//			}
-//
-//			public boolean isMessageInsideTerritory() {
-//				return messageInsideTerritory;
-//			}
-//
-//			public boolean isMessageByChunk() {
-//				return messageByChunk;
-//			}
-//		}
 
 		public static class Roles {
 			private transient Relation defaultRelation;
@@ -778,21 +442,14 @@ public class MainConfiguration extends AbstractConfiguration {
 		}
 
 		private final transient Combat combat = new Combat();
-		//		private transient LandRaidControl landRaidControl = new LandRaidControl();
 		private final transient CommandBlacklist commandBlacklist = new CommandBlacklist();
 		private final transient Limits limits = new Limits();
 		private final transient Roles roles = new Roles();
-		//		private final transient OwnedArea ownedArea = new OwnedArea();
 		private final transient Prefixes prefixes = new Prefixes();
-//		private final transient Spawning spawning = new Spawning();
 
 		public Combat combat() {
 			return combat;
 		}
-
-//		public LandRaidControl landRaidControl() {
-//			return landRaidControl;
-//		}
 
 		public CommandBlacklist commandBlacklist() {
 			return commandBlacklist;
@@ -806,17 +463,9 @@ public class MainConfiguration extends AbstractConfiguration {
 			return roles;
 		}
 
-//		public OwnedArea ownedArea() {
-//			return ownedArea;
-//		}
-
 		public Prefixes prefixes() {
 			return prefixes;
 		}
-
-//		public Spawning spawning() {
-//			return spawning;
-//		}
 	}
 
 	public static class Logging {
@@ -857,132 +506,12 @@ public class MainConfiguration extends AbstractConfiguration {
 		}
 	}
 
-	public static class MapSettings {
-		private transient boolean showFactionKey;
-		private transient boolean showNeutralFactionsOnMap;
-		private transient boolean showEnemyFactions;
-		private transient boolean showTruceFactions;
-
-		public boolean isShowFactionKey() {
-			return showFactionKey;
-		}
-
-		public boolean isShowNeutralFactionsOnMap() {
-			return showNeutralFactionsOnMap;
-		}
-
-		public boolean isShowEnemyFactions() {
-			return showEnemyFactions;
-		}
-
-		public boolean isShowTruceFactions() {
-			return showTruceFactions;
-		}
-	}
-
 	public static class RestrictWorlds {
 		private transient boolean whitelist;
 		private transient List<String> worldList;
 
-		public boolean isWhitelist() {
-			return whitelist;
-		}
-
-		public List<String> getWorldList() {
-			return worldList;
-		}
-
 		public boolean isEnabled(World world) {
 			return whitelist == worldList.contains(world.getName());
-		}
-	}
-
-	public static class Scoreboard {
-		public static class Constant {
-			private transient boolean enabled;
-			private transient String title;
-			private transient boolean prefixes;
-			private transient String prefixTemplate;
-			private transient boolean suffixes;
-			private transient String suffixTemplate;
-			private transient List<String> content;
-			private transient boolean factionlessEnabled;
-			private transient List<String> factionlessContent;
-			private transient String factionlessTitle;
-
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			public String getTitle() {
-				return title;
-			}
-
-			public boolean isPrefixes() {
-				return prefixes;
-			}
-
-			public String getPrefixTemplate() {
-				return prefixTemplate;
-			}
-
-			public boolean isSuffixes() {
-				return suffixes;
-			}
-
-			public String getSuffixTemplate() {
-				return suffixTemplate;
-			}
-
-			public List<String> getContent() {
-				return Collections.unmodifiableList(content);
-			}
-
-			public boolean isFactionlessEnabled() {
-				return factionlessEnabled;
-			}
-
-			public List<String> getFactionlessContent() {
-				return Collections.unmodifiableList(factionlessContent);
-			}
-
-			public String getFactionlessTitle() {
-				return factionlessTitle;
-			}
-		}
-
-		public static class Info {
-			private transient int expiration;
-			private transient boolean enabled;
-			private transient List<String> content;
-			private transient String title;
-
-			public int getExpiration() {
-				return expiration;
-			}
-
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			public List<String> getContent() {
-				return Collections.unmodifiableList(content);
-			}
-
-			public String getTitle() {
-				return title;
-			}
-		}
-
-		private final transient Constant constant = new Constant();
-		private final transient Info info = new Info();
-
-		public Constant constant() {
-			return constant;
-		}
-
-		public Info info() {
-			return info;
 		}
 	}
 
@@ -1005,11 +534,11 @@ public class MainConfiguration extends AbstractConfiguration {
 	}
 
 	public static class WorldGuard {
-		private transient boolean checking;
+		private transient boolean enabled;
 		private transient boolean buildPriority;
 
-		public boolean isChecking() {
-			return checking;
+		public boolean isEnabled() {
+			return enabled;
 		}
 
 		public boolean isBuildPriority() {
@@ -1021,9 +550,7 @@ public class MainConfiguration extends AbstractConfiguration {
 	private final transient Commands commands = new Commands();
 	private final transient Factions factions = new Factions();
 	private final transient Logging logging = new Logging();
-	private final transient MapSettings map = new MapSettings();
 	private final transient RestrictWorlds restrictWorlds = new RestrictWorlds();
-	private final transient Scoreboard scoreboard = new Scoreboard();
 	private final transient LWC lwc = new LWC();
 	private final transient WorldGuard worldGuard = new WorldGuard();
 
@@ -1043,16 +570,8 @@ public class MainConfiguration extends AbstractConfiguration {
 		return logging;
 	}
 
-	public MapSettings map() {
-		return map;
-	}
-
 	public RestrictWorlds restrictWorlds() {
 		return restrictWorlds;
-	}
-
-	public Scoreboard scoreboard() {
-		return scoreboard;
 	}
 
 	public WorldGuard worldGuard() {

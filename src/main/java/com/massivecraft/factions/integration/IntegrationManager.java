@@ -22,7 +22,7 @@ public class IntegrationManager implements Listener {
 		@SuppressWarnings("Convert2MethodRef") SENTINEL("Sentinel", plugin -> SentinelIntegration.init(plugin)), // resist
 		WORLDGUARD("WorldGuard", (plugin) -> {
 			FactionsPlugin f = FactionsPlugin.getInstance();
-			if(!f.configMain.worldGuard().isChecking() && !f.configMain.worldGuard().isBuildPriority()) {
+			if(!f.configMain.worldGuard().isEnabled() && !f.configMain.worldGuard().isBuildPriority()) {
 				return;
 			}
 

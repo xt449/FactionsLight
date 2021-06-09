@@ -15,7 +15,6 @@ public class CmdHelp extends FCommand {
 		this.aliases.add("help");
 		this.aliases.add("h");
 
-		//this.requiredArgs.add("");
 		this.optionalArgs.put("page", "1");
 
 		this.requirements = new CommandRequirements.Builder(Permission.HELP).noDisableOnLock().build();
@@ -23,7 +22,15 @@ public class CmdHelp extends FCommand {
 
 	@Override
 	public void perform(CommandContext context) {
-		// TODO - redo help
+		final int pageIndex = context.argAsInt(0, 1) - 1;
+
+		if(pageIndex < 0 || pageIndex >= helpPages.size()) {
+			context.msg(TL.COMMAND_HELP_404);
+			return;
+		}
+
+		updateHelp(context);
+		context.sender.sendMessage(helpPages.get(pageIndex).toArray(new String[0]));
 	}
 
 	//----------------------------------------------//
@@ -65,7 +72,6 @@ public class CmdHelp extends FCommand {
 		pageLines.add(FCmdRoot.getInstance().cmdMod.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdAdmin.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdTitle.getUsageTemplate(context, true));
-		pageLines.add(FCmdRoot.getInstance().cmdSB.getUsageTemplate(context, true));
 		pageLines.add(FCmdRoot.getInstance().cmdStatus.getUsageTemplate(context, true));
 		pageLines.add(TextUtil.parse(TL.COMMAND_HELP_PLAYERTITLES.toString()));
 		helpPages.add(pageLines);

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.data;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionAutoDisbandEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
@@ -8,8 +9,6 @@ import com.massivecraft.factions.integration.LWCIntegration;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.scoreboards.FScoreboard;
-import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.TL;
@@ -43,10 +42,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected int factionId;
 	protected Role role;
 	protected String title;
-	//	protected double power;
-//	protected double powerBoost;
-//	protected long lastPowerUpdateTime;
 	protected long lastLoginTime;
+	protected long lastGraceTime;
 	protected String id;
 	protected String name;
 	protected boolean showScoreboard = true;
@@ -56,20 +53,16 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
 	protected transient boolean mapAutoUpdating;
 	protected transient Faction autoClaimFor;
-	protected transient boolean loginPvpDisabled;
 	protected transient long lastFrostwalkerMessage;
 	protected transient boolean shouldTakeFallDamage = true;
 
 	public MemoryFPlayer(String id) {
 		this.id = id;
 		this.factionId = 0;
-//		this.power = FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerStarting();
-//		this.lastPowerUpdateTime = System.currentTimeMillis();
 		this.lastLoginTime = System.currentTimeMillis();
+		this.lastGraceTime = lastLoginTime;
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
-		this.loginPvpDisabled = FactionsPlugin.getInstance().configMain.factions().combat().gracePeriodOnLogin() > 0;
-//		this.powerBoost = 0.0;
 		this.kills = 0;
 		this.deaths = 0;
 
@@ -135,16 +128,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.role = role;
 	}
 
-//	@Override
-//	public double getPowerBoost() {
-//		return this.powerBoost;
-//	}
-//
-//	@Override
-//	public void setPowerBoost(double powerBoost) {
-//		this.powerBoost = powerBoost;
-//	}
-
 	@Override
 	public long getLastFrostwalkerMessage() {
 		return this.lastFrostwalkerMessage;
@@ -165,34 +148,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.autoClaimFor = faction;
 	}
 
-//	@Override
-//	public boolean isAutoSafeClaimEnabled() {
-//		return autoSafeZoneEnabled;
-//	}
-//
-//	@Override
-//	public void setIsAutoSafeClaimEnabled(boolean enabled) {
-//		this.autoSafeZoneEnabled = enabled;
-//		if(enabled) {
-//			this.autoClaimFor = null;
-//			this.autoWarZoneEnabled = false;
-//		}
-//	}
-//
-//	@Override
-//	public boolean isAutoWarClaimEnabled() {
-//		return autoWarZoneEnabled;
-//	}
-//
-//	@Override
-//	public void setIsAutoWarClaimEnabled(boolean enabled) {
-//		this.autoWarZoneEnabled = enabled;
-//		if(enabled) {
-//			this.autoClaimFor = null;
-//			this.autoSafeZoneEnabled = false;
-//		}
-//	}
-
 	@Override
 	public boolean isAdminBypassing() {
 		return this.isAdminBypassing;
@@ -202,26 +157,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public void setIsAdminBypassing(boolean val) {
 		this.isAdminBypassing = val;
 	}
-
-//	@Override
-//	public void setIgnoreAllianceChat(boolean ignore) {
-//		this.ignoreAllianceChat = ignore;
-//	}
-//
-//	@Override
-//	public boolean isIgnoreAllianceChat() {
-//		return ignoreAllianceChat;
-//	}
-//
-//	@Override
-//	public void setSpyingChat(boolean chatSpying) {
-//		this.spyingChat = chatSpying;
-//	}
-//
-//	@Override
-//	public boolean isSpyingChat() {
-//		return spyingChat;
-//	}
 
 	@Override
 	public void resetFactionData() {
@@ -247,16 +182,19 @@ public abstract class MemoryFPlayer implements FPlayer {
 	}
 
 	@Override
-	public void setLastLoginTime(long lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-		if(FactionsPlugin.getInstance().configMain.factions().combat().gracePeriodOnLogin() > 0) {
-			this.loginPvpDisabled = true;
-		}
+	public void resetLastLoginTime() {
+		this.lastLoginTime = System.currentTimeMillis();
+		this.lastGraceTime = this.lastLoginTime;
+	}
+
+	@Override
+	public void resetLastGraceTime() {
+		this.lastGraceTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public boolean isMapAutoUpdating() {
-		return mapAutoUpdating;
+		return this.mapAutoUpdating;
 	}
 
 	@Override
@@ -265,15 +203,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 	}
 
 	@Override
-	public boolean hasLoginPvpDisabled() {
-		if(!loginPvpDisabled) {
-			return false;
-		}
-		if(this.lastLoginTime + (FactionsPlugin.getInstance().configMain.factions().combat().gracePeriodOnLogin() * 1000L) < System.currentTimeMillis()) {
-			this.loginPvpDisabled = false;
-			return false;
-		}
-		return true;
+	public boolean inGracePeriod() {
+		final long time = System.currentTimeMillis();
+		final MainConfiguration.Factions.Combat combatConfig = FactionsPlugin.getInstance().configMain.factions().combat();
+
+		return (this.lastLoginTime + (combatConfig.gracePeriodOnLogin() * 1000L) >= time) ||
+				(this.lastGraceTime + (combatConfig.gracePeriodOnRespawn() * 1000L) >= time);
 	}
 
 	@Override
@@ -396,96 +331,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	}
 
 	//----------------------------------------------//
-	// Power
-	//----------------------------------------------//
-
-//	@Override
-//	public double getPower() {
-//		this.updatePower();
-//		return this.power;
-//	}
-//
-//	@Override
-//	public void alterPower(double delta) {
-//		this.power += delta;
-//		if(this.power > this.getPowerMax()) {
-//			this.power = this.getPowerMax();
-//		} else if(this.power < this.getPowerMin()) {
-//			this.power = this.getPowerMin();
-//		}
-//	}
-//
-//	@Override
-//	public double getPowerMax() {
-//		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMax() + this.powerBoost;
-//	}
-//
-//	@Override
-//	public double getPowerMin() {
-//		return FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPlayerMin() + this.powerBoost;
-//	}
-//
-//	@Override
-//	public int getPowerRounded() {
-//		return (int) Math.round(this.getPower());
-//	}
-//
-//	@Override
-//	public int getPowerMaxRounded() {
-//		return (int) Math.round(this.getPowerMax());
-//	}
-//
-//	@Override
-//	public int getPowerMinRounded() {
-//		return (int) Math.round(this.getPowerMin());
-//	}
-//
-//	@Override
-//	public void updatePower() {
-//		if(this.isOffline()) {
-//			losePowerFromBeingOffline();
-//			if(!FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().isRegenOffline()) {
-//				return;
-//			}
-//		} else if(hasFaction() && getFaction().isPowerFrozen()) {
-//			return; // Don't let power regen if faction power is frozen.
-//		}
-//		long now = System.currentTimeMillis();
-//		long millisPassed = now - this.lastPowerUpdateTime;
-//		this.lastPowerUpdateTime = now;
-//
-//		Player thisPlayer = this.getPlayer();
-//		if(thisPlayer != null && thisPlayer.isDead()) {
-//			return;  // don't let dead players regain power until they respawn
-//		}
-//
-//		int millisPerMinute = 60 * 1000;
-//		this.alterPower(millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getPowerPerMinute() / millisPerMinute);
-//	}
-//
-//	@Override
-//	public void losePowerFromBeingOffline() {
-//		long now = System.currentTimeMillis();
-//		if(FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() > 0.0 && this.power > FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
-//			long millisPassed = now - this.lastPowerUpdateTime;
-//
-//			double loss = millisPassed * FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossPerDay() / (24 * 60 * 60 * 1000);
-//			if(this.power - loss < FactionsPlugin.getInstance().configMain.factions().landRaidControl().power().getOfflineLossLimit()) {
-//				loss = this.power;
-//			}
-//			this.alterPower(-loss);
-//		}
-//		this.lastPowerUpdateTime = now;
-//	}
-//
-//	@Override
-//	public void onDeath() {
-//		if(hasFaction()) {
-//			getFaction().setLastDeath(System.currentTimeMillis());
-//		}
-//	}
-
-	//----------------------------------------------//
 	// Territory
 	//----------------------------------------------//
 	@Override
@@ -507,20 +352,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 			String title = Tag.parsePlain(toShow, this, "{faction-relation-color}{faction}");
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(title));
 		}
-
-		if(showInfoBoard(toShow)) {
-			FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
-		}
-	}
-
-	/**
-	 * Check if the scoreboard should be shown. Simple method to be used by above method.
-	 *
-	 * @param toShow Faction to be shown.
-	 * @return true if should show, otherwise false.
-	 */
-	public boolean showInfoBoard(Faction toShow) {
-		return showScoreboard && !toShow.isWilderness() && FactionsPlugin.getInstance().configMain.scoreboard().info().isEnabled() && FScoreboard.get(this) != null;
 	}
 
 	@Override
@@ -596,7 +427,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		String denyReason = null;
 		Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 
-		if(plugin.configMain.worldGuard().isChecking() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
+		if(plugin.configMain.worldGuard().isEnabled() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
 			// Checks for WorldGuard regions in the chunk attempting to be claimed
 			denyReason = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
 //		} else if(plugin.configMain.factions().claims().getWorldsNoClaiming().contains(flocation.getWorldName())) {

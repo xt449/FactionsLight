@@ -117,8 +117,8 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
 		}
 
 		// Register recurring tasks
-		if(saveTask == null && configMain.factions().limits().getSaveToFileEveryXMinutes() > 0.0) {
-			long saveTicks = (long) (20 * 60 * configMain.factions().limits().getSaveToFileEveryXMinutes()); // Approximately every 30 min by default
+		if(saveTask == null) {
+			final long saveTicks = 20 * 60 * 30; // Every 30 min by default
 			saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
 		}
 

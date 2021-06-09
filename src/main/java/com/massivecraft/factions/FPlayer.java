@@ -82,13 +82,15 @@ public interface FPlayer extends RelationParticipator {
 
 	long getLastLoginTime();
 
-	void setLastLoginTime(long lastLoginTime);
+	void resetLastLoginTime();
+
+	void resetLastGraceTime();
 
 	boolean isMapAutoUpdating();
 
 	void setMapAutoUpdating(boolean mapAutoUpdating);
 
-	boolean hasLoginPvpDisabled();
+	boolean inGracePeriod();
 
 	FLocation getLastStoodAt();
 

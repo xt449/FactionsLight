@@ -249,7 +249,7 @@ public class FactionsEntityListener extends AbstractListener {
 
 		MainConfiguration.Factions facConf = FactionsPlugin.getInstance().configMain.factions();
 
-		if(attacker.hasLoginPvpDisabled()) {
+		if(attacker.inGracePeriod()) {
 			if(notify) {
 				attacker.msg(TL.PLAYER_PVP_LOGIN, facConf.combat().gracePeriodOnLogin());
 			}

@@ -3,14 +3,9 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.configuration.MainConfiguration;
 import com.massivecraft.factions.data.MemoryFPlayer;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.gui.GUI;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.Relation;
-import com.massivecraft.factions.scoreboards.FScoreboard;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
-import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.util.TL;
 import com.massivecraft.factions.util.TextUtil;
 import org.bukkit.Location;
@@ -53,9 +48,8 @@ public class FactionsPlayerListener extends AbstractListener {
 		final FPlayer me = FPlayers.getInstance().getByPlayer(player);
 		((MemoryFPlayer) me).setName(player.getName());
 
-//		this.plugin.getLandRaidControl().onJoin(me);
 		// Update the lastLoginTime for this fplayer
-		me.setLastLoginTime(System.currentTimeMillis());
+		me.resetLastLoginTime();
 
 		// Store player's current FLocation and notify them where they are
 		me.setLastStoodAt(new FLocation(player.getLocation()));
@@ -73,12 +67,6 @@ public class FactionsPlayerListener extends AbstractListener {
 	}
 
 	private void initFactionWorld(FPlayer me) {
-		if(FactionsPlugin.getInstance().configMain.scoreboard().constant().isEnabled()) {
-			FScoreboard.init(me);
-			FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar());
-			FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
-		}
-
 		me.setTakeFallDamage(true);
 	}
 
@@ -86,11 +74,7 @@ public class FactionsPlayerListener extends AbstractListener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-//		FactionsPlugin.getInstance().getLandRaidControl().onQuit(me);
-		// and update their last login time to point to when the logged off, for auto-remove routine
-		me.setLastLoginTime(System.currentTimeMillis());
-
-		me.logout(); // cache kills / deaths
+		me.logout(); // cache kills and deaths
 
 		// if player is waiting for fstuck teleport but leaves, remove
 		if(FactionsPlugin.getInstance().stuckMap.containsKey(me.getPlayer().getUniqueId())) {
@@ -103,8 +87,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(!myFaction.isWilderness()) {
 			myFaction.memberLoggedOff();
 		}
-
-		FScoreboard.remove(me, event.getPlayer());
 	}
 
 	// Holds the next time a player can have a map shown.
@@ -268,27 +250,24 @@ public class FactionsPlayerListener extends AbstractListener {
 		return true;
 	}
 
-//	@EventHandler(priority = EventPriority.HIGH)
-//	public void onPlayerRespawn(PlayerRespawnEvent event) {
-//		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
-//			return;
-//		}
-//
-//		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-//
-//		FactionsPlugin.getInstance().getLandRaidControl().onRespawn(me);
-//	}
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
+			return;
+		}
+
+		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+		me.resetLastGraceTime();
+	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onTeleport(PlayerTeleportEvent event) {
-		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-		boolean isEnabled = plugin.configMain.restrictWorlds().isEnabled(event.getTo().getWorld());
-		if(!isEnabled) {
-			FScoreboard.remove(me, event.getPlayer());
+		if(!plugin.configMain.restrictWorlds().isEnabled(event.getTo().getWorld())) {
 			return;
 		}
+
+		FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 		if(!event.getFrom().getWorld().equals(event.getTo().getWorld()) && !plugin.configMain.restrictWorlds().isEnabled(event.getPlayer().getWorld())) {
-//			FactionsPlugin.getInstance().getLandRaidControl().update(me);
 			this.initFactionWorld(me);
 		}
 
@@ -433,16 +412,6 @@ public class FactionsPlayerListener extends AbstractListener {
 		if(event.getInventory().getHolder() instanceof GUI) {
 			event.setCancelled(true);
 		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	final public void onFactionJoin(FPlayerJoinEvent event) {
-		FTeamWrapper.applyUpdatesLater(event.getFaction());
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onFactionLeave(FPlayerLeaveEvent event) {
-		FTeamWrapper.applyUpdatesLater(event.getFaction());
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

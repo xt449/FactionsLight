@@ -160,66 +160,11 @@ logging:
 # You can find it here: https://www.spigotmc.org/resources/lwc-extended.69551/
 # Note: Modern LWC is no longer supported, and its former maintainer now runs LWC Extended
 lwc:
-  enabled: true
+  enabled: false
   resetLocksOnCapture: false
   resetLocksOnUnclaim: false
 
-# Control for the default settings of /f map
-map:
-  height: 17
-  showEnemyFactions: true
-  showFactionKey: true
-  showNeutralFactionsOnMap: true
-  showTruceFactions: true
-  width: 49
-
-scoreboard: # Constant scoreboard stays around all the time, displaying status info.
-  # Also, if prefixes are enabled while it is enabled, will show prefixes on nametags and tab
-  constant:
-    content: |
-      &6Your Faction
-      {faction}
-    enabled: false
-    factionlessContent: |
-      Make a new Faction
-      Use /f create
-    factionlessEnabled: false
-    factionlessTitle: Status
-    # Set the length limit for prefixes.
-    # If 0, will use a sane default for your Minecraft version (16 for pre-1.13, 32 for 1.13+).
-    prefixLengthMaximum: 0
-    # Takes: relationcolor,: faction, player-specific tags, &-prefixed color codes
-    prefixTemplate: '{relationcolor}[{faction}] &r'
-    # If true, show faction prefixes on nametags and in tab list if scoreboard is enabled
-    prefixes: true
-    # Set the length limit for suffixes.
-    # If 0, will use a sane default for your Minecraft version (16 for pre-1.13, 32 for 1.13+).
-    suffixLength: 0
-    # Takes: relationcolor,: faction, player-specific tags, &-prefixed color codes
-    suffixTemplate: '{relationcolor}[{faction}]'
-    # If true, show suffixes on nametags and in tab list if scoreboard is enabled
-    suffixes: false
-    # Can use any placeholders, but does not update once set
-    title: Faction Status
-
-  # Info scoreboard is displayed when a player walks into a new Faction's territory.
-  # Scoreboard disappears after <expiration> seconds.
-  info: # send faction change message as well when scoreboard is up?
-    alsoSendChat: true
-    # Supports placeholders
-    content: |
-      &3Members
-      {online}/{members}
-      &4Leader
-      {leader}
-      &bTerritory
-      {chunks}
-    enabled: false
-    # How long do we want scoreboards to stay
-    expiration: 7
-    title: '{faction-relation-color}{faction}'
-
 # WorldGuard settings
 worldGuard:
+  enabled: false
   buildPriority: false
-  checking: false

@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.perms.Role;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.TL;
 import org.bukkit.Bukkit;
@@ -59,8 +58,6 @@ public class CmdRename extends FCommand {
 			Faction faction = fplayer.getFaction();
 			fplayer.msg(TL.COMMAND_RENAME_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
 		}
-
-		FTeamWrapper.updatePrefixes(context.faction);
 	}
 
 	@Override
