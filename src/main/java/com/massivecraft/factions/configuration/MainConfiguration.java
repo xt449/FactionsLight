@@ -34,14 +34,6 @@ public class MainConfiguration extends AbstractConfiguration {
 		colors.factions.warzone = ChatColor.valueOf(config.getString("colors.factions.warzone"));
 
 		// Commands:
-		//// CommandPost:
-		commands.commandPost.cooldown = config.getInt("commands.commandPost.cooldown");
-		commands.commandPost.delay = config.getInt("commands.commandPost.delay");
-		commands.commandPost.mustBeInClaimedTerritory = config.getBoolean("commands.commandPost.mustBeInClaimedTerritory");
-		commands.commandPost.teleportAllowedFromEnemyTerritory = config.getBoolean("commands.commandPost.teleportAllowedFromEnemyTerritory");
-		commands.commandPost.teleportAllowedFromDifferentWorld = config.getBoolean("commands.commandPost.teleportAllowedFromDifferentWorld");
-		commands.commandPost.teleportIgnoreEnemiesIfInFriendlyTerritory = config.getBoolean("commands.commandPost.teleportIgnoreEnemiesIfInFriendlyTerritory");
-		commands.commandPost.teleportAllowedEnemyDistance = config.getDouble("commands.commandPost.teleportAllowedEnemyDistance");
 		//// List:
 		commands.list.cooldown = config.getInt("commands.list.cooldown");
 		commands.list.delay = config.getInt("commands.list.delay");
@@ -197,34 +189,6 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-		public static class CommandPost extends CommandConfiguration {
-			private transient boolean mustBeInClaimedTerritory;
-			private transient boolean teleportAllowedFromEnemyTerritory;
-			private transient boolean teleportAllowedFromDifferentWorld;
-			private transient boolean teleportIgnoreEnemiesIfInFriendlyTerritory;
-			private transient double teleportAllowedEnemyDistance;
-
-			public boolean isMustBeInClaimedTerritory() {
-				return mustBeInClaimedTerritory;
-			}
-
-			public boolean isTeleportAllowedFromEnemyTerritory() {
-				return teleportAllowedFromEnemyTerritory;
-			}
-
-			public boolean isTeleportAllowedFromDifferentWorld() {
-				return teleportAllowedFromDifferentWorld;
-			}
-
-			public boolean isTeleportIgnoreEnemiesIfInFriendlyTerritory() {
-				return teleportIgnoreEnemiesIfInFriendlyTerritory;
-			}
-
-			public double getTeleportAllowedEnemyDistance() {
-				return teleportAllowedEnemyDistance;
-			}
-		}
-
 		public static class List extends CommandConfiguration {
 			private transient String header;
 			private transient String footer;
@@ -293,17 +257,12 @@ public class MainConfiguration extends AbstractConfiguration {
 			}
 		}
 
-		private final transient CommandPost commandPost = new CommandPost();
 		private final transient List list = new List();
 		private final transient Map map = new Map();
 		private final transient Perms perms = new Perms();
 		private final transient Show show = new Show();
 		private final transient Stuck stuck = new Stuck();
 		private final transient ToolTips toolTips = new ToolTips();
-
-		public CommandPost commandPost() {
-			return commandPost;
-		}
 
 		public List list() {
 			return list;

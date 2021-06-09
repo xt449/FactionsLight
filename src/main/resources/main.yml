@@ -13,16 +13,6 @@ colors:
     peaceful: GOLD
     truce: DARK_PURPLE
 
-commands:
-  commandPost:
-    cooldown: 0
-    delay: 0
-    mustBeInClaimedTerritory: true
-    teleportAllowedFromEnemyTerrittory: false
-    teleportAllowedFromDifferentWorld: false
-    teleportIgnoreEnemiesIfInFriendlyTerritory: true
-    teleportAllowedEnemyDistance: 4
-
   list:
     cooldown: 0
     delay: 0
